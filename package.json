@@ -23,6 +23,7 @@
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build",
     "demo": "open demo/index.html",
+    "showcase": "open demo/components-showcase.html",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [

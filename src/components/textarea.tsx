@@ -2,13 +2,11 @@ import * as React from "react"
 import { cn } from "../lib/utils"
 import { componentColors } from "../lib/colors"
 
-export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
   label?: string
   error?: string
   helperText?: string
   success?: boolean
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
   variant?: "default" | "error" | "success"
   size?: "sm" | "md" | "lg"
   fullWidth?: boolean
@@ -19,18 +17,19 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   focusColor?: string
   borderRadius?: string | number
   shadow?: "none" | "sm" | "md" | "lg"
+  rows?: number
+  maxRows?: number
+  minRows?: number
+  resize?: "none" | "both" | "horizontal" | "vertical"
 }
 
-const Input = React.forwardRef<HTMLInputElement, InputProps>(
+const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
   ({ 
     className, 
-    type, 
     label, 
     error, 
     helperText, 
     success,
-    leftIcon,
-    rightIcon,
     variant = "default",
     size = "md",
     fullWidth = true,
@@ -41,12 +40,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     focusColor,
     borderRadius,
     shadow = "sm",
+    rows = 3,
+    maxRows,
+    minRows,
+    resize = "vertical",
     style,
     ...props 
   }, ref) => {
     
     // Determine variant
-    const inputVariant = error ? "error" : success ? "success" : variant
+    const textareaVariant = error ? "error" : success ? "success" : variant
     
     // Size classes
     const sizeClasses = {
@@ -63,8 +66,16 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       lg: "shadow-lg"
     }
     
+    // Resize classes
+    const resizeClasses = {
+      none: "resize-none",
+      both: "resize",
+      horizontal: "resize-x",
+      vertical: "resize-y"
+    }
+    
     // Get default colors
-    const defaultColors = componentColors.input[inputVariant as keyof typeof componentColors.input] || componentColors.input.default
+    const defaultColors = componentColors.input[textareaVariant as keyof typeof componentColors.input] || componentColors.input.default
     
     // Custom styles
     const customStyles: React.CSSProperties = {
@@ -72,17 +83,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       color: textColor || defaultColors.text,
       borderColor: borderColor || defaultColors.border,
       borderRadius: borderRadius,
+      resize: resize,
       ...style
     }
     
     // Focus and blur handlers
-    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
       const focusBorderColor = focusColor || defaultColors.focus
       e.target.style.borderColor = focusBorderColor
       e.target.style.boxShadow = `0 0 0 3px ${focusBorderColor}20`
     }
     
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
+    const handleBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
       e.target.style.borderColor = borderColor || defaultColors.border
       e.target.style.boxShadow = "none"
     }
@@ -98,36 +110,22 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           </label>
         )}
         
-        <div className="relative">
-          {leftIcon && (
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              {leftIcon}
-            </div>
+        <textarea
+          className={cn(
+            "ui-input",
+            sizeClasses[size],
+            shadowClasses[shadow],
+            resizeClasses[resize],
+            "min-h-[80px]",
+            className
           )}
-          
-          <input
-            type={type}
-            className={cn(
-              "ui-input",
-              sizeClasses[size],
-              shadowClasses[shadow],
-              leftIcon && "pl-10",
-              rightIcon && "pr-10",
-              className
-            )}
-            style={customStyles}
-            ref={ref}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            {...props}
-          />
-          
-          {rightIcon && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              {rightIcon}
-            </div>
-          )}
-        </div>
+          style={customStyles}
+          ref={ref}
+          rows={rows}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
+          {...props}
+        />
         
         {(error || helperText) && (
           <p 
@@ -148,6 +146,6 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   }
 )
 
-Input.displayName = "Input"
+Textarea.displayName = "Textarea"
 
-export { Input }
+export { Textarea }
