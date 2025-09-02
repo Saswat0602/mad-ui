@@ -9,6 +9,7 @@ scripts/
 .git/
 .gitignore
 .npmignore
+docs/
 
 # Build artifacts
 dist/*.map
