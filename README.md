@@ -1,4 +1,4 @@
-# 🎨 @saswat0602/ui-library
+# 🎨 mad-ui
 
 A comprehensive, customizable React UI component library built with TypeScript and Tailwind CSS. Features 20+ components with extensive customization options, multiple design variants, and smooth animations.
 
@@ -20,24 +20,24 @@ A comprehensive, customizable React UI component library built with TypeScript a
 ### Installation
 
 ```bash
-npm install @saswat0602/ui-library
+npm install mad-ui
 ```
 
 ### Usage Options
 
 #### **Full Library** (All Components - 188KB)
 ```tsx
-import { Button, Card, Input, Layout, Navbar, Sidebar } from '@saswat0602/ui-library';
+import { Button, Card, Input, Layout, Navbar, Sidebar } from 'mad-ui';
 ```
 
 #### **Core Library** (Essential Components Only - 120KB) ⚡
 ```tsx
-import { Button, Card, Input } from '@saswat0602/ui-library/core';
+import { Button, Card, Input } from 'mad-ui/core';
 ```
 
 #### **Styles** (Required for both)
 ```tsx
-import '@saswat0602/ui-library/styles';
+import 'mad-ui/styles';
 ```
 
 ### Bundle Size Comparison
@@ -53,7 +53,7 @@ import '@saswat0602/ui-library/styles';
 ### Basic Usage
 
 ```tsx
-import { Button, Card, Input } from '@saswat0602/ui-library';
+import { Button, Card, Input } from 'mad-ui';
 
 function App() {
   return (
@@ -441,10 +441,10 @@ MIT License - see [LICENSE](LICENSE) file for details
 
 ## 🆘 Support
 
-- 📖 [Documentation](https://github.com/saswat0602/ui-library)
-- 🐛 [Report Issues](https://github.com/saswat0602/ui-library/issues)
-- 💡 [Request Features](https://github.com/saswat0602/ui-library/issues)
-- ⭐ [Star the Project](https://github.com/saswat0602/ui-library)
+- 📖 [Documentation](https://github.com/saswat0602/mad-ui)
+- 🐛 [Report Issues](https://github.com/saswat0602/mad-ui/issues)
+- 💡 [Request Features](https://github.com/saswat0602/mad-ui/issues)
+- ⭐ [Star the Project](https://github.com/saswat0602/mad-ui)
 
 ---
 

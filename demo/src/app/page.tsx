@@ -16,33 +16,22 @@ import {
   Label,
   Progress,
   Radio,
-  RadioGroup,
   Rating,
   Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Skeleton,
   Switch,
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
   Textarea,
   TimePicker,
 } from '@saswat0602/ui-library';
 
 export default function ComponentShowcase() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-  const [selectedTime, setSelectedTime] = useState<Date | undefined>(new Date());
+  const [selectedTime, setSelectedTime] = useState<string>('12:00');
   const [rating, setRating] = useState(3);
   const [progress, setProgress] = useState(65);
   const [switchValue, setSwitchValue] = useState(false);
   const [checkboxValue, setCheckboxValue] = useState(false);
-  const [radioValue, setRadioValue] = useState('option1');
   const [selectValue, setSelectValue] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [textareaValue, setTextareaValue] = useState('');
@@ -51,6 +40,19 @@ export default function ComponentShowcase() {
     { id: 1, name: 'John Doe', email: 'john@example.com', role: 'Admin' },
     { id: 2, name: 'Jane Smith', email: 'jane@example.com', role: 'User' },
     { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'Editor' },
+  ];
+
+  const tableColumns = [
+    { key: 'id' as const, header: 'ID' },
+    { key: 'name' as const, header: 'Name' },
+    { key: 'email' as const, header: 'Email' },
+    { key: 'role' as const, header: 'Role' },
+  ];
+
+  const selectOptions = [
+    { value: 'option1', label: 'Option 1' },
+    { value: 'option2', label: 'Option 2' },
+    { value: 'option3', label: 'Option 3' },
   ];
 
   return (
@@ -114,16 +116,12 @@ export default function ComponentShowcase() {
             </div>
             <div>
               <Label htmlFor="select-demo">Select</Label>
-              <Select value={selectValue} onValueChange={setSelectValue}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select an option" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="option1">Option 1</SelectItem>
-                  <SelectItem value="option2">Option 2</SelectItem>
-                  <SelectItem value="option3">Option 3</SelectItem>
-                </SelectContent>
-              </Select>
+              <Select
+                options={selectOptions}
+                placeholder="Select an option"
+                value={selectValue}
+                onChange={(e) => setSelectValue(e.target.value)}
+              />
             </div>
           </div>
           <div className="space-y-4">
@@ -131,7 +129,7 @@ export default function ComponentShowcase() {
               <Checkbox
                 id="checkbox-demo"
                 checked={checkboxValue}
-                onCheckedChange={(checked) => setCheckboxValue(checked as boolean)}
+                onChange={(e) => setCheckboxValue(e.target.checked)}
               />
               <Label htmlFor="checkbox-demo">Checkbox</Label>
             </div>
@@ -139,28 +137,26 @@ export default function ComponentShowcase() {
               <Switch
                 id="switch-demo"
                 checked={switchValue}
-                onCheckedChange={setSwitchValue}
+                onChange={(e) => setSwitchValue(e.target.checked)}
               />
               <Label htmlFor="switch-demo">Switch</Label>
             </div>
             <div>
               <Label>Radio Group</Label>
-              <RadioGroup value={radioValue} onValueChange={(value) => setRadioValue(value)}>
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <Radio value="option1" id="radio1" />
-                    <Label htmlFor="radio1">Option 1</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Radio value="option2" id="radio2" />
-                    <Label htmlFor="radio2">Option 2</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Radio value="option3" id="radio3" />
-                    <Label htmlFor="radio3">Option 3</Label>
-                  </div>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Radio value="option1" id="radio1" />
+                  <Label htmlFor="radio1">Option 1</Label>
                 </div>
-              </RadioGroup>
+                <div className="flex items-center space-x-2">
+                  <Radio value="option2" id="radio2" />
+                  <Label htmlFor="radio2">Option 2</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Radio value="option3" id="radio3" />
+                  <Label htmlFor="radio3">Option 3</Label>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -173,9 +169,8 @@ export default function ComponentShowcase() {
           <div>
             <Label>Calendar</Label>
             <Calendar
-              mode="single"
-              selected={selectedDate}
-              onSelect={setSelectedDate}
+              value={selectedDate}
+              onChange={(date) => setSelectedDate(date)}
               className="rounded-md border"
             />
           </div>
@@ -252,26 +247,13 @@ export default function ComponentShowcase() {
             <CardDescription>A list of users in the system</CardDescription>
           </CardHeader>
           <CardContent>
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>ID</TableHead>
-                  <TableHead>Name</TableHead>
-                  <TableHead>Email</TableHead>
-                  <TableHead>Role</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {tableData.map((user) => (
-                  <TableRow key={user.id}>
-                    <TableCell>{user.id}</TableCell>
-                    <TableCell>{user.name}</TableCell>
-                    <TableCell>{user.email}</TableCell>
-                    <TableCell>{user.role}</TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
-            </Table>
+            <Table
+              data={tableData}
+              columns={tableColumns}
+              variant="outlined"
+              hoverable
+              striped
+            />
           </CardContent>
         </Card>
       </section>
@@ -319,7 +301,7 @@ export default function ComponentShowcase() {
               <Checkbox
                 id="demo-toggle"
                 checked={switchValue}
-                onCheckedChange={(checked) => setSwitchValue(checked as boolean)}
+                onChange={(e) => setSwitchValue(e.target.checked)}
               />
               <Label htmlFor="demo-toggle">Toggle Switch State</Label>
             </div>
@@ -327,7 +309,7 @@ export default function ComponentShowcase() {
               <Switch
                 id="demo-switch"
                 checked={checkboxValue}
-                onCheckedChange={(checked) => setCheckboxValue(checked as boolean)}
+                onChange={(e) => setCheckboxValue(e.target.checked)}
               />
               <Label htmlFor="demo-switch">Toggle Checkbox State</Label>
             </div>

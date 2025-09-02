@@ -2,19 +2,36 @@
 
 import {
   Breadcrumbs,
-  BreadcrumbsItem,
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
   Button,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
 } from '@saswat0602/ui-library';
 
 export default function NavigationPage() {
+  const simpleBreadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Components', href: '/components' },
+    { label: 'Navigation' },
+  ];
+
+  const deepBreadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Dashboard', href: '/dashboard' },
+    { label: 'Users', href: '/dashboard/users' },
+    { label: 'Profile', href: '/dashboard/users/profile' },
+    { label: 'Settings' },
+  ];
+
+  const ecommerceBreadcrumbs = [
+    { label: 'Home', href: '/' },
+    { label: 'Electronics', href: '/electronics' },
+    { label: 'Computers', href: '/electronics/computers' },
+    { label: 'Laptops' },
+  ];
+
   return (
     <div className="p-8 max-w-4xl mx-auto">
       <div className="mb-8">
@@ -30,33 +47,18 @@ export default function NavigationPage() {
         </CardHeader>
         <CardContent className="space-y-6">
           <div>
-            <Label className="mb-2 block">Simple Breadcrumbs</Label>
-            <Breadcrumbs>
-              <BreadcrumbsItem href="/">Home</BreadcrumbsItem>
-              <BreadcrumbsItem href="/components">Components</BreadcrumbsItem>
-              <BreadcrumbsItem href="/components/navigation">Navigation</BreadcrumbsItem>
-            </Breadcrumbs>
+            <label className="text-sm font-medium mb-2 block">Simple Breadcrumbs</label>
+            <Breadcrumbs items={simpleBreadcrumbs} />
           </div>
 
           <div>
-            <Label className="mb-2 block">Deep Navigation</Label>
-            <Breadcrumbs>
-              <BreadcrumbsItem href="/">Home</BreadcrumbsItem>
-              <BreadcrumbsItem href="/dashboard">Dashboard</BreadcrumbsItem>
-              <BreadcrumbsItem href="/dashboard/users">Users</BreadcrumbsItem>
-              <BreadcrumbsItem href="/dashboard/users/profile">Profile</BreadcrumbsItem>
-              <BreadcrumbsItem href="/dashboard/users/profile/settings">Settings</BreadcrumbsItem>
-            </Breadcrumbs>
+            <label className="text-sm font-medium mb-2 block">Deep Navigation</label>
+            <Breadcrumbs items={deepBreadcrumbs} />
           </div>
 
           <div>
-            <Label className="mb-2 block">E-commerce Example</Label>
-            <Breadcrumbs>
-              <BreadcrumbsItem href="/">Home</BreadcrumbsItem>
-              <BreadcrumbsItem href="/electronics">Electronics</BreadcrumbsItem>
-              <BreadcrumbsItem href="/electronics/computers">Computers</BreadcrumbsItem>
-              <BreadcrumbsItem href="/electronics/computers/laptops">Laptops</BreadcrumbsItem>
-            </Breadcrumbs>
+            <label className="text-sm font-medium mb-2 block">E-commerce Example</label>
+            <Breadcrumbs items={ecommerceBreadcrumbs} />
           </div>
         </CardContent>
       </Card>
@@ -70,9 +72,9 @@ export default function NavigationPage() {
         <CardContent>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div>
-              <Label className="mb-3 block">Primary Navigation</Label>
+              <label className="text-sm font-medium mb-3 block">Primary Navigation</label>
               <nav className="flex space-x-1 bg-gray-100 p-1 rounded-lg">
-                <Button variant="default" size="sm">Dashboard</Button>
+                <Button size="sm">Dashboard</Button>
                 <Button variant="ghost" size="sm">Projects</Button>
                 <Button variant="ghost" size="sm">Team</Button>
                 <Button variant="ghost" size="sm">Settings</Button>
@@ -80,7 +82,7 @@ export default function NavigationPage() {
             </div>
 
             <div>
-              <Label className="mb-3 block">Secondary Navigation</Label>
+              <label className="text-sm font-medium mb-3 block">Secondary Navigation</label>
               <nav className="flex space-x-1 bg-gray-50 p-1 rounded-lg">
                 <Button variant="ghost" size="sm">Overview</Button>
                 <Button variant="ghost" size="sm">Analytics</Button>
@@ -90,7 +92,7 @@ export default function NavigationPage() {
             </div>
 
             <div>
-              <Label className="mb-3 block">Tab Navigation</Label>
+              <label className="text-sm font-medium mb-3 block">Tab Navigation</label>
               <div className="border-b border-gray-200">
                 <nav className="flex space-x-8">
                   <button className="border-b-2 border-blue-500 py-2 px-1 text-sm font-medium text-blue-600">
@@ -107,7 +109,7 @@ export default function NavigationPage() {
             </div>
 
             <div>
-              <Label className="mb-3 block">Pagination</Label>
+              <label className="text-sm font-medium mb-3 block">Pagination</label>
               <nav className="flex items-center space-x-2">
                 <Button variant="outline" size="sm">Previous</Button>
                 <Button variant="outline" size="sm">1</Button>
@@ -116,64 +118,6 @@ export default function NavigationPage() {
                 <Button variant="outline" size="sm">Next</Button>
               </nav>
             </div>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Interactive Navigation */}
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Interactive Navigation</CardTitle>
-          <CardDescription>Navigation with popovers and dropdowns</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-4">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline">User Menu</Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-56">
-                <div className="space-y-2">
-                  <div className="px-3 py-2">
-                    <p className="text-sm font-medium">John Doe</p>
-                    <p className="text-xs text-gray-500">john@example.com</p>
-                  </div>
-                  <div className="border-t border-gray-200 pt-2">
-                    <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded">
-                      Profile Settings
-                    </button>
-                    <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded">
-                      Account Preferences
-                    </button>
-                    <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded text-red-600">
-                      Sign Out
-                    </button>
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
-
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline">Quick Actions</Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-48">
-                <div className="space-y-1">
-                  <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded">
-                    New Project
-                  </button>
-                  <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded">
-                    Import Data
-                  </button>
-                  <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded">
-                    Export Report
-                  </button>
-                  <button className="w-full text-left px-3 py-2 text-sm hover:bg-gray-100 rounded">
-                    Share Dashboard
-                  </button>
-                </div>
-              </PopoverContent>
-            </Popover>
           </div>
         </CardContent>
       </Card>

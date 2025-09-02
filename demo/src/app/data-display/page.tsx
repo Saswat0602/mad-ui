@@ -3,11 +3,6 @@
 import { useState } from 'react';
 import {
   Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
   Card,
   CardContent,
   CardDescription,
@@ -17,9 +12,6 @@ import {
   Progress,
   Rating,
   Button,
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
 } from '@saswat0602/ui-library';
 
 export default function DataDisplayPage() {
@@ -32,6 +24,15 @@ export default function DataDisplayPage() {
     { id: 3, name: 'Bob Johnson', email: 'bob@example.com', role: 'Editor', status: 'Inactive', rating: 3.8 },
     { id: 4, name: 'Alice Brown', email: 'alice@example.com', role: 'User', status: 'Active', rating: 4.7 },
     { id: 5, name: 'Charlie Wilson', email: 'charlie@example.com', role: 'Admin', status: 'Active', rating: 4.1 },
+  ];
+
+  const tableColumns = [
+    { key: 'id' as const, header: 'ID' },
+    { key: 'name' as const, header: 'Name' },
+    { key: 'email' as const, header: 'Email' },
+    { key: 'role' as const, header: 'Role' },
+    { key: 'status' as const, header: 'Status' },
+    { key: 'rating' as const, header: 'Rating' },
   ];
 
   return (
@@ -48,50 +49,13 @@ export default function DataDisplayPage() {
           <CardDescription>Responsive table with sorting and data display</CardDescription>
         </CardHeader>
         <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>ID</TableHead>
-                <TableHead>Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead>Role</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Rating</TableHead>
-                <TableHead>Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {tableData.map((user) => (
-                <TableRow key={user.id}>
-                  <TableCell className="font-medium">{user.id}</TableCell>
-                  <TableCell>{user.name}</TableCell>
-                  <TableCell>{user.email}</TableCell>
-                  <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      user.role === 'Admin' ? 'bg-red-100 text-red-800' :
-                      user.role === 'Editor' ? 'bg-blue-100 text-blue-800' :
-                      'bg-gray-100 text-gray-800'
-                    }`}>
-                      {user.role}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      user.status === 'Active' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'
-                    }`}>
-                      {user.status}
-                    </span>
-                  </TableCell>
-                  <TableCell>
-                    <Rating value={user.rating} onChange={() => {}} readonly />
-                  </TableCell>
-                  <TableCell>
-                    <Button size="sm" variant="outline">Edit</Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          <Table
+            data={tableData}
+            columns={tableColumns}
+            variant="outlined"
+            hoverable
+            striped
+          />
         </CardContent>
       </Card>
 
@@ -105,27 +69,27 @@ export default function DataDisplayPage() {
           <CardContent className="space-y-6">
             <div>
               <div className="flex justify-between mb-2">
-                <Label>Overall Progress</Label>
+                <span className="text-sm font-medium">Overall Progress</span>
                 <span className="text-sm text-gray-600">{progress}%</span>
               </div>
               <Progress value={progress} className="w-full" />
             </div>
             <div>
               <div className="flex justify-between mb-2">
-                <Label>Task Completion</Label>
+                <span className="text-sm font-medium">Task Completion</span>
                 <span className="text-sm text-gray-600">65%</span>
               </div>
               <Progress value={65} className="w-full" />
             </div>
             <div>
               <div className="flex justify-between mb-2">
-                <Label>Upload Status</Label>
+                <span className="text-sm font-medium">Upload Status</span>
                 <span className="text-sm text-gray-600">90%</span>
               </div>
               <Progress value={90} className="w-full" />
             </div>
             <div className="pt-4">
-              <Label className="mb-2 block">Adjust Progress</Label>
+              <label className="text-sm font-medium mb-2 block">Adjust Progress</label>
               <input
                 type="range"
                 min="0"
@@ -145,23 +109,23 @@ export default function DataDisplayPage() {
           </CardHeader>
           <CardContent className="space-y-6">
             <div>
-              <Label className="mb-2 block">Current Rating: {rating}/5</Label>
+              <label className="text-sm font-medium mb-2 block">Current Rating: {rating}/5</label>
               <Rating value={rating} onChange={setRating} />
             </div>
             <div>
-              <Label className="mb-2 block">Read-only Ratings</Label>
+              <label className="text-sm font-medium mb-2 block">Read-only Ratings</label>
               <div className="space-y-2">
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-gray-600">Product A:</span>
-                  <Rating value={4.5} onChange={() => {}} readonly />
+                  <Rating value={4.5} onChange={() => {}} />
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-gray-600">Product B:</span>
-                  <Rating value={3.2} onChange={() => {}} readonly />
+                  <Rating value={3.2} onChange={() => {}} />
                 </div>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-gray-600">Product C:</span>
-                  <Rating value={5.0} onChange={() => {}} readonly />
+                  <Rating value={5.0} onChange={() => {}} />
                 </div>
               </div>
             </div>
@@ -198,69 +162,36 @@ export default function DataDisplayPage() {
         </CardContent>
       </Card>
 
-      {/* Popover Examples */}
+      {/* Simple Interactive Elements */}
       <Card>
         <CardHeader>
-          <CardTitle>Popover Components</CardTitle>
-          <CardDescription>Contextual information overlays</CardDescription>
+          <CardTitle>Interactive Elements</CardTitle>
+          <CardDescription>Simple interactive components</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-4">
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline">User Info</Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80">
-                <div className="grid gap-4">
-                  <div className="space-y-2">
-                    <h4 className="font-medium leading-none">User Profile</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Detailed information about the selected user.
-                    </p>
-                  </div>
-                  <div className="grid gap-2">
-                    <div className="grid grid-cols-3 items-center gap-4">
-                      <Label htmlFor="username">Username</Label>
-                      <span className="col-span-2">john_doe</span>
-                    </div>
-                    <div className="grid grid-cols-3 items-center gap-4">
-                      <Label htmlFor="email">Email</Label>
-                      <span className="col-span-2">john@example.com</span>
-                    </div>
-                    <div className="grid grid-cols-3 items-center gap-4">
-                      <Label htmlFor="role">Role</Label>
-                      <span className="col-span-2">Administrator</span>
-                    </div>
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
-
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button variant="outline">Settings</Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-80">
-                <div className="grid gap-4">
-                  <div className="space-y-2">
-                    <h4 className="font-medium leading-none">Quick Settings</h4>
-                    <p className="text-sm text-muted-foreground">
-                      Configure your preferences here.
-                    </p>
-                  </div>
-                  <div className="grid gap-2">
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="notifications">Notifications</Label>
-                      <Switch id="notifications" />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <Label htmlFor="darkMode">Dark Mode</Label>
-                      <Switch id="darkMode" />
-                    </div>
-                  </div>
-                </div>
-              </PopoverContent>
-            </Popover>
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium mb-2 block">Sample Buttons</label>
+              <div className="flex gap-2">
+                <Button>Primary</Button>
+                <Button variant="secondary">Secondary</Button>
+                <Button variant="outline">Outline</Button>
+              </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium mb-2 block">Progress Control</label>
+              <div className="space-y-2">
+                <Progress value={progress} className="w-full" />
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={progress}
+                  onChange={(e) => setProgress(Number(e.target.value))}
+                  className="w-full"
+                />
+              </div>
+            </div>
           </div>
         </CardContent>
       </Card>

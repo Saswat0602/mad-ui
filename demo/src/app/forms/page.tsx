@@ -7,14 +7,9 @@ import {
   Label,
   Textarea,
   Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
   Checkbox,
   Switch,
   Radio,
-  RadioGroup,
   Card,
   CardContent,
   CardDescription,
@@ -38,6 +33,12 @@ export default function FormsPage() {
     e.preventDefault();
     console.log('Form submitted:', formData);
   };
+
+  const selectOptions = [
+    { value: 'general', label: 'General' },
+    { value: 'support', label: 'Support' },
+    { value: 'feedback', label: 'Feedback' },
+  ];
 
   return (
     <div className="p-8 max-w-4xl mx-auto">
@@ -75,16 +76,12 @@ export default function FormsPage() {
             </div>
             <div>
               <Label htmlFor="category">Category</Label>
-              <Select value={formData.category} onValueChange={(value) => setFormData({ ...formData, category: value })}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Select a category" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="general">General</SelectItem>
-                  <SelectItem value="support">Support</SelectItem>
-                  <SelectItem value="feedback">Feedback</SelectItem>
-                </SelectContent>
-              </Select>
+              <Select
+                options={selectOptions}
+                placeholder="Select a category"
+                value={formData.category}
+                onChange={(e) => setFormData({ ...formData, category: e.target.value })}
+              />
             </div>
             <div>
               <Label htmlFor="message">Message</Label>
@@ -114,7 +111,7 @@ export default function FormsPage() {
                 <Checkbox
                   id="newsletter"
                   checked={formData.newsletter}
-                  onCheckedChange={(checked) => setFormData({ ...formData, newsletter: checked as boolean })}
+                  onChange={(e) => setFormData({ ...formData, newsletter: e.target.checked })}
                 />
                 <Label htmlFor="newsletter">Subscribe to newsletter</Label>
               </div>
@@ -122,7 +119,7 @@ export default function FormsPage() {
                 <Switch
                   id="notifications"
                   checked={formData.notifications}
-                  onCheckedChange={setFormData.notifications}
+                  onChange={(e) => setFormData({ ...formData, notifications: e.target.checked })}
                 />
                 <Label htmlFor="notifications">Enable notifications</Label>
               </div>
@@ -130,22 +127,20 @@ export default function FormsPage() {
 
             <div>
               <Label className="mb-3 block">Communication Preference</Label>
-              <RadioGroup value={formData.preference} onValueChange={(value) => setFormData({ ...formData, preference: value })}>
-                <div className="space-y-2">
-                  <div className="flex items-center space-x-2">
-                    <Radio value="option1" id="radio1" />
-                    <Label htmlFor="radio1">Email</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Radio value="option2" id="radio2" />
-                    <Label htmlFor="radio2">SMS</Label>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <Radio value="option3" id="radio3" />
-                    <Label htmlFor="radio3">Phone</Label>
-                  </div>
+              <div className="space-y-2">
+                <div className="flex items-center space-x-2">
+                  <Radio value="option1" id="radio1" />
+                  <Label htmlFor="radio1">Email</Label>
                 </div>
-              </RadioGroup>
+                <div className="flex items-center space-x-2">
+                  <Radio value="option2" id="radio2" />
+                  <Label htmlFor="radio2">SMS</Label>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Radio value="option3" id="radio3" />
+                  <Label htmlFor="radio3">Phone</Label>
+                </div>
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -164,17 +159,16 @@ export default function FormsPage() {
               <div className="flex flex-wrap gap-2">
                 <Button>Default</Button>
                 <Button variant="secondary">Secondary</Button>
-                <Button variant="destructive">Destructive</Button>
+                <Button variant="error">Error</Button>
                 <Button variant="outline">Outline</Button>
                 <Button variant="ghost">Ghost</Button>
-                <Button variant="link">Link</Button>
               </div>
             </div>
             <div>
               <Label className="mb-2 block">Button Sizes</Label>
               <div className="flex flex-wrap gap-2">
                 <Button size="sm">Small</Button>
-                <Button size="default">Default</Button>
+                <Button size="md">Medium</Button>
                 <Button size="lg">Large</Button>
               </div>
             </div>
@@ -183,10 +177,6 @@ export default function FormsPage() {
               <div className="flex flex-wrap gap-2">
                 <Button>Normal</Button>
                 <Button disabled>Disabled</Button>
-                <Button>
-                  <span className="mr-2">Loading</span>
-                  <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                </Button>
               </div>
             </div>
           </div>
