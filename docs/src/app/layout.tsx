@@ -3,6 +3,7 @@ import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Header } from "@/components/header"
+import { Sparkles } from "lucide-react"
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -64,12 +65,23 @@ export default function RootLayout({
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider defaultTheme="dark">
           <div className="relative flex min-h-screen flex-col overflow-hidden">
-            {/* Background patterns and gradients */}
+            {/* Enhanced Background with multiple layers */}
             <div className="fixed inset-0 -z-10">
-              <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/20" />
-              <div className="absolute inset-0 bg-grid-pattern opacity-5 dark:opacity-10" />
-              <div className="absolute top-0 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-float" />
-              <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-float-delayed" />
+              {/* Base gradient */}
+              <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/10" />
+              
+              {/* Animated orbs with better positioning */}
+              <div className="absolute top-20 left-20 w-80 h-80 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-float opacity-30"></div>
+              <div className="absolute top-40 right-20 w-80 h-80 bg-gradient-to-r from-pink-500/20 to-orange-500/20 rounded-full blur-3xl animate-float-delayed opacity-30"></div>
+              <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-gradient-to-r from-green-500/20 to-cyan-500/20 rounded-full blur-3xl animate-float-delayed-4s opacity-30"></div>
+              
+              {/* Subtle grid pattern */}
+              <div className="absolute inset-0 bg-grid-pattern opacity-3 dark:opacity-5" />
+              
+              {/* Noise texture for depth */}
+              <div className="absolute inset-0 opacity-5">
+                <div className="w-full h-full bg-noise-pattern"></div>
+              </div>
             </div>
             
             <Header />
@@ -79,22 +91,54 @@ export default function RootLayout({
               </div>
             </main>
             
-            {/* Footer */}
-            <footer className="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-              <div className="container mx-auto px-4 py-8">
-                <div className="flex flex-col md:flex-row justify-between items-center">
-                  <div className="flex items-center space-x-2 mb-4 md:mb-0">
-                    <span className="font-bold text-xl gradient-text">Mad UI</span>
-                    <span className="text-muted-foreground">Beautiful components for modern apps</span>
+            {/* Modern Footer */}
+            <footer className="relative border-t border-border/20 bg-background/80 backdrop-blur-xl">
+              <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
+              <div className="container mx-auto px-6 py-12 relative">
+                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+                  {/* Brand Section */}
+                  <div className="col-span-1 md:col-span-2">
+                    <div className="flex items-center space-x-3 mb-4">
+                      <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center">
+                        <Sparkles className="h-5 w-5 text-white" />
+                      </div>
+                      <div>
+                        <span className="font-bold text-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                          Mad UI
+                        </span>
+                        <p className="text-sm text-muted-foreground">v2.0</p>
+                      </div>
+                    </div>
+                    <p className="text-muted-foreground max-w-md">
+                      Beautiful, accessible, and customizable React components for modern web applications.
+                    </p>
                   </div>
-                  <div className="flex items-center space-x-6 text-sm text-muted-foreground">
-                    <a href="/docs" className="hover:text-foreground transition-colors">Documentation</a>
-                    <a href="/components" className="hover:text-foreground transition-colors">Components</a>
-                    <a href="https://github.com" className="hover:text-foreground transition-colors">GitHub</a>
+                  
+                  {/* Quick Links */}
+                  <div>
+                    <h3 className="font-semibold mb-4">Documentation</h3>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li><a href="/docs/getting-started" className="hover:text-foreground transition-colors">Getting Started</a></li>
+                      <li><a href="/docs/components" className="hover:text-foreground transition-colors">Components</a></li>
+                      <li><a href="/docs/examples" className="hover:text-foreground transition-colors">Examples</a></li>
+                    </ul>
+                  </div>
+                  
+                  {/* Community */}
+                  <div>
+                    <h3 className="font-semibold mb-4">Community</h3>
+                    <ul className="space-y-2 text-sm text-muted-foreground">
+                      <li><a href="https://github.com" className="hover:text-foreground transition-colors">GitHub</a></li>
+                      <li><a href="/docs" className="hover:text-foreground transition-colors">Documentation</a></li>
+                      <li><a href="/docs/installation" className="hover:text-foreground transition-colors">Installation</a></li>
+                    </ul>
                   </div>
                 </div>
-                <div className="mt-6 pt-6 border-t text-center text-sm text-muted-foreground">
-                  <p>&copy; 2024 Mad UI. Built with ❤️ for developers.</p>
+                
+                <div className="mt-12 pt-8 border-t border-border/20 text-center">
+                  <p className="text-sm text-muted-foreground">
+                    &copy; 2024 Mad UI. Built with ❤️ for developers worldwide.
+                  </p>
                 </div>
               </div>
             </footer>

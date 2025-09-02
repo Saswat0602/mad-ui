@@ -14,7 +14,6 @@ import {
   Github,
   Star,
   Download,
-  Sparkles,
   Rocket,
   Shield,
   Heart
@@ -24,56 +23,63 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative px-4 py-24 lg:py-32 text-center overflow-hidden">
-        {/* Animated background elements */}
+      <section className="relative px-6 py-32 lg:py-40 text-center overflow-hidden">
+        {/* Enhanced background elements */}
         <div className="absolute inset-0 -z-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-gradient-to-r from-purple-400 to-pink-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float-delayed"></div>
-          <div className="absolute -bottom-8 left-20 w-72 h-72 bg-gradient-to-r from-green-400 to-blue-400 rounded-full mix-blend-multiply filter blur-xl opacity-20 animate-float-delayed-4s"></div>
+          <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-blue-500/30 to-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
+          <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-pink-500/30 to-orange-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-float-delayed"></div>
+          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-gradient-to-r from-emerald-500/30 to-cyan-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-float-delayed-4s"></div>
         </div>
         
-        <div className="container mx-auto max-w-6xl relative">
+        <div className="container mx-auto max-w-7xl relative">
           <div className="animate-slide-up">
-            <div className="flex items-center justify-center mb-6">
-              <Badge variant="secondary" className="text-sm font-medium px-4 py-2 bg-gradient-to-r from-primary/10 to-accent/10 border-primary/20 hover-lift">
-                <Sparkles className="w-4 h-4 mr-2" />
-                ✨ Now Available - Version 2.0
-              </Badge>
+            {/* Enhanced Badge */}
+            <div className="flex items-center justify-center mb-8">
+              <div className="inline-flex items-center px-6 py-3 rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 backdrop-blur-sm shadow-lg">
+                <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full mr-3 animate-pulse"></div>
+                <span className="text-sm font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
+                  ✨ Now Available - Version 2.0
+                </span>
+              </div>
             </div>
             
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold tracking-tight mb-8 leading-none">
-              <span className="block">Beautiful</span>
-              <span className="block bg-gradient-to-r from-primary via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
+            {/* Enhanced Title */}
+            <h1 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight mb-10 leading-none">
+              <span className="block text-foreground">Beautiful</span>
+              <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient-x">
                 React Components
               </span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
+            {/* Enhanced Description */}
+            <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-16 max-w-4xl mx-auto leading-relaxed font-light">
               A comprehensive, modern UI component library built with 
               <span className="font-semibold text-foreground"> React</span> and 
               <span className="font-semibold text-foreground"> Tailwind CSS</span>. 
               Beautiful, accessible, and fully customizable.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+            {/* Enhanced CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
               <Button 
                 size="lg" 
-                className="text-lg px-8 py-4 h-14 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg hover:shadow-xl transition-all duration-300 group hover-lift"
+                className="group relative text-lg px-10 py-5 h-16 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105 border-0"
               >
-                <Link href="/docs/getting-started" className="flex items-center">
-                  <Rocket className="mr-2 h-5 w-5 group-hover:animate-bounce" />
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
+                <Link href="/docs/getting-started" className="relative flex items-center">
+                  <Rocket className="mr-3 h-6 w-6 group-hover:animate-bounce" />
                   Get Started
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
                 </Link>
               </Button>
               
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="text-lg px-8 py-4 h-14 border-2 hover:bg-muted/50 transition-all duration-300 group hover-lift"
+                className="text-lg px-10 py-5 h-16 border-2 border-border/50 hover:border-blue-500/50 hover:bg-blue-500/10 transition-all duration-300 group hover:scale-105 backdrop-blur-sm"
               >
                 <Link href="/docs/components" className="flex items-center">
-                  <Package className="mr-2 h-5 w-5 group-hover:rotate-12 transition-transform" />
+                  <Package className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform duration-300" />
                   View Components
                 </Link>
               </Button>
@@ -81,29 +87,29 @@ export default function HomePage() {
               <Button 
                 variant="ghost" 
                 size="lg" 
-                className="text-lg px-8 py-4 h-14 hover:bg-muted/50 transition-all duration-300 group"
+                className="text-lg px-10 py-5 h-16 hover:bg-muted/50 transition-all duration-300 group backdrop-blur-sm"
               >
                 <Link href="https://github.com" className="flex items-center">
-                  <Github className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
-                  <Star className="mr-2 h-4 w-4" />
+                  <Github className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
+                  <Star className="mr-2 h-5 w-5" />
                   Star on GitHub
                 </Link>
               </Button>
             </div>
             
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto text-center">
-              <div className="group">
-                <div className="text-3xl font-bold text-foreground mb-2 group-hover:scale-110 transition-transform">50+</div>
-                <div className="text-muted-foreground">Components</div>
+            {/* Enhanced Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-3xl mx-auto">
+              <div className="group text-center">
+                <div className="text-4xl font-black text-foreground mb-3 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">50+</div>
+                <div className="text-muted-foreground font-medium">Components</div>
               </div>
-              <div className="group">
-                <div className="text-3xl font-bold text-foreground mb-2 group-hover:scale-110 transition-transform">100%</div>
-                <div className="text-muted-foreground">TypeScript</div>
+              <div className="group text-center">
+                <div className="text-4xl font-black text-foreground mb-3 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">100%</div>
+                <div className="text-muted-foreground font-medium">TypeScript</div>
               </div>
-              <div className="group">
-                <div className="text-3xl font-bold text-foreground mb-2 group-hover:scale-110 transition-transform">0KB</div>
-                <div className="text-muted-foreground">Runtime</div>
+              <div className="group text-center">
+                <div className="text-4xl font-black text-foreground mb-3 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">0KB</div>
+                <div className="text-muted-foreground font-medium">Runtime</div>
               </div>
             </div>
           </div>
