@@ -1,7 +1,7 @@
 import { defineConfig } from 'tsup'
 
 export default defineConfig([
-  // Full library build
+  // Full build - everything
   {
     entry: ['src/index.ts'],
     format: ['cjs', 'esm'],
@@ -17,7 +17,6 @@ export default defineConfig([
       options.keepNames = false
       options.mangleProps = /^_/
     },
-    onSuccess: 'npm run build:css',
     treeshake: true,
     minify: true,
     target: 'es2020',
@@ -26,7 +25,7 @@ export default defineConfig([
     outDir: 'dist',
     name: 'full'
   },
-  // Core-only build (minimal bundle)
+  // Core build - essential components only
   {
     entry: ['src/core.ts'],
     format: ['cjs', 'esm'],
@@ -50,9 +49,9 @@ export default defineConfig([
     outDir: 'dist',
     name: 'core'
   },
-  // Components-only build
+  // Module builds (forms, overlay, layout, data, feedback, navigation, media) ...
   {
-    entry: ['src/components/index.ts'],
+    entry: ['src/modules/forms.ts'],
     format: ['cjs', 'esm'],
     dts: true,
     splitting: false,
@@ -72,68 +71,205 @@ export default defineConfig([
     platform: 'browser',
     noExternal: [],
     outDir: 'dist',
-    name: 'components'
+    name: 'forms'
   },
-  // Individual component builds
+  {
+    entry: ['src/modules/overlay.ts'],
+    format: ['cjs', 'esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    noExternal: [],
+    outDir: 'dist',
+    name: 'overlay'
+  },
+  {
+    entry: ['src/modules/layout.ts'],
+    format: ['cjs', 'esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    noExternal: [],
+    outDir: 'dist',
+    name: 'layout'
+  },
+  {
+    entry: ['src/modules/data.ts'],
+    format: ['cjs', 'esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    noExternal: [],
+    outDir: 'dist',
+    name: 'data'
+  },
+  {
+    entry: ['src/modules/feedback.ts'],
+    format: ['cjs', 'esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    noExternal: [],
+    outDir: 'dist',
+    name: 'feedback'
+  },
+  {
+    entry: ['src/modules/navigation.ts'],
+    format: ['cjs', 'esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    noExternal: [],
+    outDir: 'dist',
+    name: 'navigation'
+  },
+  {
+    entry: ['src/modules/media.ts'],
+    format: ['cjs', 'esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    noExternal: [],
+    outDir: 'dist',
+    name: 'media'
+  },
+  // Individual single-component builds - ALL COMPONENTS
   {
     entry: [
-      'src/accordion.tsx',
-      'src/alert.tsx',
-      'src/alert-dialog.tsx',
-      'src/aspect-ratio.tsx',
-      'src/avatar.tsx',
-      'src/badge.tsx',
-      'src/breadcrumbs.tsx',
-      'src/button.tsx',
-      'src/calendar.tsx',
-      'src/card.tsx',
-      'src/carousel.tsx',
-      'src/chart.tsx',
-      'src/checkbox.tsx',
-      'src/collapsible.tsx',
-      'src/combobox.tsx',
-      'src/command.tsx',
-      'src/context-menu.tsx',
-      'src/data-table.tsx',
-      'src/date-picker.tsx',
-      'src/dialog.tsx',
-      'src/drawer.tsx',
-      'src/dropdown-menu.tsx',
-      'src/hover-card.tsx',
-      'src/input.tsx',
-      'src/input-otp.tsx',
-      'src/label.tsx',
-      'src/layout.tsx',
-      'src/menubar.tsx',
-      'src/modal.tsx',
-      'src/navigation-menu.tsx',
-      'src/navbar.tsx',
-      'src/pagination.tsx',
-      'src/popover.tsx',
-      'src/progress.tsx',
-      'src/radio.tsx',
-      'src/radio-group.tsx',
-      'src/rating.tsx',
-      'src/react-hook-form.tsx',
-      'src/resizable.tsx',
-      'src/scroll-area.tsx',
-      'src/select.tsx',
-      'src/separator.tsx',
-      'src/sheet.tsx',
-      'src/sidebar.tsx',
-      'src/skeleton.tsx',
-      'src/slider.tsx',
-      'src/sonner.tsx',
-      'src/switch.tsx',
-      'src/table.tsx',
-      'src/tabs.tsx',
-      'src/textarea.tsx',
-      'src/timepicker.tsx',
-      'src/toast.tsx',
-      'src/toggle.tsx',
-      'src/tooltip.tsx',
-      'src/typography.tsx',
-      'src/utils.ts'
+      'src/individual/button.ts',
+      'src/individual/input.ts',
+      'src/individual/label.ts',
+      'src/individual/skeleton.ts',
+      'src/individual/textarea.ts',
+      'src/individual/select.ts',
+      'src/individual/checkbox.ts',
+      'src/individual/rating.ts',
+      'src/individual/switch.ts',
+      'src/individual/progress.ts',
+      'src/individual/radio.ts',
+      'src/individual/slider.ts',
+      'src/individual/card.ts',
+      'src/individual/form.ts',
+      'src/individual/calendar.ts',
+      'src/individual/date-picker.ts',
+      'src/individual/timepicker.ts',
+      'src/individual/accordion.ts',
+      'src/individual/breadcrumbs.ts',
+      'src/individual/input-otp.ts',
+      'src/individual/tabs.ts',
+      'src/individual/radio-group.ts',
+      'src/individual/context-menu.ts',
+      'src/individual/dropdown-menu.ts',
+      'src/individual/collapsible.ts',
+      'src/individual/toggle.ts',
+      'src/individual/separator.ts',
+      'src/individual/hover-card.ts',
+      'src/individual/alert-dialog.ts',
+      'src/individual/layout.ts',
+      'src/individual/sidebar.ts',
+      'src/individual/navbar.ts',
+      'src/individual/modal.ts',
+      'src/individual/tooltip.ts',
+      'src/individual/drawer.ts',
+      'src/individual/resizable.ts',
+      'src/individual/scroll-area.ts',
+      'src/individual/sheet.ts',
+      'src/individual/popover.ts',
+      'src/individual/table.ts',
+      'src/individual/chart.ts',
+      'src/individual/data-table.ts',
+      'src/individual/alert.ts',
+      'src/individual/toast.ts',
+      'src/individual/sonner.ts',
+      'src/individual/menubar.ts',
+      'src/individual/command.ts',
+      'src/individual/combobox.ts',
+      'src/individual/navigation-menu.ts',
+      'src/individual/pagination.ts',
+      'src/individual/carousel.ts',
+      'src/individual/badge.ts',
+      'src/individual/avatar.ts',
+      'src/individual/aspect-ratio.ts',
+      'src/individual/typography.ts',
+      'src/individual/dialog.ts'
     ],
     format: ['cjs', 'esm'],
     dts: true,

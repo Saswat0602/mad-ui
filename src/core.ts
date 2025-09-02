@@ -1,43 +1,36 @@
-// Core components only - minimal bundle size
-export { cn } from './lib/utils'
+// Core Components Entry Point - Core Bundle
+// This exports only the essential core components
 
-// Export color system
-export { 
-  componentColors, 
-  lightColors, 
-  darkColors, 
-  defaultColors,
-  getColorValue,
-  createCSSVariables 
-} from './lib/colors'
-
-// Export core components only
+// Core Components
 export { Button } from './components/core/button'
-export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './components/core/card'
 export { Input } from './components/core/input'
 export { Label } from './components/core/label'
-export { Textarea } from './components/core/textarea'
-export { Select } from './components/core/select'
+export { Card } from './components/core/card'
 export { Checkbox } from './components/core/checkbox'
+export { Radio } from './components/core/radio'
+export { Select } from './components/core/select'
 export { Switch } from './components/core/switch'
 export { Progress } from './components/core/progress'
-export { Radio } from './components/core/radio'
+export { Slider } from './components/core/slider'
 export { Rating } from './components/core/rating'
 export { Skeleton } from './components/core/skeleton'
-export { Slider } from './components/core/slider'
+export { Textarea } from './components/core/textarea'
 
-// Export core types only
+// Core Types
 export type { ButtonProps } from './components/core/button'
-export type { CardProps, CardContentProps, CardDescriptionProps, CardFooterProps, CardHeaderProps, CardTitleProps } from './components/core/card'
 export type { InputProps } from './components/core/input'
 export type { LabelProps } from './components/core/label'
-export type { TextareaProps } from './components/core/textarea'
-export type { SelectProps, SelectOption } from './components/core/select'
+export type { CardProps } from './components/core/card'
 export type { CheckboxProps } from './components/core/checkbox'
+export type { RadioProps } from './components/core/radio'
+export type { SelectProps } from './components/core/select'
 export type { SwitchProps } from './components/core/switch'
 export type { ProgressProps } from './components/core/progress'
-export type { RadioProps } from './components/core/radio'
+export type { SliderProps } from './components/core/slider'
 export type { RatingProps } from './components/core/rating'
 export type { SkeletonProps } from './components/core/skeleton'
-export type { SliderProps } from './components/core/slider'
-export type { ColorScheme } from './lib/colors'
+export type { TextareaProps } from './components/core/textarea'
+
+// Utilities
+export * from './lib/utils'
+export * from './lib/colors'
