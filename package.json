@@ -1,310 +1,117 @@
 {
   "name": "mad-ui-components",
   "version": "1.1.2",
-  "description": "A modern, modular React UI component library with TypeScript support",
+  "description": "A comprehensive UI component library built with React and Tailwind CSS",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "exports": {
-    ".": {
-      "types": "./dist/index.d.mts",
-      "import": "./dist/index.mjs"
-    },
-    "./core": {
-      "types": "./dist/core.d.mts",
-      "import": "./dist/core.mjs"
-    },
-    "./forms": {
-      "types": "./dist/forms.d.mts",
-      "import": "./dist/forms.mjs"
-    },
-    "./overlay": {
-      "types": "./dist/overlay.d.mts",
-      "import": "./dist/overlay.mjs"
-    },
-    "./layout": {
-      "types": "./dist/layout.d.mts",
-      "import": "./dist/layout.mjs"
-    },
-    "./data": {
-      "types": "./dist/data.d.mts",
-      "import": "./dist/data.mjs"
-    },
-    "./feedback": {
-      "types": "./dist/feedback.d.mts",
-      "import": "./dist/feedback.mjs"
-    },
-    "./navigation": {
-      "types": "./dist/navigation.d.mts",
-      "import": "./dist/navigation.mjs"
-    },
-    "./media": {
-      "types": "./dist/media.d.mts",
-      "import": "./dist/media.mjs"
-    },
-    "./utils": {
-      "types": "./dist/utils.d.mts",
-      "import": "./dist/utils.mjs"
-    },
-    "./colors": {
-      "types": "./dist/colors.d.mts",
-      "import": "./dist/colors.mjs"
-    },
-    "./button": {
-      "types": "./dist/individual/button.d.mts",
-      "import": "./dist/individual/button.mjs"
-    },
-    "./input": {
-      "types": "./dist/individual/input.d.mts",
-      "import": "./dist/individual/input.mjs"
-    },
-    "./label": {
-      "types": "./dist/individual/label.d.mts",
-      "import": "./dist/individual/label.mjs"
-    },
-    "./skeleton": {
-      "types": "./dist/individual/skeleton.d.mts",
-      "import": "./dist/individual/skeleton.mjs"
-    },
-    "./textarea": {
-      "types": "./dist/individual/textarea.d.mts",
-      "import": "./dist/individual/textarea.mjs"
-    },
-    "./select": {
-      "types": "./dist/individual/select.d.mts",
-      "import": "./dist/individual/select.mjs"
-    },
-    "./checkbox": {
-      "types": "./dist/individual/checkbox.d.mts",
-      "import": "./dist/individual/checkbox.mjs"
-    },
-    "./rating": {
-      "types": "./dist/individual/rating.d.mts",
-      "import": "./dist/individual/rating.mjs"
-    },
-    "./switch": {
-      "types": "./dist/individual/switch.d.mts",
-      "import": "./dist/individual/switch.mjs"
-    },
-    "./progress": {
-      "types": "./dist/individual/progress.d.mts",
-      "import": "./dist/individual/progress.mjs"
-    },
-    "./radio": {
-      "types": "./dist/individual/radio.d.mts",
-      "import": "./dist/individual/radio.mjs"
-    },
-    "./slider": {
-      "types": "./dist/individual/slider.d.mts",
-      "import": "./dist/individual/slider.mjs"
-    },
-    "./card": {
-      "types": "./dist/individual/card.d.mts",
-      "import": "./dist/individual/card.mjs"
-    },
-    "./form": {
-      "types": "./dist/individual/form.d.mts",
-      "import": "./dist/individual/form.mjs"
-    },
-    "./calendar": {
-      "types": "./dist/individual/calendar.d.mts",
-      "import": "./dist/individual/calendar.mjs"
-    },
-    "./date-picker": {
-      "types": "./dist/individual/date-picker.d.mts",
-      "import": "./dist/individual/date-picker.mjs"
-    },
-    "./timepicker": {
-      "types": "./dist/individual/timepicker.d.mts",
-      "import": "./dist/individual/timepicker.mjs"
-    },
-    "./accordion": {
-      "types": "./dist/individual/accordion.d.mts",
-      "import": "./dist/individual/accordion.mjs"
-    },
-    "./breadcrumbs": {
-      "types": "./dist/individual/breadcrumbs.d.mts",
-      "import": "./dist/individual/breadcrumbs.mjs"
-    },
-    "./input-otp": {
-      "types": "./dist/individual/input-otp.d.mts",
-      "import": "./dist/individual/input-otp.mjs"
-    },
-    "./tabs": {
-      "types": "./dist/individual/tabs.d.mts",
-      "import": "./dist/individual/tabs.mjs"
-    },
-    "./radio-group": {
-      "types": "./dist/individual/radio-group.d.mts",
-      "import": "./dist/individual/radio-group.mjs"
-    },
-    "./context-menu": {
-      "types": "./dist/individual/context-menu.d.mts",
-      "import": "./dist/individual/context-menu.mjs"
-    },
-    "./dropdown-menu": {
-      "types": "./dist/individual/dropdown-menu.d.mts",
-      "import": "./dist/individual/dropdown-menu.mjs"
-    },
-    "./collapsible": {
-      "types": "./dist/individual/collapsible.d.mts",
-      "import": "./dist/individual/collapsible.mjs"
-    },
-    "./toggle": {
-      "types": "./dist/individual/toggle.d.mts",
-      "import": "./dist/individual/toggle.mjs"
-    },
-    "./separator": {
-      "types": "./dist/individual/separator.d.mts",
-      "import": "./dist/individual/separator.mjs"
-    },
-    "./hover-card": {
-      "types": "./dist/individual/hover-card.d.mts",
-      "import": "./dist/individual/hover-card.mjs"
-    },
-    "./alert-dialog": {
-      "types": "./dist/individual/alert-dialog.d.mts",
-      "import": "./dist/individual/alert-dialog.mjs"
-    },
-    "./layout-component": {
-      "types": "./dist/individual/layout.d.mts",
-      "import": "./dist/individual/layout.mjs"
-    },
-    "./sidebar": {
-      "types": "./dist/individual/sidebar.d.mts",
-      "import": "./dist/individual/sidebar.mjs"
-    },
-    "./navbar": {
-      "types": "./dist/individual/navbar.d.mts",
-      "import": "./dist/individual/navbar.mjs"
-    },
-    "./modal": {
-      "types": "./dist/individual/modal.d.mts",
-      "import": "./dist/individual/modal.mjs"
-    },
-    "./tooltip": {
-      "types": "./dist/individual/tooltip.d.mts",
-      "import": "./dist/individual/tooltip.mjs"
-    },
-    "./drawer": {
-      "types": "./dist/individual/drawer.d.mts",
-      "import": "./dist/individual/drawer.mjs"
-    },
-    "./resizable": {
-      "types": "./dist/individual/resizable.d.mts",
-      "import": "./dist/individual/resizable.mjs"
-    },
-    "./scroll-area": {
-      "types": "./dist/individual/scroll-area.d.mts",
-      "import": "./dist/individual/scroll-area.mjs"
-    },
-    "./sheet": {
-      "types": "./dist/individual/sheet.d.mts",
-      "import": "./dist/individual/sheet.mjs"
-    },
-    "./popover": {
-      "types": "./dist/individual/popover.d.mts",
-      "import": "./dist/individual/popover.mjs"
-    },
-    "./table": {
-      "types": "./dist/individual/table.d.mts",
-      "import": "./dist/individual/table.mjs"
-    },
-    "./chart": {
-      "types": "./dist/individual/chart.d.mts",
-      "import": "./dist/individual/chart.mjs"
-    },
-    "./data-table": {
-      "types": "./dist/individual/data-table.d.mts",
-      "import": "./dist/individual/data-table.mjs"
-    },
-    "./alert": {
-      "types": "./dist/individual/alert.d.mts",
-      "import": "./dist/individual/alert.mjs"
-    },
-    "./toast": {
-      "types": "./dist/individual/toast.d.mts",
-      "import": "./dist/individual/toast.mjs"
-    },
-    "./sonner": {
-      "types": "./dist/individual/sonner.d.mts",
-      "import": "./dist/individual/sonner.mjs"
-    },
-    "./menubar": {
-      "types": "./dist/individual/menubar.d.mts",
-      "import": "./dist/individual/menubar.mjs"
-    },
-    "./command": {
-      "types": "./dist/individual/command.d.mts",
-      "import": "./dist/individual/command.mjs"
-    },
-    "./combobox": {
-      "types": "./dist/individual/combobox.d.mts",
-      "import": "./dist/individual/combobox.mjs"
-    },
-    "./navigation-menu": {
-      "types": "./dist/individual/navigation-menu.d.mts",
-      "import": "./dist/individual/navigation-menu.mjs"
-    },
-    "./pagination": {
-      "types": "./dist/individual/pagination.d.mts",
-      "import": "./dist/individual/pagination.mjs"
-    },
-    "./carousel": {
-      "types": "./dist/individual/carousel.d.mts",
-      "import": "./dist/individual/carousel.mjs"
-    },
-    "./badge": {
-      "types": "./dist/individual/badge.d.mts",
-      "import": "./dist/individual/badge.mjs"
-    },
-    "./avatar": {
-      "types": "./dist/individual/avatar.d.mts",
-      "import": "./dist/individual/avatar.mjs"
-    },
-    "./aspect-ratio": {
-      "types": "./dist/individual/aspect-ratio.d.mts",
-      "import": "./dist/individual/aspect-ratio.mjs"
-    },
-    "./typography": {
-      "types": "./dist/individual/typography.d.mts",
-      "import": "./dist/individual/typography.mjs"
-    },
-    "./dialog": {
-      "types": "./dist/individual/dialog.d.mts",
-      "import": "./dist/individual/dialog.mjs"
-    }
+    ".": { "types": "./dist/index.d.mts", "import": "./dist/index.mjs" },
+    "./core": { "types": "./dist/core.d.mts", "import": "./dist/core.mjs" },
+    "./data": { "types": "./dist/data.d.mts", "import": "./dist/data.mjs" },
+    "./feedback": { "types": "./dist/feedback.d.mts", "import": "./dist/feedback.mjs" },
+    "./forms": { "types": "./dist/forms.d.mts", "import": "./dist/forms.mjs" },
+    "./layout": { "types": "./dist/layout.d.mts", "import": "./dist/layout.mjs" },
+    "./media": { "types": "./dist/media.d.mts", "import": "./dist/media.mjs" },
+    "./navigation": { "types": "./dist/navigation.d.mts", "import": "./dist/navigation.mjs" },
+    "./overlay": { "types": "./dist/overlay.d.mts", "import": "./dist/overlay.mjs" },
+    "./button": { "types": "./src/components/core/button.tsx", "import": "./src/components/core/button.tsx" },
+    "./card": { "types": "./src/components/core/card.tsx", "import": "./src/components/core/card.tsx" },
+    "./checkbox": { "types": "./src/components/core/checkbox.tsx", "import": "./src/components/core/checkbox.tsx" },
+    "./input": { "types": "./src/components/core/input.tsx", "import": "./src/components/core/input.tsx" },
+    "./label": { "types": "./src/components/core/label.tsx", "import": "./src/components/core/label.tsx" },
+    "./progress": { "types": "./src/components/core/progress.tsx", "import": "./src/components/core/progress.tsx" },
+    "./radio": { "types": "./src/components/core/radio.tsx", "import": "./src/components/core/radio.tsx" },
+    "./rating": { "types": "./src/components/core/rating.tsx", "import": "./src/components/core/rating.tsx" },
+    "./select": { "types": "./src/components/core/select.tsx", "import": "./src/components/core/select.tsx" },
+    "./skeleton": { "types": "./src/components/core/skeleton.tsx", "import": "./src/components/core/skeleton.tsx" },
+    "./slider": { "types": "./src/components/core/slider.tsx", "import": "./src/components/core/slider.tsx" },
+    "./switch": { "types": "./src/components/core/switch.tsx", "import": "./src/components/core/switch.tsx" },
+    "./textarea": { "types": "./src/components/core/textarea.tsx", "import": "./src/components/core/textarea.tsx" },
+    "./accordion": { "types": "./src/components/forms/accordion.tsx", "import": "./src/components/forms/accordion.tsx" },
+    "./breadcrumbs": { "types": "./src/components/forms/breadcrumbs.tsx", "import": "./src/components/forms/breadcrumbs.tsx" },
+    "./calendar": { "types": "./src/components/forms/calendar.tsx", "import": "./src/components/forms/calendar.tsx" },
+    "./date-picker": { "types": "./src/components/forms/date-picker.tsx", "import": "./src/components/forms/date-picker.tsx" },
+    "./input-otp": { "types": "./src/components/forms/input-otp.tsx", "import": "./src/components/forms/input-otp.tsx" },
+    "./radio-group": { "types": "./src/components/forms/radio-group.tsx", "import": "./src/components/forms/radio-group.tsx" },
+    "./tabs": { "types": "./src/components/forms/tabs.tsx", "import": "./src/components/forms/tabs.tsx" },
+    "./timepicker": { "types": "./src/components/forms/timepicker.tsx", "import": "./src/components/forms/timepicker.tsx" },
+    "./alert-dialog": { "types": "./src/components/overlay/alert-dialog.tsx", "import": "./src/components/overlay/alert-dialog.tsx" },
+    "./collapsible": { "types": "./src/components/overlay/collapsible.tsx", "import": "./src/components/overlay/collapsible.tsx" },
+    "./context-menu": { "types": "./src/components/overlay/context-menu.tsx", "import": "./src/components/overlay/context-menu.tsx" },
+    "./dialog": { "types": "./src/components/overlay/dialog.tsx", "import": "./src/components/overlay/dialog.tsx" },
+    "./drawer": { "types": "./src/components/overlay/drawer.tsx", "import": "./src/components/overlay/drawer.tsx" },
+    "./dropdown-menu": { "types": "./src/components/overlay/dropdown-menu.tsx", "import": "./src/components/overlay/dropdown-menu.tsx" },
+    "./hover-card": { "types": "./src/components/overlay/hover-card.tsx", "import": "./src/components/overlay/hover-card.tsx" },
+    "./modal": { "types": "./src/components/layout/modal.tsx", "import": "./src/components/layout/modal.tsx" },
+    "./popover": { "types": "./src/components/overlay/popover.tsx", "import": "./src/components/overlay/popover.tsx" },
+    "./sheet": { "types": "./src/components/layout/sheet.tsx", "import": "./src/components/layout/sheet.tsx" },
+    "./tooltip": { "types": "./src/components/overlay/tooltip.tsx", "import": "./src/components/overlay/tooltip.tsx" },
+    "./layout": { "types": "./src/components/layout/layout.tsx", "import": "./src/components/layout/layout.tsx" },
+    "./navbar": { "types": "./src/components/layout/navbar.tsx", "import": "./src/components/layout/navbar.tsx" },
+    "./sidebar": { "types": "./src/components/layout/sidebar.tsx", "import": "./src/components/layout/sidebar.tsx" },
+    "./resizable": { "types": "./src/components/layout/resizable.tsx", "import": "./src/components/layout/resizable.tsx" },
+    "./scroll-area": { "types": "./src/components/layout/scroll-area.tsx", "import": "./src/components/layout/scroll-area.tsx" },
+    "./separator": { "types": "./src/components/layout/separator.tsx", "import": "./src/components/layout/separator.tsx" },
+    "./toggle": { "types": "./src/components/layout/toggle.tsx", "import": "./src/components/layout/toggle.tsx" },
+    "./aspect-ratio": { "types": "./src/components/media/aspect-ratio.tsx", "import": "./src/components/media/aspect-ratio.tsx" },
+    "./avatar": { "types": "./src/components/media/avatar.tsx", "import": "./src/components/media/avatar.tsx" },
+    "./badge": { "types": "./src/components/media/badge.tsx", "import": "./src/components/media/badge.tsx" },
+    "./carousel": { "types": "./src/components/media/carousel.tsx", "import": "./src/components/media/carousel.tsx" },
+    "./skeleton": { "types": "./src/components/media/skeleton.tsx", "import": "./src/components/media/skeleton.tsx" },
+    "./typography": { "types": "./src/components/media/typography.tsx", "import": "./src/components/media/typography.tsx" },
+    "./chart": { "types": "./src/components/data/chart.tsx", "import": "./src/components/data/chart.tsx" },
+    "./combobox": { "types": "./src/components/navigation/combobox.tsx", "import": "./src/components/navigation/combobox.tsx" },
+    "./command": { "types": "./src/components/navigation/command.tsx", "import": "./src/components/navigation/command.tsx" },
+    "./data-table": { "types": "./src/components/data/data-table.tsx", "import": "./src/components/data/data-table.tsx" },
+    "./menubar": { "types": "./src/components/navigation/menubar.tsx", "import": "./src/components/navigation/menubar.tsx" },
+    "./navigation-menu": { "types": "./src/components/navigation/navigation-menu.tsx", "import": "./src/components/navigation/navigation-menu.tsx" },
+    "./pagination": { "types": "./src/components/navigation/pagination.tsx", "import": "./src/components/navigation/pagination.tsx" },
+    "./table": { "types": "./src/components/data/table.tsx", "import": "./src/components/data/table.tsx" },
+    "./alert": { "types": "./src/components/feedback/alert.tsx", "import": "./src/components/feedback/alert.tsx" },
+    "./sonner": { "types": "./src/components/feedback/sonner.tsx", "import": "./src/components/feedback/sonner.tsx" },
+    "./toast": { "types": "./src/components/feedback/toast.tsx", "import": "./src/components/feedback/toast.tsx" },
+    "./icons": { "types": "./src/icons/index.tsx", "import": "./src/icons/index.tsx" },
+    "./utils": { "types": "./src/lib/utils.ts", "import": "./src/lib/utils.ts" },
+    "./colors": { "types": "./src/lib/colors.ts", "import": "./src/lib/colors.ts" }
   },
   "files": [
-    "dist"
+    "dist",
+    "src"
   ],
+  "sideEffects": false,
+  "keywords": [
+    "react",
+    "ui",
+    "components",
+    "tailwind",
+    "typescript",
+    "design-system"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tailwindcss": "^3.3.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  },
+  "bin": {
+    "mad-ui-components": "./scripts/copy-component.js"
+  },
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build"
-  },
-  "keywords": [
-    "react",
-    "ui",
-    "components",
-    "typescript",
-    "tailwind",
-    "design-system"
-  ],
-  "author": "Your Name",
-  "sideEffects": false,
-  "license": "MIT",
-  "peerDependencies": {
-    "react": ">=16.8.0",
-    "react-dom": ">=16.8.0"
-  },
-  "devDependencies": {
-    "@types/react": "^18.2.0",
-    "@types/react-dom": "^18.2.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "tsup": "^8.0.0",
-    "typescript": "^5.0.0"
   }
 }
