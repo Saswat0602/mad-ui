@@ -16,7 +16,7 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@saswat0602/ui-library';
+} from 'mad-ui-components';
 
 export default function FormsPage() {
   const [formData, setFormData] = useState({

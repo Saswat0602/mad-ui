@@ -11,7 +11,7 @@ import {
   CardTitle,
   Button,
   Label,
-} from '@saswat0602/ui-library';
+} from 'mad-ui-components';
 
 export default function LayoutPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());

@@ -15,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "UI Component Library Showcase",
-  description: "A comprehensive showcase of all components from @saswat0602/ui-library",
+      description: "A comprehensive showcase of all components from mad-ui-components",
 };
 
 export default function RootLayout({
@@ -47,7 +47,7 @@ export default function RootLayout({
                     GitHub
                   </a>
                   <a
-                    href="https://www.npmjs.com/package/@saswat0602/ui-library"
+                    href="https://www.npmjs.com/package/mad-ui-components"
                     className="text-gray-500 hover:text-gray-700"
                     target="_blank"
                     rel="noopener noreferrer"

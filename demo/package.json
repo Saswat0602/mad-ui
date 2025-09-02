@@ -9,7 +9,7 @@
     "lint": "eslint"
   },
   "dependencies": {
-    "@saswat0602/ui-library": "^1.0.5",
+    "mad-ui-components": "^1.0.0",
     "next": "15.5.2",
     "react": "19.1.0",
     "react-dom": "19.1.0"

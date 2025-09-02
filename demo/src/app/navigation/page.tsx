@@ -8,7 +8,7 @@ import {
   CardHeader,
   CardTitle,
   Button,
-} from '@saswat0602/ui-library';
+} from 'mad-ui-components';
 
 export default function NavigationPage() {
   const simpleBreadcrumbs = [

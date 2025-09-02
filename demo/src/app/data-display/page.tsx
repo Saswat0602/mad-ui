@@ -12,7 +12,7 @@ import {
   Progress,
   Rating,
   Button,
-} from '@saswat0602/ui-library';
+} from 'mad-ui-components';
 
 export default function DataDisplayPage() {
   const [rating, setRating] = useState(4);

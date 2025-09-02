@@ -14,7 +14,7 @@ import {
   Label,
   Textarea,
   Rating,
-} from '@saswat0602/ui-library';
+} from 'mad-ui-components';
 
 export default function FeedbackPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
