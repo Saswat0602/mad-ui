@@ -12,7 +12,8 @@ import {
   Navigation, 
   Layers,
   BarChart3,
-  MessageSquare
+  MessageSquare,
+  ArrowRight
 } from "lucide-react"
 
 const componentCategories = [
@@ -84,37 +85,56 @@ const componentCategories = [
 
 export default function ComponentsPage() {
   return (
-    <div className="container mx-auto max-w-6xl px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-4xl font-bold mb-4">Components</h1>
-        <p className="text-xl text-muted-foreground">
-          Explore our complete collection of React components with examples, variants, and usage instructions.
+    <div className="container mx-auto max-w-7xl px-4 py-12 lg:py-16">
+      {/* Hero Section */}
+      <div className="text-center mb-16 animate-slide-up">
+        <Badge variant="outline" className="mb-6 px-4 py-2">
+          <Package className="w-4 h-4 mr-2" />
+          Component Library
+        </Badge>
+        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+          50+ Beautiful
+          <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+            React Components
+          </span>
+        </h1>
+        <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+          Explore our complete collection of components with examples, variants, and comprehensive documentation. Build faster with production-ready components.
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-        {componentCategories.map((category) => (
-          <Card key={category.title} className="hover:shadow-lg transition-shadow">
-            <CardHeader>
-              <div className="flex items-center gap-3 mb-2">
-                <div className={`p-2 rounded-lg ${category.color} text-white`}>
-                  <category.icon className="h-5 w-5" />
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 lg:gap-8">
+        {componentCategories.map((category, index) => (
+          <Card key={category.title} className={`group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300 animate-slide-up`} style={{animationDelay: `${index * 100}ms`}}>
+            <CardHeader className="pb-4">
+              <div className="flex items-center gap-3 mb-3">
+                <div className={`w-12 h-12 rounded-xl ${category.color} bg-gradient-to-br flex items-center justify-center group-hover:scale-110 transition-transform duration-300`}>
+                  <category.icon className="h-6 w-6 text-white" />
                 </div>
-                <CardTitle className="text-lg">{category.title}</CardTitle>
+                <div>
+                  <CardTitle className="text-xl group-hover:text-primary transition-colors">{category.title}</CardTitle>
+                  <p className="text-sm text-muted-foreground mt-1">{category.components.length} components</p>
+                </div>
               </div>
-              <CardDescription>{category.description}</CardDescription>
+              <CardDescription className="text-base leading-relaxed">{category.description}</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex flex-wrap gap-2">
-                {category.components.map((component) => (
-                  <Badge key={component} variant="secondary" className="text-xs">
+                {category.components.slice(0, 6).map((component) => (
+                  <Badge key={component} variant="secondary" className="text-xs hover:bg-primary/10 transition-colors">
                     {component}
                   </Badge>
                 ))}
+                {category.components.length > 6 && (
+                  <Badge variant="secondary" className="text-xs">
+                    +{category.components.length - 6} more
+                  </Badge>
+                )}
               </div>
-              <Button className="w-full" variant="outline">
-                <Link href={category.href}>
+              <Button className="w-full group/btn bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 transition-all duration-300">
+                <Link href={category.href} className="flex items-center">
                   View Components
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
                 </Link>
               </Button>
             </CardContent>
