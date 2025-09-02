@@ -1,6 +1,6 @@
 {
   "name": "mad-ui-components",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A modern, modular React UI component library with TypeScript support",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
