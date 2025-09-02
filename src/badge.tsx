@@ -1,2 +1,2 @@
-export { Badge } from './components/badge'
-export type { BadgeProps } from './components/badge'
+export { Badge } from './components/media/badge'
+export type { BadgeProps } from './components/media/badge'
