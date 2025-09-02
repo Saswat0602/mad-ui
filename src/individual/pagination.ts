@@ -1,2 +1,8 @@
-export { Pagination } from '../components/navigation/pagination'
-export type { PaginationProps } from '../components/navigation/pagination'
+export { 
+  Pagination, 
+  PaginationItem 
+} from '../components/navigation/pagination'
+export type { 
+  PaginationProps, 
+  PaginationItemProps 
+} from '../components/navigation/pagination'

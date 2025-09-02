@@ -1,2 +1,10 @@
-export { InputOTP } from '../components/forms/input-otp'
-export type { InputOTPProps } from '../components/forms/input-otp'
+export { 
+  InputOTP, 
+  InputOTPGroup, 
+  InputOTPSlot 
+} from '../components/forms/input-otp'
+export type { 
+  InputOTPProps, 
+  InputOTPGroupProps, 
+  InputOTPSlotProps 
+} from '../components/forms/input-otp'

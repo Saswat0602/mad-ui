@@ -1,2 +1,10 @@
-export { Carousel } from '../components/media/carousel'
-export type { CarouselProps } from '../components/media/carousel'
+export { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem 
+} from '../components/media/carousel'
+export type { 
+  CarouselProps, 
+  CarouselContentProps, 
+  CarouselItemProps 
+} from '../components/media/carousel'
