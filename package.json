@@ -1,6 +1,6 @@
 {
   "name": "mad-ui-components",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "A modern, modular React UI component library with TypeScript support",
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
@@ -46,7 +46,7 @@
     "./separator": { "types": "./dist/individual/separator.d.ts", "import": "./dist/individual/separator.mjs", "require": "./dist/individual/separator.js" },
     "./hover-card": { "types": "./dist/individual/hover-card.d.ts", "import": "./dist/individual/hover-card.mjs", "require": "./dist/individual/hover-card.js" },
     "./alert-dialog": { "types": "./dist/individual/alert-dialog.d.ts", "import": "./dist/individual/alert-dialog.mjs", "require": "./dist/individual/alert-dialog.js" },
-    "./layout": { "types": "./dist/individual/layout.d.ts", "import": "./dist/individual/layout.mjs", "require": "./dist/individual/layout.js" },
+    "./layout-component": { "types": "./dist/individual/layout.d.ts", "import": "./dist/individual/layout.mjs", "require": "./dist/individual/layout.js" },
     "./sidebar": { "types": "./dist/individual/sidebar.d.ts", "import": "./dist/individual/sidebar.mjs", "require": "./dist/individual/sidebar.js" },
     "./navbar": { "types": "./dist/individual/navbar.d.ts", "import": "./dist/individual/navbar.mjs", "require": "./dist/individual/navbar.js" },
     "./modal": { "types": "./dist/individual/modal.d.ts", "import": "./dist/individual/modal.mjs", "require": "./dist/individual/modal.js" },
