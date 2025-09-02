@@ -15,7 +15,7 @@ import {
 
 export default function LayoutPage() {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
-  const [selectedTime, setSelectedTime] = useState<Date | undefined>(new Date());
+  const [selectedTime, setSelectedTime] = useState<string>('12:00');
 
   return (
     <div className="p-8 max-w-6xl mx-auto">
@@ -40,9 +40,8 @@ export default function LayoutPage() {
                 </p>
               </div>
               <Calendar
-                mode="single"
-                selected={selectedDate}
-                onSelect={setSelectedDate}
+                value={selectedDate}
+                onChange={setSelectedDate}
                 className="rounded-md border"
               />
             </div>
@@ -59,7 +58,7 @@ export default function LayoutPage() {
               <div>
                 <Label className="mb-2 block">Selected Time</Label>
                 <p className="text-sm text-gray-600">
-                  {selectedTime ? selectedTime.toLocaleTimeString() : 'No time selected'}
+                  {selectedTime || 'No time selected'}
                 </p>
               </div>
               <TimePicker

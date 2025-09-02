@@ -1,4 +1,4 @@
-# 🎨 mad-ui
+# 🎨 mad-ui-components
 
 A comprehensive, customizable React UI component library built with TypeScript and Tailwind CSS. Features 20+ components with extensive customization options, multiple design variants, and smooth animations.
 
@@ -20,24 +20,24 @@ A comprehensive, customizable React UI component library built with TypeScript a
 ### Installation
 
 ```bash
-npm install mad-ui
+npm install mad-ui-components
 ```
 
 ### Usage Options
 
 #### **Full Library** (All Components - 188KB)
 ```tsx
-import { Button, Card, Input, Layout, Navbar, Sidebar } from 'mad-ui';
+import { Button, Card, Input, Layout, Navbar, Sidebar } from 'mad-ui-components';
 ```
 
 #### **Core Library** (Essential Components Only - 120KB) ⚡
 ```tsx
-import { Button, Card, Input } from 'mad-ui/core';
+import { Button, Card, Input } from 'mad-ui-components/core';
 ```
 
 #### **Styles** (Required for both)
 ```tsx
-import 'mad-ui/styles';
+import 'mad-ui-components/styles';
 ```
 
 ### Bundle Size Comparison
@@ -53,7 +53,7 @@ import 'mad-ui/styles';
 ### Basic Usage
 
 ```tsx
-import { Button, Card, Input } from 'mad-ui';
+import { Button, Card, Input } from 'mad-ui-components';
 
 function App() {
   return (
