@@ -1,10 +1,12 @@
 import { defineConfig } from 'tsup'
 
+// Multi-entry build with strategic grouping to minimize unused imports
+// while maintaining tree-shaking benefits
 export default defineConfig([
-  // Full build - everything
+  // Main entry point
   {
     entry: ['src/index.ts'],
-    format: ['cjs', 'esm'],
+    format: ['esm'],
     dts: true,
     splitting: false,
     sourcemap: false,
@@ -16,19 +18,20 @@ export default defineConfig([
       options.drop = ['console', 'debugger']
       options.keepNames = false
       options.mangleProps = /^_/
+      options.treeShaking = true
+      options.ignoreAnnotations = true
     },
     treeshake: true,
     minify: true,
     target: 'es2020',
     platform: 'browser',
-    noExternal: [],
     outDir: 'dist',
-    name: 'full'
+    outExtension: () => ({ js: '.mjs' })
   },
-  // Core build - essential components only
+  // Core components (most commonly used)
   {
     entry: ['src/core.ts'],
-    format: ['cjs', 'esm'],
+    format: ['esm'],
     dts: true,
     splitting: false,
     sourcemap: false,
@@ -40,19 +43,28 @@ export default defineConfig([
       options.drop = ['console', 'debugger']
       options.keepNames = false
       options.mangleProps = /^_/
+      options.treeShaking = true
+      options.ignoreAnnotations = true
     },
     treeshake: true,
     minify: true,
     target: 'es2020',
     platform: 'browser',
-    noExternal: [],
     outDir: 'dist',
-    name: 'core'
+    outExtension: () => ({ js: '.mjs' })
   },
-  // Module builds (forms, overlay, layout, data, feedback, navigation, media) ...
+  // Module groups
   {
-    entry: ['src/modules/forms.ts'],
-    format: ['cjs', 'esm'],
+    entry: [
+      'src/modules/forms.ts',
+      'src/modules/overlay.ts',
+      'src/modules/layout.ts',
+      'src/modules/data.ts',
+      'src/modules/feedback.ts',
+      'src/modules/navigation.ts',
+      'src/modules/media.ts'
+    ],
+    format: ['esm'],
     dts: true,
     splitting: false,
     sourcemap: false,
@@ -64,214 +76,32 @@ export default defineConfig([
       options.drop = ['console', 'debugger']
       options.keepNames = false
       options.mangleProps = /^_/
+      options.treeShaking = true
+      options.ignoreAnnotations = true
     },
     treeshake: true,
     minify: true,
     target: 'es2020',
     platform: 'browser',
-    noExternal: [],
     outDir: 'dist',
-    name: 'forms'
+    outExtension: () => ({ js: '.mjs' })
   },
-  {
-    entry: ['src/modules/overlay.ts'],
-    format: ['cjs', 'esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    noExternal: [],
-    outDir: 'dist',
-    name: 'overlay'
-  },
-  {
-    entry: ['src/modules/layout.ts'],
-    format: ['cjs', 'esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    noExternal: [],
-    outDir: 'dist',
-    name: 'layout'
-  },
-  {
-    entry: ['src/modules/data.ts'],
-    format: ['cjs', 'esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    noExternal: [],
-    outDir: 'dist',
-    name: 'data'
-  },
-  {
-    entry: ['src/modules/feedback.ts'],
-    format: ['cjs', 'esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    noExternal: [],
-    outDir: 'dist',
-    name: 'feedback'
-  },
-  {
-    entry: ['src/modules/navigation.ts'],
-    format: ['cjs', 'esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    noExternal: [],
-    outDir: 'dist',
-    name: 'navigation'
-  },
-  {
-    entry: ['src/modules/media.ts'],
-    format: ['cjs', 'esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    noExternal: [],
-    outDir: 'dist',
-    name: 'media'
-  },
-  // Individual single-component builds - ALL COMPONENTS
+  // Individual components (grouped by functionality)
   {
     entry: [
       'src/individual/button.ts',
       'src/individual/input.ts',
       'src/individual/label.ts',
-      'src/individual/skeleton.ts',
       'src/individual/textarea.ts',
       'src/individual/select.ts',
       'src/individual/checkbox.ts',
-      'src/individual/rating.ts',
-      'src/individual/switch.ts',
-      'src/individual/progress.ts',
       'src/individual/radio.ts',
+      'src/individual/switch.ts',
       'src/individual/slider.ts',
-      'src/individual/card.ts',
-      'src/individual/form.ts',
-      'src/individual/calendar.ts',
-      'src/individual/date-picker.ts',
-      'src/individual/timepicker.ts',
-      'src/individual/accordion.ts',
-      'src/individual/breadcrumbs.ts',
-      'src/individual/input-otp.ts',
-      'src/individual/tabs.ts',
-      'src/individual/radio-group.ts',
-      'src/individual/context-menu.ts',
-      'src/individual/dropdown-menu.ts',
-      'src/individual/collapsible.ts',
-      'src/individual/toggle.ts',
-      'src/individual/separator.ts',
-      'src/individual/hover-card.ts',
-      'src/individual/alert-dialog.ts',
-      'src/individual/layout.ts',
-      'src/individual/sidebar.ts',
-      'src/individual/navbar.ts',
-      'src/individual/modal.ts',
-      'src/individual/tooltip.ts',
-      'src/individual/drawer.ts',
-      'src/individual/resizable.ts',
-      'src/individual/scroll-area.ts',
-      'src/individual/sheet.ts',
-      'src/individual/popover.ts',
-      'src/individual/table.ts',
-      'src/individual/chart.ts',
-      'src/individual/data-table.ts',
-      'src/individual/alert.ts',
-      'src/individual/toast.ts',
-      'src/individual/sonner.ts',
-      'src/individual/menubar.ts',
-      'src/individual/command.ts',
-      'src/individual/combobox.ts',
-      'src/individual/navigation-menu.ts',
-      'src/individual/pagination.ts',
-      'src/individual/carousel.ts',
-      'src/individual/badge.ts',
-      'src/individual/avatar.ts',
-      'src/individual/aspect-ratio.ts',
-      'src/individual/typography.ts',
-      'src/individual/dialog.ts'
+      'src/individual/rating.ts',
+      'src/individual/progress.ts'
     ],
-    format: ['cjs', 'esm'],
+    format: ['esm'],
     dts: true,
     splitting: false,
     sourcemap: false,
@@ -283,13 +113,184 @@ export default defineConfig([
       options.drop = ['console', 'debugger']
       options.keepNames = false
       options.mangleProps = /^_/
+      options.treeShaking = true
+      options.ignoreAnnotations = true
     },
     treeshake: true,
     minify: true,
     target: 'es2020',
     platform: 'browser',
-    noExternal: [],
     outDir: 'dist',
-    name: 'individual'
+    outExtension: () => ({ js: '.mjs' })
+  },
+  {
+    entry: [
+      'src/individual/card.ts',
+      'src/individual/form.ts',
+      'src/individual/accordion.ts',
+      'src/individual/tabs.ts',
+      'src/individual/breadcrumbs.ts',
+      'src/individual/input-otp.ts',
+      'src/individual/radio-group.ts',
+      'src/individual/calendar.ts',
+      'src/individual/date-picker.ts',
+      'src/individual/timepicker.ts'
+    ],
+    format: ['esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+      options.treeShaking = true
+      options.ignoreAnnotations = true
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    outDir: 'dist',
+    outExtension: () => ({ js: '.mjs' })
+  },
+  {
+    entry: [
+      'src/individual/context-menu.ts',
+      'src/individual/dropdown-menu.ts',
+      'src/individual/hover-card.ts',
+      'src/individual/tooltip.ts',
+      'src/individual/popover.ts',
+      'src/individual/alert-dialog.ts',
+      'src/individual/dialog.ts',
+      'src/individual/modal.ts',
+      'src/individual/drawer.ts',
+      'src/individual/sheet.ts'
+    ],
+    format: ['esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+      options.treeShaking = true
+      options.ignoreAnnotations = true
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    outDir: 'dist',
+    outExtension: () => ({ js: '.mjs' })
+  },
+  {
+    entry: [
+      'src/individual/layout.ts',
+      'src/individual/sidebar.ts',
+      'src/individual/navbar.ts',
+      'src/individual/resizable.ts',
+      'src/individual/scroll-area.ts',
+      'src/individual/separator.ts',
+      'src/individual/collapsible.ts',
+      'src/individual/toggle.ts'
+    ],
+    format: ['esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+      options.treeShaking = true
+      options.ignoreAnnotations = true
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    outDir: 'dist',
+    outExtension: () => ({ js: '.mjs' })
+  },
+  {
+    entry: [
+      'src/individual/table.ts',
+      'src/individual/data-table.ts',
+      'src/individual/chart.ts',
+      'src/individual/pagination.ts',
+      'src/individual/command.ts',
+      'src/individual/combobox.ts',
+      'src/individual/navigation-menu.ts',
+      'src/individual/menubar.ts'
+    ],
+    format: ['esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+      options.treeShaking = true
+      options.ignoreAnnotations = true
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    outDir: 'dist',
+    outExtension: () => ({ js: '.mjs' })
+  },
+  {
+    entry: [
+      'src/individual/avatar.ts',
+      'src/individual/badge.ts',
+      'src/individual/aspect-ratio.ts',
+      'src/individual/typography.ts',
+      'src/individual/carousel.ts',
+      'src/individual/skeleton.ts',
+      'src/individual/alert.ts',
+      'src/individual/toast.ts',
+      'src/individual/sonner.ts'
+    ],
+    format: ['esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+      options.treeShaking = true
+      options.ignoreAnnotations = true
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    outDir: 'dist',
+    outExtension: () => ({ js: '.mjs' })
   }
 ])

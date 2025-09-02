@@ -1,17 +1,62 @@
-import * as React from "react"
-import { cn } from "../../lib/utils"
-import { Button } from "../core/button"
-import { 
-  Menu, 
-  Search, 
-  Bell, 
-  User, 
-  Settings, 
-  LogOut,
-  Sun,
-  Moon,
-  ChevronDown
-} from "lucide-react"
+import React, { forwardRef, useState, useEffect, useRef } from 'react'
+import { cn } from '../../lib/utils'
+import { Button } from '../core/button'
+
+// Simple SVG icons to replace lucide-react imports
+const MenuIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+  </svg>
+)
+
+const SearchIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+  </svg>
+)
+
+const BellIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-5 5v-5zM9 7h6m-6 4h6m-6 4h6M5 7h2m2 4H7m2 4H7" />
+  </svg>
+)
+
+const UserIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  </svg>
+)
+
+const SettingsIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+)
+
+const LogOutIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+  </svg>
+)
+
+const SunIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+  </svg>
+)
+
+const MoonIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+  </svg>
+)
+
+const ChevronDownIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+  </svg>
+)
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   variant?: "default" | "elevated" | "outlined" | "minimal"
@@ -76,10 +121,10 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
     actions,
     searchPlaceholder = "Search...",
     userMenuItems = [
-      { label: "Profile", icon: <User className="w-4 h-4" />, onClick: () => {} },
-      { label: "Settings", icon: <Settings className="w-4 h-4" />, onClick: () => {} },
+      { label: "Profile", icon: <UserIcon className="w-4 h-4" />, onClick: () => {} },
+      { label: "Settings", icon: <SettingsIcon className="w-4 h-4" />, onClick: () => {} },
       { divider: true },
-      { label: "Logout", icon: <LogOut className="w-4 h-4" />, onClick: () => {} }
+      { label: "Logout", icon: <LogOutIcon className="w-4 h-4" />, onClick: () => {} }
     ],
     style,
     ...props 
@@ -215,7 +260,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                 onClick={onSidebarToggle}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
               >
-                <Menu className="w-5 h-5" />
+                <MenuIcon className="w-5 h-5" />
               </Button>
             )}
             
@@ -242,7 +287,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
             <div className="flex-1 max-w-md mx-8">
               <form onSubmit={handleSearch} className="relative">
                 <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                   <input
                     ref={searchRef}
                     type="text"
@@ -271,8 +316,8 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                 onClick={onThemeToggle}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
               >
-                <Sun className="w-5 h-5 dark:hidden" />
-                <Moon className="w-5 h-5 hidden dark:block" />
+                <SunIcon className="w-5 h-5 dark:hidden" />
+                <MoonIcon className="w-5 h-5 hidden dark:block" />
               </Button>
             )}
             
@@ -283,7 +328,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                 onClick={onNotificationClick}
                 className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 relative"
               >
-                <Bell className="w-5 h-5" />
+                <BellIcon className="w-5 h-5" />
                 <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
               </Button>
             )}
@@ -297,12 +342,12 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                   className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
                 >
                   <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                    <User className="w-4 h-4 text-white" />
+                    <UserIcon className="w-4 h-4 text-white" />
                   </div>
                   <span className="hidden md:block text-sm font-medium">
                     User
                   </span>
-                  <ChevronDown className={cn(
+                  <ChevronDownIcon className={cn(
                     "w-4 h-4 transition-transform duration-200",
                     isUserMenuOpen && "rotate-180"
                   )} />

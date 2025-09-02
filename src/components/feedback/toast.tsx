@@ -1,6 +1,36 @@
 import React, { forwardRef, useState, useEffect } from 'react'
-import { X, CheckCircle, AlertCircle, Info, XCircle } from 'lucide-react'
 import { cn } from '../../lib/utils'
+
+// Simple SVG icons to replace lucide-react imports
+const XIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+  </svg>
+)
+
+const CheckCircleIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+)
+
+const AlertCircleIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+)
+
+const InfoIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+)
+
+const XCircleIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+)
 
 export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClose'> {
   id?: string
@@ -132,13 +162,13 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
     
     switch (type) {
       case 'success':
-        return <CheckCircle className={iconClasses} />
+        return <CheckCircleIcon className={iconClasses} />
       case 'error':
-        return <XCircle className={iconClasses} />
+        return <XCircleIcon className={iconClasses} />
       case 'warning':
-        return <AlertCircle className={iconClasses} />
+        return <AlertCircleIcon className={iconClasses} />
       case 'info':
-        return <Info className={iconClasses} />
+        return <InfoIcon className={iconClasses} />
       default:
         return null
     }
@@ -213,7 +243,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
               'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
             )}
           >
-            <X className="w-4 h-4" />
+            <XIcon className="w-4 h-4" />
           </button>
         )}
       </div>

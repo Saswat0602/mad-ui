@@ -1,6 +1,12 @@
 import React, { forwardRef, useState, useRef, useEffect } from 'react'
-import { Clock } from 'lucide-react'
 import { cn } from '../../lib/utils'
+
+// Simple SVG icon to replace lucide-react import
+const ClockIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+)
 
 export interface TimePickerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value?: string
@@ -462,7 +468,7 @@ const TimePicker = forwardRef<HTMLDivElement, TimePickerProps>(({
           "flex items-center space-x-2",
           !selectedTime && "text-gray-400 dark:text-gray-500"
         )}>
-          {showIcon && <Clock className="w-4 h-4" />}
+          {showIcon && <ClockIcon className="w-4 h-4" />}
           <span>{selectedTime ? formatTime(selectedTime) : placeholder}</span>
         </span>
         <svg className="w-4 h-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
