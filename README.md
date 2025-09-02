@@ -23,6 +23,33 @@ A comprehensive, customizable React UI component library built with TypeScript a
 npm install @saswat0602/ui-library
 ```
 
+### Usage Options
+
+#### **Full Library** (All Components - 188KB)
+```tsx
+import { Button, Card, Input, Layout, Navbar, Sidebar } from '@saswat0602/ui-library';
+```
+
+#### **Core Library** (Essential Components Only - 120KB) ⚡
+```tsx
+import { Button, Card, Input } from '@saswat0602/ui-library/core';
+```
+
+#### **Styles** (Required for both)
+```tsx
+import '@saswat0602/ui-library/styles';
+```
+
+### Bundle Size Comparison
+
+| Option | Size | Components | Use Case |
+|--------|------|------------|----------|
+| **Full Library** | 188KB | All 23+ components | Complete applications, prototyping |
+| **Core Library** | 120KB | Essential 16 components | Production apps, bundle size critical |
+| **Styles** | 4KB | CSS only | When importing styles separately |
+
+**Note**: The core library excludes Calendar, TimePicker, Navbar, Sidebar, and Layout components to reduce bundle size by 36%.
+
 ### Basic Usage
 
 ```tsx

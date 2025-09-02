@@ -11,12 +11,20 @@
       "import": "./dist/index.mjs",
       "require": "./dist/index.js"
     },
+    "./core": {
+      "types": "./dist/core.d.ts",
+      "import": "./dist/core.mjs",
+      "require": "./dist/core.js"
+    },
     "./styles": "./dist/styles.css"
   },
   "files": [
     "dist/index.js",
-    "dist/index.mjs",
+    "dist/index.mjs", 
     "dist/index.d.ts",
+    "dist/core.js",
+    "dist/core.mjs",
+    "dist/core.d.ts",
     "dist/styles.css"
   ],
   "scripts": {
@@ -45,7 +53,8 @@
     "react-dom": ">=18.0.0"
   },
   "dependencies": {
-    "clsx": "^2.1.1"
+    "clsx": "^2.1.1",
+    "lucide-react": "^0.542.0"
   },
   "devDependencies": {
     "@types/node": "^24.3.0",

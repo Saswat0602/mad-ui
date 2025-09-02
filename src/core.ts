@@ -1,4 +1,4 @@
-// Export utilities
+// Core components only - minimal bundle size
 export { cn } from './lib/utils'
 
 // Export color system
@@ -11,7 +11,7 @@ export {
   createCSSVariables 
 } from './lib/colors'
 
-// Export core components (always included)
+// Export core components only
 export { Button } from './components/button'
 export { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from './components/card'
 export { Input } from './components/input'
@@ -30,14 +30,7 @@ export { Breadcrumbs } from './components/breadcrumbs'
 export { Table } from './components/table'
 export { Popover } from './components/popover'
 
-// Export advanced components (optional - can be imported separately)
-export { Calendar } from './components/calendar'
-export { TimePicker } from './components/timepicker'
-export { Navbar } from './components/navbar'
-export { Sidebar } from './components/sidebar'
-export { Layout } from './components/layout'
-
-// Export types
+// Export core types only
 export type { ButtonProps } from './components/button'
 export type { CardProps, CardContentProps, CardDescriptionProps, CardFooterProps, CardHeaderProps, CardTitleProps } from './components/card'
 export type { InputProps } from './components/input'
@@ -55,9 +48,4 @@ export type { SkeletonProps } from './components/skeleton'
 export type { BreadcrumbsProps, BreadcrumbItem } from './components/breadcrumbs'
 export type { TableProps, TableColumn } from './components/table'
 export type { PopoverProps } from './components/popover'
-export type { CalendarProps } from './components/calendar'
-export type { TimePickerProps } from './components/timepicker'
-export type { NavbarProps } from './components/navbar'
-export type { SidebarProps, SidebarItem } from './components/sidebar'
-export type { LayoutProps } from './components/layout'
 export type { ColorScheme } from './lib/colors'

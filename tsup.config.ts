@@ -1,21 +1,53 @@
 import { defineConfig } from 'tsup'
 
-export default defineConfig({
-  entry: ['src/index.ts'],
-  format: ['cjs', 'esm'],
-  dts: true,
-  splitting: false,
-  sourcemap: false, // Remove source maps to reduce size
-  clean: true,
-  external: ['react', 'react-dom'],
-  esbuildOptions(options) {
-    options.jsx = 'automatic'
-    options.minifyIdentifiers = true // Better minification
-    options.drop = ['console', 'debugger'] // Remove console logs
+export default defineConfig([
+  // Full library build
+  {
+    entry: ['src/index.ts'],
+    format: ['cjs', 'esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: true,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+    },
+    onSuccess: 'npm run build:css',
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    noExternal: [],
+    outDir: 'dist',
+    name: 'full'
   },
-  onSuccess: 'npm run build:css',
-  treeshake: true,
-  minify: true,
-  target: 'es2020', // Target modern browsers for smaller bundles
-  platform: 'browser', // Optimize for browser
-})
+  // Core-only build (minimal bundle)
+  {
+    entry: ['src/core.ts'],
+    format: ['cjs', 'esm'],
+    dts: true,
+    splitting: false,
+    sourcemap: false,
+    clean: false,
+    external: ['react', 'react-dom'],
+    esbuildOptions(options) {
+      options.jsx = 'automatic'
+      options.minifyIdentifiers = true
+      options.drop = ['console', 'debugger']
+      options.keepNames = false
+      options.mangleProps = /^_/
+    },
+    treeshake: true,
+    minify: true,
+    target: 'es2020',
+    platform: 'browser',
+    noExternal: [],
+    outDir: 'dist',
+    name: 'core'
+  }
+])
