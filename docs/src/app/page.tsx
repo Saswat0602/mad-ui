@@ -4,18 +4,27 @@ import Link from "next/link"
 import { Button } from "mad-ui-components/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
 import { Badge } from "mad-ui-components/badge"
+import { Input } from "mad-ui-components/input"
+import { Label } from "mad-ui-components/label"
+import { Checkbox } from "mad-ui-components/checkbox"
+import { Radio } from "mad-ui-components/radio"
+import { Switch } from "mad-ui-components/switch"
+import { Slider } from "mad-ui-components/slider"
+import { Progress } from "mad-ui-components/progress"
+import { Rating } from "mad-ui-components/rating"
+import { Skeleton } from "mad-ui-components/skeleton"
+import { Textarea } from "mad-ui-components/textarea"
+import { Select } from "mad-ui-components/select"
 import { 
   ArrowRight, 
   Package, 
   Code, 
   Zap, 
-  Palette, 
   Layers,
   Github,
   Star,
   Download,
   Rocket,
-  Shield,
   Heart
 } from "lucide-react"
 
@@ -23,63 +32,50 @@ export default function HomePage() {
   return (
     <div className="flex flex-col min-h-screen">
       {/* Hero Section */}
-      <section className="relative px-6 py-32 lg:py-40 text-center overflow-hidden">
-        {/* Enhanced background elements */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-20 left-10 w-96 h-96 bg-gradient-to-r from-blue-500/30 to-purple-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-float"></div>
-          <div className="absolute top-40 right-10 w-96 h-96 bg-gradient-to-r from-pink-500/30 to-orange-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-float-delayed"></div>
-          <div className="absolute -bottom-8 left-20 w-96 h-96 bg-gradient-to-r from-emerald-500/30 to-cyan-500/30 rounded-full mix-blend-multiply filter blur-3xl animate-float-delayed-4s"></div>
-        </div>
-        
-        <div className="container mx-auto max-w-7xl relative">
+      <section className="relative px-6 py-24 lg:py-32 text-center">
+        <div className="container mx-auto max-w-6xl relative">
           <div className="animate-slide-up">
-            {/* Enhanced Badge */}
+            {/* Simple Badge */}
             <div className="flex items-center justify-center mb-8">
-              <div className="inline-flex items-center px-6 py-3 rounded-2xl bg-gradient-to-r from-blue-500/20 to-purple-500/20 border border-blue-500/30 backdrop-blur-sm shadow-lg">
-                <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-400 rounded-full mr-3 animate-pulse"></div>
-                <span className="text-sm font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
-                  ✨ Now Available - Version 2.0
-                </span>
-              </div>
+              <Badge variant="outline" className="px-4 py-2">
+                ✨ Mad UI v2.0
+              </Badge>
             </div>
             
-            {/* Enhanced Title */}
-            <h1 className="text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-black tracking-tight mb-10 leading-none">
+            {/* Clean Title */}
+            <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight mb-8 leading-tight">
               <span className="block text-foreground">Beautiful</span>
-              <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent animate-gradient-x">
-                React Components
-              </span>
+              <span className="block text-primary">React Components</span>
             </h1>
             
-            {/* Enhanced Description */}
-            <p className="text-xl md:text-2xl lg:text-3xl text-muted-foreground mb-16 max-w-4xl mx-auto leading-relaxed font-light">
+            {/* Simple Description */}
+            <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
               A comprehensive, modern UI component library built with 
               <span className="font-semibold text-foreground"> React</span> and 
               <span className="font-semibold text-foreground"> Tailwind CSS</span>. 
               Beautiful, accessible, and fully customizable.
             </p>
             
-            {/* Enhanced CTA Buttons */}
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16">
+            {/* Clean CTA Buttons */}
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
               <Button 
                 size="lg" 
-                className="group relative text-lg px-10 py-5 h-16 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 hover:from-blue-700 hover:via-purple-700 hover:to-pink-700 shadow-2xl hover:shadow-blue-500/25 transition-all duration-300 hover:scale-105 border-0"
+                className="text-lg px-8 py-4 h-14"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 rounded-xl blur opacity-75 group-hover:opacity-100 transition-opacity duration-300"></div>
-                <Link href="/docs/getting-started" className="relative flex items-center">
-                  <Rocket className="mr-3 h-6 w-6 group-hover:animate-bounce" />
+                <Link href="/docs/getting-started" className="flex items-center">
+                  <Rocket className="mr-3 h-5 w-5" />
                   Get Started
-                  <ArrowRight className="ml-3 h-6 w-6 group-hover:translate-x-2 transition-transform duration-300" />
+                  <ArrowRight className="ml-3 h-5 w-5" />
                 </Link>
               </Button>
               
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="text-lg px-10 py-5 h-16 border-2 border-border/50 hover:border-blue-500/50 hover:bg-blue-500/10 transition-all duration-300 group hover:scale-105 backdrop-blur-sm"
+                className="text-lg px-8 py-4 h-14"
               >
-                <Link href="/docs/components" className="flex items-center">
-                  <Package className="mr-3 h-6 w-6 group-hover:rotate-12 transition-transform duration-300" />
+                <Link href="/components" className="flex items-center">
+                  <Package className="mr-3 h-5 w-5" />
                   View Components
                 </Link>
               </Button>
@@ -87,122 +83,359 @@ export default function HomePage() {
               <Button 
                 variant="ghost" 
                 size="lg" 
-                className="text-lg px-10 py-5 h-16 hover:bg-muted/50 transition-all duration-300 group backdrop-blur-sm"
+                className="text-lg px-8 py-4 h-14"
               >
                 <Link href="https://github.com" className="flex items-center">
-                  <Github className="mr-3 h-6 w-6 group-hover:scale-110 transition-transform duration-300" />
-                  <Star className="mr-2 h-5 w-5" />
+                  <Github className="mr-3 h-5 w-5" />
+                  <Star className="mr-2 h-4 w-4" />
                   Star on GitHub
                 </Link>
               </Button>
             </div>
             
-            {/* Enhanced Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-12 max-w-3xl mx-auto">
-              <div className="group text-center">
-                <div className="text-4xl font-black text-foreground mb-3 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">50+</div>
-                <div className="text-muted-foreground font-medium">Components</div>
+            {/* Simple Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto">
+              <div className="text-center">
+                <div className="text-3xl font-bold text-foreground mb-2">50+</div>
+                <div className="text-muted-foreground">Components</div>
               </div>
-              <div className="group text-center">
-                <div className="text-4xl font-black text-foreground mb-3 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">100%</div>
-                <div className="text-muted-foreground font-medium">TypeScript</div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-foreground mb-2">100%</div>
+                <div className="text-muted-foreground">TypeScript</div>
               </div>
-              <div className="group text-center">
-                <div className="text-4xl font-black text-foreground mb-3 group-hover:scale-110 transition-transform duration-300 bg-gradient-to-r from-pink-400 to-red-400 bg-clip-text text-transparent">0KB</div>
-                <div className="text-muted-foreground font-medium">Runtime</div>
+              <div className="text-center">
+                <div className="text-3xl font-bold text-foreground mb-2">0KB</div>
+                <div className="text-muted-foreground">Runtime</div>
               </div>
             </div>
           </div>
         </div>
       </section>
 
+      {/* Component Showcase Section */}
+      <section className="relative px-4 py-20 lg:py-24 bg-muted/30">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-6">
+              <Package className="w-4 h-4 mr-2" />
+              Component Showcase
+            </Badge>
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
+              Beautiful components,
+              <span className="block text-primary">ready to use</span>
+            </h2>
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+              Explore our collection of carefully crafted components with multiple variants, styles, and comprehensive documentation.
+            </p>
+          </div>
+
+          {/* Core Components */}
+          <div className="mb-20">
+            <h3 className="text-2xl font-bold mb-8 text-center">Core Components</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Button</CardTitle>
+                  <CardDescription>
+                    A versatile button component with multiple variants and sizes.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex flex-wrap gap-2">
+                    <Button size="sm">Small</Button>
+                    <Button>Default</Button>
+                    <Button size="lg">Large</Button>
+                  </div>
+                  <div className="flex flex-wrap gap-2">
+                    <Button variant="outline">Outline</Button>
+                    <Button variant="secondary">Secondary</Button>
+                    <Button variant="ghost">Ghost</Button>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Input</CardTitle>
+                  <CardDescription>
+                    A flexible input component for various input types.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="email">Email</Label>
+                    <Input id="email" type="email" placeholder="Enter your email" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="password">Password</Label>
+                    <Input id="password" type="password" placeholder="Enter password" />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Card</CardTitle>
+                  <CardDescription>
+                    A container component for grouping related content.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="p-4 bg-muted rounded-lg">
+                    <p className="text-sm text-muted-foreground">Card content example</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Checkbox & Radio</CardTitle>
+                  <CardDescription>
+                    Form controls for boolean and single selection.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Checkbox id="terms" />
+                    <Label htmlFor="terms">Accept terms</Label>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    <Radio id="option1" name="options" />
+                    <Label htmlFor="option1">Option 1</Label>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Switch & Slider</CardTitle>
+                  <CardDescription>
+                    Interactive controls for settings and values.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center space-x-2">
+                    <Switch id="notifications" />
+                    <Label htmlFor="notifications">Notifications</Label>
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Volume</Label>
+                    <Slider defaultValue={50} max={100} step={1} />
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Progress & Rating</CardTitle>
+                  <CardDescription>
+                    Visual indicators for progress and ratings.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="space-y-2">
+                    <Label>Upload Progress</Label>
+                    <Progress value={65} className="w-full" />
+                  </div>
+                  <div className="space-y-2">
+                    <Label>Rating</Label>
+                    <Rating value={4} />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Form Components */}
+          <div className="mb-20">
+            <h3 className="text-2xl font-bold mb-8 text-center">Form Components</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Select</CardTitle>
+                  <CardDescription>
+                    A dropdown select component for options.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Select options={[
+                    { value: "option1", label: "Option 1" },
+                    { value: "option2", label: "Option 2" },
+                    { value: "option3", label: "Option 3" }
+                  ]} />
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Textarea</CardTitle>
+                  <CardDescription>
+                    Multi-line text input component.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <Textarea placeholder="Enter your message here..." />
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Skeleton</CardTitle>
+                  <CardDescription>
+                    Loading placeholders for content.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-3">
+                  <Skeleton className="h-4 w-full" />
+                  <Skeleton className="h-4 w-3/4" />
+                  <Skeleton className="h-4 w-1/2" />
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+
+          {/* Layout Components */}
+          <div className="mb-20">
+            <h3 className="text-2xl font-bold mb-8 text-center">Layout Components</h3>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Badge</CardTitle>
+                  <CardDescription>
+                    Small status indicators and labels.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="flex flex-wrap gap-2">
+                  <Badge>Default</Badge>
+                  <Badge variant="secondary">Secondary</Badge>
+                  <Badge variant="outline">Outline</Badge>
+                  <Badge variant="destructive">Destructive</Badge>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Separator</CardTitle>
+                  <CardDescription>
+                    Visual dividers for content sections.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2">
+                    <p>Content above</p>
+                    <hr className="border-border" />
+                    <p>Content below</p>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-lg transition-all duration-200">
+                <CardHeader className="pb-4">
+                  <CardTitle className="text-lg mb-2">Scroll Area</CardTitle>
+                  <CardDescription>
+                    Custom scrollable content areas.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="h-20 overflow-y-auto border rounded p-2">
+                    <div className="space-y-1">
+                      {Array.from({ length: 10 }).map((_, i) => (
+                        <div key={i} className="text-sm">Item {i + 1}</div>
+                      ))}
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Features Section */}
-      <section className="relative px-4 py-24 lg:py-32">
-        <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-20 animate-slide-up">
-            <Badge variant="outline" className="mb-6 px-4 py-2">
+      <section className="relative px-4 py-20 lg:py-24">
+        <div className="container mx-auto max-w-6xl">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-6">
               <Zap className="w-4 h-4 mr-2" />
               Why Choose Mad UI
             </Badge>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
               Everything you need to
-              <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                build amazing UIs
-              </span>
+              <span className="block text-primary">build amazing UIs</span>
             </h2>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
               From basic form elements to complex data displays, we&apos;ve got you covered with beautiful, accessible, and performant components.
             </p>
           </div>
           
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+            <Card className="group hover:shadow-lg transition-all duration-200">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Package className="h-8 w-8 text-white" />
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Package className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-2xl mb-3 group-hover:text-primary transition-colors">Copy & Customize</CardTitle>
-                <CardDescription className="text-base leading-relaxed">
+                <CardTitle className="text-xl mb-2">Copy & Customize</CardTitle>
+                <CardDescription>
                   Copy components directly into your project and customize them to match your design system. Full control, zero dependencies.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
+            <Card className="group hover:shadow-lg transition-all duration-200">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Code className="h-8 w-8 text-white" />
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Code className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-2xl mb-3 group-hover:text-primary transition-colors">TypeScript Ready</CardTitle>
-                <CardDescription className="text-base leading-relaxed">
+                <CardTitle className="text-xl mb-2">TypeScript Ready</CardTitle>
+                <CardDescription>
                   Built with TypeScript from the ground up for superior developer experience with full type safety and IntelliSense.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
+            <Card className="group hover:shadow-lg transition-all duration-200">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500 to-orange-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Zap className="h-8 w-8 text-white" />
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Zap className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-2xl mb-3 group-hover:text-primary transition-colors">Lightning Fast</CardTitle>
-                <CardDescription className="text-base leading-relaxed">
+                <CardTitle className="text-xl mb-2">Lightning Fast</CardTitle>
+                <CardDescription>
                   Optimized for performance with tree-shaking, minimal bundle sizes, and zero runtime overhead.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
+            <Card className="group hover:shadow-lg transition-all duration-200">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Palette className="h-8 w-8 text-white" />
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Layers className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-2xl mb-3 group-hover:text-primary transition-colors">Tailwind Powered</CardTitle>
-                <CardDescription className="text-base leading-relaxed">
+                <CardTitle className="text-xl mb-2">Tailwind Powered</CardTitle>
+                <CardDescription>
                   Built on top of Tailwind CSS for consistent design, easy customization, and utility-first styling.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
+            <Card className="group hover:shadow-lg transition-all duration-200">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-blue-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Shield className="h-8 w-8 text-white" />
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Layers className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-2xl mb-3 group-hover:text-primary transition-colors">Accessible</CardTitle>
-                <CardDescription className="text-base leading-relaxed">
+                <CardTitle className="text-xl mb-2">Accessible</CardTitle>
+                <CardDescription>
                   Built with accessibility in mind. WCAG compliant components with keyboard navigation and screen reader support.
                 </CardDescription>
               </CardHeader>
             </Card>
 
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
+            <Card className="group hover:shadow-lg transition-all duration-200">
               <CardHeader className="pb-4">
-                <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-pink-500 to-rose-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300">
-                  <Layers className="h-8 w-8 text-white" />
+                <div className="w-12 h-12 rounded-lg bg-primary/10 flex items-center justify-center mb-4 group-hover:bg-primary/20 transition-colors">
+                  <Layers className="h-6 w-6 text-primary" />
                 </div>
-                <CardTitle className="text-2xl mb-3 group-hover:text-primary transition-colors">Modular Design</CardTitle>
-                <CardDescription className="text-base leading-relaxed">
+                <CardTitle className="text-xl mb-2">Modular Design</CardTitle>
+                <CardDescription>
                   Import only what you need with our modular architecture. Tree-shakeable and dependency-free.
                 </CardDescription>
               </CardHeader>
@@ -211,157 +444,44 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Component Preview Section */}
-      <section className="relative px-4 py-24 lg:py-32 bg-gradient-to-b from-background to-muted/20">
-        <div className="container mx-auto max-w-7xl">
-          <div className="text-center mb-20 animate-slide-up">
-            <Badge variant="outline" className="mb-6 px-4 py-2">
-              <Package className="w-4 h-4 mr-2" />
-              Component Library
-            </Badge>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-              Beautiful components,
-              <span className="block bg-gradient-to-r from-emerald-600 via-blue-600 to-purple-600 bg-clip-text text-transparent">
-                ready to use
-              </span>
-            </h2>
-            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-              Explore our collection of carefully crafted components with multiple variants, styles, and comprehensive documentation.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-2xl mb-3 group-hover:text-primary transition-colors flex items-center">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mr-3">
-                    <Package className="h-4 w-4 text-white" />
-                  </div>
-                  Core Components
-                </CardTitle>
-                <CardDescription className="text-base leading-relaxed">
-                  Essential building blocks for every application - buttons, inputs, cards, and more.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Button</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Input</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Card</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Label</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">+12 more</Badge>
-                </div>
-                <Button variant="outline" size="sm" className="w-full group/btn hover:bg-primary hover:text-primary-foreground transition-all duration-300">
-                  <Link href="/docs/components/core" className="flex items-center">
-                    View All Core Components
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-2xl mb-3 group-hover:text-primary transition-colors flex items-center">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mr-3">
-                    <Code className="h-4 w-4 text-white" />
-                  </div>
-                  Form Components
-                </CardTitle>
-                <CardDescription className="text-base leading-relaxed">
-                  Advanced form elements with built-in validation and accessibility features.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Select</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Checkbox</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Date Picker</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Slider</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">+8 more</Badge>
-                </div>
-                <Button variant="outline" size="sm" className="w-full group/btn hover:bg-primary hover:text-primary-foreground transition-all duration-300">
-                  <Link href="/docs/components/forms" className="flex items-center">
-                    View All Form Components
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-2xl mb-3 group-hover:text-primary transition-colors flex items-center">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center mr-3">
-                    <Layers className="h-4 w-4 text-white" />
-                  </div>
-                  Layout Components
-                </CardTitle>
-                <CardDescription className="text-base leading-relaxed">
-                  Structure and organization components for complex application layouts.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Navbar</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Sidebar</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Modal</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">Drawer</Badge>
-                  <Badge variant="secondary" className="hover:bg-primary/10 transition-colors">+6 more</Badge>
-                </div>
-                <Button variant="outline" size="sm" className="w-full group/btn hover:bg-primary hover:text-primary-foreground transition-all duration-300">
-                  <Link href="/docs/components/layout" className="flex items-center">
-                    View All Layout Components
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </div>
-      </section>
-
       {/* CTA Section */}
-      <section className="relative px-4 py-24 lg:py-32 overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-primary via-purple-600 to-pink-600 opacity-90"></div>
-        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-        
-        <div className="container mx-auto max-w-5xl text-center relative z-10">
+      <section className="relative px-4 py-20 lg:py-24 bg-primary text-primary-foreground">
+        <div className="container mx-auto max-w-4xl text-center">
           <div className="animate-slide-up">
-            <Badge variant="secondary" className="mb-6 px-4 py-2 bg-white/10 border-white/20 text-white">
+            <Badge variant="secondary" className="mb-6 bg-primary-foreground/10 border-primary-foreground/20 text-primary-foreground">
               <Heart className="w-4 h-4 mr-2" />
               Join the Community
             </Badge>
             
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white leading-tight">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-6 leading-tight">
               Ready to build something
-              <span className="block text-yellow-300">amazing?</span>
+              <span className="block text-primary-foreground">amazing?</span>
             </h2>
             
-            <p className="text-xl md:text-2xl mb-12 opacity-90 text-white max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl mb-10 opacity-90 max-w-2xl mx-auto leading-relaxed">
               Join thousands of developers who are already building better UIs with Mad UI components. Start your journey today.
             </p>
             
-            <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12">
+            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
               <Button 
                 variant="secondary" 
                 size="lg" 
-                className="text-lg px-8 py-4 h-14 bg-white text-primary hover:bg-white/90 shadow-xl hover:shadow-2xl transition-all duration-300 group hover-lift"
+                className="text-lg px-6 py-3 h-12 bg-primary-foreground text-primary hover:bg-primary-foreground/90"
               >
                 <Link href="/docs/getting-started" className="flex items-center">
-                  <Rocket className="mr-2 h-5 w-5 group-hover:animate-bounce" />
+                  <Rocket className="mr-2 h-5 w-5" />
                   Start Building
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
+                  <ArrowRight className="ml-2 h-5 w-5" />
                 </Link>
               </Button>
               
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="text-lg px-8 py-4 h-14 border-2 border-white/30 text-white hover:bg-white/10 transition-all duration-300 group hover-lift"
+                className="text-lg px-6 py-3 h-12 border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
               >
                 <Link href="https://github.com" className="flex items-center">
-                  <Github className="mr-2 h-5 w-5 group-hover:scale-110 transition-transform" />
+                  <Github className="mr-2 h-5 w-5" />
                   View on GitHub
                 </Link>
               </Button>
@@ -369,28 +489,28 @@ export default function HomePage() {
               <Button 
                 variant="ghost" 
                 size="lg" 
-                className="text-lg px-8 py-4 h-14 text-white hover:bg-white/10 transition-all duration-300 group"
+                className="text-lg px-6 py-3 h-12 text-primary-foreground hover:bg-primary-foreground/10"
               >
-                <Link href="/docs/components" className="flex items-center">
-                  <Download className="mr-2 h-5 w-5 group-hover:animate-bounce transition-transform" />
+                <Link href="/components" className="flex items-center">
+                  <Download className="mr-2 h-5 w-5" />
                   Download Components
                 </Link>
               </Button>
             </div>
             
             {/* Social proof */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto text-white">
-              <div className="group">
-                <div className="text-3xl font-bold mb-2 group-hover:scale-110 transition-transform">10K+</div>
-                <div className="opacity-80">Downloads</div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-xl mx-auto">
+              <div>
+                <div className="text-2xl font-bold mb-1">10K+</div>
+                <div className="opacity-80 text-sm">Downloads</div>
               </div>
-              <div className="group">
-                <div className="text-3xl font-bold mb-2 group-hover:scale-110 transition-transform">50+</div>
-                <div className="opacity-80">Components</div>
+              <div>
+                <div className="text-2xl font-bold mb-1">50+</div>
+                <div className="opacity-80 text-sm">Components</div>
               </div>
-              <div className="group">
-                <div className="text-3xl font-bold mb-2 group-hover:scale-110 transition-transform">99%</div>
-                <div className="opacity-80">Satisfaction</div>
+              <div>
+                <div className="text-2xl font-bold mb-1">99%</div>
+                <div className="opacity-80 text-sm">Satisfaction</div>
               </div>
             </div>
           </div>

@@ -1,10 +1,9 @@
 "use client"
 
-import Link from "next/link"
-import { Button } from "mad-ui-components/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
-import { Badge } from "mad-ui-components/badge"
-import { Tabs } from "mad-ui-components/tabs"
+import React, { useState } from 'react'
+import { Button } from 'mad-ui-components/button'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'mad-ui-components/card'
+import { Badge } from 'mad-ui-components/badge'
 import { 
   Code, 
   Package, 
@@ -14,355 +13,430 @@ import {
   Download, 
   Rocket, 
   CheckCircle,
-  ExternalLink,
   BookOpen,
-  Sparkles
+  Sparkles,
+  Terminal,
+  PlayCircle,
+  Layers,
+  Settings,
+  Check
 } from "lucide-react"
 
-export default function GettingStartedPage() {
+interface CopyCodeBlockProps {
+  code: string
+  filename: string
+}
+
+const CopyCodeBlock: React.FC<CopyCodeBlockProps> = ({ code, filename }) => {
+  const [copied, setCopied] = useState(false)
+  
+  const handleCopy = () => {
+    navigator.clipboard.writeText(code)
+    setCopied(true)
+    setTimeout(() => setCopied(false), 2000)
+  }
+  
   return (
-    <div className="container mx-auto max-w-5xl px-4 py-12 lg:py-16">
-      {/* Hero Section */}
-      <div className="text-center mb-16 animate-slide-up">
-        <Badge variant="outline" className="mb-6 px-4 py-2">
-          <BookOpen className="w-4 h-4 mr-2" />
-          Documentation
-        </Badge>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          Getting Started with
-          <span className="block bg-gradient-to-r from-primary via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            Mad UI
-          </span>
-        </h1>
-        <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-          Learn how to install and use Mad UI components in your project. Get up and running in minutes with our comprehensive guide.
-        </p>
-      </div>
-
-      <div className="space-y-16">
-        {/* Installation Section */}
-        <section className="animate-slide-up">
-          <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4 px-3 py-1">
-              <Download className="w-4 h-4 mr-2" />
-              Step 1
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Installation</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Choose your preferred package manager and get started with Mad UI components in seconds.
-            </p>
+    <div className="relative group">
+      <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-900/50">
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1.5">
+              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
+              <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
+              <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
+            </div>
+            <div className="h-4 w-px bg-slate-700 mx-2"></div>
+            <span className="text-sm text-slate-400 font-medium">{filename}</span>
           </div>
-          
-          <Card className="hover-lift bg-gradient-to-br from-card to-card/50 border-border/50">
-            <CardHeader className="text-center pb-6">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center mx-auto mb-4">
-                <Package className="h-8 w-8 text-white" />
-              </div>
-              <CardTitle className="text-2xl">Install Mad UI Components</CardTitle>
-              <CardDescription className="text-base">
-                Add Mad UI components to your project using your favorite package manager.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Tabs
-                items={[
-                  {
-                    id: 'npm',
-                    label: 'npm',
-                    content: (
-                      <div className="bg-muted/80 p-6 rounded-xl border">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm text-muted-foreground">Terminal</span>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <code className="text-sm font-mono">npm install mad-ui-components</code>
-                      </div>
-                    )
-                  },
-                  {
-                    id: 'yarn',
-                    label: 'yarn',
-                    content: (
-                      <div className="bg-muted/80 p-6 rounded-xl border">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm text-muted-foreground">Terminal</span>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <code className="text-sm font-mono">yarn add mad-ui-components</code>
-                      </div>
-                    )
-                  },
-                  {
-                    id: 'pnpm',
-                    label: 'pnpm',
-                    content: (
-                      <div className="bg-muted/80 p-6 rounded-xl border">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="text-sm text-muted-foreground">Terminal</span>
-                          <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                            <Copy className="h-4 w-4" />
-                          </Button>
-                        </div>
-                        <code className="text-sm font-mono">pnpm add mad-ui-components</code>
-                      </div>
-                    )
-                  }
-                ]}
-                defaultActiveTab="npm"
-                className="w-full"
-              />
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Usage Section */}
-        <section className="animate-slide-up">
-          <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4 px-3 py-1">
-              <Code className="w-4 h-4 mr-2" />
-              Step 2
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Usage Options</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Choose the approach that best fits your project and workflow.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 gap-8">
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Code className="h-6 w-6 text-white" />
-                </div>
-                <CardTitle className="text-xl group-hover:text-primary transition-colors">Individual Import</CardTitle>
-                <CardDescription className="text-base">
-                  Import only the components you need for optimal bundle sizes and tree-shaking.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="bg-muted/80 p-4 rounded-xl border">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-muted-foreground">components.tsx</span>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <pre className="text-sm font-mono text-foreground">{`import { Button } from 'mad-ui-components/button'
-import { Input } from 'mad-ui-components/input'
-import { Card } from 'mad-ui-components/card'`}</pre>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span className="text-muted-foreground">Bundle size: ~2-5KB per component</span>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Copy className="h-6 w-6 text-white" />
-                </div>
-                <CardTitle className="text-xl group-hover:text-primary transition-colors">Copy Components</CardTitle>
-                <CardDescription className="text-base">
-                  Copy components directly into your project for full customization and control.
-                </CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="bg-muted/80 p-4 rounded-xl border">
-                  <div className="flex items-center justify-between mb-3">
-                    <span className="text-sm text-muted-foreground">Terminal</span>
-                    <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                      <Copy className="h-4 w-4" />
-                    </Button>
-                  </div>
-                  <pre className="text-sm font-mono text-foreground">{`npx mad-ui-components copy button input card
-
-# This creates:
-# components/ui/mad-ui/button.tsx
-# components/ui/mad-ui/input.tsx
-# components/ui/mad-ui/card.tsx`}</pre>
-                </div>
-                <div className="flex items-center gap-2 text-sm">
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                  <span className="text-muted-foreground">Bundle size: 0KB runtime overhead</span>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        {/* Quick Start Section */}
-        <section className="animate-slide-up">
-          <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4 px-3 py-1">
-              <Rocket className="w-4 h-4 mr-2" />
-              Step 3
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Quick Start</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Get up and running with your first component in under 60 seconds.
-            </p>
-          </div>
-          
-          <Card className="hover-lift bg-gradient-to-br from-card to-card/50 border-border/50">
-            <CardHeader className="text-center pb-6">
-              <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mx-auto mb-4">
-                <Zap className="h-8 w-8 text-white" />
-              </div>
-              <CardTitle className="text-2xl">Your First Component</CardTitle>
-              <CardDescription className="text-base">
-                Follow these simple steps to create your first Mad UI component.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-8">
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
-                    1
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-3 text-lg">Install the package</h4>
-                    <div className="bg-muted/80 p-4 rounded-xl border">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-muted-foreground">Terminal</span>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <code className="text-sm font-mono">npm install mad-ui-components</code>
-                    </div>
-                  </div>
-                </div>
-                
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-semibold">
-                    2
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-3 text-lg">Import and use the component</h4>
-                    <div className="bg-muted/80 p-4 rounded-xl border">
-                      <div className="flex items-center justify-between mb-2">
-                        <span className="text-sm text-muted-foreground">app.tsx</span>
-                        <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
-                          <Copy className="h-4 w-4" />
-                        </Button>
-                      </div>
-                      <pre className="text-sm font-mono">{`import { Button } from 'mad-ui-components/button'
-
-export default function App() {
-  return (
-    <Button variant="default" size="lg">
-      Click me!
-    </Button>
-  )
-}`}</pre>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="flex gap-4">
-                  <div className="flex-shrink-0 w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center text-sm font-semibold">
-                    ✓
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-semibold mb-3 text-lg">See the result</h4>
-                    <div className="p-6 border-2 border-dashed border-muted-foreground/20 rounded-xl bg-muted/20 text-center">
-                      <Button variant="primary" size="lg" className="shadow-lg">
-                        Click me!
-                      </Button>
-                      <p className="text-sm text-muted-foreground mt-3">
-                        🎉 Your first Mad UI component is ready!
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Next Steps */}
-        <section className="animate-slide-up">
-          <div className="text-center mb-12">
-            <Badge variant="outline" className="mb-4 px-3 py-1">
-              <Sparkles className="w-4 h-4 mr-2" />
-              What&apos;s Next?
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Continue Your Journey</h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Explore our comprehensive component library and learn advanced techniques.
-            </p>
-          </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Package className="h-6 w-6 text-white" />
-                </div>
-                <CardTitle className="text-xl group-hover:text-primary transition-colors">Explore Components</CardTitle>
-                <CardDescription className="text-base">
-                  Browse our complete collection of 50+ components with live examples and documentation.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button className="w-full group/btn bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70">
-                  <Link href="/docs/components" className="flex items-center">
-                    View All Components
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Download className="h-6 w-6 text-white" />
-                </div>
-                <CardTitle className="text-xl group-hover:text-primary transition-colors">Installation Guide</CardTitle>
-                <CardDescription className="text-base">
-                  Learn advanced installation techniques and project setup configurations.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="outline" className="w-full group/btn border-2 hover:bg-primary hover:text-primary-foreground transition-all duration-300">
-                  <Link href="/docs/installation" className="flex items-center">
-                    Installation Guide
-                    <ExternalLink className="ml-2 h-4 w-4 group-hover/btn:scale-110 transition-transform" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-
-            <Card className="group hover-lift bg-gradient-to-br from-card to-card/50 border-border/50 hover:border-primary/20 transition-all duration-300 md:col-span-2 lg:col-span-1">
-              <CardHeader>
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-orange-500 to-red-500 flex items-center justify-center mb-4 group-hover:scale-110 transition-transform duration-300">
-                  <Code className="h-6 w-6 text-white" />
-                </div>
-                <CardTitle className="text-xl group-hover:text-primary transition-colors">Live Examples</CardTitle>
-                <CardDescription className="text-base">
-                  See real-world examples and learn best practices from our showcase.
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Button variant="ghost" className="w-full group/btn hover:bg-muted/50 transition-colors">
-                  <Link href="/docs/examples" className="flex items-center">
-                    View Examples
-                    <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
-                  </Link>
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
+          <Button 
+            variant="ghost" 
+            size="sm" 
+            onClick={handleCopy}
+            className="h-8 w-8 p-0 hover:bg-slate-800 text-slate-400 hover:text-slate-200"
+          >
+            {copied ? (
+              <Check className="h-4 w-4 text-green-400" />
+            ) : (
+              <Copy className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
+        <div className="p-4">
+          <pre className="text-sm font-mono text-slate-100 overflow-x-auto">
+            <code>{code}</code>
+          </pre>
+        </div>
       </div>
     </div>
   )
 }
 
+interface StepCardProps {
+  step: number
+  icon: React.ComponentType<{ className?: string }>
+  title: string
+  description: string
+  children: React.ReactNode
+  gradient: string
+}
+
+const StepCard: React.FC<StepCardProps> = ({ step, icon: Icon, title, description, children, gradient }) => (
+  <Card className="group hover:shadow-2xl hover:shadow-primary/5 transition-all duration-500 border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-900/50 dark:to-slate-900/20">
+    <CardHeader className="pb-6">
+      <div className="flex items-center gap-4 mb-4">
+        <div className={`w-12 h-12 rounded-2xl ${gradient} flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+          <Icon className="h-6 w-6 text-white" />
+        </div>
+        <Badge variant="outline" className="px-3 py-1 text-xs font-semibold">
+          Step {step}
+        </Badge>
+      </div>
+      <CardTitle className="text-2xl font-bold group-hover:text-primary transition-colors duration-200">
+        {title}
+      </CardTitle>
+      <CardDescription className="text-base leading-relaxed">
+        {description}
+      </CardDescription>
+    </CardHeader>
+    <CardContent>
+      {children}
+    </CardContent>
+  </Card>
+)
+
+interface PackageManagerTabProps {
+  manager: string
+  isActive: boolean
+  onClick: () => void
+}
+
+const PackageManagerTab: React.FC<PackageManagerTabProps> = ({ manager, isActive, onClick }) => (
+  <button
+    onClick={onClick}
+    className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
+      isActive 
+        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25' 
+        : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
+    }`}
+  >
+    {manager}
+  </button>
+)
+
+export default function GettingStartedPage() {
+  const [activeTab, setActiveTab] = useState('npm')
+  
+  const packageCommands: Record<string, string> = {
+    npm: 'npm install mad-ui-components',
+    yarn: 'yarn add mad-ui-components',
+    pnpm: 'pnpm add mad-ui-components',
+    bun: 'bun add mad-ui-components'
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
+      <div className="container mx-auto max-w-6xl px-4 py-16 lg:py-24">
+        {/* Hero Section */}
+        <div className="text-center mb-20 animate-in fade-in slide-in-from-bottom-8 duration-1000">
+          <Badge variant="outline" className="mb-6 px-6 py-3 text-sm font-semibold border-primary/20 bg-primary/5">
+            <BookOpen className="w-4 h-4 mr-2" />
+            Documentation
+          </Badge>
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 leading-tight tracking-tight">
+            Getting Started with
+            <span className="block bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm">
+              Mad UI
+            </span>
+          </h1>
+          <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed font-medium">
+            Build beautiful interfaces in minutes. Install, import, and start creating with our comprehensive component library designed for modern web development.
+          </p>
+        </div>
+
+        <div className="space-y-24">
+          {/* Installation Section */}
+          <section className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
+            <StepCard
+              step={1}
+              icon={Package}
+              title="Installation"
+              description="Choose your preferred package manager and get Mad UI components installed in your project instantly."
+              gradient="bg-gradient-to-br from-blue-500 to-cyan-500"
+            >
+              <div className="space-y-6">
+                <div className="flex flex-wrap gap-2 p-1 bg-slate-100 dark:bg-slate-800 rounded-xl">
+                  {Object.keys(packageCommands).map((manager) => (
+                    <PackageManagerTab
+                      key={manager}
+                      manager={manager}
+                      isActive={activeTab === manager}
+                      onClick={() => setActiveTab(manager)}
+                    />
+                  ))}
+                </div>
+                
+                <CopyCodeBlock 
+                  code={packageCommands[activeTab]}
+                  filename="Terminal"
+                />
+                
+                <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
+                  <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
+                  <span className="text-sm text-green-800 dark:text-green-300 font-medium">
+                    Bundle size: ~50KB gzipped for complete library, tree-shakable components
+                  </span>
+                </div>
+              </div>
+            </StepCard>
+          </section>
+
+          {/* Usage Options */}
+          <section className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-400">
+            <div className="text-center mb-16">
+              <Badge variant="outline" className="mb-4 px-4 py-2 text-sm font-semibold border-primary/20 bg-primary/5">
+                <Settings className="h-4 w-4 mr-2" />
+                Step 2
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Usage Strategies</h2>
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                Choose the approach that best fits your project architecture and development workflow.
+              </p>
+            </div>
+            
+            <div className="grid lg:grid-cols-2 gap-8">
+              <Card className="group hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-br from-white to-purple-50/20 dark:from-slate-900/50 dark:to-purple-950/10">
+                <CardHeader className="pb-6">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-purple-500/25">
+                    <Code className="h-7 w-7 text-white" />
+                  </div>
+                  <CardTitle className="text-2xl font-bold group-hover:text-purple-600 transition-colors">
+                    Individual Import
+                  </CardTitle>
+                  <CardDescription className="text-base leading-relaxed">
+                    Import only the components you need for optimal bundle sizes and automatic tree-shaking.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <CopyCodeBlock 
+                    code={`import { Button } from 'mad-ui-components/button'
+import { Input } from 'mad-ui-components/input'
+import { Card } from 'mad-ui-components/card'
+
+export function MyComponent() {
+  return (
+    <Card>
+      <Input placeholder="Enter text..." />
+      <Button>Submit</Button>
+    </Card>
+  )
+}`}
+                    filename="components.tsx"
+                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center gap-2 text-sm p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
+                      <CheckCircle className="h-4 w-4 text-green-600 dark:text-green-400" />
+                      <span className="text-green-800 dark:text-green-300 font-medium">Tree-shakable</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+                      <Zap className="h-4 w-4 text-blue-600 dark:text-blue-400" />
+                      <span className="text-blue-800 dark:text-blue-300 font-medium">2-5KB per component</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card className="group hover:shadow-2xl hover:shadow-emerald-500/10 transition-all duration-500 border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-br from-white to-emerald-50/20 dark:from-slate-900/50 dark:to-emerald-950/10">
+                <CardHeader className="pb-6">
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-emerald-500 to-green-500 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg shadow-emerald-500/25">
+                    <Layers className="h-7 w-7 text-white" />
+                  </div>
+                  <CardTitle className="text-2xl font-bold group-hover:text-emerald-600 transition-colors">
+                    Copy Components
+                  </CardTitle>
+                  <CardDescription className="text-base leading-relaxed">
+                    Copy components directly into your project for complete customization and control.
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <CopyCodeBlock 
+                    code={`npx mad-ui-components copy button input card
+
+# Components will be created at:
+# components/ui/mad-ui/button.tsx
+# components/ui/mad-ui/input.tsx  
+# components/ui/mad-ui/card.tsx
+
+# Then import locally:
+import { Button } from '@/components/ui/mad-ui/button'`}
+                    filename="Terminal"
+                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="flex items-center gap-2 text-sm p-3 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg">
+                      <CheckCircle className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+                      <span className="text-emerald-800 dark:text-emerald-300 font-medium">Full control</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm p-3 bg-purple-50 dark:bg-purple-950/20 rounded-lg">
+                      <Rocket className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                      <span className="text-purple-800 dark:text-purple-300 font-medium">Zero runtime</span>
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </section>
+
+          {/* Quick Start */}
+          <section className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-600">
+            <StepCard
+              step={3}
+              icon={PlayCircle}
+              title="Quick Start Example"
+              description="Get up and running with your first Mad UI component in under 60 seconds. Follow this simple example to see it in action."
+              gradient="bg-gradient-to-br from-orange-500 to-red-500"
+            >
+              <div className="grid lg:grid-cols-2 gap-8">
+                <div className="space-y-6">
+                  <div>
+                    <h4 className="font-semibold mb-4 text-lg flex items-center gap-2">
+                      <Terminal className="h-5 w-5 text-primary" />
+                      Complete Example
+                    </h4>
+                    <CopyCodeBlock 
+                      code={`import { Button } from 'mad-ui-components/button'
+import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components/card'
+import { Input } from 'mad-ui-components/input'
+
+export default function App() {
+  return (
+    <div className="p-8 max-w-md mx-auto">
+      <Card>
+        <CardHeader>
+          <CardTitle>Welcome to Mad UI</CardTitle>
+        </CardHeader>
+        <CardContent className="space-y-4">
+          <Input placeholder="Enter your name..." />
+          <Button className="w-full" variant="default">
+            Get Started
+          </Button>
+        </CardContent>
+      </Card>
+  )
+}`}
+                      filename="app.tsx"
+                    />
+                  </div>
+                </div>
+                
+                <div className="space-y-6">
+                  <h4 className="font-semibold text-lg flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-primary" />
+                    Live Preview
+                  </h4>
+                  <div className="p-8 border-2 border-dashed border-slate-300 dark:border-slate-700 rounded-xl bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900/50 dark:to-slate-800/50">
+                    <Card className="max-w-sm mx-auto shadow-lg">
+                      <CardHeader>
+                        <CardTitle>Welcome to Mad UI</CardTitle>
+                      </CardHeader>
+                      <CardContent className="space-y-4">
+                        <input 
+                          placeholder="Enter your name..." 
+                          className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+                        />
+                        <Button className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg">
+                          Get Started
+                        </Button>
+                      </CardContent>
+                    </Card>
+                  </div>
+                  <div className="text-center">
+                    <Badge variant="outline" className="px-4 py-2 bg-green-50 dark:bg-green-950/20 border-green-200 dark:border-green-800">
+                      <CheckCircle className="h-4 w-4 mr-2 text-green-600 dark:text-green-400" />
+                      <span className="text-green-800 dark:text-green-300 font-medium">
+                        🎉 Your first Mad UI component is ready!
+                      </span>
+                    </Badge>
+                  </div>
+                </div>
+              </div>
+            </StepCard>
+          </section>
+
+          {/* Next Steps */}
+          <section className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-800">
+            <div className="text-center mb-16">
+              <Badge variant="outline" className="mb-4 px-4 py-2 text-sm font-semibold border-primary/20 bg-primary/5">
+                <Sparkles className="h-4 w-4 mr-2" />
+                What&apos;s Next?
+              </Badge>
+              <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Continue Your Journey</h2>
+              <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed">
+                Explore our comprehensive component library and master advanced techniques to build exceptional user interfaces.
+              </p>
+            </div>
+            
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {([
+                {
+                  icon: Package,
+                  title: "Explore Components",
+                  description: "Browse our complete collection of 50+ production-ready components with live examples and comprehensive documentation.",
+                  gradient: "bg-gradient-to-br from-blue-500 to-purple-500",
+                  buttonText: "View All Components",
+                  buttonVariant: "primary" as const
+                },
+                {
+                  icon: Download,
+                  title: "Advanced Setup",
+                  description: "Learn advanced installation techniques, theming, customization, and project configuration best practices.",
+                  gradient: "bg-gradient-to-br from-emerald-500 to-green-500",
+                  buttonText: "Installation Guide",
+                  buttonVariant: "outline" as const
+                },
+                {
+                  icon: Code,
+                  title: "Live Examples",
+                  description: "Explore real-world examples, templates, and learn advanced patterns from our comprehensive showcase.",
+                  gradient: "bg-gradient-to-br from-orange-500 to-red-500",
+                  buttonText: "View Examples",
+                  buttonVariant: "ghost" as const
+                }
+              ] as const).map((item, index) => (
+                <Card key={index} className="group hover:shadow-2xl hover:shadow-primary/10 transition-all duration-500 border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-br from-white to-slate-50/50 dark:from-slate-900/50 dark:to-slate-900/20">
+                  <CardHeader className="pb-6">
+                    <div className={`w-14 h-14 rounded-2xl ${item.gradient} flex items-center justify-center mb-6 group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
+                      <item.icon className="h-7 w-7 text-white" />
+                    </div>
+                    <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors">
+                      {item.title}
+                    </CardTitle>
+                    <CardDescription className="text-base leading-relaxed">
+                      {item.description}
+                    </CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <Button 
+                      variant={item.buttonVariant} 
+                      className={`w-full group/btn transition-all duration-300 ${
+                        item.buttonVariant === 'primary' 
+                          ? 'bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg' 
+                          : item.buttonVariant === 'outline'
+                          ? 'border-2 hover:bg-primary hover:text-primary-foreground'
+                          : 'hover:bg-slate-100 dark:hover:bg-slate-800'
+                      }`}
+                    >
+                      <span className="flex items-center">
+                        {item.buttonText}
+                        <ArrowRight className="ml-2 h-4 w-4 group-hover/btn:translate-x-1 transition-transform" />
+                      </span>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
+  )
+}
