@@ -1,9 +1,10 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "mad-ui-components/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
 import { Badge } from "mad-ui-components/badge"
 import { 
-  Package, 
   MousePointer, 
   Type, 
   Square, 
@@ -164,7 +165,7 @@ export default function CoreComponentsPage() {
                 </div>
               </div>
 
-              <Button asChild className="w-full" variant="outline">
+              <Button className="w-full" variant="outline">
                 <Link href={component.href}>
                   View Component
                 </Link>
@@ -215,10 +216,10 @@ export default function CoreComponentsPage() {
           Install Mad UI components and start building beautiful interfaces today.
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
-          <Button variant="secondary" size="lg" asChild>
+          <Button variant="secondary" size="lg">
             <Link href="/docs/getting-started">Get Started</Link>
           </Button>
-          <Button variant="outline" size="lg" asChild>
+          <Button variant="outline" size="lg">
             <Link href="/docs/installation">Installation Guide</Link>
           </Button>
         </div>

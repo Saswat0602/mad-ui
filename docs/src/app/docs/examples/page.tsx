@@ -1,32 +1,21 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "mad-ui-components/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
-import { Badge } from "mad-ui-components/badge"
+
 import { Input } from "mad-ui-components/input"
 import { Label } from "mad-ui-components/label"
 import { Checkbox } from "mad-ui-components/checkbox"
 import { RadioGroup, RadioGroupItem } from "mad-ui-components/radio-group"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "mad-ui-components/select"
+import { Select } from "mad-ui-components/select"
 import { Textarea } from "mad-ui-components/textarea"
 import { Switch } from "mad-ui-components/switch"
 import { Slider } from "mad-ui-components/slider"
 import { Progress } from "mad-ui-components/progress"
 import { Rating } from "mad-ui-components/rating"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "mad-ui-components/tabs"
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "mad-ui-components/accordion"
-import { 
-  User, 
-  Mail, 
-  Phone, 
-  MapPin, 
-  Calendar,
-  Clock,
-  Star,
-  Settings,
-  Bell,
-  Shield,
-  Palette
-} from "lucide-react"
+import { Tabs } from "mad-ui-components/tabs"
+import { Accordion } from "mad-ui-components/accordion"
 
 export default function ExamplesPage() {
   return (
@@ -83,17 +72,15 @@ export default function ExamplesPage() {
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="country">Country</Label>
-                  <Select>
-                    <SelectTrigger>
-                      <SelectValue placeholder="Select country" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="us">United States</SelectItem>
-                      <SelectItem value="ca">Canada</SelectItem>
-                      <SelectItem value="uk">United Kingdom</SelectItem>
-                      <SelectItem value="au">Australia</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  <Select
+                    options={[
+                      { value: "us", label: "United States" },
+                      { value: "ca", label: "Canada" },
+                      { value: "uk", label: "United Kingdom" },
+                      { value: "au", label: "Australia" }
+                    ]}
+                    placeholder="Select country"
+                  />
                 </div>
               </div>
 
@@ -117,25 +104,28 @@ export default function ExamplesPage() {
 
               <div className="space-y-3">
                 <Label>Theme Preference</Label>
-                <RadioGroup defaultValue="light">
+                <RadioGroup>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="light" id="light" />
-                    <Label htmlFor="light">Light</Label>
+                    <RadioGroupItem value="light">
+                      <Label htmlFor="light">Light</Label>
+                    </RadioGroupItem>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="dark" id="dark" />
-                    <Label htmlFor="dark">Dark</Label>
+                    <RadioGroupItem value="dark">
+                      <Label htmlFor="dark">Dark</Label>
+                    </RadioGroupItem>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <RadioGroupItem value="system" id="system" />
-                    <Label htmlFor="system">System</Label>
+                    <RadioGroupItem value="system">
+                      <Label htmlFor="system">System</Label>
+                    </RadioGroupItem>
                   </div>
                 </RadioGroup>
               </div>
 
               <div className="space-y-3">
                 <Label>Notification Volume</Label>
-                <Slider defaultValue={[50]} max={100} step={1} className="w-full" />
+                <Slider value={50} max={100} step={1} className="w-full" />
                 <div className="flex justify-between text-sm text-muted-foreground">
                   <span>Quiet</span>
                   <span>Loud</span>
@@ -150,7 +140,7 @@ export default function ExamplesPage() {
 
               <div className="space-y-3">
                 <Label>Rate your experience</Label>
-                <Rating defaultValue={4} />
+                <Rating value={4} />
               </div>
 
               <div className="flex gap-3">
@@ -172,149 +162,155 @@ export default function ExamplesPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="general" className="w-full">
-                <TabsList className="grid w-full grid-cols-4">
-                  <TabsTrigger value="general">General</TabsTrigger>
-                  <TabsTrigger value="appearance">Appearance</TabsTrigger>
-                  <TabsTrigger value="notifications">Notifications</TabsTrigger>
-                  <TabsTrigger value="security">Security</TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="general" className="space-y-4 mt-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Auto-save</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Automatically save your work every few minutes
-                        </p>
+              <Tabs 
+                items={[
+                  { 
+                    id: 'general', 
+                    label: 'General', 
+                    content: (
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <Label>Auto-save</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Automatically save your work every few minutes
+                            </p>
+                          </div>
+                          <Switch />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <Label>Offline mode</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Allow working without internet connection
+                            </p>
+                          </div>
+                          <Switch />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <Label>Analytics</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Help improve the app by sending usage data
+                            </p>
+                          </div>
+                          <Switch />
+                        </div>
                       </div>
-                      <Switch />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Offline mode</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Allow working without internet connection
-                        </p>
+                    )
+                  },
+                  { 
+                    id: 'appearance', 
+                    label: 'Appearance', 
+                    content: (
+                      <div className="space-y-4">
+                        <div className="space-y-2">
+                          <Label>Theme</Label>
+                          <Select
+                            options={[
+                              { value: "light", label: "Light" },
+                              { value: "dark", label: "Dark" },
+                              { value: "auto", label: "Auto" }
+                            ]}
+                            placeholder="Select theme"
+                          />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Font Size</Label>
+                          <Slider value={16} min={12} max={24} step={1} className="w-full" />
+                          <div className="flex justify-between text-sm text-muted-foreground">
+                            <span>Small</span>
+                            <span>Large</span>
+                          </div>
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Color Scheme</Label>
+                          <div className="grid grid-cols-3 gap-2">
+                            <Button variant="outline" size="sm" className="h-12">Blue</Button>
+                            <Button variant="outline" size="sm" className="h-12">Green</Button>
+                            <Button variant="outline" size="sm" className="h-12">Purple</Button>
+                          </div>
+                        </div>
                       </div>
-                      <Switch />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Analytics</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Help improve the app by sending usage data
-                        </p>
+                    )
+                  },
+                  { 
+                    id: 'notifications', 
+                    label: 'Notifications', 
+                    content: (
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <Label>Email notifications</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Receive notifications via email
+                            </p>
+                          </div>
+                          <Switch />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <Label>Push notifications</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Receive push notifications
+                            </p>
+                          </div>
+                          <Switch />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <Label>Sound alerts</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Play sounds for important notifications
+                            </p>
+                          </div>
+                          <Switch />
+                        </div>
                       </div>
-                      <Switch />
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="appearance" className="space-y-4 mt-6">
-                  <div className="space-y-4">
-                    <div className="space-y-2">
-                      <Label>Theme</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select theme" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="light">Light</SelectItem>
-                          <SelectItem value="dark">Dark</SelectItem>
-                          <SelectItem value="auto">Auto</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Font Size</Label>
-                      <Slider defaultValue={[16]} min={12} max={24} step={1} className="w-full" />
-                      <div className="flex justify-between text-sm text-muted-foreground">
-                        <span>Small</span>
-                        <span>Large</span>
+                    )
+                  },
+                  { 
+                    id: 'security', 
+                    label: 'Security', 
+                    content: (
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <Label>Two-factor authentication</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Add an extra layer of security to your account
+                            </p>
+                          </div>
+                          <Switch />
+                        </div>
+                        <div className="flex items-center justify-between">
+                          <div className="space-y-0.5">
+                            <Label>Login notifications</Label>
+                            <p className="text-sm text-muted-foreground">
+                              Get notified of new login attempts
+                            </p>
+                          </div>
+                          <Switch />
+                        </div>
+                        <div className="space-y-2">
+                          <Label>Session timeout</Label>
+                          <Select
+                            options={[
+                              { value: "15", label: "15 minutes" },
+                              { value: "30", label: "30 minutes" },
+                              { value: "60", label: "1 hour" },
+                              { value: "never", label: "Never" }
+                            ]}
+                            placeholder="Select timeout"
+                          />
+                        </div>
                       </div>
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Color Scheme</Label>
-                      <div className="grid grid-cols-3 gap-2">
-                        <Button variant="outline" size="sm" className="h-12">Blue</Button>
-                        <Button variant="outline" size="sm" className="h-12">Green</Button>
-                        <Button variant="outline" size="sm" className="h-12">Purple</Button>
-                      </div>
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="notifications" className="space-y-4 mt-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Email notifications</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive notifications via email
-                        </p>
-                      </div>
-                      <Switch />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Push notifications</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Receive push notifications
-                        </p>
-                      </div>
-                      <Switch />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Sound alerts</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Play sound for notifications
-                        </p>
-                      </div>
-                      <Switch />
-                    </div>
-                  </div>
-                </TabsContent>
-
-                <TabsContent value="security" className="space-y-4 mt-6">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Two-factor authentication</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Add an extra layer of security
-                        </p>
-                      </div>
-                      <Switch />
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <div className="space-y-0.5">
-                        <Label>Biometric login</Label>
-                        <p className="text-sm text-muted-foreground">
-                          Use fingerprint or face ID
-                        </p>
-                      </div>
-                      <Switch />
-                    </div>
-                    <div className="space-y-2">
-                      <Label>Session timeout</Label>
-                      <Select>
-                        <SelectTrigger>
-                          <SelectValue placeholder="Select timeout" />
-                        </SelectTrigger>
-                        <SelectContent>
-                          <SelectItem value="15">15 minutes</SelectItem>
-                          <SelectItem value="30">30 minutes</SelectItem>
-                          <SelectItem value="60">1 hour</SelectItem>
-                          <SelectItem value="never">Never</SelectItem>
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  </div>
-                </TabsContent>
-              </Tabs>
+                    )
+                  }
+                ]}
+                defaultActiveTab="general"
+                className="w-full"
+              />
             </CardContent>
           </Card>
         </section>
@@ -330,38 +326,36 @@ export default function ExamplesPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Accordion type="single" collapsible className="w-full">
-                <AccordionItem value="item-1">
-                  <AccordionTrigger>How do I install Mad UI components?</AccordionTrigger>
-                  <AccordionContent>
-                    You can install Mad UI components using npm, yarn, or pnpm. Run <code>npm install mad-ui-components</code> in your project directory.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-2">
-                  <AccordionTrigger>Can I customize the components?</AccordionTrigger>
-                  <AccordionContent>
-                    Yes! You can either import components and override styles with Tailwind classes, or copy them to your project for full customization control.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-3">
-                  <AccordionTrigger>What's the difference between importing and copying?</AccordionTrigger>
-                  <AccordionContent>
-                    Importing gives you smaller bundle sizes but limited customization. Copying gives you full control but requires managing the code yourself.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-4">
-                  <AccordionTrigger>Do I need Tailwind CSS?</AccordionTrigger>
-                  <AccordionContent>
-                    Yes, Mad UI components are built with Tailwind CSS and require it to function properly. Make sure to configure Tailwind in your project.
-                  </AccordionContent>
-                </AccordionItem>
-                <AccordionItem value="item-5">
-                  <AccordionTrigger>How do I get help or report issues?</AccordionTrigger>
-                  <AccordionContent>
-                    You can report issues on our GitHub repository or reach out to our support team. We're always happy to help!
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
+              <Accordion 
+                items={[
+                  {
+                    id: "item-1",
+                    title: "How do I install Mad UI components?",
+                    content: "You can install Mad UI components using npm, yarn, or pnpm. Run npm install mad-ui-components in your project directory."
+                  },
+                  {
+                    id: "item-2",
+                    title: "Can I customize the components?",
+                    content: "Yes! You can either import components and override styles with Tailwind classes, or copy them to your project for full customization control."
+                  },
+                  {
+                    id: "item-3",
+                    title: "What&apos;s the difference between importing and copying?",
+                    content: "Importing gives you smaller bundle sizes but limited customization. Copying gives you full control but requires managing the code yourself."
+                  },
+                  {
+                    id: "item-4",
+                    title: "Do I need Tailwind CSS?",
+                    content: "Yes, Mad UI components are built with Tailwind CSS and require it to function properly. Make sure to configure Tailwind in your project."
+                  },
+                  {
+                    id: "item-5",
+                    title: "How do I get help or report issues?",
+                    content: "You can report issues on our GitHub repository or reach out to our support team. We&apos;re always happy to help!"
+                  }
+                ]}
+                className="w-full"
+              />
             </CardContent>
           </Card>
         </section>
@@ -377,10 +371,10 @@ export default function ExamplesPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex flex-col sm:flex-row gap-3 justify-center">
-                <Button asChild size="lg">
+                <Button size="lg">
                   <Link href="/docs/getting-started">Get Started</Link>
                 </Button>
-                <Button variant="outline" size="lg" asChild>
+                <Button variant="outline" size="lg">
                   <Link href="/docs/components">Browse Components</Link>
                 </Button>
               </div>

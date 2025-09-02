@@ -1,13 +1,14 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "mad-ui-components/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
-import { Badge } from "mad-ui-components/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "mad-ui-components/tabs"
+
+import { Tabs } from "mad-ui-components/tabs"
 import { 
   Package, 
   Copy, 
   Code, 
-  Download, 
   Settings, 
   Zap,
   CheckCircle,
@@ -39,28 +40,39 @@ export default function InstallationPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="npm" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="npm">npm</TabsTrigger>
-                  <TabsTrigger value="yarn">yarn</TabsTrigger>
-                  <TabsTrigger value="pnpm">pnpm</TabsTrigger>
-                </TabsList>
-                <TabsContent value="npm" className="mt-4">
-                  <div className="bg-muted p-4 rounded-lg">
-                    <code className="text-sm">npm install mad-ui-components</code>
-                  </div>
-                </TabsContent>
-                <TabsContent value="yarn" className="mt-4">
-                  <div className="bg-muted p-4 rounded-lg">
-                    <code className="text-sm">yarn add mad-ui-components</code>
-                  </div>
-                </TabsContent>
-                <TabsContent value="pnpm" className="mt-4">
-                  <div className="bg-muted p-4 rounded-lg">
-                    <code className="text-sm">pnpm add mad-ui-components</code>
-                  </div>
-                </TabsContent>
-              </Tabs>
+              <Tabs
+                items={[
+                  {
+                    id: 'npm',
+                    label: 'npm',
+                    content: (
+                      <div className="bg-muted p-4 rounded-lg">
+                        <code className="text-sm">npm install mad-ui-components</code>
+                      </div>
+                    )
+                  },
+                  {
+                    id: 'yarn',
+                    label: 'yarn',
+                    content: (
+                      <div className="bg-muted p-4 rounded-lg">
+                        <code className="text-sm">yarn add mad-ui-components</code>
+                      </div>
+                    )
+                  },
+                  {
+                    id: 'pnpm',
+                    label: 'pnpm',
+                    content: (
+                      <div className="bg-muted p-4 rounded-lg">
+                        <code className="text-sm">pnpm add mad-ui-components</code>
+                      </div>
+                    )
+                  }
+                ]}
+                defaultActiveTab="npm"
+                className="w-full"
+              />
             </CardContent>
           </Card>
         </section>
@@ -290,7 +302,7 @@ export default function MyForm() {
                 <div>
                   <h4 className="font-medium mb-2">Component not found</h4>
                   <p className="text-sm text-muted-foreground mb-2">
-                    Make sure you've installed the package and imported correctly.
+                    Make sure you&apos;ve installed the package and imported correctly.
                   </p>
                   <div className="bg-muted p-3 rounded-lg text-sm">
                     <code>npm install mad-ui-components</code>
@@ -303,7 +315,7 @@ export default function MyForm() {
                     Ensure Tailwind CSS is properly configured and imported.
                   </p>
                   <div className="bg-muted p-3 rounded-lg text-sm">
-                    <code>@import "tailwindcss/base"; @import "tailwindcss/components"; @import "tailwindcss/utilities";</code>
+                    <code>@import &quot;tailwindcss/base&quot;; @import &quot;tailwindcss/components&quot;; @import &quot;tailwindcss/utilities&quot;;</code>
                   </div>
                 </div>
 
@@ -333,7 +345,7 @@ export default function MyForm() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button asChild className="w-full">
+                <Button className="w-full">
                   <Link href="/docs/components">View Components</Link>
                 </Button>
               </CardContent>
@@ -347,7 +359,7 @@ export default function MyForm() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" asChild className="w-full">
+                <Button variant="outline" className="w-full">
                   <Link href="/docs/getting-started">Getting Started</Link>
                 </Button>
               </CardContent>

@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "mad-ui-components/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
@@ -8,7 +10,7 @@ import {
   Layout, 
   Image, 
   Navigation, 
-  Overlay,
+  Layers,
   BarChart3,
   MessageSquare
 } from "lucide-react"
@@ -57,7 +59,7 @@ const componentCategories = [
   {
     title: "Overlay Components",
     description: "Modals, popovers, and overlays",
-    icon: Overlay,
+    icon: Layers,
     href: "/docs/components/overlay",
     components: ["Dialog", "Alert Dialog", "Popover", "Tooltip", "Hover Card", "Context Menu", "Dropdown Menu"],
     color: "bg-pink-500"
@@ -110,7 +112,7 @@ export default function ComponentsPage() {
                   </Badge>
                 ))}
               </div>
-              <Button asChild className="w-full" variant="outline">
+              <Button className="w-full" variant="outline">
                 <Link href={category.href}>
                   View Components
                 </Link>
@@ -161,10 +163,10 @@ export default function ComponentsPage() {
           Install Mad UI components and start building beautiful interfaces today.
         </p>
         <div className="flex flex-col sm:flex-row gap-3">
-          <Button variant="secondary" size="lg" asChild>
+          <Button variant="secondary" size="lg">
             <Link href="/docs/getting-started">Get Started</Link>
           </Button>
-          <Button variant="outline" size="lg" asChild>
+          <Button variant="outline" size="lg">
             <Link href="/docs/installation">Installation Guide</Link>
           </Button>
         </div>

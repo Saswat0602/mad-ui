@@ -1,8 +1,10 @@
+"use client"
+
 import { Button } from "mad-ui-components/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
 import { Badge } from "mad-ui-components/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "mad-ui-components/tabs"
-import { Code, Copy, Download, Play } from "lucide-react"
+import { Tabs } from "mad-ui-components/tabs"
+import { Copy, Download, Play } from "lucide-react"
 
 export default function ButtonPage() {
   return (
@@ -40,83 +42,91 @@ export default function ButtonPage() {
         {/* Usage */}
         <section>
           <h2 className="text-2xl font-semibold mb-4">Usage</h2>
-          <Tabs defaultValue="import" className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="import">Import</TabsTrigger>
-              <TabsTrigger value="copy">Copy Component</TabsTrigger>
-              <TabsTrigger value="basic">Basic Usage</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="import" className="mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Individual Import</CardTitle>
-                  <CardDescription>
-                    Import only the Button component for smaller bundles
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="bg-muted p-4 rounded-lg text-sm">
-                    <pre>{`import { Button } from 'mad-ui-components/button'
+          <Tabs 
+            items={[
+              { 
+                id: 'import', 
+                label: 'Import', 
+                content: (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Individual Import</CardTitle>
+                      <CardDescription>
+                        Import only the Button component for smaller bundles
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="bg-muted p-4 rounded-lg text-sm">
+                        <pre>{`import { Button } from 'mad-ui-components/button'
 
 export default function MyComponent() {
   return (
     <Button>Click me</Button>
   )
 }`}</pre>
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Bundle size: ~3KB
-                  </p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="copy" className="mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Copy Component</CardTitle>
-                  <CardDescription>
-                    Copy the Button component to your project for full customization
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="bg-muted p-4 rounded-lg text-sm">
-                    <pre>{`npx mad-ui-components copy button
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Bundle size: ~3KB
+                      </p>
+                    </CardContent>
+                  </Card>
+                )
+              },
+              { 
+                id: 'copy', 
+                label: 'Copy Component', 
+                content: (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Copy Component</CardTitle>
+                      <CardDescription>
+                        Copy the Button component to your project for full customization
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="bg-muted p-4 rounded-lg text-sm">
+                        <pre>{`npx mad-ui-components copy button
 
 # This creates:
 # components/ui/mad-ui/button.tsx`}</pre>
-                  </div>
-                  <p className="text-sm text-muted-foreground mt-2">
-                    Bundle size: 0KB (only what you use)
-                  </p>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="basic" className="mt-4">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Basic Usage</CardTitle>
-                  <CardDescription>
-                    Simple button with default styling
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                    <div className="bg-muted p-4 rounded-lg text-sm">
-                      <pre>{`import { Button } from 'mad-ui-components/button'
+                      </div>
+                      <p className="text-sm text-muted-foreground mt-2">
+                        Bundle size: 0KB (only what you use)
+                      </p>
+                    </CardContent>
+                  </Card>
+                )
+              },
+              { 
+                id: 'basic', 
+                label: 'Basic Usage', 
+                content: (
+                  <Card>
+                    <CardHeader>
+                      <CardTitle>Basic Usage</CardTitle>
+                      <CardDescription>
+                        Simple button with default styling
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-4">
+                        <div className="bg-muted p-4 rounded-lg text-sm">
+                          <pre>{`import { Button } from 'mad-ui-components/button'
 
 <Button>Click me</Button>`}</pre>
-                    </div>
-                    <div className="p-4 border rounded-lg">
-                      <Button>Click me</Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-          </Tabs>
+                        </div>
+                        <div className="p-4 border rounded-lg">
+                          <Button>Click me</Button>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                )
+              }
+            ]}
+            defaultActiveTab="import"
+            className="w-full"
+          />
         </section>
 
         {/* Variants */}
@@ -132,10 +142,10 @@ export default function MyComponent() {
             <CardContent>
               <div className="space-y-6">
                 <div>
-                  <h4 className="font-medium mb-3">Default Variant</h4>
+                  <h4 className="font-medium mb-3">Primary Variant</h4>
                   <div className="flex flex-wrap gap-3">
-                    <Button variant="default">Default</Button>
-                    <Button variant="default" disabled>Disabled</Button>
+                    <Button variant="primary">Primary</Button>
+                    <Button variant="primary" disabled>Disabled</Button>
                   </div>
                 </div>
 
@@ -148,10 +158,10 @@ export default function MyComponent() {
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-3">Destructive Variant</h4>
+                  <h4 className="font-medium mb-3">Error Variant</h4>
                   <div className="flex flex-wrap gap-3">
-                    <Button variant="destructive">Destructive</Button>
-                    <Button variant="destructive" disabled>Disabled</Button>
+                    <Button variant="error">Error</Button>
+                    <Button variant="error" disabled>Disabled</Button>
                   </div>
                 </div>
 
@@ -172,10 +182,10 @@ export default function MyComponent() {
                 </div>
 
                 <div>
-                  <h4 className="font-medium mb-3">Link Variant</h4>
+                  <h4 className="font-medium mb-3">Ghost Variant</h4>
                   <div className="flex flex-wrap gap-3">
-                    <Button variant="link">Link</Button>
-                    <Button variant="link" disabled>Disabled</Button>
+                    <Button variant="ghost">Ghost</Button>
+                    <Button variant="ghost" disabled>Disabled</Button>
                   </div>
                 </div>
               </div>
@@ -199,11 +209,9 @@ export default function MyComponent() {
                   <h4 className="font-medium mb-3">Size Variants</h4>
                   <div className="flex flex-wrap items-center gap-3">
                     <Button size="sm">Small</Button>
-                    <Button size="default">Default</Button>
+                    <Button size="md">Medium</Button>
                     <Button size="lg">Large</Button>
-                    <Button size="icon" className="w-10 h-10">
-                      <Play className="h-4 w-4" />
-                    </Button>
+                    <Button size="xl">Extra Large</Button>
                   </div>
                 </div>
 
@@ -214,7 +222,7 @@ export default function MyComponent() {
                       <Download className="mr-2 h-4 w-4" />
                       Download
                     </Button>
-                    <Button size="default">
+                    <Button size="md">
                       <Copy className="mr-2 h-4 w-4" />
                       Copy
                     </Button>
@@ -286,7 +294,7 @@ export default function MyComponent() {
                     <Button variant="outline" type="button">Cancel</Button>
                   </div>
                   <div className="flex gap-2">
-                    <Button variant="destructive" size="sm">Delete</Button>
+                    <Button variant="error" size="sm">Delete</Button>
                     <Button variant="ghost" size="sm">Archive</Button>
                   </div>
                 </div>

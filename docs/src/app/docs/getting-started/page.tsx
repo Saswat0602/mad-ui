@@ -1,8 +1,10 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "mad-ui-components/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
-import { Badge } from "mad-ui-components/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "mad-ui-components/tabs"
+
+import { Tabs } from "mad-ui-components/tabs"
 import { Code, Package, Copy, Zap } from "lucide-react"
 
 export default function GettingStartedPage() {
@@ -30,28 +32,39 @@ export default function GettingStartedPage() {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <Tabs defaultValue="npm" className="w-full">
-                <TabsList className="grid w-full grid-cols-3">
-                  <TabsTrigger value="npm">npm</TabsTrigger>
-                  <TabsTrigger value="yarn">yarn</TabsTrigger>
-                  <TabsTrigger value="pnpm">pnpm</TabsTrigger>
-                </TabsList>
-                <TabsContent value="npm" className="mt-4">
-                  <div className="bg-muted p-4 rounded-lg">
-                    <code className="text-sm">npm install mad-ui-components</code>
-                  </div>
-                </TabsContent>
-                <TabsContent value="yarn" className="mt-4">
-                  <div className="bg-muted p-4 rounded-lg">
-                    <code className="text-sm">yarn add mad-ui-components</code>
-                  </div>
-                </TabsContent>
-                <TabsContent value="pnpm" className="mt-4">
-                  <div className="bg-muted p-4 rounded-lg">
-                    <code className="text-sm">pnpm add mad-ui-components</code>
-                  </div>
-                </TabsContent>
-              </Tabs>
+              <Tabs
+                items={[
+                  {
+                    id: 'npm',
+                    label: 'npm',
+                    content: (
+                      <div className="bg-muted p-4 rounded-lg">
+                        <code className="text-sm">npm install mad-ui-components</code>
+                      </div>
+                    )
+                  },
+                  {
+                    id: 'yarn',
+                    label: 'yarn',
+                    content: (
+                      <div className="bg-muted p-4 rounded-lg">
+                        <code className="text-sm">yarn add mad-ui-components</code>
+                      </div>
+                    )
+                  },
+                  {
+                    id: 'pnpm',
+                    label: 'pnpm',
+                    content: (
+                      <div className="bg-muted p-4 rounded-lg">
+                        <code className="text-sm">pnpm add mad-ui-components</code>
+                      </div>
+                    )
+                  }
+                ]}
+                defaultActiveTab="npm"
+                className="w-full"
+              />
             </CardContent>
           </Card>
         </section>
@@ -149,7 +162,7 @@ export default function MyComponent() {
                 <div>
                   <h4 className="font-medium mb-2">3. Result</h4>
                   <div className="p-4 border rounded-lg">
-                    <Button variant="default" size="lg">
+                    <Button variant="primary" size="lg">
                       Click me
                     </Button>
                   </div>
@@ -171,7 +184,7 @@ export default function MyComponent() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button asChild className="w-full">
+                <Button className="w-full">
                   <Link href="/docs/components">View Components</Link>
                 </Button>
               </CardContent>
@@ -185,7 +198,7 @@ export default function MyComponent() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <Button variant="outline" asChild className="w-full">
+                <Button variant="outline" className="w-full">
                   <Link href="/docs/installation">Installation Guide</Link>
                 </Button>
               </CardContent>

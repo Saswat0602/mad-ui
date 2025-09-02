@@ -1,3 +1,5 @@
+"use client"
+
 import Link from "next/link"
 import { Button } from "mad-ui-components/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
@@ -9,8 +11,7 @@ import {
   Zap, 
   Palette, 
   Smartphone,
-  Layers,
-  Sparkles
+  Layers
 } from "lucide-react"
 
 export default function HomePage() {
@@ -31,13 +32,13 @@ export default function HomePage() {
             Copy components, customize them, and ship faster.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button asChild size="lg" className="text-lg px-8 py-6">
+            <Button size="lg" className="text-lg px-8 py-6">
               <Link href="/docs/getting-started">
                 Get Started
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
+            <Button variant="outline" size="lg" className="text-lg px-8 py-6">
               <Link href="/docs/components">
                 View Components
               </Link>
@@ -54,7 +55,7 @@ export default function HomePage() {
               Everything you need to build amazing UIs
             </h2>
             <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              From basic form elements to complex data displays, we've got you covered.
+              From basic form elements to complex data displays, we&apos;ve got you covered.
             </p>
           </div>
           
@@ -149,7 +150,7 @@ export default function HomePage() {
                   <Badge variant="secondary">Card</Badge>
                   <Badge variant="secondary">Label</Badge>
                 </div>
-                <Button variant="outline" size="sm" className="w-full" asChild>
+                <Button variant="outline" size="sm" className="w-full">
                   <Link href="/docs/components/core">View All</Link>
                 </Button>
               </CardContent>
@@ -169,7 +170,7 @@ export default function HomePage() {
                   <Badge variant="secondary">Date Picker</Badge>
                   <Badge variant="secondary">Select</Badge>
                 </div>
-                <Button variant="outline" size="sm" className="w-full" asChild>
+                <Button variant="outline" size="sm" className="w-full">
                   <Link href="/docs/components/forms">View All</Link>
                 </Button>
               </CardContent>
@@ -189,7 +190,7 @@ export default function HomePage() {
                   <Badge variant="secondary">Modal</Badge>
                   <Badge variant="secondary">Sheet</Badge>
                 </div>
-                <Button variant="outline" size="sm" className="w-full" asChild>
+                <Button variant="outline" size="sm" className="w-full">
                   <Link href="/docs/components/layout">View All</Link>
                 </Button>
               </CardContent>
@@ -208,13 +209,13 @@ export default function HomePage() {
             Join thousands of developers building better UIs with Mad UI components.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button variant="secondary" size="lg" className="text-lg px-8 py-6" asChild>
+            <Button variant="secondary" size="lg" className="text-lg px-8 py-6" >
               <Link href="/docs/getting-started">
                 Start Building
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Link>
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8 py-6" asChild>
+            <Button variant="outline" size="lg" className="text-lg px-8 py-6" >
               <Link href="https://github.com/your-username/mad-ui-components">
                 View on GitHub
               </Link>
