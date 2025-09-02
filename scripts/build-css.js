@@ -1,32 +1,78 @@
-const { execSync } = require('child_process')
-const fs = require('fs')
-const path = require('path')
+const fs = require('fs');
+const path = require('path');
 
-// Ensure dist directory exists
-const distDir = path.join(__dirname, '../dist')
-if (!fs.existsSync(distDir)) {
-  fs.mkdirSync(distDir, { recursive: true })
-}
+console.log('🔨 Building optimized CSS...');
 
-// Build CSS using Tailwind CLI
-try {
-  // Check if tailwindcss is available
-  const tailwindPath = path.join(__dirname, '../node_modules/.bin/tailwindcss')
-  if (fs.existsSync(tailwindPath)) {
-    execSync(`${tailwindPath} -i ./src/styles.css -o ./dist/styles.css --minify`, {
+// Check if Tailwind CLI is available
+const tailwindPath = path.join(__dirname, '../node_modules/.bin/tailwindcss');
+const tailwindExists = fs.existsSync(tailwindPath);
+
+if (tailwindExists) {
+  // Use Tailwind CLI with purging
+  const { execSync } = require('child_process');
+  
+  try {
+    // Build with purging to remove unused styles
+    execSync(`${tailwindPath} src/styles.css -o dist/styles.css --minify`, {
       stdio: 'inherit',
       cwd: path.join(__dirname, '..')
-    })
-    console.log('✅ CSS built successfully')
-  } else {
-    // Fallback: copy the source CSS file
-    const sourceCSS = path.join(__dirname, '../src/styles.css')
-    const targetCSS = path.join(__dirname, '../dist/styles.css')
-    fs.copyFileSync(sourceCSS, targetCSS)
-    console.log('✅ CSS copied (Tailwind CLI not available)')
+    });
+    
+    // Read the built CSS and remove unnecessary whitespace
+    let css = fs.readFileSync('dist/styles.css', 'utf8');
+    
+    // Remove comments and extra whitespace
+    css = css
+      .replace(/\/\*[\s\S]*?\*\//g, '') // Remove CSS comments
+      .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+      .replace(/\s*{\s*/g, '{') // Remove spaces around braces
+      .replace(/\s*}\s*/g, '}') // Remove spaces around braces
+      .replace(/\s*:\s*/g, ':') // Remove spaces around colons
+      .replace(/\s*;\s*/g, ';') // Remove spaces around semicolons
+      .replace(/\s*,\s*/g, ',') // Remove spaces around commas
+      .trim();
+    
+    fs.writeFileSync('dist/styles.css', css);
+    
+    const stats = fs.statSync('dist/styles.css');
+    const sizeKB = (stats.size / 1024).toFixed(2);
+    
+    console.log(`✅ CSS built and optimized: ${sizeKB} KB`);
+  } catch (error) {
+    console.error('❌ Tailwind build failed, falling back to copy method');
+    fallbackCopy();
   }
-} catch (error) {
-  console.error('❌ Error building CSS:', error)
-  // Don't exit, just log the error
-  console.log('⚠️  Continuing without CSS build...')
+} else {
+  fallbackCopy();
+}
+
+function fallbackCopy() {
+  try {
+    // Copy source CSS file
+    fs.copyFileSync('src/styles.css', 'dist/styles.css');
+    
+    // Read and optimize the CSS
+    let css = fs.readFileSync('dist/styles.css', 'utf8');
+    
+    // Remove comments and extra whitespace
+    css = css
+      .replace(/\/\*[\s\S]*?\*\//g, '') // Remove CSS comments
+      .replace(/\s+/g, ' ') // Replace multiple spaces with single space
+      .replace(/\s*{\s*/g, '{') // Remove spaces around braces
+      .replace(/\s*}\s*/g, '}') // Remove spaces around braces
+      .replace(/\s*:\s*/g, ':') // Remove spaces around colons
+      .replace(/\s*;\s*/g, ';') // Remove spaces around semicolons
+      .replace(/\s*,\s*/g, ',') // Remove spaces around commas
+      .trim();
+    
+    fs.writeFileSync('dist/styles.css', css);
+    
+    const stats = fs.statSync('dist/styles.css');
+    const sizeKB = (stats.size / 1024).toFixed(2);
+    
+    console.log(`✅ CSS copied and optimized: ${sizeKB} KB`);
+  } catch (error) {
+    console.error('❌ CSS copy failed:', error.message);
+    process.exit(1);
+  }
 }

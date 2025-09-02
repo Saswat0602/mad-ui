@@ -14,7 +14,10 @@
     "./styles": "./dist/styles.css"
   },
   "files": [
-    "dist"
+    "dist/index.js",
+    "dist/index.mjs",
+    "dist/index.d.ts",
+    "dist/styles.css"
   ],
   "scripts": {
     "build": "tsup",

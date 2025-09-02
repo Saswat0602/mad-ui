@@ -4,51 +4,39 @@
 
 @layer base {
   :root {
-    /* Background colors */
+    /* Essential Background colors */
     --bg-primary: #ffffff;
     --bg-secondary: #f8fafc;
     --bg-tertiary: #f1f5f9;
     --bg-card: #ffffff;
-    --bg-overlay: rgba(0, 0, 0, 0.5);
     
-    /* Text colors */
+    /* Essential Text colors */
     --text-primary: #0f172a;
     --text-secondary: #475569;
     --text-muted: #64748b;
-    --text-inverse: #ffffff;
     
-    /* Border colors */
+    /* Essential Border colors */
     --border-primary: #e2e8f0;
     --border-secondary: #cbd5e1;
-    --border-focus: #3b82f6;
     
-    /* Accent colors */
+    /* Essential Accent colors */
     --accent-primary: #3b82f6;
-    --accent-secondary: #2563eb;
+    --accent-secondary: #8b5cf6;
     --accent-success: #10b981;
     --accent-warning: #f59e0b;
     --accent-error: #ef4444;
-    --accent-info: #06b6d4;
     
-    /* Shadow colors */
+    /* Essential Shadow colors */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
     
-    /* Status colors */
-    --success: #10b981;
-    --warning: #f59e0b;
-    --error: #ef4444;
-    --info: #06b6d4;
-    
-    /* Legacy shadcn variables for compatibility */
+    /* Essential shadcn variables */
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
     --primary: 222.2 47.4% 11.2%;
     --primary-foreground: 210 40% 98%;
     --secondary: 210 40% 96%;
@@ -66,51 +54,39 @@
   }
 
   .dark {
-    /* Background colors */
+    /* Essential Background colors */
     --bg-primary: #0f172a;
     --bg-secondary: #1e293b;
     --bg-tertiary: #334155;
     --bg-card: #1e293b;
-    --bg-overlay: rgba(0, 0, 0, 0.7);
     
-    /* Text colors */
+    /* Essential Text colors */
     --text-primary: #f8fafc;
     --text-secondary: #cbd5e1;
     --text-muted: #94a3b8;
-    --text-inverse: #0f172a;
     
-    /* Border colors */
+    /* Essential Border colors */
     --border-primary: #334155;
     --border-secondary: #475569;
-    --border-focus: #60a5fa;
     
-    /* Accent colors */
+    /* Essential Accent colors */
     --accent-primary: #60a5fa;
-    --accent-secondary: #93c5fd;
+    --accent-secondary: #a78bfa;
     --accent-success: #34d399;
     --accent-warning: #fbbf24;
     --accent-error: #f87171;
-    --accent-info: #22d3ee;
     
-    /* Shadow colors */
+    /* Essential Shadow colors */
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
     --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
     
-    /* Status colors */
-    --success: #34d399;
-    --warning: #fbbf24;
-    --error: #f87171;
-    --info: #22d3ee;
-    
-    /* Legacy shadcn variables for compatibility */
+    /* Essential shadcn variables */
     --background: 222.2 84% 4.9%;
     --foreground: 210 40% 98%;
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
     --secondary: 217.2 32.6% 17.5%;
@@ -138,19 +114,20 @@
 
 /* Component-specific styles */
 @layer components {
+  /* Essential component base styles */
   .ui-button {
-    @apply inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    @apply inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none;
   }
   
   .ui-input {
-    @apply w-full px-3 py-2 text-sm border rounded-lg transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
+    @apply flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50;
   }
   
   .ui-card {
-    @apply rounded-lg transition-all;
+    @apply rounded-lg border bg-card text-card-foreground shadow-sm;
   }
   
   .ui-label {
-    @apply block text-sm font-medium;
+    @apply text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70;
   }
 }
