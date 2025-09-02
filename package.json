@@ -1,85 +1,310 @@
 {
   "name": "mad-ui-components",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "A modern, modular React UI component library with TypeScript support",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
   "exports": {
-    ".": { "types": "./dist/index.d.mts", "import": "./dist/index.mjs" },
-    "./core": { "types": "./dist/core.d.mts", "import": "./dist/core.mjs" },
-    "./forms": { "types": "./dist/forms.d.mts", "import": "./dist/forms.mjs" },
-    "./overlay": { "types": "./dist/overlay.d.mts", "import": "./dist/overlay.mjs" },
-    "./layout": { "types": "./dist/layout.d.mts", "import": "./dist/layout.mjs" },
-    "./data": { "types": "./dist/data.d.mts", "import": "./dist/data.mjs" },
-    "./feedback": { "types": "./dist/feedback.d.mts", "import": "./dist/feedback.mjs" },
-    "./navigation": { "types": "./dist/navigation.d.mts", "import": "./dist/navigation.mjs" },
-    "./media": { "types": "./dist/media.d.mts", "import": "./dist/media.mjs" },
-    "./utils": { "types": "./dist/utils.d.mts", "import": "./dist/utils.mjs" },
-    "./colors": { "types": "./dist/colors.d.mts", "import": "./dist/colors.mjs" },
-    "./button": { "types": "./dist/individual/button.d.mts", "import": "./dist/individual/button.mjs" },
-    "./input": { "types": "./dist/individual/input.d.mts", "import": "./dist/individual/input.mjs" },
-    "./label": { "types": "./dist/individual/label.d.mts", "import": "./dist/individual/label.mjs" },
-    "./skeleton": { "types": "./dist/individual/skeleton.d.mts", "import": "./dist/individual/skeleton.mjs" },
-    "./textarea": { "types": "./dist/individual/textarea.d.mts", "import": "./dist/individual/textarea.mjs" },
-    "./select": { "types": "./dist/individual/select.d.mts", "import": "./dist/individual/select.mjs" },
-    "./checkbox": { "types": "./dist/individual/checkbox.d.mts", "import": "./dist/individual/checkbox.mjs" },
-    "./rating": { "types": "./dist/individual/rating.d.mts", "import": "./dist/individual/rating.mjs" },
-    "./switch": { "types": "./dist/individual/switch.d.mts", "import": "./dist/individual/switch.mjs" },
-    "./progress": { "types": "./dist/individual/progress.d.mts", "import": "./dist/individual/progress.mjs" },
-    "./radio": { "types": "./dist/individual/radio.d.mts", "import": "./dist/individual/radio.mjs" },
-    "./slider": { "types": "./dist/individual/slider.d.mts", "import": "./dist/individual/slider.mjs" },
-    "./card": { "types": "./dist/individual/card.d.mts", "import": "./dist/individual/card.mjs" },
-    "./form": { "types": "./dist/individual/form.d.mts", "import": "./dist/individual/form.mjs" },
-    "./calendar": { "types": "./dist/individual/calendar.d.mts", "import": "./dist/individual/calendar.mjs" },
-    "./date-picker": { "types": "./dist/individual/date-picker.d.mts", "import": "./dist/individual/date-picker.mjs" },
-    "./timepicker": { "types": "./dist/individual/timepicker.d.mts", "import": "./dist/individual/timepicker.mjs" },
-    "./accordion": { "types": "./dist/individual/accordion.d.mts", "import": "./dist/individual/accordion.mjs" },
-    "./breadcrumbs": { "types": "./dist/individual/breadcrumbs.d.mts", "import": "./dist/individual/breadcrumbs.mjs" },
-    "./input-otp": { "types": "./dist/individual/input-otp.d.mts", "import": "./dist/individual/input-otp.mjs" },
-    "./tabs": { "types": "./dist/individual/tabs.d.mts", "import": "./dist/individual/tabs.mjs" },
-    "./radio-group": { "types": "./dist/individual/radio-group.d.mts", "import": "./dist/individual/radio-group.mjs" },
-    "./context-menu": { "types": "./dist/individual/context-menu.d.mts", "import": "./dist/individual/context-menu.mjs" },
-    "./dropdown-menu": { "types": "./dist/individual/dropdown-menu.d.mts", "import": "./dist/individual/dropdown-menu.mjs" },
-    "./collapsible": { "types": "./dist/individual/collapsible.d.mts", "import": "./dist/individual/collapsible.mjs" },
-    "./toggle": { "types": "./dist/individual/toggle.d.mts", "import": "./dist/individual/toggle.mjs" },
-    "./separator": { "types": "./dist/individual/separator.d.mts", "import": "./dist/individual/separator.mjs" },
-    "./hover-card": { "types": "./dist/individual/hover-card.d.mts", "import": "./dist/individual/hover-card.mjs" },
-    "./alert-dialog": { "types": "./dist/individual/alert-dialog.d.mts", "import": "./dist/individual/alert-dialog.mjs" },
-    "./layout-component": { "types": "./dist/individual/layout.d.mts", "import": "./dist/individual/layout.mjs" },
-    "./sidebar": { "types": "./dist/individual/sidebar.d.mts", "import": "./dist/individual/sidebar.mjs" },
-    "./navbar": { "types": "./dist/individual/navbar.d.mts", "import": "./dist/individual/navbar.mjs" },
-    "./modal": { "types": "./dist/individual/modal.d.mts", "import": "./dist/individual/modal.mjs" },
-    "./tooltip": { "types": "./dist/individual/tooltip.d.mts", "import": "./dist/individual/tooltip.mjs" },
-    "./drawer": { "types": "./dist/individual/drawer.d.mts", "import": "./dist/individual/drawer.mjs" },
-    "./resizable": { "types": "./dist/individual/resizable.d.mts", "import": "./dist/individual/resizable.mjs" },
-    "./scroll-area": { "types": "./dist/individual/scroll-area.d.mts", "import": "./dist/individual/scroll-area.mjs" },
-    "./sheet": { "types": "./dist/individual/sheet.d.mts", "import": "./dist/individual/sheet.mjs" },
-    "./popover": { "types": "./dist/individual/popover.d.mts", "import": "./dist/individual/popover.mjs" },
-    "./table": { "types": "./dist/individual/table.d.mts", "import": "./dist/individual/table.mjs" },
-    "./chart": { "types": "./dist/individual/chart.d.mts", "import": "./dist/individual/chart.mjs" },
-    "./data-table": { "types": "./dist/individual/data-table.d.mts", "import": "./dist/individual/data-table.mjs" },
-    "./alert": { "types": "./dist/individual/alert.d.mts", "import": "./dist/individual/alert.mjs" },
-    "./toast": { "types": "./dist/individual/toast.d.mts", "import": "./dist/individual/toast.mjs" },
-    "./sonner": { "types": "./dist/individual/sonner.d.mts", "import": "./dist/individual/sonner.mjs" },
-    "./menubar": { "types": "./dist/individual/menubar.d.mts", "import": "./dist/individual/menubar.mjs" },
-    "./command": { "types": "./dist/individual/command.d.mts", "import": "./dist/individual/command.mjs" },
-    "./combobox": { "types": "./dist/individual/combobox.d.mts", "import": "./dist/individual/combobox.mjs" },
-    "./navigation-menu": { "types": "./dist/individual/navigation-menu.d.mts", "import": "./dist/individual/navigation-menu.mjs" },
-    "./pagination": { "types": "./dist/individual/pagination.d.mts", "import": "./dist/individual/pagination.mjs" },
-    "./carousel": { "types": "./dist/individual/carousel.d.mts", "import": "./dist/individual/carousel.mjs" },
-    "./badge": { "types": "./dist/individual/badge.d.mts", "import": "./dist/individual/badge.mjs" },
-    "./avatar": { "types": "./dist/individual/avatar.d.mts", "import": "./dist/individual/avatar.mjs" },
-    "./aspect-ratio": { "types": "./dist/individual/aspect-ratio.d.mts", "import": "./dist/individual/aspect-ratio.mjs" },
-    "./typography": { "types": "./dist/individual/typography.d.mts", "import": "./dist/individual/typography.mjs" },
-    "./dialog": { "types": "./dist/individual/dialog.d.mts", "import": "./dist/individual/dialog.mjs" }
+    ".": {
+      "types": "./dist/index.d.mts",
+      "import": "./dist/index.mjs"
+    },
+    "./core": {
+      "types": "./dist/core.d.mts",
+      "import": "./dist/core.mjs"
+    },
+    "./forms": {
+      "types": "./dist/forms.d.mts",
+      "import": "./dist/forms.mjs"
+    },
+    "./overlay": {
+      "types": "./dist/overlay.d.mts",
+      "import": "./dist/overlay.mjs"
+    },
+    "./layout": {
+      "types": "./dist/layout.d.mts",
+      "import": "./dist/layout.mjs"
+    },
+    "./data": {
+      "types": "./dist/data.d.mts",
+      "import": "./dist/data.mjs"
+    },
+    "./feedback": {
+      "types": "./dist/feedback.d.mts",
+      "import": "./dist/feedback.mjs"
+    },
+    "./navigation": {
+      "types": "./dist/navigation.d.mts",
+      "import": "./dist/navigation.mjs"
+    },
+    "./media": {
+      "types": "./dist/media.d.mts",
+      "import": "./dist/media.mjs"
+    },
+    "./utils": {
+      "types": "./dist/utils.d.mts",
+      "import": "./dist/utils.mjs"
+    },
+    "./colors": {
+      "types": "./dist/colors.d.mts",
+      "import": "./dist/colors.mjs"
+    },
+    "./button": {
+      "types": "./dist/individual/button.d.mts",
+      "import": "./dist/individual/button.mjs"
+    },
+    "./input": {
+      "types": "./dist/individual/input.d.mts",
+      "import": "./dist/individual/input.mjs"
+    },
+    "./label": {
+      "types": "./dist/individual/label.d.mts",
+      "import": "./dist/individual/label.mjs"
+    },
+    "./skeleton": {
+      "types": "./dist/individual/skeleton.d.mts",
+      "import": "./dist/individual/skeleton.mjs"
+    },
+    "./textarea": {
+      "types": "./dist/individual/textarea.d.mts",
+      "import": "./dist/individual/textarea.mjs"
+    },
+    "./select": {
+      "types": "./dist/individual/select.d.mts",
+      "import": "./dist/individual/select.mjs"
+    },
+    "./checkbox": {
+      "types": "./dist/individual/checkbox.d.mts",
+      "import": "./dist/individual/checkbox.mjs"
+    },
+    "./rating": {
+      "types": "./dist/individual/rating.d.mts",
+      "import": "./dist/individual/rating.mjs"
+    },
+    "./switch": {
+      "types": "./dist/individual/switch.d.mts",
+      "import": "./dist/individual/switch.mjs"
+    },
+    "./progress": {
+      "types": "./dist/individual/progress.d.mts",
+      "import": "./dist/individual/progress.mjs"
+    },
+    "./radio": {
+      "types": "./dist/individual/radio.d.mts",
+      "import": "./dist/individual/radio.mjs"
+    },
+    "./slider": {
+      "types": "./dist/individual/slider.d.mts",
+      "import": "./dist/individual/slider.mjs"
+    },
+    "./card": {
+      "types": "./dist/individual/card.d.mts",
+      "import": "./dist/individual/card.mjs"
+    },
+    "./form": {
+      "types": "./dist/individual/form.d.mts",
+      "import": "./dist/individual/form.mjs"
+    },
+    "./calendar": {
+      "types": "./dist/individual/calendar.d.mts",
+      "import": "./dist/individual/calendar.mjs"
+    },
+    "./date-picker": {
+      "types": "./dist/individual/date-picker.d.mts",
+      "import": "./dist/individual/date-picker.mjs"
+    },
+    "./timepicker": {
+      "types": "./dist/individual/timepicker.d.mts",
+      "import": "./dist/individual/timepicker.mjs"
+    },
+    "./accordion": {
+      "types": "./dist/individual/accordion.d.mts",
+      "import": "./dist/individual/accordion.mjs"
+    },
+    "./breadcrumbs": {
+      "types": "./dist/individual/breadcrumbs.d.mts",
+      "import": "./dist/individual/breadcrumbs.mjs"
+    },
+    "./input-otp": {
+      "types": "./dist/individual/input-otp.d.mts",
+      "import": "./dist/individual/input-otp.mjs"
+    },
+    "./tabs": {
+      "types": "./dist/individual/tabs.d.mts",
+      "import": "./dist/individual/tabs.mjs"
+    },
+    "./radio-group": {
+      "types": "./dist/individual/radio-group.d.mts",
+      "import": "./dist/individual/radio-group.mjs"
+    },
+    "./context-menu": {
+      "types": "./dist/individual/context-menu.d.mts",
+      "import": "./dist/individual/context-menu.mjs"
+    },
+    "./dropdown-menu": {
+      "types": "./dist/individual/dropdown-menu.d.mts",
+      "import": "./dist/individual/dropdown-menu.mjs"
+    },
+    "./collapsible": {
+      "types": "./dist/individual/collapsible.d.mts",
+      "import": "./dist/individual/collapsible.mjs"
+    },
+    "./toggle": {
+      "types": "./dist/individual/toggle.d.mts",
+      "import": "./dist/individual/toggle.mjs"
+    },
+    "./separator": {
+      "types": "./dist/individual/separator.d.mts",
+      "import": "./dist/individual/separator.mjs"
+    },
+    "./hover-card": {
+      "types": "./dist/individual/hover-card.d.mts",
+      "import": "./dist/individual/hover-card.mjs"
+    },
+    "./alert-dialog": {
+      "types": "./dist/individual/alert-dialog.d.mts",
+      "import": "./dist/individual/alert-dialog.mjs"
+    },
+    "./layout-component": {
+      "types": "./dist/individual/layout.d.mts",
+      "import": "./dist/individual/layout.mjs"
+    },
+    "./sidebar": {
+      "types": "./dist/individual/sidebar.d.mts",
+      "import": "./dist/individual/sidebar.mjs"
+    },
+    "./navbar": {
+      "types": "./dist/individual/navbar.d.mts",
+      "import": "./dist/individual/navbar.mjs"
+    },
+    "./modal": {
+      "types": "./dist/individual/modal.d.mts",
+      "import": "./dist/individual/modal.mjs"
+    },
+    "./tooltip": {
+      "types": "./dist/individual/tooltip.d.mts",
+      "import": "./dist/individual/tooltip.mjs"
+    },
+    "./drawer": {
+      "types": "./dist/individual/drawer.d.mts",
+      "import": "./dist/individual/drawer.mjs"
+    },
+    "./resizable": {
+      "types": "./dist/individual/resizable.d.mts",
+      "import": "./dist/individual/resizable.mjs"
+    },
+    "./scroll-area": {
+      "types": "./dist/individual/scroll-area.d.mts",
+      "import": "./dist/individual/scroll-area.mjs"
+    },
+    "./sheet": {
+      "types": "./dist/individual/sheet.d.mts",
+      "import": "./dist/individual/sheet.mjs"
+    },
+    "./popover": {
+      "types": "./dist/individual/popover.d.mts",
+      "import": "./dist/individual/popover.mjs"
+    },
+    "./table": {
+      "types": "./dist/individual/table.d.mts",
+      "import": "./dist/individual/table.mjs"
+    },
+    "./chart": {
+      "types": "./dist/individual/chart.d.mts",
+      "import": "./dist/individual/chart.mjs"
+    },
+    "./data-table": {
+      "types": "./dist/individual/data-table.d.mts",
+      "import": "./dist/individual/data-table.mjs"
+    },
+    "./alert": {
+      "types": "./dist/individual/alert.d.mts",
+      "import": "./dist/individual/alert.mjs"
+    },
+    "./toast": {
+      "types": "./dist/individual/toast.d.mts",
+      "import": "./dist/individual/toast.mjs"
+    },
+    "./sonner": {
+      "types": "./dist/individual/sonner.d.mts",
+      "import": "./dist/individual/sonner.mjs"
+    },
+    "./menubar": {
+      "types": "./dist/individual/menubar.d.mts",
+      "import": "./dist/individual/menubar.mjs"
+    },
+    "./command": {
+      "types": "./dist/individual/command.d.mts",
+      "import": "./dist/individual/command.mjs"
+    },
+    "./combobox": {
+      "types": "./dist/individual/combobox.d.mts",
+      "import": "./dist/individual/combobox.mjs"
+    },
+    "./navigation-menu": {
+      "types": "./dist/individual/navigation-menu.d.mts",
+      "import": "./dist/individual/navigation-menu.mjs"
+    },
+    "./pagination": {
+      "types": "./dist/individual/pagination.d.mts",
+      "import": "./dist/individual/pagination.mjs"
+    },
+    "./carousel": {
+      "types": "./dist/individual/carousel.d.mts",
+      "import": "./dist/individual/carousel.mjs"
+    },
+    "./badge": {
+      "types": "./dist/individual/badge.d.mts",
+      "import": "./dist/individual/badge.mjs"
+    },
+    "./avatar": {
+      "types": "./dist/individual/avatar.d.mts",
+      "import": "./dist/individual/avatar.mjs"
+    },
+    "./aspect-ratio": {
+      "types": "./dist/individual/aspect-ratio.d.mts",
+      "import": "./dist/individual/aspect-ratio.mjs"
+    },
+    "./typography": {
+      "types": "./dist/individual/typography.d.mts",
+      "import": "./dist/individual/typography.mjs"
+    },
+    "./dialog": {
+      "types": "./dist/individual/dialog.d.mts",
+      "import": "./dist/individual/dialog.mjs"
+    }
   },
-  "files": ["dist"],
-  "scripts": { "build": "tsup", "dev": "tsup --watch", "clean": "rm -rf dist", "prepublishOnly": "npm run clean && npm run build" },
-  "keywords": ["react", "ui", "components", "typescript", "tailwind", "design-system"],
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "keywords": [
+    "react",
+    "ui",
+    "components",
+    "typescript",
+    "tailwind",
+    "design-system"
+  ],
   "author": "Your Name",
   "sideEffects": false,
   "license": "MIT",
-  "peerDependencies": { "react": ">=16.8.0", "react-dom": ">=16.8.0" },
-  "devDependencies": { "@types/react": "^18.2.0", "@types/react-dom": "^18.2.0", "react": "^18.2.0", "react-dom": "^18.2.0", "tsup": "^8.0.0", "typescript": "^5.0.0" }
+  "peerDependencies": {
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.0.0"
+  }
 }
