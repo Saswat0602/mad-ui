@@ -301,7 +301,6 @@ export default function InputDocPage() {
       name="Input"
       description="A flexible input component for various input types with support for icons, validation states, and custom styling."
       category="core"
-      complexity="Simple"
     >
       {inputExamples}
     </ComponentDocLayout>

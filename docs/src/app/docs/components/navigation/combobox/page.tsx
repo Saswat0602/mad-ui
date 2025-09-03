@@ -9,7 +9,6 @@ const ComboboxPage = () => {
       name="Combobox"
       description="Searchable select dropdown"
       category="navigation"
-      complexity="Simple"
     >
       <div className="space-y-8">
         <h2 className="text-2xl font-bold">Examples</h2>

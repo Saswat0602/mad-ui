@@ -9,7 +9,6 @@ const ChartPage = () => {
       name="Chart"
       description="Data visualization charts"
       category="data"
-      complexity="Simple"
     >
       <div className="space-y-8">
         <h2 className="text-2xl font-bold">Examples</h2>

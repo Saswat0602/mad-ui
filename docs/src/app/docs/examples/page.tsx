@@ -92,22 +92,17 @@ const ExampleCard: React.FC<{
   description: string
   children: React.ReactNode
   code: string
-  complexity: 'Simple' | 'Intermediate' | 'Advanced'
-}> = ({ title, description, children, code, complexity }) => {
+}> = ({ title, description, children, code }) => {
   const [showCode, setShowCode] = useState(false)
   
-  const complexityColors = {
-    Simple: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-    Intermediate: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-    Advanced: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-  }
+
 
   return (
     <Card className="group hover:shadow-xl transition-all duration-300">
       <CardHeader>
         <div className="flex items-center justify-between mb-2">
-          <Badge className={`text-xs px-2 py-1 ${complexityColors[complexity]}`}>
-            {complexity}
+          <Badge variant="outline" className="text-xs px-2 py-1">
+            Example
           </Badge>
           <Button
             variant="ghost"
@@ -178,7 +173,6 @@ export default function ExamplesPage() {
           <ExampleCard
             title="Login Form"
             description="A complete login form with email, password, and remember me functionality."
-            complexity="Simple"
             code={`import { useState } from 'react'
 import { Button } from 'mad-ui-components/button'
 import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components/card'
@@ -333,7 +327,6 @@ export function LoginForm() {
           <ExampleCard
             title="Settings Panel"
             description="User preferences panel with various controls and progress indicators."
-            complexity="Intermediate"
             code={`import { useState } from 'react'
 import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components/card'
 import { Label } from 'mad-ui-components/label'
@@ -464,7 +457,6 @@ export function SettingsPanel() {
           <ExampleCard
             title="Product Card"
             description="E-commerce style product card with rating, pricing, and action buttons."
-            complexity="Simple"
             code={`import { Card, CardContent, CardHeader } from 'mad-ui-components/card'
 import { Badge } from 'mad-ui-components/badge'
 import { Button } from 'mad-ui-components/button'
@@ -578,7 +570,6 @@ export function ProductCard() {
           <ExampleCard
             title="Contact Form"
             description="Complete contact form with multiple input types and validation."
-            complexity="Intermediate"
             code={`import { useState } from 'react'
 import { Button } from 'mad-ui-components/button'
 import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components/card'

@@ -9,7 +9,6 @@ const CarouselPage = () => {
       name="Carousel"
       description="Image and content carousel"
       category="media"
-      complexity="Simple"
     >
       <div className="space-y-8">
         <h2 className="text-2xl font-bold">Examples</h2>

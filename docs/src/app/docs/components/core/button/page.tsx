@@ -5,13 +5,7 @@ import { Button } from 'mad-ui-components/button'
 import { ComponentDocLayout, LivePreview, CopyCodeBlock } from '@/components/component-doc-layout'
 import { 
   Download,
-  Heart,
-  Plus,
-  ArrowRight,
-  ChevronDown,
-  Archive,
-  Check,
-  BookOpen
+  ArrowRight
 } from 'lucide-react'
 
 export default function ButtonDocPage() {
@@ -24,16 +18,26 @@ export default function ButtonDocPage() {
 
   const buttonExamples = (
     <div className="space-y-8">
-      {/* Basic Variants */}
+      {/* Default Example */}
+      <div className="space-y-4">
+        <LivePreview title="Default">
+          <Button>Button</Button>
+        </LivePreview>
+        <CopyCodeBlock
+          filename="button.tsx"
+          code={`<Button>Button</Button>`}
+        />
+      </div>
+
+      {/* Variants */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Variants</h3>
-        <LivePreview title="Button Variants">
+        <LivePreview title="Variants">
           <Button variant="primary">Primary</Button>
           <Button variant="secondary">Secondary</Button>
           <Button variant="outline">Outline</Button>
           <Button variant="ghost">Ghost</Button>
         </LivePreview>
-        
         <CopyCodeBlock
           filename="variants.tsx"
           code={`<Button variant="primary">Primary</Button>
@@ -46,158 +50,77 @@ export default function ButtonDocPage() {
       {/* Sizes */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Sizes</h3>
-        <LivePreview title="Button Sizes">
-          <Button size="xs">Extra Small</Button>
+        <LivePreview title="Sizes">
           <Button size="sm">Small</Button>
           <Button size="md">Medium</Button>
           <Button size="lg">Large</Button>
-          <Button size="xl">Extra Large</Button>
         </LivePreview>
-        
         <CopyCodeBlock
           filename="sizes.tsx"
-          code={`<Button size="xs">Extra Small</Button>
-<Button size="sm">Small</Button>
+          code={`<Button size="sm">Small</Button>
 <Button size="md">Medium</Button>
-<Button size="lg">Large</Button>
-<Button size="xl">Extra Large</Button>`}
+<Button size="lg">Large</Button>`}
         />
       </div>
 
       {/* With Icons */}
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">With Icons</h3>
-        <LivePreview title="Icon Buttons">
+        <LivePreview title="With Icons">
           <Button leftIcon={<Download className="h-4 w-4" />}>
             Download
           </Button>
           <Button rightIcon={<ArrowRight className="h-4 w-4" />}>
             Continue
           </Button>
-          <Button leftIcon={<Heart className="h-4 w-4" />} variant="outline">
-            Like
-          </Button>
-          <Button rightIcon={<ChevronDown className="h-4 w-4" />} variant="ghost">
-            Options
-          </Button>
         </LivePreview>
-        
         <CopyCodeBlock
-          filename="icon-buttons.tsx"
-          code={`import { Download, ArrowRight, Heart, ChevronDown } from 'lucide-react'
+          filename="with-icons.tsx"
+          code={`import { Download, ArrowRight } from 'lucide-react'
 
 <Button leftIcon={<Download className="h-4 w-4" />}>
   Download
 </Button>
 <Button rightIcon={<ArrowRight className="h-4 w-4" />}>
   Continue
-</Button>
-<Button leftIcon={<Heart className="h-4 w-4" />} variant="outline">
-  Like
-</Button>
-<Button rightIcon={<ChevronDown className="h-4 w-4" />} variant="ghost">
-  Options
 </Button>`}
         />
       </div>
 
-      {/* Loading States */}
+      {/* Loading */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Loading States</h3>
-        <LivePreview title="Loading Buttons">
-          <Button loading={loading}>
-            {loading ? 'Submitting...' : 'Submit'}
+        <h3 className="text-lg font-semibold">Loading</h3>
+        <LivePreview title="Loading">
+          <Button loading={loading} onClick={handleLoadingDemo}>
+            {loading ? 'Loading...' : 'Click me'}
           </Button>
-          <Button 
-            variant="outline" 
-            onClick={handleLoadingDemo}
-            disabled={loading}
-          >
-            {loading ? 'Processing...' : 'Try Loading Demo'}
-          </Button>
-          <Button loading variant="ghost">
-            Loading State
+          <Button loading variant="outline">
+            Loading
           </Button>
         </LivePreview>
-        
         <CopyCodeBlock
-          filename="loading-buttons.tsx"
+          filename="loading.tsx"
           code={`const [loading, setLoading] = useState(false)
 
-const handleSubmit = () => {
-  setLoading(true)
-  // Simulate API call
-  setTimeout(() => setLoading(false), 2000)
-}
-
-<Button loading={loading} onClick={handleSubmit}>
-  {loading ? 'Submitting...' : 'Submit'}
-</Button>
-<Button loading variant="outline">
-  Processing...
+<Button loading={loading}>
+  {loading ? 'Loading...' : 'Submit'}
 </Button>`}
         />
       </div>
 
-      {/* Status Variants */}
+      {/* Disabled */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Status Variants</h3>
-        <LivePreview title="Status Colors">
-          <Button variant="success" leftIcon={<Check className="h-4 w-4" />}>
-            Success
-          </Button>
-          <Button variant="warning" leftIcon={<Archive className="h-4 w-4" />}>
-            Warning
-          </Button>
-          <Button variant="error" leftIcon={<Plus className="h-4 w-4 rotate-45" />}>
-            Error
-          </Button>
-          <Button variant="info" leftIcon={<BookOpen className="h-4 w-4" />}>
-            Info
-          </Button>
+        <h3 className="text-lg font-semibold">Disabled</h3>
+        <LivePreview title="Disabled">
+          <Button disabled>Primary</Button>
+          <Button variant="outline" disabled>Outline</Button>
+          <Button variant="ghost" disabled>Ghost</Button>
         </LivePreview>
-        
         <CopyCodeBlock
-          filename="status-buttons.tsx"
-          code={`<Button variant="success" leftIcon={<Check className="h-4 w-4" />}>
-  Success
-</Button>
-<Button variant="warning" leftIcon={<Archive className="h-4 w-4" />}>
-  Warning
-</Button>
-<Button variant="error" leftIcon={<Plus className="h-4 w-4 rotate-45" />}>
-  Error
-</Button>
-<Button variant="info" leftIcon={<BookOpen className="h-4 w-4" />}>
-  Info
-</Button>`}
-        />
-      </div>
-
-      {/* Additional Variants */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Additional Variants</h3>
-        <LivePreview title="Status Button Variants">
-          <Button variant="success">
-            Success Button
-          </Button>
-          <Button variant="warning">
-            Warning Button
-          </Button>
-          <Button variant="error">
-            Error Button
-          </Button>
-          <Button variant="info">
-            Info Button
-          </Button>
-        </LivePreview>
-        
-        <CopyCodeBlock
-          filename="status-buttons.tsx"
-          code={`<Button variant="success">Success Button</Button>
-<Button variant="warning">Warning Button</Button>
-<Button variant="error">Error Button</Button>
-<Button variant="info">Info Button</Button>`}
+          filename="disabled.tsx"
+          code={`<Button disabled>Primary</Button>
+<Button variant="outline" disabled>Outline</Button>
+<Button variant="ghost" disabled>Ghost</Button>`}
         />
       </div>
     </div>
@@ -208,7 +131,6 @@ const handleSubmit = () => {
       name="Button"
       description="A versatile button component with multiple variants, sizes, and states. Perfect for actions, navigation, and user interactions."
       category="core"
-      complexity="Simple"
     >
       {buttonExamples}
     </ComponentDocLayout>

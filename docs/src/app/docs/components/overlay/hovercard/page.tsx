@@ -9,7 +9,6 @@ const HoverCardPage = () => {
       name="HoverCard"
       description="Hover-triggered content card"
       category="overlay"
-      complexity="Simple"
     >
       <div className="space-y-8">
         <h2 className="text-2xl font-bold">Examples</h2>

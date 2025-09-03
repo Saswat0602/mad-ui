@@ -9,7 +9,6 @@ const AspectRatioPage = () => {
       name="AspectRatio"
       description="Responsive aspect ratio container"
       category="media"
-      complexity="Simple"
     >
       <div className="space-y-8">
         <h2 className="text-2xl font-bold">Examples</h2>

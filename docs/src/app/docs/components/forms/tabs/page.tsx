@@ -9,7 +9,6 @@ const TabsPage = () => {
       name="Tabs"
       description="Tabbed interface component"
       category="forms"
-      complexity="Simple"
     >
       <div className="space-y-8">
         <h2 className="text-2xl font-bold">Examples</h2>

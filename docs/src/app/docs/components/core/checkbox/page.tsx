@@ -474,7 +474,6 @@ const handleFeatureChange = (feature: string, checked: boolean) => {
       name="Checkbox"
       description="A checkbox component for binary choices and selections. Supports various states, sizes, and styling options with full accessibility."
       category="core"
-      complexity="Simple"
     >
       {checkboxExamples}
     </ComponentDocLayout>

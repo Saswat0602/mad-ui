@@ -9,7 +9,6 @@ const CommandPage = () => {
       name="Command"
       description="Command palette interface"
       category="navigation"
-      complexity="Simple"
     >
       <div className="space-y-8">
         <h2 className="text-2xl font-bold">Examples</h2>

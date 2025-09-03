@@ -9,7 +9,6 @@ const RatingPage = () => {
       name="Rating"
       description="Star rating component for feedback"
       category="core"
-      complexity="Simple"
     >
       <div className="space-y-8">
         <h2 className="text-2xl font-bold">Examples</h2>

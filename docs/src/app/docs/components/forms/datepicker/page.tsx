@@ -9,7 +9,6 @@ const DatePickerPage = () => {
       name="DatePicker"
       description="Date input with calendar popup"
       category="forms"
-      complexity="Simple"
     >
       <div className="space-y-8">
         <h2 className="text-2xl font-bold">Examples</h2>

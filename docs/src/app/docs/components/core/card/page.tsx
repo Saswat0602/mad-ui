@@ -485,7 +485,6 @@ export default function CardDocPage() {
       name="Card"
       description="A flexible card component for displaying content in a contained layout. Perfect for showcasing products, profiles, analytics, and more."
       category="core"
-      complexity="Simple"
     >
       {cardExamples}
     </ComponentDocLayout>

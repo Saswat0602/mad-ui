@@ -9,7 +9,6 @@ const ProgressPage = () => {
       name="Progress"
       description="Progress indicator for showing completion status"
       category="core"
-      complexity="Simple"
     >
       <div className="space-y-8">
         <h2 className="text-2xl font-bold">Examples</h2>
