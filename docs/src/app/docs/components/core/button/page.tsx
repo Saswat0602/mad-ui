@@ -6,16 +6,12 @@ import { ComponentDocLayout, LivePreview, CopyCodeBlock } from '@/components/com
 import { 
   Download,
   Heart,
-  Star,
   Plus,
-  Settings,
-  Send,
   ArrowRight,
   ChevronDown,
-  Loader2,
   Archive,
-  BookOpen,
-  Check
+  Check,
+  BookOpen
 } from 'lucide-react'
 
 export default function ButtonDocPage() {
@@ -211,9 +207,7 @@ const handleSubmit = () => {
     <ComponentDocLayout
       name="Button"
       description="A versatile button component with multiple variants, sizes, and states. Perfect for actions, navigation, and user interactions."
-      category="Core Component"
-      bundleSize="~3.7KB"
-      variants={8}
+      category="core"
       complexity="Simple"
     >
       {buttonExamples}

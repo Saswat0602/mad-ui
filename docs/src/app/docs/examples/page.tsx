@@ -17,32 +17,20 @@ import {
   Check, 
   Code, 
   Play,
-  Star,
   Heart,
   Mail,
   User,
   Lock,
   Eye,
   EyeOff,
-  Upload,
   Download,
   Settings,
   Bell,
-  Search,
-  Filter,
-  Calendar,
   ArrowRight,
-  Plus,
-  Minus,
   ShoppingCart,
-  CreditCard,
   Phone,
-  MapPin,
   Building,
-  Briefcase,
-  Monitor,
-  Smartphone,
-  Tablet
+  Monitor
 } from 'lucide-react'
 
 interface CopyCodeBlockProps {
@@ -155,8 +143,8 @@ export default function ExamplesPage() {
   const [rememberMe, setRememberMe] = useState(false)
   const [notifications, setNotifications] = useState(true)
   const [volume, setVolume] = useState(50)
-  const [rating, setRating] = useState(4)
-  const [progress, setProgress] = useState(65)
+  const [rating] = useState(4)
+  const [progress] = useState(65)
   const [loading, setLoading] = useState(false)
 
   const handleLogin = () => {

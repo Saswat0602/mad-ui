@@ -1,6 +1,5 @@
 import * as React from "react"
 import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
 
 export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string
@@ -9,17 +8,7 @@ export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputE
   success?: boolean
   variant?: "default" | "error" | "success"
   size?: "sm" | "md" | "lg"
-  fullWidth?: boolean
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  focusColor?: string
-  borderRadius?: string | number
-  shadow?: "none" | "sm" | "md" | "lg"
   indeterminate?: boolean
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
 }
 
 const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
@@ -31,137 +20,102 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     success,
     variant = "default",
     size = "md",
-    fullWidth = false,
-    color,
-    backgroundColor,
-    borderColor,
-    textColor,
-    focusColor,
-    borderRadius,
-    shadow = "sm",
     indeterminate = false,
-    leftIcon,
-    rightIcon,
-    style,
+    id,
     ...props 
   }, ref) => {
     
-    // Determine variant
-    const checkboxVariant = error ? "error" : success ? "success" : variant
+    const checkboxRef = React.useRef<HTMLInputElement>(null)
     
-    // Size classes
-    const sizeClasses = {
-      sm: "w-4 h-4",
-      md: "w-5 h-5",
-      lg: "w-6 h-6"
-    }
-    
-    const labelSizeClasses = {
-      sm: "text-sm",
-      md: "text-base",
-      lg: "text-lg"
-    }
-    
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg"
-    }
-    
-    // Get default colors
-    const defaultColors = componentColors.input[checkboxVariant as keyof typeof componentColors.input] || componentColors.input.default
-    
-    // Custom styles
-    const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || defaultColors.bg,
-      borderColor: borderColor || defaultColors.border,
-      borderRadius: borderRadius,
-      ...style
-    }
-    
-    // Focus and blur handlers
-    const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-      const focusBorderColor = focusColor || defaultColors.focus
-      e.target.style.borderColor = focusBorderColor
-      e.target.style.boxShadow = `0 0 0 3px ${focusBorderColor}20`
-    }
-    
-    const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      e.target.style.borderColor = borderColor || defaultColors.border
-      e.target.style.boxShadow = "none"
-    }
+    // Combine refs
+    React.useImperativeHandle(ref, () => checkboxRef.current!)
     
     // Set indeterminate state
     React.useEffect(() => {
-      if (ref && typeof ref === 'object' && ref.current) {
-        ref.current.indeterminate = indeterminate
+      if (checkboxRef.current) {
+        checkboxRef.current.indeterminate = indeterminate
       }
-    }, [indeterminate, ref])
+    }, [indeterminate])
+    
+    // Determine variant based on states
+    const checkboxVariant = error ? "error" : success ? "success" : variant
+    
+    // Size classes with Material Design sizing
+    const sizeClasses = {
+      sm: "h-4 w-4",
+      md: "h-5 w-5", 
+      lg: "h-6 w-6"
+    }
+    
+    // Base classes with Material Design improvements
+    const baseClasses = "rounded border border-primary shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+    
+    // Enhanced variant classes with Material Design states
+    const variantClasses = {
+      default: "border-input text-primary focus-visible:ring-primary hover:border-primary/60 hover:shadow-md hover-lift",
+      error: "border-red-500 text-red-600 focus-visible:ring-red-500 hover:border-red-600 hover:shadow-md",
+      success: "border-green-500 text-green-600 focus-visible:ring-green-500 hover:border-green-600 hover:shadow-md"
+    }
     
     return (
-      <div className={cn("flex items-start", fullWidth && "w-full")}>
-        {leftIcon && (
-          <span className="mr-2 text-gray-400">
-            {leftIcon}
-          </span>
-        )}
-        
-        <div className="flex items-center h-5">
+      <div className="flex items-start space-x-3">
+        <div className="relative flex items-center">
+          {/* Checkbox Input */}
           <input
+            ref={checkboxRef}
             type="checkbox"
+            id={id}
             className={cn(
-              "rounded border border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2",
+              baseClasses,
+              variantClasses[checkboxVariant],
               sizeClasses[size],
-              shadowClasses[shadow],
               className
             )}
-            style={customStyles}
-            ref={ref}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
             {...props}
           />
-        </div>
-        
-        <div className="ml-3 text-sm">
-          {label && (
-            <label 
-              className={cn(
-                "font-medium cursor-pointer select-none",
-                labelSizeClasses[size],
-                "text-gray-700 dark:text-gray-300"
-              )}
-              style={{ color: textColor || "var(--text-primary)" }}
-            >
-              {label}
-            </label>
-          )}
           
-          {(error || helperText) && (
-            <p 
-              className={cn(
-                "mt-1",
-                labelSizeClasses[size]
+          {/* Material Design Ripple Effect */}
+          <div className="absolute inset-0 rounded border-2 border-transparent pointer-events-none">
+            <div className="absolute inset-0 rounded bg-primary/10 opacity-0 transition-opacity hover:opacity-100" />
+          </div>
+          
+          {/* Custom Check Icon */}
+          {(props.checked || indeterminate) && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {indeterminate ? (
+                <svg className="h-3 w-3 text-current" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+                </svg>
+              ) : (
+                <svg className="h-3 w-3 text-current" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                </svg>
               )}
-              style={{ 
-                color: error 
-                  ? "var(--accent-error)" 
-                  : helperText 
-                    ? "var(--text-muted)" 
-                    : "var(--text-secondary)" 
-              }}
-            >
-              {error || helperText}
-            </p>
+            </div>
           )}
         </div>
         
-        {rightIcon && (
-          <span className="ml-2 text-gray-400">
-            {rightIcon}
-          </span>
+        {/* Label and Helper Text */}
+        {(label || helperText || error) && (
+          <div className="flex-1 space-y-1">
+            {label && (
+              <label 
+                htmlFor={id}
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+              >
+                {label}
+              </label>
+            )}
+            
+            {(error || helperText) && (
+              <p className={cn(
+                "text-xs leading-relaxed",
+                error ? "text-red-500" : "text-muted-foreground"
+              )}>
+                {error || helperText}
+              </p>
+            )}
+          </div>
         )}
       </div>
     )

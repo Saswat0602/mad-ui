@@ -7,8 +7,7 @@ import { ComponentDocLayout, LivePreview, CopyCodeBlock } from '@/components/com
 import { 
   Mail,
   Lock,
-  User,
-  Phone,
+
   Search,
   Eye,
   EyeOff,
@@ -301,9 +300,7 @@ export default function InputDocPage() {
     <ComponentDocLayout
       name="Input"
       description="A flexible input component for various input types with support for icons, validation states, and custom styling."
-      category="Core Component"
-      bundleSize="~2.2KB"
-      variants={6}
+      category="core"
       complexity="Simple"
     >
       {inputExamples}

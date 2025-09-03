@@ -1,6 +1,5 @@
 import * as React from "react"
 import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
 
 export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string
@@ -12,19 +11,13 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   variant?: "default" | "error" | "success"
   size?: "sm" | "md" | "lg"
   fullWidth?: boolean
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  focusColor?: string
-  borderRadius?: string | number
-  shadow?: "none" | "sm" | "md" | "lg"
+  floatingLabel?: boolean
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ 
     className, 
-    type, 
+    type = "text", 
     label, 
     error, 
     helperText, 
@@ -34,112 +27,133 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     variant = "default",
     size = "md",
     fullWidth = true,
-    color,
-    backgroundColor,
-    borderColor,
-    textColor,
-    focusColor,
-    borderRadius,
-    shadow = "sm",
-    style,
+    floatingLabel = false,
+    placeholder,
     ...props 
   }, ref) => {
     
-    // Determine variant
+    const [focused, setFocused] = React.useState(false)
+    const [hasValue, setHasValue] = React.useState(false)
+    
+    // Determine variant based on states
     const inputVariant = error ? "error" : success ? "success" : variant
     
-    // Size classes
+    // Size classes with Material Design heights
     const sizeClasses = {
-      sm: "px-2 py-1.5 text-sm",
-      md: "px-3 py-2 text-sm",
-      lg: "px-4 py-3 text-base"
+      sm: "h-9 px-3 text-sm",
+      md: "h-11 px-4 text-sm", 
+      lg: "h-13 px-4 text-base"
     }
     
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg"
+    // Base classes with Material Design improvements
+    const baseClasses = "w-full rounded-lg border border-input bg-background transition-all duration-200 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+    
+    // Enhanced variant classes with Material Design focus states
+    const variantClasses = {
+      default: "border-input hover:border-primary/60 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20",
+      error: "border-red-500 hover:border-red-600 focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-500/20 text-red-900",
+      success: "border-green-500 hover:border-green-600 focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-green-500/20 text-green-900"
     }
     
-    // Get default colors
-    const defaultColors = componentColors.input[inputVariant as keyof typeof componentColors.input] || componentColors.input.default
+    // Floating label classes
+    const floatingLabelClasses = cn(
+      "absolute left-4 transition-all duration-200 pointer-events-none text-muted-foreground",
+      (focused || hasValue) 
+        ? "top-2 text-xs text-primary transform -translate-y-1" 
+        : "top-1/2 text-sm transform -translate-y-1/2"
+    )
     
-    // Custom styles
-    const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || defaultColors.bg,
-      color: textColor || defaultColors.text,
-      borderColor: borderColor || defaultColors.border,
-      borderRadius: borderRadius,
-      ...style
-    }
-    
-    // Focus and blur handlers
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
-      const focusBorderColor = focusColor || defaultColors.focus
-      e.target.style.borderColor = focusBorderColor
-      e.target.style.boxShadow = `0 0 0 3px ${focusBorderColor}20`
+      setFocused(true)
+      props.onFocus?.(e)
     }
     
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-      e.target.style.borderColor = borderColor || defaultColors.border
-      e.target.style.boxShadow = "none"
+      setFocused(false)
+      setHasValue(e.target.value.length > 0)
+      props.onBlur?.(e)
+    }
+    
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setHasValue(e.target.value.length > 0)
+      props.onChange?.(e)
     }
     
     return (
-      <div className={cn("w-full", fullWidth && "w-full")}>
-        {label && (
-          <label 
-            className="ui-label mb-2"
-            style={{ color: "var(--text-primary)" }}
-          >
+      <div className={cn("space-y-2", fullWidth && "w-full")}>
+        {/* Regular Label */}
+        {label && !floatingLabel && (
+          <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
             {label}
           </label>
         )}
         
-        <div className="relative">
+        {/* Input Container */}
+        <div className="relative group">
+          {/* Left Icon */}
           {leftIcon && (
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground z-10">
               {leftIcon}
             </div>
           )}
           
+          {/* Input Field */}
           <input
             type={type}
             className={cn(
-              "ui-input",
+              baseClasses,
+              variantClasses[inputVariant],
               sizeClasses[size],
-              shadowClasses[shadow],
               leftIcon && "pl-10",
               rightIcon && "pr-10",
+              floatingLabel && hasValue && "pt-6 pb-2",
               className
             )}
-            style={customStyles}
+            placeholder={floatingLabel ? "" : placeholder}
             ref={ref}
             onFocus={handleFocus}
             onBlur={handleBlur}
+            onChange={handleChange}
             {...props}
           />
           
+          {/* Floating Label */}
+          {label && floatingLabel && (
+            <label className={floatingLabelClasses}>
+              {label}
+            </label>
+          )}
+          
+          {/* Right Icon */}
           {rightIcon && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground z-10">
               {rightIcon}
+            </div>
+          )}
+          
+          {/* Success/Error Icons */}
+          {(success || error) && !rightIcon && (
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 z-10">
+              {success && (
+                <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              )}
+              {error && (
+                <svg className="h-4 w-4 text-red-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
+                </svg>
+              )}
             </div>
           )}
         </div>
         
+        {/* Helper Text / Error Message */}
         {(error || helperText) && (
-          <p 
-            className="text-sm mt-1"
-            style={{ 
-              color: error 
-                ? "var(--accent-error)" 
-                : helperText 
-                  ? "var(--text-muted)" 
-                  : "var(--text-secondary)" 
-            }}
-          >
+          <p className={cn(
+            "text-xs leading-relaxed",
+            error ? "text-red-500" : "text-muted-foreground"
+          )}>
             {error || helperText}
           </p>
         )}

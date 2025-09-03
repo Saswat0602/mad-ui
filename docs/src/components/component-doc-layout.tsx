@@ -11,11 +11,8 @@ import {
   Code, 
   Play,
   Download,
-  Settings,
-  BookOpen,
   Zap,
-  ArrowRight,
-  Package
+  ArrowRight
 } from 'lucide-react'
 
 interface ComponentDocLayoutProps {
@@ -105,11 +102,7 @@ export const ComponentDocLayout: React.FC<ComponentDocLayoutProps> = ({
   complexity,
   children
 }) => {
-  const complexityColors = {
-    Simple: 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400',
-    Intermediate: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/20 dark:text-yellow-400',
-    Advanced: 'bg-red-100 text-red-800 dark:bg-red-900/20 dark:text-red-400'
-  }
+
 
   const installationCode = `npm install mad-ui-components`
   const importCode = `import { ${name} } from 'mad-ui-components/${name.toLowerCase()}'`

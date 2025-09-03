@@ -9,7 +9,7 @@ import { Badge } from "mad-ui-components/badge"
 import { Input } from "mad-ui-components/input"
 import { Label } from "mad-ui-components/label"
 import { Checkbox } from "mad-ui-components/checkbox"
-import { Switch } from "mad-ui-components/switch"
+
 import { Slider } from "mad-ui-components/slider"
 import { Progress } from "mad-ui-components/progress"
 import { Rating } from "mad-ui-components/rating"
@@ -26,13 +26,9 @@ import {
   Heart,
   Shield,
   Palette,
-  Smartphone,
-  Monitor,
   CheckCircle,
   Sparkles,
-  Play,
-  Terminal,
-  BookOpen
+  Play
 } from "lucide-react"
 
 // Animation variants

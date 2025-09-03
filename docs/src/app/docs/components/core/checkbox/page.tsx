@@ -11,9 +11,8 @@ import {
   Star,
   Heart,
   Settings,
-  Shield,
-  Bell,
   Mail,
+  Bell,
   Lock
 } from 'lucide-react'
 
@@ -474,9 +473,7 @@ const handleFeatureChange = (feature: string, checked: boolean) => {
     <ComponentDocLayout
       name="Checkbox"
       description="A checkbox component for binary choices and selections. Supports various states, sizes, and styling options with full accessibility."
-      category="Core Component"
-      bundleSize="~2.4KB"
-      variants={8}
+      category="core"
       complexity="Simple"
     >
       {checkboxExamples}
