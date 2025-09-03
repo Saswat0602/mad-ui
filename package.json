@@ -5,6 +5,14 @@
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.mts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Saswat0602/my-ui.git"
+  },
+  "homepage": "https://main.d3btr052kpv5cy.amplifyapp.com/",
+  "bugs": {
+    "url": "https://github.com/Saswat0602/my-ui/issues"
+  },
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",
