@@ -7,7 +7,7 @@
   "types": "./dist/index.d.mts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Saswat0602/my-ui.git"
+    "url": "https://github.com/Saswat0602/mad-ui.git"
   },
   "homepage": "https://mad-ui.vercel.app/",
   "bugs": {
