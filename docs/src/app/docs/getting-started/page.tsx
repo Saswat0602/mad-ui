@@ -77,7 +77,8 @@ interface StepCardProps {
   icon: React.ComponentType<{ className?: string }>
   title: string
   description: string
-  children: JSX.Element | JSX.Element[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  children: any
   gradient: string
 }
 
