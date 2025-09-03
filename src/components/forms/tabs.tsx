@@ -71,24 +71,24 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
           baseClasses,
           'rounded-full',
           isActive
-            ? 'bg-blue-500 text-white shadow-md'
-            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+            ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+            : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
         )
       case 'underline':
         return cn(
           baseClasses,
           'border-b-2 px-4 py-2',
           isActive
-            ? 'border-blue-500 text-blue-600 dark:text-blue-400'
-            : 'border-transparent text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
+            ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
+            : 'border-transparent text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100'
         )
       case 'cards':
         return cn(
           baseClasses,
           'rounded-lg border',
           isActive
-            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-sm'
-            : 'border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800'
+            ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-sm dark:border-blue-400'
+            : 'border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
         )
       case 'minimal':
         return cn(
@@ -96,15 +96,15 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
           'px-4 py-2',
           isActive
             ? 'text-blue-600 dark:text-blue-400 font-semibold'
-            : 'text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100'
+            : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100'
         )
       default:
         return cn(
           baseClasses,
           'rounded-lg',
           isActive
-            ? 'bg-blue-500 text-white shadow-md'
-            : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800'
+            ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
+            : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
         )
     }
   }
@@ -155,8 +155,8 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
       <div className={cn(
         'flex',
         orientation === 'vertical' ? 'flex-col space-y-2' : 'flex-row space-x-2',
-        variant === 'underline' && orientation === 'horizontal' && 'border-b border-gray-200 dark:border-gray-700',
-        variant === 'cards' && 'p-1 bg-gray-100 dark:bg-gray-800 rounded-lg',
+        variant === 'underline' && orientation === 'horizontal' && 'border-b border-slate-200 dark:border-slate-600',
+        variant === 'cards' && 'p-1 bg-slate-100 dark:bg-slate-700 rounded-lg',
         shadowClasses[shadow]
       )}>
         {items.map((item) => (
@@ -173,7 +173,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
                 'ml-2 px-2 py-0.5 text-xs font-medium rounded-full',
                 activeTab === item.id
                   ? 'bg-white/20 text-white'
-                  : 'bg-gray-200 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
+                  : 'bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300'
               )}>
                 {item.badge}
               </span>

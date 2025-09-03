@@ -38,16 +38,16 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       xl: "px-8 py-4 text-lg rounded-xl h-14"
     }
 
-    // Enhanced variant classes with Material Design elevations
+    // Enhanced variant classes with Material Design elevations and proper visibility
     const variantClasses = {
-      primary: "bg-primary text-primary-foreground shadow-md hover:shadow-lg elevation-2 hover:elevation-3 hover:bg-primary/90",
-      secondary: "bg-secondary text-secondary-foreground shadow-sm hover:shadow-md elevation-1 hover:elevation-2 hover:bg-secondary/80",
-      outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:shadow-md hover:elevation-2",
-      ghost: "hover:bg-accent hover:text-accent-foreground hover:shadow-sm hover:elevation-1",
-      success: "bg-green-600 text-white shadow-md hover:shadow-lg elevation-2 hover:elevation-3 hover:bg-green-700",
-      warning: "bg-yellow-600 text-white shadow-md hover:shadow-lg elevation-2 hover:elevation-3 hover:bg-yellow-700",
-      error: "bg-red-600 text-white shadow-md hover:shadow-lg elevation-2 hover:elevation-3 hover:bg-red-700",
-      info: "bg-blue-600 text-white shadow-md hover:shadow-lg elevation-2 hover:elevation-3 hover:bg-blue-700"
+      primary: "bg-blue-600 text-white shadow-md hover:shadow-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600",
+      secondary: "bg-slate-600 text-white shadow-sm hover:shadow-md hover:bg-slate-700 dark:bg-slate-500 dark:hover:bg-slate-600",
+      outline: "border-2 border-blue-600 bg-transparent text-blue-600 hover:bg-blue-600 hover:text-white dark:border-blue-400 dark:text-blue-400 dark:hover:bg-blue-400 dark:hover:text-slate-900",
+      ghost: "text-blue-600 hover:bg-blue-50 hover:text-blue-700 dark:text-blue-400 dark:hover:bg-slate-800 dark:hover:text-blue-300",
+      success: "bg-green-600 text-white shadow-md hover:shadow-lg hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600",
+      warning: "bg-yellow-600 text-white shadow-md hover:shadow-lg hover:bg-yellow-700 dark:bg-yellow-500 dark:hover:bg-yellow-600",
+      error: "bg-red-600 text-white shadow-md hover:shadow-lg hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600",
+      info: "bg-blue-600 text-white shadow-md hover:shadow-lg hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600"
     }
 
     return (

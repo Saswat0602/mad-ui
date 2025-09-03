@@ -72,18 +72,18 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
       lg: "shadow-lg"
     }
     
-    // Variant colors
+    // Variant colors with proper visibility
     const variantColors = {
-      default: "var(--accent-primary)",
-      success: "var(--accent-success)",
-      warning: "var(--accent-warning)",
-      error: "var(--accent-error)",
-      info: "var(--accent-info)"
+      default: "rgb(59 130 246)", // blue-500
+      success: "rgb(34 197 94)", // green-500
+      warning: "rgb(234 179 8)", // yellow-500
+      error: "rgb(239 68 68)", // red-500
+      info: "rgb(59 130 246)" // blue-500
     }
     
-    // Custom styles
+    // Custom styles with proper visibility
     const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || "var(--bg-tertiary)",
+      backgroundColor: backgroundColor || color || "rgb(226 232 240)", // slate-200
       borderRadius: borderRadius,
       height: height,
       ...style
@@ -97,7 +97,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     }
     
     const textStyles: React.CSSProperties = {
-      color: textColor || "var(--text-primary)"
+      color: textColor || "rgb(15 23 42)" // slate-900
     }
     
     return (
@@ -115,8 +115,8 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
             )}
             {showValue && (
               <span 
-                className={cn("text-muted-foreground", textSizeClasses[size])}
-                style={{ color: textColor || "var(--text-muted)" }}
+                className={cn("text-slate-600 dark:text-slate-400", textSizeClasses[size])}
+                style={{ color: textColor || "rgb(71 85 105)" }}
               >
                 {Math.round(percentage)}%
               </span>

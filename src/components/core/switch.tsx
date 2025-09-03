@@ -106,14 +106,14 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
               "relative inline-flex items-center rounded-full transition-colors duration-200 ease-in-out",
               sizeClasses[size],
               shadowClasses[shadow],
-              "bg-gray-200 peer-checked:bg-blue-600 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300",
+              "bg-slate-300 dark:bg-slate-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400",
               className
             )}
             style={customStyles}
           >
             <div
               className={cn(
-                "absolute left-0.5 bg-white rounded-full transition-transform duration-200 ease-in-out",
+                "absolute left-0.5 bg-white dark:bg-slate-200 rounded-full transition-transform duration-200 ease-in-out shadow-sm",
                 thumbSizeClasses[size],
                 "peer-checked:translate-x-full"
               )}
@@ -127,7 +127,7 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
               className={cn(
                 "font-medium cursor-pointer select-none",
                 labelSizeClasses[size],
-                "text-gray-700 dark:text-gray-300"
+                "text-slate-700 dark:text-slate-300"
               )}
               style={{ color: textColor || "var(--text-primary)" }}
             >

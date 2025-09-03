@@ -45,14 +45,14 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       lg: "h-13 px-4 text-base"
     }
     
-    // Base classes with Material Design improvements
-    const baseClasses = "w-full rounded-lg border border-input bg-background transition-all duration-200 file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+    // Base classes with Material Design improvements and proper visibility
+    const baseClasses = "w-full rounded-lg border-2 transition-all duration-200 file:border-0 file:bg-transparent file:text-sm file:font-medium focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 placeholder:text-slate-500 dark:placeholder:text-slate-400"
     
-    // Enhanced variant classes with Material Design focus states
+    // Enhanced variant classes with Material Design focus states and proper visibility
     const variantClasses = {
-      default: "border-input hover:border-primary/60 focus-visible:border-primary focus-visible:ring-2 focus-visible:ring-primary/20",
-      error: "border-red-500 hover:border-red-600 focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-500/20 text-red-900",
-      success: "border-green-500 hover:border-green-600 focus-visible:border-green-500 focus-visible:ring-2 focus-visible:ring-green-500/20 text-green-900"
+      default: "border-slate-300 dark:border-slate-600 hover:border-blue-500 dark:hover:border-blue-400 focus-visible:border-blue-500 dark:focus-visible:border-blue-400 focus-visible:ring-2 focus-visible:ring-blue-500/20 dark:focus-visible:ring-blue-400/20",
+      error: "border-red-500 dark:border-red-400 hover:border-red-600 dark:hover:border-red-500 focus-visible:border-red-500 dark:focus-visible:border-red-400 focus-visible:ring-2 focus-visible:ring-red-500/20 dark:focus-visible:ring-red-400/20 text-red-900 dark:text-red-100",
+      success: "border-green-500 dark:border-green-400 hover:border-green-600 dark:hover:border-green-500 focus-visible:border-green-500 dark:focus-visible:border-green-400 focus-visible:ring-2 focus-visible:ring-green-500/20 dark:focus-visible:ring-green-400/20 text-green-900 dark:text-green-100"
     }
     
     // Floating label classes

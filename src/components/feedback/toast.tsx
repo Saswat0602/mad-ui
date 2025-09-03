@@ -65,10 +65,10 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
     lg: 'p-5 text-lg'
   }
 
-  // Variant classes
+  // Variant classes with proper visibility
   const variantClasses = {
-    default: 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700',
-    filled: 'bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900',
+    default: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600',
+    filled: 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900',
     outlined: 'bg-transparent border-2',
     minimal: 'bg-transparent border-none'
   }
@@ -100,10 +100,10 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
       minimal: 'text-blue-600 dark:text-blue-400'
     },
     default: {
-      default: 'border-gray-200 dark:border-gray-700',
-      filled: 'bg-gray-600 text-white',
-      outlined: 'border-gray-500 text-gray-700 dark:text-gray-300',
-      minimal: 'text-gray-600 dark:text-gray-400'
+      default: 'border-slate-200 dark:border-slate-600',
+      filled: 'bg-slate-600 text-white',
+      outlined: 'border-slate-500 text-slate-700 dark:text-slate-300',
+      minimal: 'text-slate-600 dark:text-slate-400'
     }
   }
 

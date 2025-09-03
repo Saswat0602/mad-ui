@@ -72,12 +72,12 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
     lg: 'w-6 h-6'
   }
 
-  // Variant classes
+  // Variant classes with proper visibility
   const variantClasses = {
-    default: 'bg-gray-200 dark:bg-gray-700',
+    default: 'bg-slate-200 dark:bg-slate-600',
     filled: 'bg-blue-100 dark:bg-blue-900/20',
-    outlined: 'bg-transparent border-2 border-gray-300 dark:border-gray-600',
-    minimal: 'bg-gray-100 dark:bg-gray-800'
+    outlined: 'bg-transparent border-2 border-slate-300 dark:border-slate-600',
+    minimal: 'bg-slate-100 dark:bg-slate-700'
   }
 
   // Shadow classes
@@ -204,7 +204,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
     return marks.map((mark, index) => (
       <div
         key={index}
-        className="absolute text-xs text-gray-500 dark:text-gray-400"
+        className="absolute text-xs text-slate-500 dark:text-slate-400"
         style={{
           [orientation === 'horizontal' ? 'left' : 'bottom']: `${getPercentage(mark.value)}%`,
           transform: orientation === 'horizontal' ? 'translateX(-50%)' : 'translateY(50%)'
@@ -261,7 +261,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
       >
         {/* Track Fill */}
         <div
-          className="absolute top-0 left-0 h-full bg-blue-500 rounded-full transition-all duration-200"
+          className="absolute top-0 left-0 h-full bg-blue-500 dark:bg-blue-400 rounded-full transition-all duration-200"
           style={{
             backgroundColor: color || undefined,
             ...getTrackFill()
@@ -279,7 +279,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
               className={cn(
                 'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
                 thumbSizeClasses[size],
-                'bg-white border-2 border-blue-500 rounded-full shadow-md',
+                'bg-white dark:bg-slate-200 border-2 border-blue-500 dark:border-blue-400 rounded-full shadow-md',
                 'hover:scale-110 transition-transform duration-200',
                 disabled && 'cursor-not-allowed opacity-50'
               )}
@@ -296,7 +296,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
               className={cn(
                 'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
                 thumbSizeClasses[size],
-                'bg-white border-2 border-blue-500 rounded-full shadow-md',
+                'bg-white dark:bg-slate-200 border-2 border-blue-500 dark:border-blue-400 rounded-full shadow-md',
                 'hover:scale-110 transition-transform duration-200',
                 disabled && 'cursor-not-allowed opacity-50'
               )}
@@ -316,7 +316,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
             className={cn(
               'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
               thumbSizeClasses[size],
-              'bg-white border-2 border-blue-500 rounded-full shadow-md',
+              'bg-white dark:bg-slate-200 border-2 border-blue-500 dark:border-blue-400 rounded-full shadow-md',
               'hover:scale-110 transition-transform duration-200',
               disabled && 'cursor-not-allowed opacity-50'
             )}

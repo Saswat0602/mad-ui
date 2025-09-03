@@ -103,8 +103,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
       <div className={cn("w-full", fullWidth && "w-full")}>
         {label && (
           <label 
-            className="ui-label mb-2"
-            style={{ color: "var(--text-primary)" }}
+            className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
           >
             {label}
           </label>
@@ -112,7 +111,7 @@ const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
         
         <textarea
           className={cn(
-            "ui-input",
+            "w-full rounded-lg border-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-200 placeholder:text-slate-500 dark:placeholder:text-slate-400",
             sizeClasses[size],
             shadowClasses[shadow],
             resizeClasses[resize],

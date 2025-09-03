@@ -11,14 +11,14 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
     const baseClasses = 'inline-flex items-center rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
     
     const variantClasses = {
-      default: 'bg-primary text-primary-foreground hover:bg-primary/80',
-      secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
-      destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/80',
-      outline: 'text-foreground border border-input bg-background hover:bg-accent hover:text-accent-foreground',
-      success: 'bg-green-500 text-white hover:bg-green-600',
-      warning: 'bg-yellow-500 text-white hover:bg-yellow-600',
-      error: 'bg-red-500 text-white hover:bg-red-600',
-      info: 'bg-blue-500 text-white hover:bg-blue-600'
+      default: 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600',
+      secondary: 'bg-slate-600 text-white hover:bg-slate-700 dark:bg-slate-500 dark:hover:bg-slate-600',
+      destructive: 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600',
+      outline: 'text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700',
+      success: 'bg-green-600 text-white hover:bg-green-700 dark:bg-green-500 dark:hover:bg-green-600',
+      warning: 'bg-yellow-600 text-white hover:bg-yellow-700 dark:bg-yellow-500 dark:hover:bg-yellow-600',
+      error: 'bg-red-600 text-white hover:bg-red-700 dark:bg-red-500 dark:hover:bg-red-600',
+      info: 'bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600'
     }
     
     const sizeClasses = {

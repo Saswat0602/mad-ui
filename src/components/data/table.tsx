@@ -209,8 +209,8 @@ function Table<T extends Record<string, unknown>>({
         <thead>
           <tr 
             className={cn(
-              "border-b",
-              headerColor && "bg-gray-50 dark:bg-gray-800"
+              "border-b border-slate-200 dark:border-slate-600",
+              headerColor && "bg-slate-50 dark:bg-slate-700"
             )}
             style={{
               borderColor: borderColor || "var(--border-primary)"
@@ -230,7 +230,7 @@ function Table<T extends Record<string, unknown>>({
                   type="checkbox"
                   checked={selectedRows.length === data.length && data.length > 0}
                   onChange={(e) => handleSelectAll(e.target.checked)}
-                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2"
+                  className="rounded border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-2"
                 />
               </th>
             )}
@@ -265,21 +265,21 @@ function Table<T extends Record<string, unknown>>({
         <tbody>
           {sortedData.length === 0 ? (
             <tr>
-              <td 
-                colSpan={columns.length + (selectable ? 1 : 0)}
-                className="text-center py-8 text-gray-500"
-              >
-                {emptyMessage}
-              </td>
+                              <td 
+                  colSpan={columns.length + (selectable ? 1 : 0)}
+                  className="text-center py-8 text-slate-500 dark:text-slate-400"
+                >
+                  {emptyMessage}
+                </td>
             </tr>
           ) : (
             sortedData.map((row, index) => (
               <tr
                 key={getRowKey(row, index)}
                 className={cn(
-                  "border-b transition-colors duration-200",
-                  hoverable && "hover:bg-gray-50 dark:hover:bg-gray-800",
-                  striped && index % 2 === 1 && "bg-gray-50 dark:bg-gray-800",
+                  "border-b border-slate-200 dark:border-slate-600 transition-colors duration-200",
+                  hoverable && "hover:bg-slate-50 dark:hover:bg-slate-700",
+                  striped && index % 2 === 1 && "bg-slate-50 dark:bg-slate-700",
                   onRowClick && "cursor-pointer"
                 )}
                 style={{
@@ -293,7 +293,7 @@ function Table<T extends Record<string, unknown>>({
                       type="checkbox"
                       checked={selectedRows.includes(getRowKey(row, index))}
                       onChange={(e) => handleSelectRow(getRowKey(row, index), e.target.checked)}
-                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2"
+                      className="rounded border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-2"
                     />
                   </td>
                 )}
@@ -328,7 +328,7 @@ function Table<T extends Record<string, unknown>>({
             borderColor: borderColor || "var(--border-secondary)"
           }}
         >
-          <div className={cn("text-gray-500", sizeClasses[size])}>
+          <div className={cn("text-slate-500 dark:text-slate-400", sizeClasses[size])}>
             Showing {((pagination.current - 1) * pagination.pageSize) + 1} to{" "}
             {Math.min(pagination.current * pagination.pageSize, pagination.total)} of{" "}
             {pagination.total} results
@@ -339,8 +339,8 @@ function Table<T extends Record<string, unknown>>({
               disabled={pagination.current === 1}
               className={cn(
                 "px-3 py-1 text-sm border rounded transition-colors",
-                "hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed",
-                "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                "hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed",
+                "focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2"
               )}
               style={{
                 borderColor: borderColor || "var(--border-primary)"
@@ -348,7 +348,7 @@ function Table<T extends Record<string, unknown>>({
             >
               Previous
             </button>
-            <span className={cn("text-gray-500", sizeClasses[size])}>
+            <span className={cn("text-slate-500 dark:text-slate-400", sizeClasses[size])}>
               Page {pagination.current} of {Math.ceil(pagination.total / pagination.pageSize)}
             </span>
             <button
@@ -356,8 +356,8 @@ function Table<T extends Record<string, unknown>>({
               disabled={pagination.current >= Math.ceil(pagination.total / pagination.pageSize)}
               className={cn(
                 "px-3 py-1 text-sm border rounded transition-colors",
-                "hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed",
-                "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                "hover:bg-slate-50 dark:hover:bg-slate-700 disabled:opacity-50 disabled:cursor-not-allowed",
+                "focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2"
               )}
               style={{
                 borderColor: borderColor || "var(--border-primary)"

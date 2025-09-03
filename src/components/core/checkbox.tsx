@@ -47,14 +47,14 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
       lg: "h-6 w-6"
     }
     
-    // Base classes with Material Design improvements
-    const baseClasses = "rounded border border-primary shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer"
+    // Base classes with Material Design improvements and proper visibility
+    const baseClasses = "rounded border-2 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer bg-white dark:bg-slate-800"
     
-    // Enhanced variant classes with Material Design states
+    // Enhanced variant classes with Material Design states and proper visibility
     const variantClasses = {
-      default: "border-input text-primary focus-visible:ring-primary hover:border-primary/60 hover:shadow-md hover-lift",
-      error: "border-red-500 text-red-600 focus-visible:ring-red-500 hover:border-red-600 hover:shadow-md",
-      success: "border-green-500 text-green-600 focus-visible:ring-green-500 hover:border-green-600 hover:shadow-md"
+      default: "border-slate-400 dark:border-slate-500 text-blue-600 dark:text-blue-400 focus-visible:ring-blue-500 dark:focus-visible:ring-blue-400 hover:border-blue-500 dark:hover:border-blue-400 hover:shadow-md",
+      error: "border-red-500 dark:border-red-400 text-red-600 dark:text-red-400 focus-visible:ring-red-500 dark:focus-visible:ring-red-400 hover:border-red-600 dark:hover:border-red-500 hover:shadow-md",
+      success: "border-green-500 dark:border-green-400 text-green-600 dark:text-green-400 focus-visible:ring-green-500 dark:focus-visible:ring-green-400 hover:border-green-600 dark:hover:border-green-500 hover:shadow-md"
     }
     
     return (

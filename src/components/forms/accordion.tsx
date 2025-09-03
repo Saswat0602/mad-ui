@@ -55,10 +55,10 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(({
     lg: 'text-lg'
   }
 
-  // Variant classes
+  // Variant classes with proper visibility
   const variantClasses = {
-    default: 'border border-gray-200 dark:border-gray-700 rounded-lg',
-    bordered: 'border border-gray-200 dark:border-gray-700 rounded-lg divide-y divide-gray-200 dark:divide-gray-700',
+    default: 'border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800',
+    bordered: 'border border-slate-200 dark:border-slate-600 rounded-lg divide-y divide-slate-200 dark:divide-slate-600 bg-white dark:bg-slate-800',
     separated: 'space-y-2',
     minimal: ''
   }
@@ -126,18 +126,18 @@ const Accordion = forwardRef<HTMLDivElement, AccordionProps>(({
     >
       {items.map((item, index) => (
         <div key={item.id} className={cn(
-          variant === 'bordered' && index !== items.length - 1 && 'border-b border-gray-200 dark:border-gray-700'
+          variant === 'bordered' && index !== items.length - 1 && 'border-b border-slate-200 dark:border-slate-600'
         )}>
           <button
             onClick={() => handleToggle(item.id)}
             disabled={item.disabled}
             className={cn(
               'w-full flex items-center justify-between p-4 text-left transition-colors duration-200',
-              'hover:bg-gray-50 dark:hover:bg-gray-800',
-              'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+              'hover:bg-slate-50 dark:hover:bg-slate-700',
+              'focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-offset-2',
               'disabled:opacity-50 disabled:cursor-not-allowed',
               sizeClasses[size],
-              variant === 'separated' && 'border border-gray-200 dark:border-gray-700 rounded-lg',
+              variant === 'separated' && 'border border-slate-200 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800',
               variant === 'minimal' && 'hover:bg-transparent'
             )}
           >

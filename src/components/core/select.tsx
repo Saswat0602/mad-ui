@@ -100,8 +100,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
       <div className={cn("w-full", fullWidth && "w-full")}>
         {label && (
           <label 
-            className="ui-label mb-2"
-            style={{ color: "var(--text-primary)" }}
+            className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
           >
             {label}
           </label>
@@ -109,14 +108,14 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         
         <div className="relative">
           {leftIcon && (
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none">
               {leftIcon}
             </div>
           )}
           
           <select
             className={cn(
-              "ui-input",
+              "w-full rounded-lg border-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-200",
               sizeClasses[size],
               shadowClasses[shadow],
               leftIcon && "pl-10",
@@ -147,7 +146,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           </select>
           
           {rightIcon && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 pointer-events-none">
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none">
               {rightIcon}
             </div>
           )}
@@ -155,7 +154,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           {/* Custom dropdown arrow */}
           <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
             <svg
-              className="w-4 h-4 text-gray-400"
+              className="w-4 h-4 text-slate-400 dark:text-slate-500"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"

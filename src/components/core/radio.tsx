@@ -82,7 +82,7 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
     return (
       <div className={cn("flex items-start", fullWidth && "w-full")}>
         {leftIcon && (
-          <span className="mr-2 text-gray-400">
+          <span className="mr-2 text-slate-400 dark:text-slate-500">
             {leftIcon}
           </span>
         )}
@@ -91,7 +91,7 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
           <input
             type="radio"
             className={cn(
-              "rounded-full border border-gray-300 text-blue-600 focus:ring-blue-500 focus:ring-2",
+              "rounded-full border-2 border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-2 bg-white dark:bg-slate-800",
               sizeClasses[size],
               shadowClasses[shadow],
               className
@@ -108,9 +108,9 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
               className={cn(
                 "font-medium cursor-pointer select-none",
                 labelSizeClasses[size],
-                "text-gray-700 dark:text-gray-300"
+                "text-slate-700 dark:text-slate-300"
               )}
-              style={{ color: textColor || "var(--text-primary)" }}
+              style={{ color: textColor || "rgb(15 23 42)" }}
             >
               {label}
             </label>
@@ -136,7 +136,7 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
         </div>
         
         {rightIcon && (
-          <span className="ml-2 text-gray-400">
+          <span className="ml-2 text-slate-400 dark:text-slate-500">
             {rightIcon}
           </span>
         )}

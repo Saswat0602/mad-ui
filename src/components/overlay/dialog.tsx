@@ -113,7 +113,7 @@ export const DialogContent: React.FC<DialogContentProps> = ({
     >
       <div
         className={cn(
-          'relative bg-background border rounded-lg shadow-lg max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto',
+          'relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto',
           className
         )}
         onClick={(e) => e.stopPropagation()}
@@ -162,7 +162,7 @@ export const DialogDescription: React.FC<DialogDescriptionProps> = ({
   className
 }) => {
   return (
-    <p className={cn('text-sm text-muted-foreground', className)}>
+    <p className={cn('text-sm text-slate-600 dark:text-slate-400', className)}>
       {children}
     </p>
   )

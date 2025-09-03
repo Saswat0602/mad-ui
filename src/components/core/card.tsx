@@ -19,15 +19,15 @@ export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
   ({ className, variant = "default", elevation = "sm", ...props }, ref) => {
     
-    // Base classes with Material Design improvements
-    const baseClasses = "rounded-xl border bg-card text-card-foreground transition-all duration-200"
+    // Base classes with Material Design improvements and proper visibility
+    const baseClasses = "rounded-xl border transition-all duration-200 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
     
-    // Variant classes with Material Design elevations
+    // Variant classes with Material Design elevations and proper visibility
     const variantClasses = {
-      default: "border-border shadow-sm hover:shadow-md",
-      elevated: "border-0 shadow-lg hover:shadow-xl elevation-2 hover:elevation-3",
-      outlined: "border-2 border-border shadow-none hover:shadow-sm",
-      filled: "border-0 bg-muted shadow-sm hover:shadow-md"
+      default: "border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md",
+      elevated: "border-0 shadow-lg hover:shadow-xl bg-white dark:bg-slate-800",
+      outlined: "border-2 border-slate-300 dark:border-slate-600 shadow-none hover:shadow-sm",
+      filled: "border-0 bg-slate-50 dark:bg-slate-700 shadow-sm hover:shadow-md"
     }
     
     // Additional elevation classes
@@ -79,7 +79,7 @@ const CardDescription = React.forwardRef<HTMLParagraphElement, CardDescriptionPr
   ({ className, ...props }, ref) => (
     <p
       ref={ref}
-      className={cn("text-sm text-muted-foreground", className)}
+      className={cn("text-sm text-slate-600 dark:text-slate-400", className)}
       {...props}
     />
   )

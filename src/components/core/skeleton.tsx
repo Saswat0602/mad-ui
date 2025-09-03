@@ -103,9 +103,9 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
       }
     }
     
-    // Custom styles
+    // Custom styles with proper visibility
     const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || "var(--bg-tertiary)",
+      backgroundColor: backgroundColor || color || "rgb(226 232 240)", // slate-200
       ...getVariantStyles(),
       ...style
     }
@@ -115,7 +115,7 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
       <div
         ref={ref}
         className={cn(
-          "bg-gray-200 dark:bg-gray-700",
+          "bg-slate-200 dark:bg-slate-600",
           animationClasses[animation],
           shadowClasses[shadow],
           className
@@ -133,7 +133,7 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
             <div
               key={index}
               className={cn(
-                "bg-gray-200 dark:bg-gray-700",
+                "bg-slate-200 dark:bg-slate-600",
                 animationClasses[animation],
                 shadowClasses[shadow],
                 className

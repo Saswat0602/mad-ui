@@ -70,13 +70,13 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
       loose: "gap-3"
     }
     
-    // Default colors
-    const defaultActiveColor = activeColor || color || "var(--accent-warning)"
-    const defaultInactiveColor = inactiveColor || "var(--border-primary)"
+    // Default colors with proper visibility
+    const defaultActiveColor = activeColor || color || "rgb(234 179 8)" // yellow-500
+    const defaultInactiveColor = inactiveColor || "rgb(203 213 225)" // slate-300
     
-    // Custom styles
+    // Custom styles with proper visibility
     const customStyles: React.CSSProperties = {
-      color: textColor || "var(--text-primary)",
+      color: textColor || "rgb(15 23 42)", // slate-900
       ...style
     }
     
@@ -149,8 +149,8 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
             )}
             {showValue && (
               <span 
-                className={cn("text-muted-foreground", textSizeClasses[size])}
-                style={{ color: textColor || "var(--text-muted)" }}
+                className={cn("text-slate-600 dark:text-slate-400", textSizeClasses[size])}
+                style={{ color: textColor || "rgb(71 85 105)" }}
               >
                 {value.toFixed(1)} / {max}
               </span>

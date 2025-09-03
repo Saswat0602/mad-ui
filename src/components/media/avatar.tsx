@@ -59,7 +59,7 @@ export const Avatar: React.FC<AvatarProps> = ({
       ) : (
         <div
           className={cn(
-            'flex h-full w-full items-center justify-center bg-muted text-muted-foreground',
+            'flex h-full w-full items-center justify-center bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300',
             shapeClasses[shape],
             fallbackSizeClasses[size]
           )}
@@ -88,7 +88,7 @@ export const AvatarGroup: React.FC<{
         </div>
       ))}
       {hiddenCount > 0 && (
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-muted text-xs text-muted-foreground ring-2 ring-background">
+        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-slate-200 dark:bg-slate-600 text-xs text-slate-700 dark:text-slate-300 ring-2 ring-white dark:ring-slate-800">
           +{hiddenCount}
         </div>
       )}
