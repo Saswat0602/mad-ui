@@ -5,10 +5,10 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // Platform detection utility
-export const isReactNative = typeof navigator === 'undefined' && typeof (globalThis as any).global !== 'undefined'
+export const isReactNative = typeof navigator === 'undefined' && typeof (globalThis as Record<string, unknown>).global !== 'undefined'
 
 // Platform-specific className handling
-export function getPlatformClassName(webClassName: string, nativeStyle?: any) {
+export function getPlatformClassName(webClassName: string, nativeStyle?: Record<string, unknown>) {
   if (isReactNative) {
     return nativeStyle || {}
   }
@@ -18,5 +18,5 @@ export function getPlatformClassName(webClassName: string, nativeStyle?: any) {
 // Platform-specific component props
 export type PlatformProps<T> = T & {
   className?: string
-  style?: any
+  style?: Record<string, unknown>
 }

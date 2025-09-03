@@ -1,254 +1,461 @@
 "use client"
 
-import Link from "next/link"
-import { Button } from "mad-ui-components/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
-import { Badge } from "mad-ui-components/badge"
+import React, { useState } from 'react'
+import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'mad-ui-components/card'
+import { Badge } from 'mad-ui-components/badge'
+import { Button } from 'mad-ui-components/button'
+import { Input } from 'mad-ui-components/input'
 import { 
   Package, 
-  FormInput, 
-  Layout, 
-  Image, 
-  Navigation, 
-  Layers,
+  ArrowRight, 
+  Search,
+  Code,
+  FileText,
+  Layout,
+  Database,
+  Zap,
+  Navigation,
+  Monitor,
+  Bell,
+  Grid3X3,
+  Image,
   BarChart3,
-  MessageSquare,
-  ArrowRight
-} from "lucide-react"
+  MousePointer,
+  Layers,
+  Sparkles,
+  BookOpen,
+  ExternalLink
+} from 'lucide-react'
 
-const componentCategories = [
+interface ComponentCategory {
+  id: string
+  title: string
+  description: string
+  icon: React.ElementType
+  count: number
+  color: string
+  components: ComponentItem[]
+}
+
+interface ComponentItem {
+  name: string
+  path: string
+  description: string
+  status: 'stable' | 'beta' | 'new'
+  complexity: 'simple' | 'moderate' | 'complex'
+}
+
+const componentCategories: ComponentCategory[] = [
   {
-    title: "Core Components",
-    description: "Essential building blocks for every application",
+    id: 'core',
+    title: 'Core Components',
+    description: 'Essential building blocks for any UI',
     icon: Package,
-    href: "/docs/components/core",
-    components: ["Button", "Input", "Label", "Card", "Checkbox", "Radio", "Select", "Textarea", "Slider", "Switch", "Progress", "Rating"],
-    color: "bg-blue-500"
+    count: 13,
+    color: 'from-blue-500 to-cyan-500',
+    components: [
+      { name: 'Button', path: '/docs/components/core/button', description: 'Versatile button component with multiple variants', status: 'stable', complexity: 'simple' },
+      { name: 'Input', path: '/docs/components/core/input', description: 'Form input with validation states', status: 'stable', complexity: 'simple' },
+      { name: 'Card', path: '/docs/components/core/card', description: 'Flexible container component', status: 'stable', complexity: 'simple' },
+      { name: 'Label', path: '/docs/components/core/label', description: 'Accessible form labels', status: 'stable', complexity: 'simple' },
+      { name: 'Checkbox', path: '/docs/components/core/checkbox', description: 'Boolean input control', status: 'stable', complexity: 'simple' },
+      { name: 'Radio', path: '/docs/components/core/radio', description: 'Single selection input', status: 'stable', complexity: 'simple' },
+      { name: 'Switch', path: '/docs/components/core/switch', description: 'Toggle control component', status: 'stable', complexity: 'simple' },
+      { name: 'Slider', path: '/docs/components/core/slider', description: 'Range input component', status: 'stable', complexity: 'moderate' },
+      { name: 'Progress', path: '/docs/components/core/progress', description: 'Progress indicator', status: 'stable', complexity: 'simple' },
+      { name: 'Rating', path: '/docs/components/core/rating', description: 'Star rating component', status: 'stable', complexity: 'moderate' },
+      { name: 'Select', path: '/docs/components/core/select', description: 'Dropdown selection', status: 'stable', complexity: 'moderate' },
+      { name: 'Textarea', path: '/docs/components/core/textarea', description: 'Multi-line text input', status: 'stable', complexity: 'simple' },
+      { name: 'Skeleton', path: '/docs/components/core/skeleton', description: 'Loading placeholder', status: 'stable', complexity: 'simple' }
+    ]
   },
   {
-    title: "Form Components",
-    description: "Advanced form elements and validation",
-    icon: FormInput,
-    href: "/docs/components/forms",
-    components: ["Accordion", "Tabs", "Date Picker", "Time Picker", "Input OTP", "Radio Group", "Breadcrumbs", "Calendar"],
-    color: "bg-green-500"
+    id: 'forms',
+    title: 'Form Components',
+    description: 'Advanced form controls and layouts',
+    icon: FileText,
+    count: 9,
+    color: 'from-emerald-500 to-green-500',
+    components: [
+      { name: 'Accordion', path: '/docs/components/forms/accordion', description: 'Collapsible content sections', status: 'stable', complexity: 'moderate' },
+      { name: 'Breadcrumbs', path: '/docs/components/forms/breadcrumbs', description: 'Navigation breadcrumb trail', status: 'stable', complexity: 'simple' },
+      { name: 'Tabs', path: '/docs/components/forms/tabs', description: 'Tabbed interface component', status: 'stable', complexity: 'moderate' },
+      { name: 'Calendar', path: '/docs/components/forms/calendar', description: 'Date selection calendar', status: 'stable', complexity: 'complex' },
+      { name: 'Date Picker', path: '/docs/components/forms/date-picker', description: 'Date input with calendar', status: 'stable', complexity: 'complex' },
+      { name: 'Time Picker', path: '/docs/components/forms/time-picker', description: 'Time selection component', status: 'stable', complexity: 'complex' },
+      { name: 'Input OTP', path: '/docs/components/forms/input-otp', description: 'One-time password input', status: 'stable', complexity: 'moderate' },
+      { name: 'Radio Group', path: '/docs/components/forms/radio-group', description: 'Group of radio buttons', status: 'stable', complexity: 'simple' },
+      { name: 'Form', path: '/docs/components/forms/form', description: 'React Hook Form integration', status: 'stable', complexity: 'complex' }
+    ]
   },
   {
-    title: "Layout Components",
-    description: "Structure and organization components",
+    id: 'layout',
+    title: 'Layout Components',
+    description: 'Structure and organize your content',
     icon: Layout,
-    href: "/docs/components/layout",
-    components: ["Navbar", "Sidebar", "Modal", "Drawer", "Sheet", "Resizable", "Scroll Area", "Separator", "Toggle", "Collapsible"],
-    color: "bg-purple-500"
+    count: 10,
+    color: 'from-purple-500 to-pink-500',
+    components: [
+      { name: 'Layout', path: '/docs/components/layout/layout', description: 'Page layout structure', status: 'stable', complexity: 'moderate' },
+      { name: 'Navbar', path: '/docs/components/layout/navbar', description: 'Navigation bar component', status: 'stable', complexity: 'moderate' },
+      { name: 'Sidebar', path: '/docs/components/layout/sidebar', description: 'Collapsible sidebar', status: 'stable', complexity: 'complex' },
+      { name: 'Modal', path: '/docs/components/layout/modal', description: 'Overlay modal dialog', status: 'stable', complexity: 'moderate' },
+      { name: 'Drawer', path: '/docs/components/layout/drawer', description: 'Slide-out panel', status: 'stable', complexity: 'moderate' },
+      { name: 'Sheet', path: '/docs/components/layout/sheet', description: 'Side overlay panel', status: 'stable', complexity: 'moderate' },
+      { name: 'Popover', path: '/docs/components/layout/popover', description: 'Floating content container', status: 'stable', complexity: 'moderate' },
+      { name: 'Tooltip', path: '/docs/components/layout/tooltip', description: 'Informational tooltip', status: 'stable', complexity: 'simple' },
+      { name: 'Scroll Area', path: '/docs/components/layout/scroll-area', description: 'Custom scrollable area', status: 'stable', complexity: 'simple' },
+      { name: 'Resizable', path: '/docs/components/layout/resizable', description: 'Resizable panels', status: 'stable', complexity: 'complex' }
+    ]
   },
   {
-    title: "Media Components",
-    description: "Image, video, and content display",
-    icon: Image,
-    href: "/docs/components/media",
-    components: ["Avatar", "Badge", "Aspect Ratio", "Carousel", "Typography", "Skeleton"],
-    color: "bg-orange-500"
-  },
-  {
-    title: "Navigation Components",
-    description: "Menu and navigation elements",
-    icon: Navigation,
-    href: "/docs/components/navigation",
-    components: ["Command", "Combobox", "Navigation Menu", "Menubar", "Pagination"],
-    color: "bg-indigo-500"
-  },
-  {
-    title: "Overlay Components",
-    description: "Modals, popovers, and overlays",
+    id: 'overlay',
+    title: 'Overlay Components',
+    description: 'Modal and overlay interactions',
     icon: Layers,
-    href: "/docs/components/overlay",
-    components: ["Dialog", "Alert Dialog", "Popover", "Tooltip", "Hover Card", "Context Menu", "Dropdown Menu"],
-    color: "bg-pink-500"
+    count: 8,
+    color: 'from-orange-500 to-red-500',
+    components: [
+      { name: 'Dialog', path: '/docs/components/overlay/dialog', description: 'Modal dialog component', status: 'stable', complexity: 'moderate' },
+      { name: 'Alert Dialog', path: '/docs/components/overlay/alert-dialog', description: 'Alert confirmation dialog', status: 'stable', complexity: 'moderate' },
+      { name: 'Dropdown Menu', path: '/docs/components/overlay/dropdown-menu', description: 'Dropdown menu component', status: 'stable', complexity: 'moderate' },
+      { name: 'Context Menu', path: '/docs/components/overlay/context-menu', description: 'Right-click context menu', status: 'stable', complexity: 'moderate' },
+      { name: 'Hover Card', path: '/docs/components/overlay/hover-card', description: 'Hover-triggered content card', status: 'stable', complexity: 'simple' },
+      { name: 'Collapsible', path: '/docs/components/overlay/collapsible', description: 'Collapsible content area', status: 'stable', complexity: 'simple' },
+      { name: 'Toggle', path: '/docs/components/overlay/toggle', description: 'Toggle button component', status: 'stable', complexity: 'simple' },
+      { name: 'Separator', path: '/docs/components/overlay/separator', description: 'Visual content separator', status: 'stable', complexity: 'simple' }
+    ]
   },
   {
-    title: "Data Components",
-    description: "Data display and visualization",
+    id: 'media',
+    title: 'Media Components',
+    description: 'Images, avatars, and visual content',
+    icon: Image,
+    count: 5,
+    color: 'from-pink-500 to-rose-500',
+    components: [
+      { name: 'Avatar', path: '/docs/components/media/avatar', description: 'User profile picture', status: 'stable', complexity: 'simple' },
+      { name: 'Badge', path: '/docs/components/media/badge', description: 'Status and notification badge', status: 'stable', complexity: 'simple' },
+      { name: 'Carousel', path: '/docs/components/media/carousel', description: 'Image and content carousel', status: 'stable', complexity: 'complex' },
+      { name: 'Aspect Ratio', path: '/docs/components/media/aspect-ratio', description: 'Responsive aspect ratio container', status: 'stable', complexity: 'simple' },
+      { name: 'Typography', path: '/docs/components/media/typography', description: 'Text styling components', status: 'stable', complexity: 'simple' }
+    ]
+  },
+  {
+    id: 'navigation',
+    title: 'Navigation Components',
+    description: 'Site and app navigation elements',
+    icon: Navigation,
+    count: 5,
+    color: 'from-indigo-500 to-purple-500',
+    components: [
+      { name: 'Navigation Menu', path: '/docs/components/navigation/navigation-menu', description: 'Site navigation menu', status: 'stable', complexity: 'complex' },
+      { name: 'Menubar', path: '/docs/components/navigation/menubar', description: 'Application menu bar', status: 'stable', complexity: 'moderate' },
+      { name: 'Pagination', path: '/docs/components/navigation/pagination', description: 'Page navigation controls', status: 'stable', complexity: 'moderate' },
+      { name: 'Command', path: '/docs/components/navigation/command', description: 'Command palette interface', status: 'stable', complexity: 'complex' },
+      { name: 'Combobox', path: '/docs/components/navigation/combobox', description: 'Searchable select dropdown', status: 'stable', complexity: 'complex' }
+    ]
+  },
+  {
+    id: 'data',
+    title: 'Data Display',
+    description: 'Tables, charts, and data visualization',
     icon: BarChart3,
-    href: "/docs/components/data",
-    components: ["Table", "Data Table", "Chart"],
-    color: "bg-teal-500"
+    count: 3,
+    color: 'from-cyan-500 to-blue-500',
+    components: [
+      { name: 'Table', path: '/docs/components/data/table', description: 'Basic table component', status: 'stable', complexity: 'moderate' },
+      { name: 'Data Table', path: '/docs/components/data/data-table', description: 'Advanced data table with sorting', status: 'stable', complexity: 'complex' },
+      { name: 'Chart', path: '/docs/components/data/chart', description: 'Data visualization charts', status: 'stable', complexity: 'complex' }
+    ]
   },
   {
-    title: "Feedback Components",
-    description: "User feedback and notifications",
-    icon: MessageSquare,
-    href: "/docs/components/feedback",
-    components: ["Alert", "Toast", "Sonner"],
-    color: "bg-red-500"
+    id: 'feedback',
+    title: 'Feedback Components',
+    description: 'Notifications, alerts, and user feedback',
+    icon: Bell,
+    count: 3,
+    color: 'from-yellow-500 to-orange-500',
+    components: [
+      { name: 'Alert', path: '/docs/components/feedback/alert', description: 'Alert message component', status: 'stable', complexity: 'simple' },
+      { name: 'Toast', path: '/docs/components/feedback/toast', description: 'Toast notification component', status: 'stable', complexity: 'moderate' },
+      { name: 'Sonner', path: '/docs/components/feedback/sonner', description: 'Toast notification system', status: 'stable', complexity: 'moderate' }
+    ]
   }
 ]
 
-export default function ComponentsPage() {
-  return (
-    <div className="container mx-auto max-w-7xl px-4 py-12 lg:py-16">
-      {/* Hero Section */}
-      <div className="text-center mb-16 animate-slide-up">
-        <Badge variant="outline" className="mb-6 px-4 py-2">
-          <Package className="w-4 h-4 mr-2" />
-          Component Library
-        </Badge>
-        <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">
-          50+ Beautiful
-          <span className="block bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-            React Components
-          </span>
-        </h1>
-        <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-          Explore our complete collection of components with examples, variants, and comprehensive documentation. Build faster with production-ready components.
-        </p>
-      </div>
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1
+    }
+  }
+}
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
-        {componentCategories.map((category, index) => (
-          <Card key={category.title} className={`group relative overflow-hidden bg-gradient-to-br from-slate-900/50 to-slate-800/50 border-slate-700/50 hover:border-slate-600/80 transition-all duration-500 animate-slide-up hover:scale-105 shadow-xl hover:shadow-2xl`} style={{animationDelay: `${index * 100}ms`}}>
-            {/* Background glow effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-slate-800/20 to-slate-900/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            
-            {/* Top accent line */}
-            <div className={`absolute top-0 left-0 right-0 h-1 bg-gradient-to-r ${category.color} opacity-80`}></div>
-            
-            <CardHeader className="pb-6 relative z-10">
-              <div className="flex items-start justify-between mb-4">
-                <div className={`w-16 h-16 rounded-2xl ${category.color} bg-gradient-to-br flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-lg`}>
-                  <category.icon className="h-8 w-8 text-white" />
+const itemVariants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: { opacity: 1, y: 0 }
+}
+
+export default function ComponentsPage() {
+  const [searchTerm, setSearchTerm] = useState('')
+  const [selectedCategory, setSelectedCategory] = useState<string | null>(null)
+
+  const filteredCategories = componentCategories.filter(category => {
+    if (selectedCategory && category.id !== selectedCategory) return false
+    
+    if (!searchTerm) return true
+    
+    return category.components.some(component => 
+      component.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      component.description.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  }).map(category => ({
+    ...category,
+    components: category.components.filter(component => 
+      !searchTerm || 
+      component.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      component.description.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  }))
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
+      <div className="container mx-auto max-w-7xl px-4 py-16 lg:py-24">
+        {/* Header */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
+        >
+          <div className="flex items-center justify-center mb-6">
+            <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/25">
+              <Package className="h-8 w-8 text-white" />
+            </div>
+          </div>
+          
+          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight tracking-tight">
+            <span className="block text-foreground">Components</span>
+            <span className="block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
+              Library
+            </span>
+          </h1>
+          
+          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8 font-medium">
+            56 beautiful, accessible, and fully customizable React components. 
+            Copy the code and customize to match your design system.
+          </p>
+
+          <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
+            <Badge variant="success" className="text-sm px-4 py-2">
+              <Sparkles className="w-4 h-4 mr-2" />
+              56 Components
+            </Badge>
+            <Badge variant="info" className="text-sm px-4 py-2">
+              <Code className="w-4 h-4 mr-2" />
+              TypeScript Ready
+            </Badge>
+            <Badge variant="warning" className="text-sm px-4 py-2">
+              <Zap className="w-4 h-4 mr-2" />
+              Zero Dependencies
+            </Badge>
+          </div>
+
+          {/* Search */}
+          <div className="relative max-w-2xl mx-auto mb-8">
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Input
+              type="search"
+              placeholder="Search components..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full pl-12 pr-4 py-4 text-lg border border-border rounded-2xl bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
+            />
+          </div>
+
+          {/* Category Filter */}
+          <div className="flex flex-wrap gap-2 justify-center mt-6">
+            <Button
+              variant={selectedCategory === null ? "primary" : "outline"}
+              size="sm"
+              onClick={() => setSelectedCategory(null)}
+              className="rounded-full"
+            >
+              All Categories
+            </Button>
+            {componentCategories.map((category) => (
+              <Button
+                key={category.id}
+                variant={selectedCategory === category.id ? "primary" : "outline"}
+                size="sm"
+                onClick={() => setSelectedCategory(category.id)}
+                className="rounded-full"
+              >
+                {category.title}
+              </Button>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* Component Categories */}
+        <div className="space-y-20">
+          {filteredCategories.map((category, categoryIndex) => (
+            <motion.section
+              key={category.id}
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              className="animate-in fade-in slide-in-from-bottom-8 duration-1000"
+              style={{ animationDelay: `${categoryIndex * 200}ms` }}
+            >
+              {/* Category Header */}
+              <div className="text-center mb-12">
+                <div className="flex items-center justify-center mb-6">
+                  <div className={`w-16 h-16 rounded-3xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg shadow-primary/25`}>
+                    <category.icon className="h-8 w-8 text-white" />
+                  </div>
                 </div>
-                <div className="text-right">
-                  <Badge variant="secondary" className="bg-slate-700/50 text-slate-300 border-slate-600/50">
-                    {category.components.length} components
+                <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
+                  {category.title}
+                </h2>
+                <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-4">
+                  {category.description}
+                </p>
+                <div className="flex items-center justify-center gap-4">
+                  <Badge variant="outline" className="text-sm">
+                    {category.count} Components
+                  </Badge>
+                  <Badge variant="outline" className="text-sm">
+                    Production Ready
                   </Badge>
                 </div>
               </div>
-              
-              <CardTitle className="text-2xl font-bold text-slate-100 group-hover:text-white transition-colors mb-3">
-                {category.title}
-              </CardTitle>
-              
-              <CardDescription className="text-base leading-relaxed text-slate-400 group-hover:text-slate-300 transition-colors">
-                {category.description}
-              </CardDescription>
-            </CardHeader>
-            
-            <CardContent className="space-y-6 relative z-10">
-              {/* Component tags with better styling */}
-              <div className="space-y-3">
-                <h4 className="text-sm font-semibold text-slate-300 uppercase tracking-wider">Components</h4>
-                <div className="flex flex-wrap gap-2">
-                  {category.components.slice(0, 8).map((component) => (
-                    <Badge 
-                      key={component} 
-                      variant="secondary" 
-                      className="text-xs px-3 py-1 bg-slate-700/50 text-slate-300 border-slate-600/50 hover:bg-slate-600/70 hover:text-white transition-all duration-200 rounded-lg"
-                    >
-                      {component}
-                    </Badge>
-                  ))}
-                  {category.components.length > 8 && (
-                    <Badge variant="secondary" className="text-xs px-3 py-1 bg-blue-600/20 text-blue-300 border-blue-500/30 rounded-lg">
-                      +{category.components.length - 8} more
-                    </Badge>
-                  )}
-                </div>
-              </div>
-              
-              {/* Enhanced button */}
-              <Button className="w-full group/btn bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 border border-slate-600/50 hover:border-slate-500/80 text-slate-200 hover:text-white transition-all duration-300 h-12 rounded-xl shadow-lg hover:shadow-xl">
-                <Link href={category.href} className="flex items-center justify-center w-full">
-                  <span className="font-semibold">Explore {category.title}</span>
-                  <ArrowRight className="ml-2 h-5 w-5 group-hover/btn:translate-x-2 transition-transform duration-300" />
-                </Link>
-              </Button>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
 
-      {/* Quick Actions */}
-      <div className="mt-20 p-8 bg-gradient-to-br from-slate-900/50 to-slate-800/50 rounded-3xl border border-slate-700/50">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-slate-100 mb-3">Quick Actions</h2>
-          <p className="text-slate-400 text-lg">Get started quickly with these commands</p>
+              {/* Component Grid */}
+              <motion.div 
+                variants={containerVariants}
+                className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
+              >
+                {category.components.map((component, componentIndex) => (
+                  <motion.div key={component.name} variants={itemVariants}>
+                    <Link href={component.path}>
+                      <Card className="group hover-lift elevation-1 transition-all duration-300 hover:elevation-3 cursor-pointer h-full">
+                        <CardHeader className="pb-4">
+                          <div className="flex items-start justify-between mb-3">
+                            <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors">
+                              {component.name}
+                            </CardTitle>
+                            <div className="flex items-center gap-2">
+                              {component.status === 'new' && (
+                                <Badge variant="success" className="text-xs">New</Badge>
+                              )}
+                              {component.status === 'beta' && (
+                                <Badge variant="warning" className="text-xs">Beta</Badge>
+                              )}
+                              <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                            </div>
+                          </div>
+                          <CardDescription className="leading-relaxed">
+                            {component.description}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-2">
+                              <Badge 
+                                variant="outline" 
+                                className={`text-xs ${
+                                  component.complexity === 'simple' ? 'border-green-300 text-green-700' :
+                                  component.complexity === 'moderate' ? 'border-yellow-300 text-yellow-700' :
+                                  'border-red-300 text-red-700'
+                                }`}
+                              >
+                                {component.complexity}
+                              </Badge>
+                              <Badge variant="outline" className="text-xs">
+                                TypeScript
+                              </Badge>
+                            </div>
+                            <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
+                          </div>
+                        </CardContent>
+                      </Card>
+                    </Link>
+                  </motion.div>
+                ))}
+              </motion.div>
+            </motion.section>
+          ))}
         </div>
-        
-        <div className="grid md:grid-cols-2 gap-6">
-          <Card className="bg-gradient-to-br from-slate-800/50 to-slate-700/50 border-slate-600/50 hover:border-slate-500/80 transition-all duration-300 hover:scale-105">
-            <CardHeader>
-              <CardTitle className="text-xl text-slate-100 flex items-center">
-                <div className="w-8 h-8 rounded-lg bg-green-500/20 border border-green-500/30 flex items-center justify-center mr-3">
-                  <span className="text-green-400 text-lg">⚡</span>
-                </div>
-                Copy All Components
-              </CardTitle>
-              <CardDescription className="text-slate-400">
-                Copy all components to your project for full customization control.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-600/50">
-                <code className="text-sm text-green-400 font-mono">npx mad-ui-components copy --all</code>
-              </div>
-            </CardContent>
-          </Card>
 
-          <Card className="bg-gradient-to-br from-slate-800/50 to-slate-700/50 border-slate-600/50 hover:border-slate-500/80 transition-all duration-300 hover:scale-105">
-            <CardHeader>
-              <CardTitle className="text-xl text-slate-100 flex items-center">
-                <div className="w-8 h-8 rounded-lg bg-blue-500/20 border border-blue-500/30 flex items-center justify-center mr-3">
-                  <span className="text-blue-400 text-lg">📁</span>
-                </div>
-                Copy Specific Category
-              </CardTitle>
-              <CardDescription className="text-slate-400">
-                Copy all components from a specific category.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-slate-900/50 p-4 rounded-xl border border-slate-600/50">
-                <code className="text-sm text-blue-400 font-mono">npx mad-ui-components copy --category core</code>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
-      {/* Enhanced Installation Reminder */}
-      <div className="mt-16 relative overflow-hidden rounded-3xl">
-        <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 opacity-90"></div>
-        <div className="absolute inset-0 bg-grid-pattern opacity-10"></div>
-        
-        <div className="relative z-10 p-10 text-center">
-          <h2 className="text-4xl font-bold text-white mb-4">Ready to build amazing UIs?</h2>
-          <p className="text-xl text-white/90 mb-8 max-w-2xl mx-auto">
-            Install Mad UI components and start building beautiful, professional interfaces today.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button 
-              variant="secondary" 
-              size="lg" 
-              className="bg-white text-blue-600 hover:bg-white/90 px-8 py-4 h-14 text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300"
-            >
-              <Link href="/docs/getting-started" className="flex items-center">
-                🚀 Get Started
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Link>
-            </Button>
-            <Button 
-              variant="outline" 
-              size="lg" 
-              className="border-2 border-white/30 text-white hover:bg-white/10 px-8 py-4 h-14 text-lg font-semibold backdrop-blur-sm transition-all duration-300"
-            >
-              <Link href="/docs/installation" className="flex items-center">
-                📚 Installation Guide
-              </Link>
-            </Button>
+        {/* Quick Stats */}
+        <motion.section
+          initial={{ opacity: 0, scale: 0.95 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="mt-24 text-center"
+        >
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+            {[
+              { label: 'Total Components', value: '56', icon: Package },
+              { label: 'Component Categories', value: '8', icon: Grid3X3 },
+              { label: 'Code Examples', value: '200+', icon: Code },
+              { label: 'Documentation Pages', value: '60+', icon: BookOpen }
+            ].map((stat, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="text-center p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 hover-lift"
+              >
+                <stat.icon className="h-8 w-8 mx-auto mb-3 text-primary" />
+                <div className="text-3xl font-bold text-foreground mb-1">{stat.value}</div>
+                <div className="text-sm text-muted-foreground">{stat.label}</div>
+              </motion.div>
+            ))}
           </div>
-        </div>
+        </motion.section>
+
+        {/* CTA Section */}
+        <motion.section
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="mt-24 text-center"
+        >
+          <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 rounded-3xl p-12 border border-primary/20">
+            <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to build something amazing?</h2>
+            <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
+              Start building beautiful user interfaces with Mad UI components. Copy the components you need and customize them to match your design system.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link href="/docs/getting-started">
+                <Button size="lg" className="elevation-2 hover-lift">
+                  <BookOpen className="mr-2 h-5 w-5" />
+                  Get Started
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
+              </Link>
+              <Link href="/docs/examples">
+                <Button variant="outline" size="lg" className="hover-lift">
+                  <Code className="mr-2 h-5 w-5" />
+                  View Examples
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </motion.section>
       </div>
     </div>
   )
 }
-

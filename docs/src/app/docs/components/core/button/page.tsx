@@ -1,382 +1,252 @@
 "use client"
 
-import { Button } from "mad-ui-components/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
-import { Badge } from "mad-ui-components/badge"
-import { Tabs } from "mad-ui-components/tabs"
-import { Copy, Download, Play } from "lucide-react"
+import React, { useState } from 'react'
+import { Button } from 'mad-ui-components/button'
+import { ComponentDocLayout, LivePreview, CopyCodeBlock } from '@/components/component-doc-layout'
+import { 
+  Download,
+  Heart,
+  Star,
+  Plus,
+  Settings,
+  Send,
+  ArrowRight,
+  ChevronDown,
+  Loader2,
+  Archive,
+  BookOpen,
+  Check
+} from 'lucide-react'
 
-export default function ButtonPage() {
-  return (
-    <div className="container mx-auto max-w-4xl px-4 py-8">
-      <div className="mb-8">
-        <div className="flex items-center gap-2 mb-4">
-          <Badge variant="secondary">Core</Badge>
-          <Badge variant="outline">Button</Badge>
-        </div>
-        <h1 className="text-4xl font-bold mb-4">Button</h1>
-        <p className="text-xl text-muted-foreground">
-          A versatile button component with multiple variants, sizes, and states.
-        </p>
+export default function ButtonDocPage() {
+  const [loading, setLoading] = useState(false)
+
+  const handleLoadingDemo = () => {
+    setLoading(true)
+    setTimeout(() => setLoading(false), 2000)
+  }
+
+  const buttonExamples = (
+    <div className="space-y-8">
+      {/* Basic Variants */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Variants</h3>
+        <LivePreview title="Button Variants">
+          <Button variant="primary">Primary</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="ghost">Ghost</Button>
+        </LivePreview>
+        
+        <CopyCodeBlock
+          filename="variants.tsx"
+          code={`<Button variant="primary">Primary</Button>
+<Button variant="secondary">Secondary</Button>
+<Button variant="outline">Outline</Button>
+<Button variant="ghost">Ghost</Button>`}
+        />
       </div>
 
-      <div className="space-y-8">
-        {/* Installation */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Installation</h2>
-          <Card>
-            <CardHeader>
-              <CardTitle>Install the package</CardTitle>
-              <CardDescription>
-                Add Mad UI components to your project
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-muted p-4 rounded-lg">
-                <code className="text-sm">npm install mad-ui-components</code>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
+      {/* Sizes */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Sizes</h3>
+        <LivePreview title="Button Sizes">
+          <Button size="xs">Extra Small</Button>
+          <Button size="sm">Small</Button>
+          <Button size="md">Medium</Button>
+          <Button size="lg">Large</Button>
+          <Button size="xl">Extra Large</Button>
+        </LivePreview>
+        
+        <CopyCodeBlock
+          filename="sizes.tsx"
+          code={`<Button size="xs">Extra Small</Button>
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>
+<Button size="xl">Extra Large</Button>`}
+        />
+      </div>
 
-        {/* Usage */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Usage</h2>
-          <Tabs 
-            items={[
-              { 
-                id: 'import', 
-                label: 'Import', 
-                content: (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Individual Import</CardTitle>
-                      <CardDescription>
-                        Import only the Button component for smaller bundles
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="bg-muted p-4 rounded-lg text-sm">
-                        <pre>{`import { Button } from 'mad-ui-components/button'
+      {/* With Icons */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">With Icons</h3>
+        <LivePreview title="Icon Buttons">
+          <Button leftIcon={<Download className="h-4 w-4" />}>
+            Download
+          </Button>
+          <Button rightIcon={<ArrowRight className="h-4 w-4" />}>
+            Continue
+          </Button>
+          <Button leftIcon={<Heart className="h-4 w-4" />} variant="outline">
+            Like
+          </Button>
+          <Button rightIcon={<ChevronDown className="h-4 w-4" />} variant="ghost">
+            Options
+          </Button>
+        </LivePreview>
+        
+        <CopyCodeBlock
+          filename="icon-buttons.tsx"
+          code={`import { Download, ArrowRight, Heart, ChevronDown } from 'lucide-react'
 
-export default function MyComponent() {
-  return (
-    <Button>Click me</Button>
-  )
-}`}</pre>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Bundle size: ~3KB
-                      </p>
-                    </CardContent>
-                  </Card>
-                )
-              },
-              { 
-                id: 'copy', 
-                label: 'Copy Component', 
-                content: (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Copy Component</CardTitle>
-                      <CardDescription>
-                        Copy the Button component to your project for full customization
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="bg-muted p-4 rounded-lg text-sm">
-                        <pre>{`npx mad-ui-components copy button
+<Button leftIcon={<Download className="h-4 w-4" />}>
+  Download
+</Button>
+<Button rightIcon={<ArrowRight className="h-4 w-4" />}>
+  Continue
+</Button>
+<Button leftIcon={<Heart className="h-4 w-4" />} variant="outline">
+  Like
+</Button>
+<Button rightIcon={<ChevronDown className="h-4 w-4" />} variant="ghost">
+  Options
+</Button>`}
+        />
+      </div>
 
-# This creates:
-# components/ui/mad-ui/button.tsx`}</pre>
-                      </div>
-                      <p className="text-sm text-muted-foreground mt-2">
-                        Bundle size: 0KB (only what you use)
-                      </p>
-                    </CardContent>
-                  </Card>
-                )
-              },
-              { 
-                id: 'basic', 
-                label: 'Basic Usage', 
-                content: (
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Basic Usage</CardTitle>
-                      <CardDescription>
-                        Simple button with default styling
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-4">
-                        <div className="bg-muted p-4 rounded-lg text-sm">
-                          <pre>{`import { Button } from 'mad-ui-components/button'
+      {/* Loading States */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Loading States</h3>
+        <LivePreview title="Loading Buttons">
+          <Button loading={loading}>
+            {loading ? 'Submitting...' : 'Submit'}
+          </Button>
+          <Button 
+            variant="outline" 
+            onClick={handleLoadingDemo}
+            disabled={loading}
+          >
+            {loading ? 'Processing...' : 'Try Loading Demo'}
+          </Button>
+          <Button loading variant="ghost">
+            Loading State
+          </Button>
+        </LivePreview>
+        
+        <CopyCodeBlock
+          filename="loading-buttons.tsx"
+          code={`const [loading, setLoading] = useState(false)
 
-<Button>Click me</Button>`}</pre>
-                        </div>
-                        <div className="p-4 border rounded-lg">
-                          <Button>Click me</Button>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                )
-              }
-            ]}
-            defaultActiveTab="import"
-            className="w-full"
-          />
-        </section>
+const handleSubmit = () => {
+  setLoading(true)
+  // Simulate API call
+  setTimeout(() => setLoading(false), 2000)
+}
 
-        {/* Variants */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Variants</h2>
-          <Card>
-            <CardHeader>
-              <CardTitle>Button Variants</CardTitle>
-              <CardDescription>
-                Different visual styles for different use cases
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div>
-                  <h4 className="font-medium mb-3">Primary Variant</h4>
-                  <div className="flex flex-wrap gap-3">
-                    <Button variant="primary">Primary</Button>
-                    <Button variant="primary" disabled>Disabled</Button>
-                  </div>
-                </div>
+<Button loading={loading} onClick={handleSubmit}>
+  {loading ? 'Submitting...' : 'Submit'}
+</Button>
+<Button loading variant="outline">
+  Processing...
+</Button>`}
+        />
+      </div>
 
-                <div>
-                  <h4 className="font-medium mb-3">Secondary Variant</h4>
-                  <div className="flex flex-wrap gap-3">
-                    <Button variant="secondary">Secondary</Button>
-                    <Button variant="secondary" disabled>Disabled</Button>
-                  </div>
-                </div>
+      {/* Status Variants */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Status Variants</h3>
+        <LivePreview title="Status Colors">
+          <Button variant="success" leftIcon={<Check className="h-4 w-4" />}>
+            Success
+          </Button>
+          <Button variant="warning" leftIcon={<Archive className="h-4 w-4" />}>
+            Warning
+          </Button>
+          <Button variant="error" leftIcon={<Plus className="h-4 w-4 rotate-45" />}>
+            Error
+          </Button>
+          <Button variant="info" leftIcon={<BookOpen className="h-4 w-4" />}>
+            Info
+          </Button>
+        </LivePreview>
+        
+        <CopyCodeBlock
+          filename="status-buttons.tsx"
+          code={`<Button variant="success" leftIcon={<Check className="h-4 w-4" />}>
+  Success
+</Button>
+<Button variant="warning" leftIcon={<Archive className="h-4 w-4" />}>
+  Warning
+</Button>
+<Button variant="error" leftIcon={<Plus className="h-4 w-4 rotate-45" />}>
+  Error
+</Button>
+<Button variant="info" leftIcon={<BookOpen className="h-4 w-4" />}>
+  Info
+</Button>`}
+        />
+      </div>
 
-                <div>
-                  <h4 className="font-medium mb-3">Error Variant</h4>
-                  <div className="flex flex-wrap gap-3">
-                    <Button variant="error">Error</Button>
-                    <Button variant="error" disabled>Disabled</Button>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-medium mb-3">Outline Variant</h4>
-                  <div className="flex flex-wrap gap-3">
-                    <Button variant="outline">Outline</Button>
-                    <Button variant="outline" disabled>Disabled</Button>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-medium mb-3">Ghost Variant</h4>
-                  <div className="flex flex-wrap gap-3">
-                    <Button variant="ghost">Ghost</Button>
-                    <Button variant="ghost" disabled>Disabled</Button>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-medium mb-3">Ghost Variant</h4>
-                  <div className="flex flex-wrap gap-3">
-                    <Button variant="ghost">Ghost</Button>
-                    <Button variant="ghost" disabled>Disabled</Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Sizes */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Sizes</h2>
-          <Card>
-            <CardHeader>
-              <CardTitle>Button Sizes</CardTitle>
-              <CardDescription>
-                Different sizes for different contexts
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div>
-                  <h4 className="font-medium mb-3">Size Variants</h4>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Button size="sm">Small</Button>
-                    <Button size="md">Medium</Button>
-                    <Button size="lg">Large</Button>
-                    <Button size="xl">Extra Large</Button>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-medium mb-3">With Icons</h4>
-                  <div className="flex flex-wrap items-center gap-3">
-                    <Button size="sm">
-                      <Download className="mr-2 h-4 w-4" />
-                      Download
-                    </Button>
-                    <Button size="md">
-                      <Copy className="mr-2 h-4 w-4" />
-                      Copy
-                    </Button>
-                    <Button size="lg">
-                      <Play className="mr-2 h-5 w-5" />
-                      Play
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* States */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">States</h2>
-          <Card>
-            <CardHeader>
-              <CardTitle>Button States</CardTitle>
-              <CardDescription>
-                Different states for user interaction feedback
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-6">
-                <div>
-                  <h4 className="font-medium mb-3">Loading State</h4>
-                  <div className="flex flex-wrap gap-3">
-                    <Button disabled>
-                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                      Loading...
-                    </Button>
-                    <Button variant="outline" disabled>
-                      <div className="mr-2 h-4 w-4 animate-spin rounded-full border-2 border-current border-t-transparent" />
-                      Loading...
-                    </Button>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-medium mb-3">Disabled State</h4>
-                  <div className="flex flex-wrap gap-3">
-                    <Button disabled>Disabled</Button>
-                    <Button variant="secondary" disabled>Disabled</Button>
-                    <Button variant="outline" disabled>Disabled</Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
-
-        {/* Examples */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">Examples</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Form Actions</CardTitle>
-                <CardDescription>
-                  Common button patterns in forms
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex gap-2">
-                    <Button type="submit">Save Changes</Button>
-                    <Button variant="outline" type="button">Cancel</Button>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="error" size="sm">Delete</Button>
-                    <Button variant="ghost" size="sm">Archive</Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card>
-              <CardHeader>
-                <CardTitle>Navigation</CardTitle>
-                <CardDescription>
-                  Button usage in navigation contexts
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm">Previous</Button>
-                    <Button size="sm">Next</Button>
-                  </div>
-                  <div className="flex gap-2">
-                    <Button variant="ghost" size="sm">Back</Button>
-                    <Button variant="ghost" size="sm">Home</Button>
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
-        </section>
-
-        {/* API Reference */}
-        <section>
-          <h2 className="text-2xl font-semibold mb-4">API Reference</h2>
-          <Card>
-            <CardHeader>
-              <CardTitle>Button Props</CardTitle>
-              <CardDescription>
-                All available props and their types
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <div>
-                  <h4 className="font-medium mb-2">Props</h4>
-                  <div className="bg-muted p-4 rounded-lg text-sm">
-                    <pre>{`interface ButtonProps {
-  variant?: 'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'
-  size?: 'default' | 'sm' | 'lg' | 'icon'
-  disabled?: boolean
-  className?: string
-  children: React.ReactNode
-  // ... other HTML button props
-}`}</pre>
-                  </div>
-                </div>
-
-                <div>
-                  <h4 className="font-medium mb-2">Variants</h4>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li><code>default</code> - Primary button style</li>
-                    <li><code>destructive</code> - For dangerous actions</li>
-                    <li><code>outline</code> - Bordered button style</li>
-                    <li><code>secondary</code> - Secondary button style</li>
-                    <li><code>ghost</code> - Minimal button style</li>
-                    <li><code>link</code> - Link-like button style</li>
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="font-medium mb-2">Sizes</h4>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li><code>sm</code> - Small button</li>
-                    <li><code>default</code> - Default button size</li>
-                    <li><code>lg</code> - Large button</li>
-                    <li><code>icon</code> - Square button for icons</li>
-                  </ul>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </section>
+      {/* Custom Styling */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Custom Styling</h3>
+        <LivePreview title="Custom Styled Buttons">
+          <Button 
+            backgroundColor="#ff6b35" 
+            textColor="white"
+            borderRadius="20px"
+            shadow="lg"
+          >
+            Custom Orange
+          </Button>
+          <Button 
+            backgroundColor="linear-gradient(45deg, #667eea 0%, #764ba2 100%)"
+            textColor="white"
+            borderRadius="12px"
+          >
+            Gradient
+          </Button>
+          <Button 
+            variant="outline"
+            borderColor="#10b981"
+            textColor="#10b981"
+            hoverColor="#10b981"
+          >
+            Custom Border
+          </Button>
+        </LivePreview>
+        
+        <CopyCodeBlock
+          filename="custom-buttons.tsx"
+          code={`<Button 
+  backgroundColor="#ff6b35" 
+  textColor="white"
+  borderRadius="20px"
+  shadow="lg"
+>
+  Custom Orange
+</Button>
+<Button 
+  backgroundColor="linear-gradient(45deg, #667eea 0%, #764ba2 100%)"
+  textColor="white"
+  borderRadius="12px"
+>
+  Gradient
+</Button>
+<Button 
+  variant="outline"
+  borderColor="#10b981"
+  textColor="#10b981"
+  hoverColor="#10b981"
+>
+  Custom Border
+</Button>`}
+        />
       </div>
     </div>
   )
-}
 
+  return (
+    <ComponentDocLayout
+      name="Button"
+      description="A versatile button component with multiple variants, sizes, and states. Perfect for actions, navigation, and user interactions."
+      category="Core Component"
+      bundleSize="~3.7KB"
+      variants={8}
+      complexity="Simple"
+    >
+      {buttonExamples}
+    </ComponentDocLayout>
+  )
+}

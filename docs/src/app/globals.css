@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Clean Material Design Theme */
+/* Modern Material Design Theme */
 @theme {
   --color-background: 0 0% 100%;
   --color-foreground: 240 10% 3.9%;
@@ -8,63 +8,63 @@
   --color-card-foreground: 240 10% 3.9%;
   --color-popover: 0 0% 100%;
   --color-popover-foreground: 240 10% 3.9%;
-  --color-primary: 240 5.9% 10%;
-  --color-primary-foreground: 0 0% 98%;
-  --color-secondary: 240 4.8% 95.9%;
-  --color-secondary-foreground: 240 5.9% 10%;
-  --color-muted: 240 4.8% 95.9%;
-  --color-muted-foreground: 240 3.8% 45%;
-  --color-accent: 240 4.8% 95.9%;
-  --color-accent-foreground: 240 5.9% 10%;
-  --color-destructive: 0 72% 51%;
-  --color-destructive-foreground: 0 0% 98%;
-  --color-border: 240 5.9% 90%;
-  --color-input: 240 5.9% 90%;
-  --color-ring: 240 5% 64.9%;
-  --color-radius: 0.5rem;
+  --color-primary: 262 83% 58%;
+  --color-primary-foreground: 210 40% 98%;
+  --color-secondary: 220 14.3% 95.9%;
+  --color-secondary-foreground: 220.9 39.3% 11%;
+  --color-muted: 220 14.3% 95.9%;
+  --color-muted-foreground: 220 8.9% 46.1%;
+  --color-accent: 220 14.3% 95.9%;
+  --color-accent-foreground: 220.9 39.3% 11%;
+  --color-destructive: 0 84.2% 60.2%;
+  --color-destructive-foreground: 210 40% 98%;
+  --color-border: 220 13% 91%;
+  --color-input: 220 13% 91%;
+  --color-ring: 262 83% 58%;
+  --color-radius: 0.75rem;
   
-  /* Simple semantic colors */
+  /* Material Design Semantic Colors */
   --color-success: 142 76% 36%;
-  --color-success-foreground: 356 100% 97%;
-  --color-warning: 38 92% 50%;
-  --color-warning-foreground: 48 96% 89%;
+  --color-success-foreground: 355 100% 97%;
+  --color-warning: 32 95% 44%;
+  --color-warning-foreground: 210 40% 98%;
   --color-error: 0 84% 60%;
-  --color-error-foreground: 0 0% 98%;
+  --color-error-foreground: 210 40% 98%;
   --color-info: 221 83% 53%;
-  --color-info-foreground: 0 0% 98%;
+  --color-info-foreground: 210 40% 98%;
 }
 
-/* Clean Dark Theme */
+/* Modern Dark Theme */
 @theme dark {
-  --color-background: 0 0% 3.9%;
-  --color-foreground: 0 0% 98%;
-  --color-card: 0 0% 6%;
-  --color-card-foreground: 0 0% 98%;
-  --color-popover: 0 0% 6%;
-  --color-popover-foreground: 0 0% 98%;
-  --color-primary: 0 0% 98%;
-  --color-primary-foreground: 0 0% 9%;
-  --color-secondary: 0 0% 14.9%;
-  --color-secondary-foreground: 0 0% 98%;
-  --color-muted: 0 0% 14.9%;
-  --color-muted-foreground: 0 0% 63.9%;
-  --color-accent: 0 0% 14.9%;
-  --color-accent-foreground: 0 0% 98%;
+  --color-background: 224 71.4% 4.1%;
+  --color-foreground: 210 40% 98%;
+  --color-card: 224 71.4% 4.1%;
+  --color-card-foreground: 210 40% 98%;
+  --color-popover: 224 71.4% 4.1%;
+  --color-popover-foreground: 210 40% 98%;
+  --color-primary: 263 70% 50.4%;
+  --color-primary-foreground: 210 40% 98%;
+  --color-secondary: 215 27.9% 16.9%;
+  --color-secondary-foreground: 210 40% 98%;
+  --color-muted: 215 27.9% 16.9%;
+  --color-muted-foreground: 217.9 10.6% 64.9%;
+  --color-accent: 215 27.9% 16.9%;
+  --color-accent-foreground: 210 40% 98%;
   --color-destructive: 0 62.8% 30.6%;
-  --color-destructive-foreground: 0 0% 98%;
-  --color-border: 0 0% 14.9%;
-  --color-input: 0 0% 14.9%;
-  --color-ring: 0 0% 83.1%;
+  --color-destructive-foreground: 210 40% 98%;
+  --color-border: 215 27.9% 16.9%;
+  --color-input: 215 27.9% 16.9%;
+  --color-ring: 263 70% 50.4%;
   
-  /* Simple dark colors */
+  /* Material Dark Semantic Colors */
   --color-success: 142 70% 45%;
-  --color-success-foreground: 0 0% 9%;
-  --color-warning: 38 95% 60%;
-  --color-warning-foreground: 0 0% 9%;
-  --color-error: 0 72% 51%;
-  --color-error-foreground: 0 0% 98%;
+  --color-success-foreground: 210 40% 98%;
+  --color-warning: 32 81% 29%;
+  --color-warning-foreground: 210 40% 98%;
+  --color-error: 0 62.8% 30.6%;
+  --color-error-foreground: 210 40% 98%;
   --color-info: 217 91% 60%;
-  --color-info-foreground: 0 0% 9%;
+  --color-info-foreground: 210 40% 98%;
 }
 
 @layer base {
@@ -103,31 +103,81 @@
 }
 
 @layer components {
-  /* Simple animations */
+  /* Material Design animations */
   .animate-fade-in {
-    animation: fadeIn 0.3s ease-in-out;
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .animate-slide-up {
-    animation: slideUp 0.4s ease-out;
+    animation: slideUp 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .animate-slide-down {
-    animation: slideDown 0.4s ease-out;
+    animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
-  /* Simple hover effects */
+  .animate-scale-in {
+    animation: scaleIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+  
+  .animate-float-delayed {
+    animation: float 6s ease-in-out infinite 2s;
+  }
+  
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  }
+  
+  /* Material Design elevation and hover effects */
   .hover-lift {
-    transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   
   .hover-lift:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
   }
   
   .dark .hover-lift:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.4), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Material Design card elevations */
+  .elevation-1 {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+  
+  .elevation-2 {
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+  }
+  
+  .elevation-3 {
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+  }
+  
+  /* Glass morphism effect */
+  .glass {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .dark .glass {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+  
+  /* Gradient backgrounds */
+  .bg-gradient-primary {
+    background: linear-gradient(135deg, hsl(var(--color-primary)) 0%, hsl(var(--color-accent)) 100%);
+  }
+  
+  .bg-gradient-secondary {
+    background: linear-gradient(135deg, hsl(var(--color-secondary)) 0%, hsl(var(--color-muted)) 100%);
   }
 }
 
@@ -143,7 +193,7 @@
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -154,10 +204,39 @@
 @keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateY(-16px);
+    transform: translateY(-20px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
   }
 }
