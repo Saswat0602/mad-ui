@@ -178,60 +178,30 @@ const handleSubmit = () => {
         />
       </div>
 
-      {/* Custom Styling */}
+      {/* Additional Variants */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Custom Styling</h3>
-        <LivePreview title="Custom Styled Buttons">
-          <Button 
-            backgroundColor="#ff6b35" 
-            textColor="white"
-            borderRadius="20px"
-            shadow="lg"
-          >
-            Custom Orange
+        <h3 className="text-lg font-semibold">Additional Variants</h3>
+        <LivePreview title="Status Button Variants">
+          <Button variant="success">
+            Success Button
           </Button>
-          <Button 
-            backgroundColor="linear-gradient(45deg, #667eea 0%, #764ba2 100%)"
-            textColor="white"
-            borderRadius="12px"
-          >
-            Gradient
+          <Button variant="warning">
+            Warning Button
           </Button>
-          <Button 
-            variant="outline"
-            borderColor="#10b981"
-            textColor="#10b981"
-            hoverColor="#10b981"
-          >
-            Custom Border
+          <Button variant="error">
+            Error Button
+          </Button>
+          <Button variant="info">
+            Info Button
           </Button>
         </LivePreview>
         
         <CopyCodeBlock
-          filename="custom-buttons.tsx"
-          code={`<Button 
-  backgroundColor="#ff6b35" 
-  textColor="white"
-  borderRadius="20px"
-  shadow="lg"
->
-  Custom Orange
-</Button>
-<Button 
-  backgroundColor="linear-gradient(45deg, #667eea 0%, #764ba2 100%)"
-  textColor="white"
-  borderRadius="12px"
->
-  Gradient
-</Button>
-<Button 
-  variant="outline"
-  borderColor="#10b981"
-  textColor="#10b981"
-  hoverColor="#10b981"
->
-  Custom Border
-</Button>`}
+          filename="status-buttons.tsx"
+          code={`<Button variant="success">Success Button</Button>
+<Button variant="warning">Warning Button</Button>
+<Button variant="error">Error Button</Button>
+<Button variant="info">Info Button</Button>`}
         />
       </div>
     </div>

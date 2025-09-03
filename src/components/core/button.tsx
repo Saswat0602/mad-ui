@@ -2,20 +2,10 @@
 
 import * as React from "react"
 import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "primary" | "secondary" | "outline" | "ghost" | "success" | "warning" | "error" | "info"
   size?: "xs" | "sm" | "md" | "lg" | "xl"
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  hoverColor?: string
-  width?: string | number
-  height?: string | number
-  borderRadius?: string | number
-  shadow?: "none" | "sm" | "md" | "lg" | "xl"
   fullWidth?: boolean
   loading?: boolean
   leftIcon?: React.ReactNode
@@ -27,125 +17,67 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     className, 
     variant = "primary", 
     size = "md", 
-    color,
-    backgroundColor,
-    borderColor,
-    textColor,
-    hoverColor,
-    width,
-    height,
-    borderRadius,
-    shadow = "sm",
     fullWidth = false,
     loading = false,
     leftIcon,
     rightIcon,
     children,
     disabled,
-    style,
     ...props 
   }, ref) => {
     
+    // Base classes with Material Design improvements
+    const baseClasses = "inline-flex items-center justify-center font-medium transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:opacity-50 disabled:pointer-events-none relative overflow-hidden transform hover:scale-[1.02] active:scale-[0.98] group"
+    
     // Size classes
     const sizeClasses = {
-      xs: "px-2 py-1 text-xs rounded",
-      sm: "px-3 py-1.5 text-sm rounded-md",
-      md: "px-4 py-2 text-sm rounded-lg",
-      lg: "px-6 py-3 text-base rounded-lg",
-      xl: "px-8 py-4 text-lg rounded-xl"
+      xs: "px-2.5 py-1.5 text-xs rounded-md h-7",
+      sm: "px-3 py-2 text-sm rounded-md h-8",
+      md: "px-4 py-2.5 text-sm rounded-lg h-10",
+      lg: "px-6 py-3 text-base rounded-lg h-12",
+      xl: "px-8 py-4 text-lg rounded-xl h-14"
     }
 
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg",
-      xl: "shadow-xl"
-    }
-
-    // Get default colors from componentColors
-    const defaultColors = componentColors.button[variant as keyof typeof componentColors.button] || componentColors.button.primary
-
-    // Custom styles with fallbacks to defaults
-    const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || defaultColors.bg,
-      color: textColor || defaultColors.text,
-      borderColor: borderColor || defaultColors.border,
-      borderWidth: variant === "outline" ? "1px" : "0",
-      borderStyle: "solid",
-      width: fullWidth ? "100%" : width,
-      height: height,
-      borderRadius: borderRadius,
-      ...style
-    }
-
-    // Hover styles
-    const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (hoverColor) {
-        e.currentTarget.style.backgroundColor = hoverColor
-      } else if (variant === "primary") {
-        e.currentTarget.style.backgroundColor = "var(--accent-secondary)"
-      } else if (variant === "secondary" || variant === "outline") {
-        e.currentTarget.style.backgroundColor = "var(--bg-tertiary)"
-      } else if (variant === "ghost") {
-        e.currentTarget.style.backgroundColor = "var(--bg-tertiary)"
-      } else if (variant === "success") {
-        e.currentTarget.style.backgroundColor = "var(--success)"
-      } else if (variant === "warning") {
-        e.currentTarget.style.backgroundColor = "var(--warning)"
-      } else if (variant === "error") {
-        e.currentTarget.style.backgroundColor = "var(--error)"
-      } else if (variant === "info") {
-        e.currentTarget.style.backgroundColor = "var(--info)"
-      }
-    }
-
-    const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
-      if (hoverColor) {
-        e.currentTarget.style.backgroundColor = backgroundColor || color || defaultColors.bg
-      } else if (variant === "primary") {
-        e.currentTarget.style.backgroundColor = "var(--accent-primary)"
-      } else if (variant === "secondary") {
-        e.currentTarget.style.backgroundColor = "var(--bg-tertiary)"
-      } else if (variant === "outline" || variant === "ghost") {
-        e.currentTarget.style.backgroundColor = "transparent"
-      } else if (variant === "success") {
-        e.currentTarget.style.backgroundColor = "var(--accent-success)"
-      } else if (variant === "warning") {
-        e.currentTarget.style.backgroundColor = "var(--accent-warning)"
-      } else if (variant === "error") {
-        e.currentTarget.style.backgroundColor = "var(--accent-error)"
-      } else if (variant === "info") {
-        e.currentTarget.style.backgroundColor = "var(--accent-info)"
-      }
+    // Enhanced variant classes with Material Design elevations
+    const variantClasses = {
+      primary: "bg-primary text-primary-foreground shadow-md hover:shadow-lg elevation-2 hover:elevation-3 hover:bg-primary/90",
+      secondary: "bg-secondary text-secondary-foreground shadow-sm hover:shadow-md elevation-1 hover:elevation-2 hover:bg-secondary/80",
+      outline: "border border-input bg-background hover:bg-accent hover:text-accent-foreground hover:shadow-md hover:elevation-2",
+      ghost: "hover:bg-accent hover:text-accent-foreground hover:shadow-sm hover:elevation-1",
+      success: "bg-green-600 text-white shadow-md hover:shadow-lg elevation-2 hover:elevation-3 hover:bg-green-700",
+      warning: "bg-yellow-600 text-white shadow-md hover:shadow-lg elevation-2 hover:elevation-3 hover:bg-yellow-700",
+      error: "bg-red-600 text-white shadow-md hover:shadow-lg elevation-2 hover:elevation-3 hover:bg-red-700",
+      info: "bg-blue-600 text-white shadow-md hover:shadow-lg elevation-2 hover:elevation-3 hover:bg-blue-700"
     }
 
     return (
       <button
         className={cn(
-          "ui-button",
+          baseClasses,
+          variantClasses[variant],
           sizeClasses[size],
-          shadowClasses[shadow],
           fullWidth && "w-full",
           className
         )}
-        style={customStyles}
         ref={ref}
         disabled={disabled || loading}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
         {...props}
       >
-        {loading && (
-          <svg className="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-        )}
-        {!loading && leftIcon && <span className="flex-shrink-0">{leftIcon}</span>}
-        {children}
-        {!loading && rightIcon && <span className="flex-shrink-0">{rightIcon}</span>}
+        {/* Material Design Ripple Effect */}
+        <span className="absolute inset-0 rounded-[inherit] bg-white/10 opacity-0 transition-opacity group-hover:opacity-100 group-active:opacity-20 pointer-events-none" />
+        
+        {/* Content wrapper */}
+        <span className="relative z-10 flex items-center justify-center gap-2">
+          {loading && (
+            <svg className="animate-spin h-4 w-4 shrink-0" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          )}
+          {!loading && leftIcon && <span className="shrink-0">{leftIcon}</span>}
+          <span>{children}</span>
+          {!loading && rightIcon && <span className="shrink-0">{rightIcon}</span>}
+        </span>
       </button>
     )
   }

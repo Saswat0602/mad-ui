@@ -14,19 +14,15 @@ import {
   Code,
   FileText,
   Layout,
-  Database,
   Zap,
   Navigation,
-  Monitor,
   Bell,
-  Grid3X3,
   Image,
   BarChart3,
-  MousePointer,
   Layers,
   Sparkles,
-  BookOpen,
-  ExternalLink
+  ExternalLink,
+  BookOpen
 } from 'lucide-react'
 
 interface ComponentCategory {
@@ -223,6 +219,8 @@ export default function ComponentsPage() {
     )
   }))
 
+  const totalComponents = componentCategories.reduce((sum, cat) => sum + cat.count, 0)
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
       <div className="container mx-auto max-w-7xl px-4 py-16 lg:py-24">
@@ -241,20 +239,17 @@ export default function ComponentsPage() {
           
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight tracking-tight">
             <span className="block text-foreground">Components</span>
-            <span className="block bg-gradient-to-r from-primary via-primary to-accent bg-clip-text text-transparent">
-              Library
-            </span>
           </h1>
           
           <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8 font-medium">
-            56 beautiful, accessible, and fully customizable React components. 
+            Beautiful, accessible, and fully customizable React components. 
             Copy the code and customize to match your design system.
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
             <Badge variant="success" className="text-sm px-4 py-2">
               <Sparkles className="w-4 h-4 mr-2" />
-              56 Components
+              {totalComponents} Components
             </Badge>
             <Badge variant="info" className="text-sm px-4 py-2">
               <Code className="w-4 h-4 mr-2" />
@@ -302,128 +297,101 @@ export default function ComponentsPage() {
           </div>
         </motion.div>
 
-        {/* Component Categories */}
-        <div className="space-y-20">
-          {filteredCategories.map((category, categoryIndex) => (
-            <motion.section
-              key={category.id}
-              variants={containerVariants}
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true }}
-              className="animate-in fade-in slide-in-from-bottom-8 duration-1000"
-              style={{ animationDelay: `${categoryIndex * 200}ms` }}
-            >
-              {/* Category Header */}
-              <div className="text-center mb-12">
-                <div className="flex items-center justify-center mb-6">
-                  <div className={`w-16 h-16 rounded-3xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg shadow-primary/25`}>
-                    <category.icon className="h-8 w-8 text-white" />
-                  </div>
-                </div>
-                <h2 className="text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-                  {category.title}
-                </h2>
-                <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-4">
-                  {category.description}
-                </p>
-                <div className="flex items-center justify-center gap-4">
-                  <Badge variant="outline" className="text-sm">
-                    {category.count} Components
-                  </Badge>
-                  <Badge variant="outline" className="text-sm">
-                    Production Ready
-                  </Badge>
-                </div>
-              </div>
-
-              {/* Component Grid */}
-              <motion.div 
-                variants={containerVariants}
-                className="grid md:grid-cols-2 lg:grid-cols-3 gap-6"
-              >
-                {category.components.map((component, componentIndex) => (
-                  <motion.div key={component.name} variants={itemVariants}>
-                    <Link href={component.path}>
-                      <Card className="group hover-lift elevation-1 transition-all duration-300 hover:elevation-3 cursor-pointer h-full">
-                        <CardHeader className="pb-4">
-                          <div className="flex items-start justify-between mb-3">
-                            <CardTitle className="text-xl font-bold group-hover:text-primary transition-colors">
-                              {component.name}
-                            </CardTitle>
-                            <div className="flex items-center gap-2">
-                              {component.status === 'new' && (
-                                <Badge variant="success" className="text-xs">New</Badge>
-                              )}
-                              {component.status === 'beta' && (
-                                <Badge variant="warning" className="text-xs">Beta</Badge>
-                              )}
-                              <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                            </div>
-                          </div>
-                          <CardDescription className="leading-relaxed">
-                            {component.description}
-                          </CardDescription>
-                        </CardHeader>
-                        <CardContent>
-                          <div className="flex items-center justify-between">
-                            <div className="flex items-center gap-2">
-                              <Badge 
-                                variant="outline" 
-                                className={`text-xs ${
-                                  component.complexity === 'simple' ? 'border-green-300 text-green-700' :
-                                  component.complexity === 'moderate' ? 'border-yellow-300 text-yellow-700' :
-                                  'border-red-300 text-red-700'
-                                }`}
-                              >
-                                {component.complexity}
-                              </Badge>
-                              <Badge variant="outline" className="text-xs">
-                                TypeScript
-                              </Badge>
-                            </div>
-                            <ArrowRight className="h-4 w-4 text-muted-foreground group-hover:text-primary group-hover:translate-x-1 transition-all" />
-                          </div>
-                        </CardContent>
-                      </Card>
-                    </Link>
-                  </motion.div>
-                ))}
-              </motion.div>
-            </motion.section>
-          ))}
-        </div>
-
-        {/* Quick Stats */}
-        <motion.section
-          initial={{ opacity: 0, scale: 0.95 }}
-          whileInView={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="mt-24 text-center"
+        {/* Component Categories Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+          className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16"
         >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            {[
-              { label: 'Total Components', value: '56', icon: Package },
-              { label: 'Component Categories', value: '8', icon: Grid3X3 },
-              { label: 'Code Examples', value: '200+', icon: Code },
-              { label: 'Documentation Pages', value: '60+', icon: BookOpen }
-            ].map((stat, index) => (
-              <motion.div
-                key={index}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="text-center p-6 bg-card/50 backdrop-blur-sm rounded-2xl border border-border/50 hover-lift"
-              >
-                <stat.icon className="h-8 w-8 mx-auto mb-3 text-primary" />
-                <div className="text-3xl font-bold text-foreground mb-1">{stat.value}</div>
-                <div className="text-sm text-muted-foreground">{stat.label}</div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.section>
+          {filteredCategories.map((category) => (
+            <motion.div key={category.id} variants={itemVariants}>
+              <Card className="group hover-lift elevation-1 transition-all duration-300 hover:elevation-3 cursor-pointer h-full">
+                <CardHeader className="pb-4">
+                  <div className="flex items-center gap-3 mb-3">
+                    <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${category.color} flex items-center justify-center shadow-lg`}>
+                      <category.icon className="h-6 w-6 text-white" />
+                    </div>
+                    <div>
+                      <CardTitle className="text-lg font-bold group-hover:text-primary transition-colors">
+                        {category.title}
+                      </CardTitle>
+                      <Badge variant="outline" className="text-xs mt-1">
+                        {category.count} Components
+                      </Badge>
+                    </div>
+                  </div>
+                  <CardDescription className="leading-relaxed text-sm">
+                    {category.description}
+                  </CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-2 mb-4">
+                    {category.components.slice(0, 3).map((component) => (
+                      <div key={component.name} className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">{component.name}</span>
+                        <Badge 
+                          variant="outline" 
+                          className={`text-xs ${
+                            component.complexity === 'simple' ? 'border-green-300 text-green-700' :
+                            component.complexity === 'moderate' ? 'border-yellow-300 text-yellow-700' :
+                            'border-red-300 text-red-700'
+                          }`}
+                        >
+                          {component.complexity}
+                        </Badge>
+                      </div>
+                    ))}
+                    {category.components.length > 3 && (
+                      <div className="text-xs text-muted-foreground pt-1">
+                        +{category.components.length - 3} more components
+                      </div>
+                    )}
+                  </div>
+                  <Link href={`/docs/components/${category.id}`}>
+                    <Button variant="outline" size="sm" className="w-full group-hover:bg-primary group-hover:text-white transition-all">
+                      View Components
+                      <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                    </Button>
+                  </Link>
+                </CardContent>
+              </Card>
+            </motion.div>
+          ))}
+        </motion.div>
+
+        {/* Individual Components Quick Access */}
+        {(searchTerm || selectedCategory) && (
+          <motion.section
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            className="mb-16"
+          >
+            <h2 className="text-3xl font-bold mb-8 text-center">
+              {searchTerm ? `Search Results for "${searchTerm}"` : `${componentCategories.find(c => c.id === selectedCategory)?.title} Components`}
+            </h2>
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
+              {filteredCategories.flatMap(category => category.components).map((component) => (
+                <Link key={component.name} href={component.path}>
+                  <Card className="group hover-lift transition-all duration-200 cursor-pointer">
+                    <CardHeader className="pb-3">
+                      <div className="flex items-start justify-between">
+                        <CardTitle className="text-base font-semibold group-hover:text-primary transition-colors">
+                          {component.name}
+                        </CardTitle>
+                        <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                      </div>
+                      <CardDescription className="text-sm leading-relaxed">
+                        {component.description}
+                      </CardDescription>
+                    </CardHeader>
+                  </Card>
+                </Link>
+              ))}
+            </div>
+          </motion.section>
+        )}
 
         {/* CTA Section */}
         <motion.section
@@ -431,12 +399,12 @@ export default function ComponentsPage() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           viewport={{ once: true }}
-          className="mt-24 text-center"
+          className="text-center"
         >
           <div className="bg-gradient-to-br from-primary/10 via-primary/5 to-accent/10 rounded-3xl p-12 border border-primary/20">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Ready to build something amazing?</h2>
             <p className="text-lg text-muted-foreground mb-8 max-w-2xl mx-auto">
-              Start building beautiful user interfaces with Mad UI components. Copy the components you need and customize them to match your design system.
+              Start building beautiful user interfaces with Mad UI components. Each component comes with detailed documentation, examples, and copy-paste code.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link href="/docs/getting-started">
