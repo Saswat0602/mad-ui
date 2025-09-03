@@ -7,10 +7,6 @@ import { Button } from 'mad-ui-components/button'
 import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components/card'
 import { ComponentDocLayout, LivePreview, CopyCodeBlock } from '@/components/component-doc-layout'
 import { 
-  Check,
-  Star,
-  Heart,
-  Settings,
   Mail,
   Bell,
   Lock
@@ -122,62 +118,54 @@ export default function CheckboxDocPage() {
         />
       </div>
 
-      {/* Checkbox with Icons */}
+      {/* Validation States */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">With Icons</h3>
-        <LivePreview title="Checkbox with Icons">
+        <h3 className="text-lg font-semibold">Validation States</h3>
+        <LivePreview title="Checkbox Validation States">
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <Checkbox 
-                id="icon-left-checkbox" 
-                leftIcon={<Star className="h-3 w-3" />}
+                id="success-checkbox" 
+                success
                 defaultChecked 
               />
-              <Label htmlFor="icon-left-checkbox">Favorite this item</Label>
+              <Label htmlFor="success-checkbox">Valid selection</Label>
             </div>
             
             <div className="flex items-center space-x-2">
               <Checkbox 
-                id="icon-right-checkbox" 
-                rightIcon={<Heart className="h-3 w-3" />}
-                defaultChecked 
+                id="error-checkbox" 
+                error="This field is required"
               />
-              <Label htmlFor="icon-right-checkbox">Add to wishlist</Label>
+              <Label htmlFor="error-checkbox">Required field</Label>
             </div>
             
             <div className="flex items-center space-x-2">
               <Checkbox 
-                id="icon-both-checkbox" 
-                leftIcon={<Settings className="h-3 w-3" />}
-                rightIcon={<Check className="h-3 w-3" />}
-                defaultChecked 
+                id="indeterminate-checkbox" 
+                indeterminate
               />
-              <Label htmlFor="icon-both-checkbox">Configure settings</Label>
+              <Label htmlFor="indeterminate-checkbox">Indeterminate state</Label>
             </div>
           </div>
         </LivePreview>
         
         <CopyCodeBlock
-          filename="checkbox-with-icons.tsx"
-          code={`import { Star, Heart, Settings, Check } from 'lucide-react'
-
-<Checkbox 
-  id="icon-left-checkbox" 
-  leftIcon={<Star className="h-3 w-3" />}
+          filename="checkbox-validation.tsx"
+          code={`<Checkbox 
+  id="success-checkbox" 
+  success
   defaultChecked 
 />
 
 <Checkbox 
-  id="icon-right-checkbox" 
-  rightIcon={<Heart className="h-3 w-3" />}
-  defaultChecked 
+  id="error-checkbox" 
+  error="This field is required"
 />
 
 <Checkbox 
-  id="icon-both-checkbox" 
-  leftIcon={<Settings className="h-3 w-3" />}
-  rightIcon={<Check className="h-3 w-3" />}
-  defaultChecked 
+  id="indeterminate-checkbox" 
+  indeterminate
 />`}
         />
       </div>

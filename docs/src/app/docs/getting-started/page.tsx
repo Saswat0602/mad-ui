@@ -77,7 +77,7 @@ interface StepCardProps {
   icon: React.ComponentType<{ className?: string }>
   title: string
   description: string
-  children: React.ReactNode
+  children: JSX.Element | JSX.Element[]
   gradient: string
 }
 
