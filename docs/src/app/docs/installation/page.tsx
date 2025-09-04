@@ -20,6 +20,7 @@ import "prismjs/components/prism-bash"
 import "prismjs/components/prism-javascript"
 import "prismjs/components/prism-jsx"
 import "prismjs/components/prism-json"
+import { InstallationHero } from "@/components/hero-section"
 
 interface CodeBlockProps {
   code: string
@@ -80,24 +81,10 @@ const CodeBlock: React.FC<CodeBlockProps> = ({ code, language, filename }) => {
 
 export default function InstallationPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-12 lg:py-20">
-        {/* Hero Section */}
-        <div className="text-center mb-16 lg:mb-24">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 border border-primary/20 text-primary text-sm font-medium mb-6">
-            <Package className="h-4 w-4" />
-            Installation Guide
-          </div>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 tracking-tight">
-            Get Started with
-            <span className="block bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-              Mad UI
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Learn how to install and set up Mad UI components in your project with our comprehensive installation guide.
-          </p>
-        </div>
+    <div className="min-h-screen">
+      <InstallationHero />
+      
+      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
 
         <div className="space-y-16">
           {/* Package Installation */}

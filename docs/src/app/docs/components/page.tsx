@@ -24,6 +24,7 @@ import {
   ExternalLink,
   BookOpen
 } from 'lucide-react'
+import { ComponentsHero } from "@/components/hero-section"
 
 interface ComponentCategory {
   id: string
@@ -222,30 +223,16 @@ export default function ComponentsPage() {
   const totalComponents = componentCategories.reduce((sum, cat) => sum + cat.count, 0)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted/20">
-      <div className="container mx-auto max-w-7xl px-4 py-16 lg:py-24">
-        {/* Header */}
+    <div className="min-h-screen">
+      <ComponentsHero />
+      
+      <div className="container mx-auto max-w-7xl px-4">
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="flex items-center justify-center mb-6">
-            <div className="w-16 h-16 rounded-3xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg shadow-primary/25">
-              <Package className="h-8 w-8 text-white" />
-            </div>
-          </div>
-          
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight tracking-tight">
-            <span className="block text-foreground">Components</span>
-          </h1>
-          
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed mb-8 font-medium">
-            Beautiful, accessible, and fully customizable React components. 
-            Copy the code and customize to match your design system.
-          </p>
-
           <div className="flex flex-wrap items-center justify-center gap-4 mb-12">
             <Badge variant="success" className="text-sm px-4 py-2">
               <Sparkles className="w-4 h-4 mr-2" />

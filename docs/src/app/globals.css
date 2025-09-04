@@ -13,7 +13,7 @@ html {
   --color-card-foreground: 240 10% 3.9%;
   --color-popover: 0 0% 100%;
   --color-popover-foreground: 240 10% 3.9%;
-  --color-primary: 262 83% 58%;
+  --color-primary: 221 83% 53%;
   --color-primary-foreground: 210 40% 98%;
   --color-secondary: 220 14.3% 95.9%;
   --color-secondary-foreground: 220.9 39.3% 11%;
@@ -25,7 +25,7 @@ html {
   --color-destructive-foreground: 210 40% 98%;
   --color-border: 220 13% 91%;
   --color-input: 220 13% 91%;
-  --color-ring: 262 83% 58%;
+  --color-ring: 221 83% 53%;
   --color-radius: 0.75rem;
   
   /* Material Design Semantic Colors */
@@ -47,7 +47,7 @@ html {
   --color-card-foreground: 210 40% 98%;
   --color-popover: 224 71.4% 4.1%;
   --color-popover-foreground: 210 40% 98%;
-  --color-primary: 263 70% 50.4%;
+  --color-primary: 221 83% 53%;
   --color-primary-foreground: 210 40% 98%;
   --color-secondary: 215 27.9% 16.9%;
   --color-secondary-foreground: 210 40% 98%;
@@ -59,7 +59,7 @@ html {
   --color-destructive-foreground: 210 40% 98%;
   --color-border: 215 27.9% 16.9%;
   --color-input: 215 27.9% 16.9%;
-  --color-ring: 263 70% 50.4%;
+  --color-ring: 221 83% 53%;
   
   /* Material Dark Semantic Colors */
   --color-success: 142 70% 45%;

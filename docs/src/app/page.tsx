@@ -7,9 +7,6 @@ import {
   Code, 
   Zap, 
   Layers,
-  Github,
-  Star,
-  Download,
   Rocket,
   Shield,
   Palette,
@@ -22,6 +19,7 @@ import {
   BookOpen,
   Users
 } from "lucide-react";
+import { HeroSection } from "@/components/hero-section";
 
 const HomePage = () => {
   const [copiedStates, setCopiedStates] = useState<Record<string, boolean>>({});
@@ -103,7 +101,7 @@ const HomePage = () => {
     return (
       <span className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium ${variants[variant]} ${className}`}>
         {children}
-      </span>
+              </span>
     );
   };
 
@@ -116,10 +114,10 @@ const HomePage = () => {
     [key: string]: unknown;
   }) => {
     const variants: Record<string, string> = {
-      default: 'bg-gradient-to-r from-violet-600 to-purple-600 hover:from-violet-700 hover:to-purple-700 text-white',
-      outline: 'border border-slate-300 bg-transparent hover:bg-slate-50 dark:border-slate-600 dark:hover:bg-slate-800',
-      ghost: 'hover:bg-slate-100 dark:hover:bg-slate-800',
-      secondary: 'bg-slate-200 hover:bg-slate-300 text-slate-900 dark:bg-slate-700 dark:hover:bg-slate-600 dark:text-slate-100'
+      default: 'bg-primary hover:bg-primary/90 text-primary-foreground',
+      outline: 'border border-border bg-transparent hover:bg-muted',
+      ghost: 'hover:bg-muted',
+      secondary: 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'
     };
     
     const sizes: Record<string, string> = {
@@ -149,77 +147,32 @@ const HomePage = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-900 dark:to-slate-800">
-      {/* Background Elements */}
-      <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-20 w-64 h-64 bg-gradient-to-r from-violet-500/10 to-purple-500/10 rounded-full blur-3xl animate-pulse" />
-        <div className="absolute top-40 right-20 w-80 h-80 bg-gradient-to-r from-blue-500/10 to-cyan-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '2s' }} />
-        <div className="absolute bottom-20 left-1/3 w-72 h-72 bg-gradient-to-r from-pink-500/10 to-rose-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '4s' }} />
-      </div>
-
-      {/* Hero Section */}
-      <section className="relative px-6 py-24 lg:py-32">
-        <div className="container mx-auto max-w-7xl">
-          <div className="text-center">
-            <Badge className="mb-8 backdrop-blur-sm bg-white/50 dark:bg-slate-800/50 border border-slate-200/50 dark:border-slate-700/50">
-              <Sparkles className="w-4 h-4 mr-2" />
-              Mad UI v2.0 - Production Ready
-            </Badge>
-            
-            <h1 className="text-6xl md:text-7xl lg:text-8xl font-black mb-8 leading-tight tracking-tight">
-              <span className="block text-slate-900 dark:text-white">Modern</span>
-              <span className="block bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
-                Component Library
-              </span>
-            </h1>
-            
-            <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-300 mb-12 max-w-4xl mx-auto leading-relaxed">
-              Copy, paste, and customize beautiful React components built with Tailwind CSS. 
-              No dependencies, full control, modern design system.
-            </p>
-            
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-              <Button size="lg" className="shadow-xl shadow-violet-500/25" onClick={() => {}}>
-                <Rocket className="mr-3 h-5 w-5" />
-                Get Started
-                <ArrowRight className="ml-3 h-5 w-5" />
-              </Button>
-              
-              <Button variant="outline" size="lg" className="shadow-lg" onClick={() => {}}>
-                <Package className="mr-3 h-5 w-5" />
-                Browse Components
-              </Button>
-              
-              <Button variant="ghost" size="lg" onClick={() => {}}>
-                <Github className="mr-3 h-5 w-5" />
-                <Star className="mr-2 h-4 w-4" />
-                Star on GitHub
-              </Button>
-            </div>
-            
-            {/* Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
-              {[
-                { label: "Components", value: "50+", icon: Package, gradient: "from-blue-500 to-cyan-500" },
-                { label: "TypeScript", value: "100%", icon: Shield, gradient: "from-green-500 to-emerald-500" },
-                { label: "Bundle Size", value: "~3KB", icon: Zap, gradient: "from-yellow-500 to-orange-500" },
-                { label: "Downloads", value: "10K+", icon: Download, gradient: "from-purple-500 to-pink-500" }
-              ].map((stat, index) => (
-                <div
-                  key={index}
-                  className="p-6 bg-white/50 dark:bg-slate-800/50 backdrop-blur-sm rounded-2xl border border-slate-200/50 dark:border-slate-700/50 hover:scale-105 transition-transform duration-300"
-                >
-                  <div className={`w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-r ${stat.gradient} flex items-center justify-center shadow-lg`}>
-                    <stat.icon className="h-6 w-6 text-white" />
-                  </div>
-                  <div className="text-3xl font-bold text-slate-900 dark:text-white mb-1">{stat.value}</div>
-                  <div className="text-sm text-slate-600 dark:text-slate-400">{stat.label}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </section>
+    <div className="min-h-screen">
+      <HeroSection
+        title="Modern"
+        subtitle="Component Library"
+        description="Copy, paste, and customize beautiful React components built with Tailwind CSS. No dependencies, full control, modern design system."
+        badge={{
+          text: "Mad UI v2.0 - Production Ready",
+          icon: Sparkles
+        }}
+        primaryAction={{
+          text: "Get Started",
+          href: "/docs/getting-started",
+          icon: Rocket
+        }}
+        secondaryAction={{
+          text: "Browse Components",
+          href: "/docs/components",
+          icon: Package
+        }}
+        stats={[
+          { value: "50+", label: "Components" },
+          { value: "100%", label: "TypeScript" },
+          { value: "~3KB", label: "Bundle Size" },
+          { value: "10K+", label: "Downloads" }
+        ]}
+      />
 
       {/* Interactive Demo Section */}
       <section className="relative px-6 py-20 lg:py-24">
@@ -229,9 +182,9 @@ const HomePage = () => {
               <Play className="w-4 h-4 mr-2" />
               Live Demo
             </Badge>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight text-slate-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight text-foreground">
               See It In
-              <span className="block text-violet-600">Action</span>
+              <span className="block text-primary">Action</span>
             </h2>
             <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
               Experience the power and flexibility of Mad UI components with our interactive playground.
@@ -252,14 +205,14 @@ const HomePage = () => {
                     onClick={() => setActiveTab(tab.id)}
                     className={`px-4 py-2 text-sm font-medium rounded-lg transition-colors ${
                       activeTab === tab.id
-                        ? 'bg-violet-100 text-violet-700 dark:bg-violet-900/50 dark:text-violet-300'
-                        : 'text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200'
+                        ? 'bg-primary/10 text-primary'
+                        : 'text-muted-foreground hover:text-foreground'
                     }`}
                   >
                     {tab.label}
                   </button>
                 ))}
-              </div>
+                  </div>
 
               {activeTab === 'install' && (
                 <CodeBlock language="bash" copyKey="install">
@@ -322,10 +275,10 @@ export function App() {
                           className="bg-gradient-to-r from-violet-600 to-purple-600 h-2 rounded-full transition-all duration-100"
                           style={{ width: `${demoProgress}%` }}
                         />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-2 gap-4">
+                </div>
+              </div>
+              
+              <div className="grid grid-cols-2 gap-4">
                       <div className="text-center p-4 bg-green-50 dark:bg-green-900/20 rounded-xl border border-green-200 dark:border-green-800">
                         <CheckCircle className="h-6 w-6 mx-auto mb-2 text-green-600" />
                         <div className="text-sm font-medium text-green-700 dark:text-green-300">Accessible</div>
@@ -335,7 +288,7 @@ export function App() {
                         <div className="text-sm font-medium text-blue-700 dark:text-blue-300">Fast</div>
                       </div>
                     </div>
-                  </div>
+                </div>
                 </div>
               </div>
             </Card>
@@ -405,13 +358,13 @@ export function App() {
                 className="h-full p-8 hover:scale-105 transition-transform duration-300 shadow-lg hover:shadow-2xl"
               >
                 <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center mb-6 shadow-lg`}>
-                  <feature.icon className="h-7 w-7 text-white" />
-                </div>
+                      <feature.icon className="h-7 w-7 text-white" />
+                    </div>
                 <h3 className="text-xl font-semibold mb-4 text-slate-900 dark:text-white">{feature.title}</h3>
                 <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
-                  {feature.description}
+                      {feature.description}
                 </p>
-              </Card>
+                </Card>
             ))}
           </div>
         </div>
@@ -442,13 +395,13 @@ export function App() {
                 <Button variant="secondary" size="lg" className="shadow-xl" onClick={() => {}}>
                   <Terminal className="mr-3 h-5 w-5" />
                   Quick Start Guide
-                  <ArrowRight className="ml-3 h-5 w-5" />
-                </Button>
+                    <ArrowRight className="ml-3 h-5 w-5" />
+                  </Button>
                 
                 <Button variant="outline" size="lg" className="border-2 border-white/30 text-white hover:bg-white/10" onClick={() => {}}>
                   <BookOpen className="mr-3 h-5 w-5" />
                   Documentation
-                </Button>
+                  </Button>
               </div>
               
               {/* Social Proof */}
@@ -466,7 +419,7 @@ export function App() {
               </div>
             </div>
           </Card>
-        </div>
+          </div>
       </section>
     </div>
   );

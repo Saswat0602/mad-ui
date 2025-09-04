@@ -13,7 +13,6 @@ import {
   Download, 
   Rocket, 
   CheckCircle,
-  BookOpen,
   Sparkles,
   Terminal,
   PlayCircle,
@@ -27,6 +26,7 @@ import "prismjs/components/prism-bash"
 import "prismjs/components/prism-javascript"
 import "prismjs/components/prism-jsx"
 import "prismjs/components/prism-json"
+import { GettingStartedHero } from "@/components/hero-section"
 
 interface CopyCodeBlockProps {
   code: string
@@ -147,26 +147,11 @@ export default function GettingStartedPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <div className="container mx-auto max-w-6xl px-4 py-16 lg:py-24">
-        {/* Hero Section */}
-        <div className="text-center mb-20 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          <Badge variant="outline" className="mb-6 px-6 py-3 text-sm font-semibold border-primary/20 bg-primary/5">
-            <BookOpen className="w-4 h-4 mr-2" />
-            Documentation
-          </Badge>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 leading-tight tracking-tight">
-            Getting Started with
-            <span className="block bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm">
-              Mad UI
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-4xl mx-auto leading-relaxed font-medium">
-            Build beautiful interfaces in minutes. Install, import, and start creating with our comprehensive component library designed for modern web development.
-          </p>
-        </div>
-
-        <div className="space-y-24">
+    <div className="min-h-screen">
+      <GettingStartedHero />
+      
+      <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="space-y-16">
           {/* Installation Section */}
           <section className="animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-200">
             <StepCard
