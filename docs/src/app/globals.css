@@ -1,7 +1,12 @@
 @import "tailwindcss";
 
+/* Smooth scrolling behavior */
+html {
+  scroll-behavior: smooth;
+}
+
 /* Modern Material Design Theme */
-@theme {
+:root {
   --color-background: 0 0% 100%;
   --color-foreground: 240 10% 3.9%;
   --color-card: 0 0% 100%;
@@ -35,7 +40,7 @@
 }
 
 /* Modern Dark Theme */
-@theme dark {
+.dark {
   --color-background: 224 71.4% 4.1%;
   --color-foreground: 210 40% 98%;
   --color-card: 224 71.4% 4.1%;

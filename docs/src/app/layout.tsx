@@ -86,7 +86,7 @@ export default function RootLayout({
             </div>
             
             <Header />
-            <main className="flex-1 relative">
+            <main className="flex-1 relative pt-20">
               <div className="animate-fade-in">
                 {children}
               </div>
@@ -138,7 +138,7 @@ export default function RootLayout({
                 
                 <div className="mt-12 pt-8 border-t border-border/20 text-center">
                   <p className="text-sm text-muted-foreground">
-                    &copy; 2024 Mad UI. Built with ❤️ for developers worldwide.
+                    &copy; 2025 Mad UI. Built with ❤️ for developers worldwide.
                   </p>
                 </div>
               </div>

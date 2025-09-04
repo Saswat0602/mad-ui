@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Button } from 'mad-ui-components/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'mad-ui-components/card'
 import { Badge } from 'mad-ui-components/badge'
@@ -21,14 +21,25 @@ import {
   Settings,
   Check
 } from "lucide-react"
+import Prism from "prismjs"
+import "prismjs/themes/prism-tomorrow.css"
+import "prismjs/components/prism-bash"
+import "prismjs/components/prism-javascript"
+import "prismjs/components/prism-jsx"
+import "prismjs/components/prism-json"
 
 interface CopyCodeBlockProps {
   code: string
   filename: string
+  language?: string
 }
 
-const CopyCodeBlock: React.FC<CopyCodeBlockProps> = ({ code, filename }) => {
+const CopyCodeBlock: React.FC<CopyCodeBlockProps> = ({ code, filename, language = "bash" }) => {
   const [copied, setCopied] = useState(false)
+  
+  useEffect(() => {
+    Prism.highlightAll()
+  }, [code])
   
   const handleCopy = () => {
     navigator.clipboard.writeText(code)
@@ -38,7 +49,7 @@ const CopyCodeBlock: React.FC<CopyCodeBlockProps> = ({ code, filename }) => {
   
   return (
     <div className="relative group">
-      <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
+      <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
         <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-900/50">
           <div className="flex items-center gap-2">
             <div className="flex gap-1.5">
@@ -62,9 +73,9 @@ const CopyCodeBlock: React.FC<CopyCodeBlockProps> = ({ code, filename }) => {
             )}
           </Button>
         </div>
-        <div className="p-4">
+        <div className="p-6">
           <pre className="text-sm font-mono text-slate-100 overflow-x-auto">
-            <code>{code}</code>
+            <code className={`language-${language}`}>{code}</code>
           </pre>
         </div>
       </div>
@@ -180,6 +191,7 @@ export default function GettingStartedPage() {
                 <CopyCodeBlock 
                   code={packageCommands[activeTab]}
                   filename="Terminal"
+                  language="bash"
                 />
                 
                 <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
@@ -233,6 +245,7 @@ export function MyComponent() {
   )
 }`}
                     filename="components.tsx"
+                    language="jsx"
                   />
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex items-center gap-2 text-sm p-3 bg-green-50 dark:bg-green-950/20 rounded-lg">
@@ -271,6 +284,7 @@ export function MyComponent() {
 # Then import locally:
 import { Button } from '@/components/ui/mad-ui/button'`}
                     filename="Terminal"
+                    language="bash"
                   />
                   <div className="grid grid-cols-2 gap-4">
                     <div className="flex items-center gap-2 text-sm p-3 bg-emerald-50 dark:bg-emerald-950/20 rounded-lg">
@@ -325,6 +339,7 @@ export default function App() {
   )
 }`}
                       filename="app.tsx"
+                      language="jsx"
                     />
                   </div>
                 </div>
