@@ -93,53 +93,60 @@ export default function RootLayout({
             </main>
             
             {/* Modern Footer */}
-            <footer className="relative border-t border-border/20 bg-background/80 backdrop-blur-xl">
-              <div className="absolute inset-0 bg-gradient-to-t from-background to-transparent"></div>
-              <div className="container mx-auto px-6 py-12 relative">
-                <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <footer className="relative border-t border-border/20 bg-background/95 backdrop-blur-xl">
+              <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   {/* Brand Section */}
-                  <div className="col-span-1 md:col-span-2">
-                    <div className="flex items-center space-x-3 mb-4">
-                      <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center">
-                        <Sparkles className="h-5 w-5 text-white" />
+                  <div className="md:col-span-1">
+                    <div className="flex items-center space-x-3 mb-6">
+                      <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shadow-lg">
+                        <Sparkles className="h-6 w-6 text-primary-foreground" />
                       </div>
                       <div>
-                        <span className="font-bold text-2xl bg-gradient-to-r from-blue-600 via-purple-600 to-pink-600 bg-clip-text text-transparent">
+                        <span className="font-bold text-2xl text-primary">
                           Mad UI
                         </span>
                         <p className="text-sm text-muted-foreground">v2.0</p>
                       </div>
                     </div>
-                    <p className="text-muted-foreground max-w-md">
+                    <p className="text-muted-foreground leading-relaxed">
                       Beautiful, accessible, and customizable React components for modern web applications.
                     </p>
                   </div>
                   
-                  {/* Quick Links */}
+                  {/* Documentation Links */}
                   <div>
-                    <h3 className="font-semibold mb-4">Documentation</h3>
-                    <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li><a href="/docs/getting-started" className="hover:text-foreground transition-colors">Getting Started</a></li>
-                      <li><a href="/docs/components" className="hover:text-foreground transition-colors">Components</a></li>
-                      <li><a href="/docs/examples" className="hover:text-foreground transition-colors">Examples</a></li>
+                    <h3 className="font-semibold text-lg mb-6 text-foreground">Documentation</h3>
+                    <ul className="space-y-3">
+                      <li><a href="/docs/getting-started" className="text-muted-foreground hover:text-primary transition-colors duration-200">Getting Started</a></li>
+                      <li><a href="/docs/components" className="text-muted-foreground hover:text-primary transition-colors duration-200">Components</a></li>
+                      <li><a href="/docs/examples" className="text-muted-foreground hover:text-primary transition-colors duration-200">Examples</a></li>
+                      <li><a href="/docs/installation" className="text-muted-foreground hover:text-primary transition-colors duration-200">Installation</a></li>
                     </ul>
                   </div>
                   
-                  {/* Community */}
+                  {/* Community Links */}
                   <div>
-                    <h3 className="font-semibold mb-4">Community</h3>
-                    <ul className="space-y-2 text-sm text-muted-foreground">
-                      <li><a href="https://github.com" className="hover:text-foreground transition-colors">GitHub</a></li>
-                      <li><a href="/docs" className="hover:text-foreground transition-colors">Documentation</a></li>
-                      <li><a href="/docs/installation" className="hover:text-foreground transition-colors">Installation</a></li>
+                    <h3 className="font-semibold text-lg mb-6 text-foreground">Community</h3>
+                    <ul className="space-y-3">
+                      <li><a href="https://github.com" className="text-muted-foreground hover:text-primary transition-colors duration-200">GitHub</a></li>
+                      <li><a href="/docs" className="text-muted-foreground hover:text-primary transition-colors duration-200">Documentation</a></li>
+                      <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200">Discord</a></li>
+                      <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200">Twitter</a></li>
                     </ul>
                   </div>
                 </div>
                 
-                <div className="mt-12 pt-8 border-t border-border/20 text-center">
-                  <p className="text-sm text-muted-foreground">
-                    &copy; 2025 Mad UI. Built with ❤️ for developers worldwide.
-                  </p>
+                <div className="mt-16 pt-8 border-t border-border/20">
+                  <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+                    <p className="text-sm text-muted-foreground">
+                      &copy; 2025 Mad UI. Built with ❤️ for developers worldwide.
+                    </p>
+                    <div className="flex items-center gap-6 text-sm text-muted-foreground">
+                      <a href="#" className="hover:text-primary transition-colors duration-200">Privacy Policy</a>
+                      <a href="#" className="hover:text-primary transition-colors duration-200">Terms of Service</a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </footer>

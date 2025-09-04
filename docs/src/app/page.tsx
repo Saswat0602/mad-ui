@@ -304,11 +304,11 @@ export function App() {
               <Zap className="w-4 h-4 mr-2" />
               Why Mad UI?
             </Badge>
-            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight text-slate-900 dark:text-white">
+            <h2 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight text-foreground">
               Everything You Need
-              <span className="block text-violet-600">For Modern UIs</span>
+              <span className="block text-primary">For Modern UIs</span>
             </h2>
-            <p className="text-lg md:text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto leading-relaxed">
+            <p className="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
               From simple buttons to complex data tables, Mad UI provides all the building blocks 
               you need to create exceptional user experiences.
             </p>
@@ -320,37 +320,37 @@ export function App() {
                 icon: Package,
                 title: "Copy & Paste",
                 description: "No npm installs, no build steps. Copy components directly into your project and customize to your heart's content.",
-                gradient: "from-blue-500 to-cyan-500"
+                gradient: "from-blue-500 to-blue-600"
               },
               {
                 icon: Code,
                 title: "TypeScript First",
                 description: "Built with TypeScript for superior developer experience. Full type safety, IntelliSense, and autocomplete support.",
-                gradient: "from-violet-500 to-purple-500"
+                gradient: "from-slate-600 to-slate-700"
               },
               {
                 icon: Zap,
                 title: "Blazingly Fast",
                 description: "Optimized for performance with minimal bundle impact. Tree-shakable, zero runtime overhead, lightning-fast loading.",
-                gradient: "from-yellow-500 to-orange-500"
+                gradient: "from-orange-500 to-orange-600"
               },
               {
                 icon: Layers,
                 title: "Tailwind Powered",
                 description: "Built on Tailwind CSS for consistent design tokens, easy customization, and utility-first styling approach.",
-                gradient: "from-green-500 to-emerald-500"
+                gradient: "from-green-500 to-green-600"
               },
               {
                 icon: Shield,
                 title: "Fully Accessible",
                 description: "WCAG 2.1 compliant with keyboard navigation, screen reader support, and proper ARIA attributes out of the box.",
-                gradient: "from-indigo-500 to-blue-500"
+                gradient: "from-blue-600 to-blue-700"
               },
               {
                 icon: Palette,
                 title: "Customizable",
                 description: "Comprehensive theming system with CSS variables, dark mode support, and unlimited color scheme possibilities.",
-                gradient: "from-pink-500 to-rose-500"
+                gradient: "from-purple-500 to-purple-600"
               }
             ].map((feature, index) => (
               <Card
@@ -391,16 +391,30 @@ export function App() {
                 Get started in minutes, not hours.
               </p>
               
-              <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-10">
-                <Button variant="secondary" size="lg" className="shadow-xl" onClick={() => {}}>
-                  <Terminal className="mr-3 h-5 w-5" />
-                  Quick Start Guide
-                    <ArrowRight className="ml-3 h-5 w-5" />
+              <div className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-10">
+                  <Button 
+                    variant="secondary" 
+                    size="lg" 
+                  className="bg-white/10 border-2 border-white/20 text-white hover:bg-white/20 hover:border-white/40 shadow-xl px-8 py-4 transition-all duration-300"
+                  onClick={() => {}}
+                >
+                  <div className="flex items-center gap-3">
+                    <Terminal className="h-5 w-5" />
+                    <span className="font-semibold">Quick Start Guide</span>
+                    <ArrowRight className="h-4 w-4" />
+                  </div>
                   </Button>
                 
-                <Button variant="outline" size="lg" className="border-2 border-white/30 text-white hover:bg-white/10" onClick={() => {}}>
-                  <BookOpen className="mr-3 h-5 w-5" />
-                  Documentation
+                  <Button 
+                    variant="outline" 
+                    size="lg" 
+                  className="border-2 border-white/40 text-white hover:bg-white/20 hover:border-white/60 bg-transparent px-8 py-4 transition-all duration-300" 
+                  onClick={() => {}}
+                >
+                  <div className="flex items-center gap-3">
+                    <BookOpen className="h-5 w-5" />
+                    <span className="font-semibold">Documentation</span>
+                  </div>
                   </Button>
               </div>
               

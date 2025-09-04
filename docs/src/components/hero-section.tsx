@@ -88,11 +88,11 @@ export function HeroSection({
                     <Link href={primaryAction.href}>
                       <Button 
                         size="lg"
-                        className="bg-primary hover:bg-primary/90 text-primary-foreground shadow-lg hover:shadow-xl transition-all duration-300"
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground border-2 border-primary/20 hover:border-primary/40 shadow-lg hover:shadow-xl transition-all duration-300 px-8 py-4"
                       >
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
                           {primaryAction.icon && <primaryAction.icon className="w-5 h-5" />}
-                          {primaryAction.text}
+                          <span className="font-semibold">{primaryAction.text}</span>
                           <ArrowRight className="w-4 h-4" />
                         </div>
                       </Button>
@@ -104,11 +104,11 @@ export function HeroSection({
                       <Button 
                         variant="outline"
                         size="lg"
-                        className="border-2 hover:bg-primary hover:text-primary-foreground transition-all duration-300"
+                        className="border-2 border-border hover:bg-primary hover:text-primary-foreground hover:border-primary transition-all duration-300 px-8 py-4 bg-background/50"
                       >
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
                           {secondaryAction.icon && <secondaryAction.icon className="w-5 h-5" />}
-                          {secondaryAction.text}
+                          <span className="font-semibold">{secondaryAction.text}</span>
                         </div>
                       </Button>
                     </Link>
