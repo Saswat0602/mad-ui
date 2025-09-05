@@ -2,32 +2,20 @@
 
 import React, { useState } from 'react'
 import { Checkbox } from 'mad-ui-components/checkbox'
-import { Label } from 'mad-ui-components/label'
-import { Button } from 'mad-ui-components/button'
-import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components/card'
 import { ComponentDocLayout, LivePreview, CopyCodeBlock } from '@/components/component-doc-layout'
-import { 
-  Mail,
-  Bell,
-  Lock
-} from 'lucide-react'
 
 export default function CheckboxDocPage() {
   const [basicChecked, setBasicChecked] = useState(false)
-  const [agreeToTerms, setAgreeToTerms] = useState(false)
-  const [notifications, setNotifications] = useState({
-    email: true,
-    push: false,
-    sms: false
+  const [preferences, setPreferences] = useState({
+    email: false,
+    sms: true,
+    push: false
   })
-  const [selectedFeatures, setSelectedFeatures] = useState<string[]>(['analytics'])
+  const [termsAccepted, setTermsAccepted] = useState(false)
+  const [indeterminateState, setIndeterminateState] = useState(false)
 
-  const handleFeatureChange = (feature: string, checked: boolean) => {
-    if (checked) {
-      setSelectedFeatures([...selectedFeatures, feature])
-    } else {
-      setSelectedFeatures(selectedFeatures.filter(f => f !== feature))
-    }
+  const handlePreferenceChange = (key: string, checked: boolean) => {
+    setPreferences(prev => ({ ...prev, [key]: checked }))
   }
 
   const checkboxExamples = (
@@ -36,55 +24,26 @@ export default function CheckboxDocPage() {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Basic Checkbox</h3>
         <LivePreview title="Basic Checkbox Usage">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="basic-checkbox"
-                checked={basicChecked}
-                onChange={(e) => setBasicChecked(e.target.checked)}
-              />
-              <Label htmlFor="basic-checkbox">Basic checkbox</Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox id="checked-checkbox" defaultChecked />
-              <Label htmlFor="checked-checkbox">Checked by default</Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox id="disabled-checkbox" disabled />
-              <Label htmlFor="disabled-checkbox" className="text-muted-foreground">Disabled checkbox</Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox id="disabled-checked-checkbox" defaultChecked disabled />
-              <Label htmlFor="disabled-checked-checkbox" className="text-muted-foreground">Disabled and checked</Label>
-            </div>
+          <div className="w-full max-w-sm space-y-4">
+            <Checkbox 
+              label="Basic checkbox" 
+              checked={basicChecked}
+              onChange={(e) => setBasicChecked(e.target.checked)}
+            />
+            <Checkbox label="Unchecked checkbox" />
+            <Checkbox label="Checked checkbox" defaultChecked />
+            <Checkbox label="Disabled checkbox" disabled />
+            <Checkbox label="Disabled checked" disabled defaultChecked />
           </div>
         </LivePreview>
         
         <CopyCodeBlock
           filename="basic-checkbox.tsx"
-          code={`const [checked, setChecked] = useState(false)
-
-<div className="flex items-center space-x-2">
-  <Checkbox 
-    id="basic-checkbox"
-    checked={checked}
-    onChange={(e) => setChecked(e.target.checked)}
-  />
-  <Label htmlFor="basic-checkbox">Basic checkbox</Label>
-</div>
-
-<div className="flex items-center space-x-2">
-  <Checkbox id="checked-checkbox" defaultChecked />
-  <Label htmlFor="checked-checkbox">Checked by default</Label>
-</div>
-
-<div className="flex items-center space-x-2">
-  <Checkbox id="disabled-checkbox" disabled />
-  <Label htmlFor="disabled-checkbox">Disabled checkbox</Label>
-</div>`}
+          code={`<Checkbox label="Basic checkbox" />
+<Checkbox label="Unchecked checkbox" />
+<Checkbox label="Checked checkbox" defaultChecked />
+<Checkbox label="Disabled checkbox" disabled />
+<Checkbox label="Disabled checked" disabled defaultChecked />`}
         />
       </div>
 
@@ -92,81 +51,18 @@ export default function CheckboxDocPage() {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">Sizes</h3>
         <LivePreview title="Checkbox Sizes">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="small-checkbox" size="sm" defaultChecked />
-              <Label htmlFor="small-checkbox">Small checkbox</Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox id="medium-checkbox" size="md" defaultChecked />
-              <Label htmlFor="medium-checkbox">Medium checkbox (default)</Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox id="large-checkbox" size="lg" defaultChecked />
-              <Label htmlFor="large-checkbox">Large checkbox</Label>
-            </div>
+          <div className="w-full max-w-sm space-y-4">
+            <Checkbox size="sm" label="Small checkbox" />
+            <Checkbox size="md" label="Medium checkbox" />
+            <Checkbox size="lg" label="Large checkbox" />
           </div>
         </LivePreview>
         
         <CopyCodeBlock
           filename="checkbox-sizes.tsx"
-          code={`<Checkbox id="small-checkbox" size="sm" defaultChecked />
-<Checkbox id="medium-checkbox" size="md" defaultChecked />
-<Checkbox id="large-checkbox" size="lg" defaultChecked />`}
-        />
-      </div>
-
-      {/* Validation States */}
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Validation States</h3>
-        <LivePreview title="Checkbox Validation States">
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="success-checkbox" 
-                success
-                defaultChecked 
-              />
-              <Label htmlFor="success-checkbox">Valid selection</Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="error-checkbox" 
-                error="This field is required"
-              />
-              <Label htmlFor="error-checkbox">Required field</Label>
-            </div>
-            
-            <div className="flex items-center space-x-2">
-              <Checkbox 
-                id="indeterminate-checkbox" 
-                indeterminate
-              />
-              <Label htmlFor="indeterminate-checkbox">Indeterminate state</Label>
-            </div>
-          </div>
-        </LivePreview>
-        
-        <CopyCodeBlock
-          filename="checkbox-validation.tsx"
-          code={`<Checkbox 
-  id="success-checkbox" 
-  success
-  defaultChecked 
-/>
-
-<Checkbox 
-  id="error-checkbox" 
-  error="This field is required"
-/>
-
-<Checkbox 
-  id="indeterminate-checkbox" 
-  indeterminate
-/>`}
+          code={`<Checkbox size="sm" label="Small checkbox" />
+<Checkbox size="md" label="Medium checkbox" />
+<Checkbox size="lg" label="Large checkbox" />`}
         />
       </div>
 
@@ -174,284 +70,247 @@ export default function CheckboxDocPage() {
       <div className="space-y-4">
         <h3 className="text-lg font-semibold">States</h3>
         <LivePreview title="Checkbox States">
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="default-state" />
-                <Label htmlFor="default-state">Default state</Label>
-              </div>
-              <p className="text-xs text-muted-foreground ml-6">Normal checkbox state</p>
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="success-state" success defaultChecked />
-                <Label htmlFor="success-state">Success state</Label>
-              </div>
-              <p className="text-xs text-success ml-6">Valid selection</p>
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="error-state" error="This field is required" />
-                <Label htmlFor="error-state">Error state</Label>
-              </div>
-              <p className="text-xs text-destructive ml-6">This field is required</p>
-            </div>
-            
-            <div className="space-y-2">
-              <div className="flex items-center space-x-2">
-                <Checkbox 
-                  id="indeterminate-state" 
-                  indeterminate 
-                />
-                <Label htmlFor="indeterminate-state">Indeterminate state</Label>
-              </div>
-              <p className="text-xs text-muted-foreground ml-6">Partially selected</p>
-            </div>
+          <div className="w-full max-w-sm space-y-4">
+            <Checkbox label="Default state" />
+            <Checkbox label="Error state" error="This field is required" />
+            <Checkbox label="Success state" success helperText="All good!" />
+            <Checkbox label="With helper text" helperText="This is helpful information" />
           </div>
         </LivePreview>
         
         <CopyCodeBlock
           filename="checkbox-states.tsx"
-          code={`// Default state
-<Checkbox id="default-state" />
-
-// Success state
-<Checkbox id="success-state" success defaultChecked />
-
-// Error state  
-<Checkbox id="error-state" error="This field is required" />
-
-// Indeterminate state
-<Checkbox id="indeterminate-state" indeterminate />`}
+          code={`<Checkbox label="Default state" />
+<Checkbox label="Error state" error="This field is required" />
+<Checkbox label="Success state" success helperText="All good!" />
+<Checkbox label="With helper text" helperText="This is helpful information" />`}
         />
       </div>
 
-      {/* Form Examples */}
+      {/* Indeterminate State */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Form Examples</h3>
-        <LivePreview title="Real-world Form Usage">
-          <div className="grid gap-6 md:grid-cols-2">
-            {/* Terms Agreement */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Sign Up</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="email">Email</Label>
-                  <input 
-                    id="email"
-                    type="email" 
-                    placeholder="your@email.com"
-                    className="w-full px-3 py-2 border border-input rounded-md"
-                  />
-                </div>
-                
-                <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
-                  <input 
-                    id="password"
-                    type="password" 
-                    placeholder="••••••••"
-                    className="w-full px-3 py-2 border border-input rounded-md"
-                  />
-                </div>
-                
-                <div className="flex items-start space-x-2">
-                  <Checkbox 
-                    id="terms"
-                    checked={agreeToTerms}
-                    onChange={(e) => setAgreeToTerms(e.target.checked)}
-                    className="mt-1"
-                  />
-                  <Label htmlFor="terms" className="text-sm leading-relaxed">
-                    I agree to the{" "}
-                    <a href="#" className="text-primary underline">Terms of Service</a>{" "}
-                    and{" "}
-                    <a href="#" className="text-primary underline">Privacy Policy</a>
-                  </Label>
-                </div>
-                
-                <Button className="w-full" disabled={!agreeToTerms}>
-                  Create Account
-                </Button>
-              </CardContent>
-            </Card>
-
-            {/* Notification Settings */}
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Notification Settings</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <Mail className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <Label htmlFor="email-notifications">Email Notifications</Label>
-                        <p className="text-xs text-muted-foreground">Receive updates via email</p>
-                      </div>
-                    </div>
-                    <Checkbox 
-                      id="email-notifications"
-                      checked={notifications.email}
-                      onChange={(e) => setNotifications(prev => ({
-                        ...prev,
-                        email: e.target.checked
-                      }))}
-                    />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <Bell className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <Label htmlFor="push-notifications">Push Notifications</Label>
-                        <p className="text-xs text-muted-foreground">Receive push notifications</p>
-                      </div>
-                    </div>
-                    <Checkbox 
-                      id="push-notifications"
-                      checked={notifications.push}
-                      onChange={(e) => setNotifications(prev => ({
-                        ...prev,
-                        push: e.target.checked
-                      }))}
-                    />
-                  </div>
-                  
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center space-x-3">
-                      <Lock className="h-4 w-4 text-muted-foreground" />
-                      <div>
-                        <Label htmlFor="sms-notifications">SMS Notifications</Label>
-                        <p className="text-xs text-muted-foreground">Receive text messages</p>
-                      </div>
-                    </div>
-                    <Checkbox 
-                      id="sms-notifications"
-                      checked={notifications.sms}
-                      onChange={(e) => setNotifications(prev => ({
-                        ...prev,
-                        sms: e.target.checked
-                      }))}
-                    />
-                  </div>
-                </div>
-                
-                <div className="pt-4 border-t">
-                  <Button className="w-full">Save Settings</Button>
-                </div>
-              </CardContent>
-            </Card>
+        <h3 className="text-lg font-semibold">Indeterminate State</h3>
+        <LivePreview title="Indeterminate Checkbox">
+          <div className="w-full max-w-sm space-y-4">
+            <Checkbox 
+              label="Select All" 
+              indeterminate={indeterminateState}
+              checked={preferences.email && preferences.sms && preferences.push}
+              onChange={(e) => {
+                const checked = e.target.checked
+                setPreferences({ email: checked, sms: checked, push: checked })
+                setIndeterminateState(false)
+              }}
+            />
+            <div className="ml-6 space-y-2">
+              <Checkbox 
+                label="Email notifications" 
+                checked={preferences.email}
+                onChange={(e) => {
+                  const newPreferences = { ...preferences, email: e.target.checked }
+                  setPreferences(newPreferences)
+                  const allChecked = Object.values(newPreferences).every(Boolean)
+                  const someChecked = Object.values(newPreferences).some(Boolean)
+                  setIndeterminateState(someChecked && !allChecked)
+                }}
+              />
+              <Checkbox 
+                label="SMS notifications" 
+                checked={preferences.sms}
+                onChange={(e) => {
+                  const newPreferences = { ...preferences, sms: e.target.checked }
+                  setPreferences(newPreferences)
+                  const allChecked = Object.values(newPreferences).every(Boolean)
+                  const someChecked = Object.values(newPreferences).some(Boolean)
+                  setIndeterminateState(someChecked && !allChecked)
+                }}
+              />
+              <Checkbox 
+                label="Push notifications" 
+                checked={preferences.push}
+                onChange={(e) => {
+                  const newPreferences = { ...preferences, push: e.target.checked }
+                  setPreferences(newPreferences)
+                  const allChecked = Object.values(newPreferences).every(Boolean)
+                  const someChecked = Object.values(newPreferences).some(Boolean)
+                  setIndeterminateState(someChecked && !allChecked)
+                }}
+              />
+            </div>
           </div>
         </LivePreview>
         
         <CopyCodeBlock
-          filename="form-checkbox.tsx"
-          code={`const [agreeToTerms, setAgreeToTerms] = useState(false)
+          filename="indeterminate-checkbox.tsx"
+          code={`const [preferences, setPreferences] = useState({
+  email: false,
+  sms: true,
+  push: false
+})
+const [indeterminateState, setIndeterminateState] = useState(false)
 
-<div className="flex items-start space-x-2">
+<Checkbox 
+  label="Select All" 
+  indeterminate={indeterminateState}
+  checked={preferences.email && preferences.sms && preferences.push}
+  onChange={(e) => {
+    const checked = e.target.checked
+    setPreferences({ email: checked, sms: checked, push: checked })
+    setIndeterminateState(false)
+  }}
+/>
+<div className="ml-6 space-y-2">
   <Checkbox 
-    id="terms"
-    checked={agreeToTerms}
-    onChange={(e) => setAgreeToTerms(e.target.checked)}
-    className="mt-1"
+    label="Email notifications" 
+    checked={preferences.email}
+    onChange={(e) => {
+      const newPreferences = { ...preferences, email: e.target.checked }
+      setPreferences(newPreferences)
+      const allChecked = Object.values(newPreferences).every(Boolean)
+      const someChecked = Object.values(newPreferences).some(Boolean)
+      setIndeterminateState(someChecked && !allChecked)
+    }}
   />
-  <Label htmlFor="terms" className="text-sm leading-relaxed">
-    I agree to the{" "}
-    <a href="#" className="text-primary underline">Terms of Service</a>{" "}
-    and{" "}
-    <a href="#" className="text-primary underline">Privacy Policy</a>
-  </Label>
-</div>
-
-<Button className="w-full" disabled={!agreeToTerms}>
-  Create Account
-</Button>`}
+  {/* ... more checkboxes */}
+</div>`}
         />
       </div>
 
-      {/* Checkbox Groups */}
+      {/* Form Integration */}
       <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Checkbox Groups</h3>
-        <LivePreview title="Checkbox Groups and Lists">
-          <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Select Features</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-3">
-                  {[
-                    { id: 'analytics', label: 'Analytics Dashboard', description: 'Track your app usage and performance' },
-                    { id: 'notifications', label: 'Real-time Notifications', description: 'Get instant updates and alerts' },
-                    { id: 'collaboration', label: 'Team Collaboration', description: 'Work together with your team' },
-                    { id: 'api', label: 'API Access', description: 'Integrate with external services' },
-                    { id: 'support', label: 'Priority Support', description: '24/7 dedicated customer support' }
-                  ].map((feature) => (
-                    <div key={feature.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
-                      <Checkbox 
-                        id={feature.id}
-                        checked={selectedFeatures.includes(feature.id)}
-                        onChange={(e) => handleFeatureChange(feature.id, e.target.checked)}
-                        className="mt-1"
-                      />
-                      <div className="flex-1">
-                        <Label htmlFor={feature.id} className="font-medium cursor-pointer">
-                          {feature.label}
-                        </Label>
-                        <p className="text-sm text-muted-foreground">{feature.description}</p>
-                      </div>
-                    </div>
-                  ))}
+        <h3 className="text-lg font-semibold">Form Integration</h3>
+        <LivePreview title="Checkbox in Forms">
+          <div className="w-full max-w-md space-y-6 p-6 border rounded-lg">
+            <h2 className="text-xl font-bold mb-4">User Preferences</h2>
+            
+            <div className="space-y-4">
+              <div>
+                <h3 className="font-semibold mb-2">Communication Preferences</h3>
+                <div className="space-y-2">
+                  <Checkbox 
+                    label="Email notifications" 
+                    checked={preferences.email}
+                    onChange={(e) => handlePreferenceChange('email', e.target.checked)}
+                  />
+                  <Checkbox 
+                    label="SMS notifications" 
+                    checked={preferences.sms}
+                    onChange={(e) => handlePreferenceChange('sms', e.target.checked)}
+                  />
+                  <Checkbox 
+                    label="Push notifications" 
+                    checked={preferences.push}
+                    onChange={(e) => handlePreferenceChange('push', e.target.checked)}
+                  />
                 </div>
-                
-                <div className="mt-6 p-3 bg-muted rounded-lg">
-                  <p className="text-sm font-medium">Selected features: {selectedFeatures.length}</p>
-                  <p className="text-xs text-muted-foreground">
-                    {selectedFeatures.length > 0 
-                      ? selectedFeatures.join(', ') 
-                      : 'No features selected'
-                    }
-                  </p>
+              </div>
+              
+              <div>
+                <h3 className="font-semibold mb-2">Account Settings</h3>
+                <div className="space-y-2">
+                  <Checkbox label="Two-factor authentication" />
+                  <Checkbox label="Public profile" />
+                  <Checkbox label="Show online status" />
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+              
+              <div className="pt-4 border-t">
+                <Checkbox 
+                  label="I agree to the Terms of Service and Privacy Policy" 
+                  checked={termsAccepted}
+                  onChange={(e) => setTermsAccepted(e.target.checked)}
+                  error={!termsAccepted ? "You must accept the terms to continue" : undefined}
+                />
+              </div>
+            </div>
           </div>
         </LivePreview>
         
         <CopyCodeBlock
-          filename="checkbox-group.tsx"
-          code={`const [selectedFeatures, setSelectedFeatures] = useState(['analytics'])
-
-const handleFeatureChange = (feature: string, checked: boolean) => {
-  if (checked) {
-    setSelectedFeatures([...selectedFeatures, feature])
-  } else {
-    setSelectedFeatures(selectedFeatures.filter(f => f !== feature))
-  }
-}
-
-{features.map((feature) => (
-  <div key={feature.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors">
-    <Checkbox 
-      id={feature.id}
-      checked={selectedFeatures.includes(feature.id)}
-      onChange={(e) => handleFeatureChange(feature.id, e.target.checked)}
-      className="mt-1"
-    />
-    <div className="flex-1">
-      <Label htmlFor={feature.id} className="font-medium cursor-pointer">
-        {feature.label}
-      </Label>
-      <p className="text-sm text-muted-foreground">{feature.description}</p>
+          filename="form-integration.tsx"
+          code={`<div className="w-full max-w-md space-y-6 p-6 border rounded-lg">
+  <h2 className="text-xl font-bold mb-4">User Preferences</h2>
+  
+  <div className="space-y-4">
+    <div>
+      <h3 className="font-semibold mb-2">Communication Preferences</h3>
+      <div className="space-y-2">
+        <Checkbox 
+          label="Email notifications" 
+          checked={preferences.email}
+          onChange={(e) => handlePreferenceChange('email', e.target.checked)}
+        />
+        <Checkbox 
+          label="SMS notifications" 
+          checked={preferences.sms}
+          onChange={(e) => handlePreferenceChange('sms', e.target.checked)}
+        />
+        <Checkbox 
+          label="Push notifications" 
+          checked={preferences.push}
+          onChange={(e) => handlePreferenceChange('push', e.target.checked)}
+        />
+      </div>
+    </div>
+    
+    <div>
+      <h3 className="font-semibold mb-2">Account Settings</h3>
+      <div className="space-y-2">
+        <Checkbox label="Two-factor authentication" />
+        <Checkbox label="Public profile" />
+        <Checkbox label="Show online status" />
+      </div>
+    </div>
+    
+    <div className="pt-4 border-t">
+      <Checkbox 
+        label="I agree to the Terms of Service and Privacy Policy" 
+        checked={termsAccepted}
+        onChange={(e) => setTermsAccepted(e.target.checked)}
+        error={!termsAccepted ? "You must accept the terms to continue" : undefined}
+      />
     </div>
   </div>
-))}`}
+</div>`}
+        />
+      </div>
+
+      {/* Custom Styling */}
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Custom Styling</h3>
+        <LivePreview title="Custom Styled Checkboxes">
+          <div className="w-full max-w-sm space-y-4">
+            <Checkbox 
+              label="Custom styled checkbox" 
+              className="text-blue-600"
+            />
+            <Checkbox 
+              label="Large checkbox with custom spacing" 
+              size="lg"
+              className="text-green-600"
+            />
+            <Checkbox 
+              label="Checkbox with custom colors" 
+              className="text-purple-600"
+            />
+          </div>
+        </LivePreview>
+        
+        <CopyCodeBlock
+          filename="custom-styling.tsx"
+          code={`<Checkbox 
+  label="Custom styled checkbox" 
+  className="text-blue-600"
+/>
+<Checkbox 
+  label="Large checkbox with custom spacing" 
+  size="lg"
+  className="text-green-600"
+/>
+<Checkbox 
+  label="Checkbox with custom colors" 
+  className="text-purple-600"
+/>`}
         />
       </div>
     </div>
@@ -460,7 +319,7 @@ const handleFeatureChange = (feature: string, checked: boolean) => {
   return (
     <ComponentDocLayout
       name="Checkbox"
-      description="A checkbox component for binary choices and selections. Supports various states, sizes, and styling options with full accessibility."
+      description="A boolean input control component with support for multiple states, sizes, and validation. Perfect for forms, preferences, and toggles."
       category="core"
     >
       {checkboxExamples}

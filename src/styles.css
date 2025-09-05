@@ -2,6 +2,36 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer utilities {
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+  
+  .hover-lift:hover {
+    @apply transform -translate-y-1 shadow-lg;
+  }
+  
+  .elevation-1 {
+    @apply shadow-sm;
+  }
+  
+  .elevation-2 {
+    @apply shadow-md;
+  }
+  
+  .elevation-3 {
+    @apply shadow-lg;
+  }
+  
+  .elevation-4 {
+    @apply shadow-xl;
+  }
+  
+  .elevation-5 {
+    @apply shadow-2xl;
+  }
+}
+
 @layer base {
   :root {
     /* Essential Background colors */

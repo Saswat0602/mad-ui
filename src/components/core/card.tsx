@@ -2,8 +2,9 @@ import * as React from "react"
 import { cn } from "../../lib/utils"
 
 export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
-  variant?: "default" | "elevated" | "outlined" | "filled"
+  variant?: "default" | "elevated" | "outlined" | "filled" | "glass" | "gradient"
   elevation?: "none" | "sm" | "md" | "lg" | "xl"
+  interactive?: boolean
 }
 
 export interface CardHeaderProps extends React.HTMLAttributes<HTMLDivElement> {}
@@ -17,17 +18,19 @@ export interface CardContentProps extends React.HTMLAttributes<HTMLDivElement> {
 export interface CardFooterProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 const Card = React.forwardRef<HTMLDivElement, CardProps>(
-  ({ className, variant = "default", elevation = "sm", ...props }, ref) => {
+  ({ className, variant = "default", elevation = "sm", interactive = false, ...props }, ref) => {
     
     // Base classes with Material Design improvements and proper visibility
-    const baseClasses = "rounded-xl border transition-all duration-200 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
+    const baseClasses = "rounded-xl border transition-all duration-300 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
     
     // Variant classes with Material Design elevations and proper visibility
     const variantClasses = {
       default: "border-slate-200 dark:border-slate-700 shadow-sm hover:shadow-md",
       elevated: "border-0 shadow-lg hover:shadow-xl bg-white dark:bg-slate-800",
       outlined: "border-2 border-slate-300 dark:border-slate-600 shadow-none hover:shadow-sm",
-      filled: "border-0 bg-slate-50 dark:bg-slate-700 shadow-sm hover:shadow-md"
+      filled: "border-0 bg-slate-50 dark:bg-slate-700 shadow-sm hover:shadow-md",
+      glass: "border-0 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm shadow-lg hover:shadow-xl",
+      gradient: "border-0 bg-gradient-to-br from-white to-slate-50 dark:from-slate-800 dark:to-slate-900 shadow-lg hover:shadow-xl"
     }
     
     // Additional elevation classes
@@ -46,7 +49,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           baseClasses,
           variantClasses[variant],
           elevationClasses[elevation],
-          "hover-lift", // Custom Material Design lift effect
+          interactive && "cursor-pointer hover-lift", // Custom Material Design lift effect
           className
         )}
         {...props}
