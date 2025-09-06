@@ -36,146 +36,182 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-6xl">
         {/* Header */}
-        <div className="mb-12">
+        <div className="mb-12 animate-slide-in-top">
           <Link 
             href="/docs/components" 
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-all duration-200 hover:scale-105 group"
           >
-            <ArrowLeft className="w-4 h-4" />
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             Back to Components
           </Link>
           
-          <div className="flex items-center gap-4 mb-6">
-            <h1 className="text-5xl font-bold tracking-tight">{component.title}</h1>
+          <div className="flex items-center gap-4 mb-6 animate-slide-in-left animate-delay-100">
+            <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+              {component.title}
+            </h1>
             <StatusBadge status={component.status} />
           </div>
           
-          <p className="text-xl text-muted-foreground mb-6 leading-relaxed">
+          <p className="text-xl text-muted-foreground mb-6 leading-relaxed animate-slide-in-left animate-delay-200">
             {component.description}
           </p>
           
-          <div className="flex flex-wrap gap-2 mb-6">
-            {component.tags.map((tag) => (
-              <Badge key={tag} variant="secondary" className="text-xs">
+          <div className="flex flex-wrap gap-2 mb-6 animate-slide-in-left animate-delay-300">
+            {component.tags.map((tag, index) => (
+              <Badge 
+                key={tag} 
+                variant="secondary" 
+                className="text-xs transition-all duration-200 hover:scale-105 hover:shadow-md"
+                style={{ animationDelay: `${400 + index * 100}ms` }}
+              >
                 {tag}
               </Badge>
             ))}
           </div>
           
-          <div className="text-sm text-muted-foreground">
+          <div className="text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded-lg inline-block animate-slide-in-left animate-delay-500">
             Version {component.version} • {component.category} Component
           </div>
         </div>
 
         {/* Tabs */}
-                <div className="border-b border-border mb-12">
-                  <nav className="flex space-x-8">
-                    {[
-                      { id: 'examples', label: 'Examples' },
-                      { id: 'props', label: 'API Reference' },
-                      { id: 'usage', label: 'Usage' },
-                      { id: 'guide', label: 'Best Practices' }
-                    ].map((tab) => (
-                      <button
-                        key={tab.id}
-                        onClick={() => setActiveTab(tab.id as 'examples' | 'props' | 'usage' | 'guide')}
-                        className={`py-3 px-1 border-b-2 font-medium text-sm transition-colors ${
-                          activeTab === tab.id
-                            ? 'border-primary text-primary'
-                            : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
-                        }`}
-                      >
-                        {tab.label}
-                      </button>
-                    ))}
-                  </nav>
-                </div>
+        <div className="border-b border-border mb-12 animate-slide-in-bottom animate-delay-300">
+          <nav className="flex space-x-8">
+            {[
+              { id: 'examples', label: 'Examples' },
+              { id: 'props', label: 'API Reference' },
+              { id: 'usage', label: 'Usage' },
+              { id: 'guide', label: 'Best Practices' }
+            ].map((tab, index) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as 'examples' | 'props' | 'usage' | 'guide')}
+                className={`py-3 px-1 border-b-2 font-medium text-sm transition-all duration-200 hover:scale-105 ${
+                  activeTab === tab.id
+                    ? 'border-primary text-primary animate-glow'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
+                }`}
+                style={{ animationDelay: `${600 + index * 100}ms` }}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </nav>
+        </div>
 
         {/* Content */}
         <div className="max-w-5xl">
           {activeTab === 'examples' && (
             <div className="space-y-12">
               {examples.map((example, index) => (
-                <div key={index} className="space-y-4">
+                <div 
+                  key={index} 
+                  className="space-y-4 animate-slide-in-bottom"
+                  style={{ animationDelay: `${800 + index * 200}ms` }}
+                >
                   <div>
-                    <h3 className="text-2xl font-semibold mb-2">{example.title}</h3>
+                    <h3 className="text-2xl font-semibold mb-2 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                      {example.title}
+                    </h3>
                     {example.description && (
-                      <p className="text-muted-foreground text-lg">{example.description}</p>
+                      <p className="text-muted-foreground text-lg leading-relaxed">{example.description}</p>
                     )}
                   </div>
-                  <ComponentPreview
-                    code={example.code}
-                    title={example.title}
-                    description={example.description}
-                  >
-                    {example.preview}
-                  </ComponentPreview>
+                  <div className="hover-lift">
+                    <ComponentPreview
+                      code={example.code}
+                      title={example.title}
+                      description={example.description}
+                    >
+                      {example.preview}
+                    </ComponentPreview>
+                  </div>
                 </div>
               ))}
             </div>
           )}
 
           {activeTab === 'props' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-slide-in-bottom animate-delay-200">
               <div>
-                <h3 className="text-2xl font-semibold mb-4">API Reference</h3>
-                <p className="text-muted-foreground text-lg mb-6">
+                <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                  API Reference
+                </h3>
+                <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
                   Complete reference for all props and their types.
                 </p>
               </div>
-              <PropsTable props={props} />
+              <div className="hover-lift">
+                <PropsTable props={props} />
+              </div>
             </div>
           )}
 
           {activeTab === 'usage' && (
             <div className="space-y-8">
-              <div>
-                <h3 className="text-2xl font-semibold mb-4">Installation</h3>
-                <p className="text-muted-foreground text-lg mb-4">
+              <div className="animate-slide-in-bottom animate-delay-100">
+                <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                  Installation
+                </h3>
+                <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
                   Install the component library to get started.
                 </p>
-                <CodeBlock language="bash" code={`npm install mad-ui-components`} />
+                <div className="hover-lift">
+                  <CodeBlock language="bash" code={`npm install mad-ui-components`} />
+                </div>
               </div>
               
-              <div>
-                <h3 className="text-2xl font-semibold mb-4">Import</h3>
-                <p className="text-muted-foreground text-lg mb-4">
+              <div className="animate-slide-in-bottom animate-delay-200">
+                <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                  Import
+                </h3>
+                <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
                   Import the component in your React application.
                 </p>
-                <CodeBlock 
-                  language="tsx" 
-                  code={`import { ${component.title} } from 'mad-ui-components'`} 
-                />
+                <div className="hover-lift">
+                  <CodeBlock 
+                    language="tsx" 
+                    code={`import { ${component.title} } from 'mad-ui-components'`} 
+                  />
+                </div>
               </div>
               
-              <div>
-                <h3 className="text-2xl font-semibold mb-4">Basic Usage</h3>
-                <p className="text-muted-foreground text-lg mb-4">
+              <div className="animate-slide-in-bottom animate-delay-300">
+                <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                  Basic Usage
+                </h3>
+                <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
                   Here&apos;s a simple example to get you started.
                 </p>
-                <CodeBlock 
-                  language="tsx" 
-                  code={examples[0]?.code || `// Basic usage example\n<${component.title} />`} 
-                />
+                <div className="hover-lift">
+                  <CodeBlock 
+                    language="tsx" 
+                    code={examples[0]?.code || `// Basic usage example\n<${component.title} />`} 
+                  />
+                </div>
               </div>
             </div>
           )}
 
           {activeTab === 'guide' && (
-            <div className="space-y-6">
+            <div className="space-y-6 animate-slide-in-bottom animate-delay-200">
               <div>
-                <h3 className="text-2xl font-semibold mb-4">Best Practices & Guidelines</h3>
-                <p className="text-muted-foreground text-lg mb-6">
+                <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+                  Best Practices & Guidelines
+                </h3>
+                <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
                   Learn how to use {component.title} effectively with best practices, common mistakes to avoid, and accessibility guidelines.
                 </p>
               </div>
-              <UsageGuide 
-                componentName={component.title}
-                bestPractices={getBestPractices(slug)}
-                commonMistakes={getCommonMistakes(slug)}
-                tips={getTips(slug)}
-                examples={getUsageExamples(slug)}
-              />
+              <div className="hover-lift">
+                <UsageGuide 
+                  componentName={component.title}
+                  bestPractices={getBestPractices(slug)}
+                  commonMistakes={getCommonMistakes(slug)}
+                  tips={getTips(slug)}
+                  examples={getUsageExamples(slug)}
+                />
+              </div>
             </div>
           )}
         </div>
