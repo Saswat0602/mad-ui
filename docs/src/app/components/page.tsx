@@ -32,6 +32,15 @@ export default function ComponentsPage() {
         <p className="text-xl text-muted-foreground max-w-3xl">
           Explore our collection of carefully crafted components. Each component is built with accessibility in mind and follows modern design principles.
         </p>
+        <div className="mt-6">
+          <a 
+            href="/docs/components" 
+            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
+          >
+            View All Components
+            <ArrowRight className="w-4 h-4" />
+          </a>
+        </div>
       </div>
 
       {/* Core Components */}
@@ -49,10 +58,10 @@ export default function ComponentsPage() {
             <CardHeader className="pb-4">
               <CardTitle className="text-lg mb-2">Button</CardTitle>
               <CardDescription>
-                A versatile button component with multiple variants, sizes, and states.
+                Versatile button with multiple variants and sizes.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3">
               <div className="flex flex-wrap gap-2">
                 <Button size="sm">Small</Button>
                 <Button>Default</Button>
@@ -62,7 +71,6 @@ export default function ComponentsPage() {
                 <Button variant="outline">Outline</Button>
                 <Button variant="secondary">Secondary</Button>
                 <Button variant="ghost">Ghost</Button>
-                <Button variant="error">Error</Button>
               </div>
             </CardContent>
           </Card>
@@ -71,10 +79,10 @@ export default function ComponentsPage() {
             <CardHeader className="pb-4">
               <CardTitle className="text-lg mb-2">Input</CardTitle>
               <CardDescription>
-                A flexible input component for text, email, password, and other input types.
+                Flexible input for text, email, password, and more.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3">
               <div className="space-y-2">
                 <Label htmlFor="email">Email</Label>
                 <Input id="email" type="email" placeholder="Enter your email" />
@@ -83,10 +91,6 @@ export default function ComponentsPage() {
                 <Label htmlFor="password">Password</Label>
                 <Input id="password" type="password" placeholder="Enter password" />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="search">Search</Label>
-                <Input id="search" placeholder="Search..." />
-              </div>
             </CardContent>
           </Card>
 
@@ -94,10 +98,10 @@ export default function ComponentsPage() {
             <CardHeader className="pb-4">
               <CardTitle className="text-lg mb-2">Label</CardTitle>
               <CardDescription>
-                A semantic label component for form controls and accessibility.
+                Semantic labels for form controls and accessibility.
               </CardDescription>
             </CardHeader>
-            <CardContent className="space-y-4">
+            <CardContent className="space-y-3">
               <div className="space-y-2">
                 <Label htmlFor="username">Username</Label>
                 <Input id="username" placeholder="Enter username" />
