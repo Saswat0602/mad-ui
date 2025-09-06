@@ -4,7 +4,7 @@ import { Button } from '../core/button'
 import { MenuIcon, SearchIcon, BellIcon, UserIcon, SettingsIcon, LogOutIcon, SunIcon, MoonIcon, ChevronDownIcon } from '../../icons'
 
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
-  variant?: "default" | "elevated" | "outlined" | "minimal"
+  variant?: "default" | "elevated" | "outlined" | "minimal" | "centered" | "split" | "sidebar" | "floating"
   size?: "sm" | "md" | "lg"
   color?: string
   backgroundColor?: string
@@ -35,6 +35,19 @@ export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
     onClick?: () => void
     divider?: boolean
   }>
+  navigationItems?: Array<{
+    label: string
+    href?: string
+    onClick?: () => void
+    active?: boolean
+    icon?: React.ReactNode
+  }>
+  showNavigation?: boolean
+  showBrand?: boolean
+  showActions?: boolean
+  brandPosition?: "left" | "center" | "right"
+  navigationPosition?: "left" | "center" | "right"
+  actionsPosition?: "left" | "center" | "right"
 }
 
 const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
@@ -71,6 +84,13 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
       { divider: true },
       { label: "Logout", icon: <LogOutIcon className="w-4 h-4" />, onClick: () => {} }
     ],
+    navigationItems = [],
+    showNavigation = false,
+    showBrand = true,
+    showActions = true,
+    brandPosition = "left",
+    navigationPosition = "center",
+    actionsPosition = "right",
     style,
     ...props 
   }, ref) => {
@@ -118,6 +138,31 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
             backgroundColor: "transparent",
             border: "none",
             boxShadow: "none"
+          }
+        case "centered":
+          return {
+            backgroundColor: backgroundColor || "var(--bg-card)",
+            border: `1px solid ${borderColor || "var(--border-primary)"}`,
+            boxShadow: shadowClasses[shadow]
+          }
+        case "split":
+          return {
+            backgroundColor: backgroundColor || "var(--bg-card)",
+            border: `1px solid ${borderColor || "var(--border-primary)"}`,
+            boxShadow: shadowClasses[shadow]
+          }
+        case "sidebar":
+          return {
+            backgroundColor: backgroundColor || "var(--bg-card)",
+            border: "none",
+            boxShadow: shadowClasses[shadow]
+          }
+        case "floating":
+          return {
+            backgroundColor: backgroundColor || "var(--bg-card)",
+            border: "none",
+            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
+            borderRadius: "12px"
           }
         default:
           return {
@@ -195,133 +240,228 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
         style={customStyles}
         {...props}
       >
-        <div className="flex items-center justify-between h-full">
-          {/* Left Section - Logo & Title */}
-          <div className="flex items-center space-x-4">
-            {showSidebarToggle && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onSidebarToggle}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                <MenuIcon className="w-5 h-5" />
-              </Button>
-            )}
-            
-            {logo && (
-              <div className="flex-shrink-0">
-                {logo}
+        {/* Render different layouts based on variant */}
+        {variant === "centered" ? (
+          <div className="flex items-center justify-center h-full">
+            {showBrand && (
+              <div className="flex items-center space-x-4">
+                {logo && <div className="flex-shrink-0">{logo}</div>}
+                <div className="flex flex-col">
+                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h1>
+                  {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
+                </div>
               </div>
             )}
-            
-            <div className="flex flex-col">
-              <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
-                {title}
-              </h1>
-              {subtitle && (
-                <p className="text-sm text-gray-500 dark:text-gray-400">
-                  {subtitle}
-                </p>
+          </div>
+        ) : variant === "split" ? (
+          <div className="flex items-center justify-between h-full">
+            <div className="flex items-center space-x-4">
+              {showSidebarToggle && (
+                <Button variant="ghost" size="sm" onClick={onSidebarToggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <MenuIcon className="w-5 h-5" />
+                </Button>
+              )}
+              {showBrand && (
+                <>
+                  {logo && <div className="flex-shrink-0">{logo}</div>}
+                  <div className="flex flex-col">
+                    <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h1>
+                    {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
+                  </div>
+                </>
+              )}
+            </div>
+            <div className="flex items-center space-x-2">
+              {showNavigation && navigationItems.map((item, index) => (
+                <a
+                  key={index}
+                  href={item.href}
+                  onClick={item.onClick}
+                  className={cn(
+                    "px-3 py-2 text-sm font-medium rounded-md transition-colors",
+                    item.active 
+                      ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" 
+                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
+                  )}
+                >
+                  {item.icon && <span className="mr-2">{item.icon}</span>}
+                  {item.label}
+                </a>
+              ))}
+            </div>
+            <div className="flex items-center space-x-2">
+              {showActions && actions}
+              {showThemeToggle && (
+                <Button variant="ghost" size="sm" onClick={onThemeToggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <SunIcon className="w-5 h-5 dark:hidden" />
+                  <MoonIcon className="w-5 h-5 hidden dark:block" />
+                </Button>
+              )}
+              {showUserMenu && (
+                <div className="relative" ref={userMenuRef}>
+                  <Button variant="ghost" size="sm" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                      <UserIcon className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="hidden md:block text-sm font-medium">User</span>
+                    <ChevronDownIcon className={cn("w-4 h-4 transition-transform duration-200", isUserMenuOpen && "rotate-180")} />
+                  </Button>
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                      {userMenuItems.map((item, index) => (
+                        <React.Fragment key={index}>
+                          {item.divider ? (
+                            <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
+                          ) : (
+                            <button onClick={item.onClick || (() => {})} className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-150">
+                              {item.icon}
+                              <span>{item.label}</span>
+                            </button>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  )}
+                </div>
               )}
             </div>
           </div>
-          
-          {/* Center Section - Search */}
-          {showSearch && (
-            <div className="flex-1 max-w-md mx-8">
-              <form onSubmit={handleSearch} className="relative">
-                <div className="relative">
-                  <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                  <input
-                    ref={searchRef}
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder={searchPlaceholder}
-                    className={cn(
-                      "w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm transition-all duration-200",
-                      "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-                      "placeholder-gray-400 dark:placeholder-gray-500"
-                    )}
-                  />
+        ) : variant === "floating" ? (
+          <div className="flex items-center justify-between h-full px-6">
+            {showBrand && (
+              <div className="flex items-center space-x-4">
+                {logo && <div className="flex-shrink-0">{logo}</div>}
+                <div className="flex flex-col">
+                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h1>
+                  {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
                 </div>
-              </form>
-            </div>
-          )}
-          
-          {/* Right Section - Actions & User Menu */}
-          <div className="flex items-center space-x-2">
-            {actions}
-            
-            {showThemeToggle && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onThemeToggle}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-              >
-                <SunIcon className="w-5 h-5 dark:hidden" />
-                <MoonIcon className="w-5 h-5 hidden dark:block" />
-              </Button>
-            )}
-            
-            {showNotifications && (
-              <Button
-                variant="ghost"
-                size="sm"
-                onClick={onNotificationClick}
-                className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 relative"
-              >
-                <BellIcon className="w-5 h-5" />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
-              </Button>
-            )}
-            
-            {showUserMenu && (
-              <div className="relative" ref={userMenuRef}>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-                >
-                  <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                    <UserIcon className="w-4 h-4 text-white" />
-                  </div>
-                  <span className="hidden md:block text-sm font-medium">
-                    User
-                  </span>
-                  <ChevronDownIcon className={cn(
-                    "w-4 h-4 transition-transform duration-200",
-                    isUserMenuOpen && "rotate-180"
-                  )} />
-                </Button>
-                
-                {/* User Menu Dropdown */}
-                {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
-                    {userMenuItems.map((item, index) => (
-                      <React.Fragment key={index}>
-                        {item.divider ? (
-                          <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
-                        ) : (
-                          <button
-                            onClick={item.onClick || (() => {})}
-                            className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-150"
-                          >
-                            {item.icon}
-                            <span>{item.label}</span>
-                          </button>
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </div>
-                )}
               </div>
             )}
+            <div className="flex items-center space-x-2">
+              {showActions && actions}
+              {showThemeToggle && (
+                <Button variant="ghost" size="sm" onClick={onThemeToggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <SunIcon className="w-5 h-5 dark:hidden" />
+                  <MoonIcon className="w-5 h-5 hidden dark:block" />
+                </Button>
+              )}
+              {showUserMenu && (
+                <div className="relative" ref={userMenuRef}>
+                  <Button variant="ghost" size="sm" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                      <UserIcon className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="hidden md:block text-sm font-medium">User</span>
+                    <ChevronDownIcon className={cn("w-4 h-4 transition-transform duration-200", isUserMenuOpen && "rotate-180")} />
+                  </Button>
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                      {userMenuItems.map((item, index) => (
+                        <React.Fragment key={index}>
+                          {item.divider ? (
+                            <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
+                          ) : (
+                            <button onClick={item.onClick || (() => {})} className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-150">
+                              {item.icon}
+                              <span>{item.label}</span>
+                            </button>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="flex items-center justify-between h-full">
+            {/* Left Section - Logo & Title */}
+            <div className="flex items-center space-x-4">
+              {showSidebarToggle && (
+                <Button variant="ghost" size="sm" onClick={onSidebarToggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <MenuIcon className="w-5 h-5" />
+                </Button>
+              )}
+              {showBrand && (
+                <>
+                  {logo && <div className="flex-shrink-0">{logo}</div>}
+                  <div className="flex flex-col">
+                    <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h1>
+                    {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
+                  </div>
+                </>
+              )}
+            </div>
+            
+            {/* Center Section - Search */}
+            {showSearch && (
+              <div className="flex-1 max-w-md mx-8">
+                <form onSubmit={handleSearch} className="relative">
+                  <div className="relative">
+                    <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                    <input
+                      ref={searchRef}
+                      type="text"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      placeholder={searchPlaceholder}
+                      className={cn(
+                        "w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm transition-all duration-200",
+                        "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
+                        "placeholder-gray-400 dark:placeholder-gray-500"
+                      )}
+                    />
+                  </div>
+                </form>
+              </div>
+            )}
+            
+            {/* Right Section - Actions & User Menu */}
+            <div className="flex items-center space-x-2">
+              {showActions && actions}
+              {showThemeToggle && (
+                <Button variant="ghost" size="sm" onClick={onThemeToggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                  <SunIcon className="w-5 h-5 dark:hidden" />
+                  <MoonIcon className="w-5 h-5 hidden dark:block" />
+                </Button>
+              )}
+              {showNotifications && (
+                <Button variant="ghost" size="sm" onClick={onNotificationClick} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 relative">
+                  <BellIcon className="w-5 h-5" />
+                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                </Button>
+              )}
+              {showUserMenu && (
+                <div className="relative" ref={userMenuRef}>
+                  <Button variant="ghost" size="sm" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
+                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+                      <UserIcon className="w-4 h-4 text-white" />
+                    </div>
+                    <span className="hidden md:block text-sm font-medium">User</span>
+                    <ChevronDownIcon className={cn("w-4 h-4 transition-transform duration-200", isUserMenuOpen && "rotate-180")} />
+                  </Button>
+                  {isUserMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
+                      {userMenuItems.map((item, index) => (
+                        <React.Fragment key={index}>
+                          {item.divider ? (
+                            <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
+                          ) : (
+                            <button onClick={item.onClick || (() => {})} className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-150">
+                              {item.icon}
+                              <span>{item.label}</span>
+                            </button>
+                          )}
+                        </React.Fragment>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        )}
       </nav>
     )
   }

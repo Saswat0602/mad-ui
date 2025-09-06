@@ -538,7 +538,7 @@ export function ProgressSizes() {
   slider: [
     {
       title: 'Default',
-      description: 'The default slider variant.',
+      description: 'The default slider variant with smooth animations.',
       code: `import { Slider } from 'mad-ui-components'
 
 export function SliderDemo() {
@@ -548,7 +548,7 @@ export function SliderDemo() {
     },
     {
       title: 'Range Slider',
-      description: 'A range slider with two handles.',
+      description: 'A range slider with two handles and smooth transitions.',
       code: `import { Slider } from 'mad-ui-components'
 
 export function RangeSliderDemo() {
@@ -558,7 +558,7 @@ export function RangeSliderDemo() {
     },
     {
       title: 'With Marks',
-      description: 'Slider with value marks.',
+      description: 'Slider with value marks and smooth animations.',
       code: `import { Slider } from 'mad-ui-components'
 
 export function SliderWithMarks() {
@@ -593,6 +593,34 @@ export function SliderWithMarks() {
             { value: 75, label: '75°C' },
             { value: 100, label: '100°C' }
           ]} 
+        />
+      )
+    },
+    {
+      title: 'Smooth Range Slider',
+      description: 'A range slider with enhanced smoothness and better UX.',
+      code: `import { Slider } from 'mad-ui-components'
+
+export function SmoothRangeSlider() {
+  return (
+    <Slider 
+      defaultValue={[30, 70]} 
+      max={100} 
+      step={1} 
+      range 
+      showValue
+      className="w-full"
+    />
+  )
+}`,
+      preview: (
+        <Slider 
+          defaultValue={[30, 70]} 
+          max={100} 
+          step={1} 
+          range 
+          showValue
+          className="w-full"
         />
       )
     }

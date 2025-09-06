@@ -42,6 +42,17 @@ export interface TableProps<T> extends React.HTMLAttributes<HTMLDivElement> {
   loading?: boolean
   onRowClick?: (row: T, index: number) => void
   rowKey?: keyof T | ((row: T, index: number) => string)
+  editable?: boolean
+  onAddRow?: () => void
+  onAddColumn?: () => void
+  onEditCell?: (row: T, column: keyof T, value: any) => void
+  onDeleteRow?: (row: T, index: number) => void
+  showAddRowButton?: boolean
+  showAddColumnButton?: boolean
+  showDeleteRowButton?: boolean
+  addRowButtonText?: string
+  addColumnButtonText?: string
+  deleteRowButtonText?: string
 }
 
 function Table<T extends Record<string, unknown>>({
@@ -69,6 +80,17 @@ function Table<T extends Record<string, unknown>>({
   loading = false,
   onRowClick,
   rowKey = "id",
+  editable = false,
+  onAddRow,
+  onAddColumn,
+  onEditCell,
+  onDeleteRow,
+  showAddRowButton = false,
+  showAddColumnButton = false,
+  showDeleteRowButton = false,
+  addRowButtonText = "Add Row",
+  addColumnButtonText = "Add Column",
+  deleteRowButtonText = "Delete",
   className,
   style,
   ...props
@@ -205,6 +227,28 @@ function Table<T extends Record<string, unknown>>({
       style={customStyles}
       {...props}
     >
+      {/* Table Actions */}
+      {(showAddRowButton || showAddColumnButton) && (
+        <div className="mb-4 flex gap-2">
+          {showAddRowButton && (
+            <button
+              onClick={onAddRow}
+              className="px-3 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors text-sm font-medium"
+            >
+              + {addRowButtonText}
+            </button>
+          )}
+          {showAddColumnButton && (
+            <button
+              onClick={onAddColumn}
+              className="px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors text-sm font-medium"
+            >
+              + {addColumnButtonText}
+            </button>
+          )}
+        </div>
+      )}
+
       <table className="w-full">
         <thead>
           <tr 
@@ -260,17 +304,22 @@ function Table<T extends Record<string, unknown>>({
                 </div>
               </th>
             ))}
+            {showDeleteRowButton && (
+              <th className={cn("text-left font-medium py-3 px-4", sizeClasses[size])}>
+                Actions
+              </th>
+            )}
           </tr>
         </thead>
         <tbody>
           {sortedData.length === 0 ? (
             <tr>
-                              <td 
-                  colSpan={columns.length + (selectable ? 1 : 0)}
-                  className="text-center py-8 text-slate-500 dark:text-slate-400"
-                >
-                  {emptyMessage}
-                </td>
+              <td 
+                colSpan={columns.length + (selectable ? 1 : 0) + (showDeleteRowButton ? 1 : 0)}
+                className="text-center py-8 text-slate-500 dark:text-slate-400"
+              >
+                {emptyMessage}
+              </td>
             </tr>
           ) : (
             sortedData.map((row, index) => (
@@ -309,11 +358,30 @@ function Table<T extends Record<string, unknown>>({
                       textAlign: column.align || "left"
                     }}
                   >
-                    {column.render
-                      ? column.render(row[column.key], row)
-                      : String(row[column.key] || "")}
+                    {editable && onEditCell ? (
+                      <input
+                        type="text"
+                        value={String(row[column.key] || "")}
+                        onChange={(e) => onEditCell(row, column.key, e.target.value)}
+                        className="w-full bg-transparent border-none outline-none"
+                      />
+                    ) : (
+                      column.render
+                        ? column.render(row[column.key], row)
+                        : String(row[column.key] || "")
+                    )}
                   </td>
                 ))}
+                {showDeleteRowButton && onDeleteRow && (
+                  <td className={cn("py-3 px-4", paddingClasses[size])}>
+                    <button
+                      onClick={() => onDeleteRow(row, index)}
+                      className="px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 transition-colors text-xs"
+                    >
+                      {deleteRowButtonText}
+                    </button>
+                  </td>
+                )}
               </tr>
             ))
           )}

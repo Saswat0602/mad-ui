@@ -46,6 +46,80 @@ export function TableExample() {
           />
         </div>
       )
+    },
+    {
+      title: 'Editable Table',
+      description: 'A table with add/delete row functionality and inline editing',
+      code: `import { Table } from 'mad-ui-components'
+
+export function EditableTableExample() {
+  const [data, setData] = useState([
+    { id: '1', name: 'John Doe', age: 30, email: 'john@example.com' },
+    { id: '2', name: 'Jane Smith', age: 25, email: 'jane@example.com' },
+    { id: '3', name: 'Bob Johnson', age: 35, email: 'bob@example.com' }
+  ])
+
+  const columns = [
+    { key: 'name', header: 'Name', sortable: true },
+    { key: 'age', header: 'Age', sortable: true },
+    { key: 'email', header: 'Email', sortable: true }
+  ]
+
+  const handleAddRow = () => {
+    const newRow = {
+      id: String(data.length + 1),
+      name: 'New User',
+      age: 25,
+      email: 'new@example.com'
+    }
+    setData([...data, newRow])
+  }
+
+  const handleDeleteRow = (row: any, index: number) => {
+    setData(data.filter((_, i) => i !== index))
+  }
+
+  const handleEditCell = (row: any, column: string, value: any) => {
+    setData(data.map(item => 
+      item.id === row.id ? { ...item, [column]: value } : item
+    ))
+  }
+
+  return (
+    <Table
+      columns={columns}
+      data={data}
+      editable
+      showAddRowButton
+      showDeleteRowButton
+      onAddRow={handleAddRow}
+      onDeleteRow={handleDeleteRow}
+      onEditCell={handleEditCell}
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <Table 
+            columns={[
+              { key: 'name', header: 'Name', sortable: true },
+              { key: 'age', header: 'Age', sortable: true },
+              { key: 'email', header: 'Email', sortable: true }
+            ]} 
+            data={[
+              { id: '1', name: 'John Doe', age: 30, email: 'john@example.com' },
+              { id: '2', name: 'Jane Smith', age: 25, email: 'jane@example.com' },
+              { id: '3', name: 'Bob Johnson', age: 35, email: 'bob@example.com' }
+            ]}
+            editable
+            showAddRowButton
+            showDeleteRowButton
+            onAddRow={() => console.log('Add row')}
+            onDeleteRow={(row, index) => console.log('Delete row:', row, index)}
+            onEditCell={(row, column, value) => console.log('Edit cell:', row, column, value)}
+          />
+        </div>
+      )
     }
   ],
 

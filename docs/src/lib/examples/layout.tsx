@@ -88,6 +88,80 @@ export function NavbarExample() {
           <Navbar title="My App" />
         </div>
       )
+    },
+    {
+      title: 'Centered Navbar',
+      description: 'A navbar with centered navigation',
+      code: `import { Navbar } from 'mad-ui-components'
+
+export function CenteredNavbarExample() {
+  const navigationItems = [
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'Contact', href: '/contact' }
+  ]
+
+  return (
+    <Navbar 
+      title="My App"
+      variant="centered"
+      navigationItems={navigationItems}
+      showNavigation
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <Navbar 
+            title="My App"
+            variant="centered"
+            navigationItems={[
+              { label: 'Home', href: '/' },
+              { label: 'About', href: '/about' },
+              { label: 'Contact', href: '/contact' }
+            ]}
+            showNavigation
+          />
+        </div>
+      )
+    },
+    {
+      title: 'Floating Navbar',
+      description: 'A floating navbar with modern design',
+      code: `import { Navbar } from 'mad-ui-components'
+
+export function FloatingNavbarExample() {
+  const navigationItems = [
+    { label: 'Home', href: '/' },
+    { label: 'About', href: '/about' },
+    { label: 'Contact', href: '/contact' }
+  ]
+
+  return (
+    <Navbar 
+      title="My App"
+      variant="floating"
+      navigationItems={navigationItems}
+      showNavigation
+      showActions
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <Navbar 
+            title="My App"
+            variant="floating"
+            navigationItems={[
+              { label: 'Home', href: '/' },
+              { label: 'About', href: '/about' },
+              { label: 'Contact', href: '/contact' }
+            ]}
+            showNavigation
+            showActions
+          />
+        </div>
+      )
     }
   ],
 

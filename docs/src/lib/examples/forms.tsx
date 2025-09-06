@@ -148,6 +148,36 @@ export function CalendarExample() {
           <Calendar />
         </div>
       )
+    },
+    {
+      title: 'Modern Style Calendar',
+      description: 'A calendar with modern design and enhanced features',
+      code: `import { Calendar } from 'mad-ui-components'
+
+export function ModernCalendarExample() {
+  return (
+    <Calendar 
+      variant="outlined"
+      size="lg"
+      showWeekNumbers
+      showToday
+      highlightWeekends
+      design="modern"
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm">
+          <Calendar 
+            variant="outlined"
+            size="lg"
+            showWeekNumbers
+            showToday
+            highlightWeekends
+            design="modern"
+          />
+        </div>
+      )
     }
   ],
 
