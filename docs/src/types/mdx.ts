@@ -11,7 +11,7 @@ export interface SerializedMDX {
 }
 
 export interface MDXComponents {
-  [key: string]: React.ComponentType<any>
+  [key: string]: React.ComponentType<Record<string, unknown>>
 }
 
 import { Frontmatter } from './frontmatter'

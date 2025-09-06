@@ -1,4 +1,4 @@
-import { ComponentCategory, ComponentDoc } from '@/types/component'
+import { ComponentCategory } from '@/types/component'
 
 // Component registry with all available components
 export const COMPONENT_REGISTRY = {
