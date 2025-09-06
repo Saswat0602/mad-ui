@@ -524,8 +524,186 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       required: false,
       description: 'The content to display inside the label'
     }
+  ],
+
+  rating: [
+    {
+      name: 'value',
+      type: 'number',
+      required: false,
+      description: 'The current rating value'
+    },
+    {
+      name: 'defaultValue',
+      type: 'number',
+      required: false,
+      default: '0',
+      description: 'The default rating value'
+    },
+    {
+      name: 'max',
+      type: 'number',
+      required: false,
+      default: '5',
+      description: 'The maximum rating value'
+    },
+    {
+      name: 'onChange',
+      type: '(value: number) => void',
+      required: false,
+      description: 'Function called when rating changes'
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the rating is disabled'
+    },
+    {
+      name: 'readOnly',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the rating is read-only'
+    }
+  ],
+
+  skeleton: [
+    {
+      name: 'className',
+      type: 'string',
+      required: false,
+      description: 'Additional CSS classes to apply'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'wave' | 'pulse'",
+      required: false,
+      default: 'default',
+      description: 'The animation variant of the skeleton'
+    },
+    {
+      name: 'width',
+      type: 'string | number',
+      required: false,
+      description: 'The width of the skeleton'
+    },
+    {
+      name: 'height',
+      type: 'string | number',
+      required: false,
+      description: 'The height of the skeleton'
+    }
+  ],
+
+  textarea: [
+    {
+      name: 'value',
+      type: 'string',
+      required: false,
+      description: 'The value of the textarea'
+    },
+    {
+      name: 'defaultValue',
+      type: 'string',
+      required: false,
+      description: 'The default value of the textarea'
+    },
+    {
+      name: 'placeholder',
+      type: 'string',
+      required: false,
+      description: 'Placeholder text for the textarea'
+    },
+    {
+      name: 'rows',
+      type: 'number',
+      required: false,
+      default: '3',
+      description: 'Number of visible text lines'
+    },
+    {
+      name: 'cols',
+      type: 'number',
+      required: false,
+      description: 'Number of visible character widths'
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the textarea is disabled'
+    },
+    {
+      name: 'readOnly',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the textarea is read-only'
+    },
+    {
+      name: 'required',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the textarea is required'
+    },
+    {
+      name: 'label',
+      type: 'string',
+      required: false,
+      description: 'Label for the textarea'
+    },
+    {
+      name: 'error',
+      type: 'string',
+      required: false,
+      description: 'Error message to display'
+    },
+    {
+      name: 'helperText',
+      type: 'string',
+      required: false,
+      description: 'Helper text to display below the textarea'
+    },
+    {
+      name: 'success',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the textarea is in a success state'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'error' | 'success'",
+      required: false,
+      default: 'default',
+      description: 'The visual variant of the textarea'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'The size of the textarea'
+    },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether the textarea should take full width'
+    },
+    {
+      name: 'onChange',
+      type: '(event: React.ChangeEvent<HTMLTextAreaElement>) => void',
+      required: false,
+      description: 'Function called when the textarea value changes'
+    }
   ]
-} as const
+}
 
 export function getComponentProps(slug: string): ComponentProp[] {
   return COMPONENT_PROPS[slug] || [

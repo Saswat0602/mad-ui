@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardFooter, Checkbox, Select, Slider, Switch, Progress } from 'mad-ui-components'
+import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardFooter, Checkbox, Select, Slider, Switch, Progress, Rating, Skeleton, Textarea, Badge, Accordion } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -422,23 +422,16 @@ export function SelectDemo() {
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm space-y-2">
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-            Choose a fruit
-          </label>
-          <div className="relative">
-            <select className="w-full rounded-lg border-2 border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 transition-all duration-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-blue-400 dark:focus:ring-blue-400/20">
-              <option value="" disabled>Select a fruit</option>
-              <option value="apple">Apple</option>
-              <option value="banana">Banana</option>
-              <option value="orange">Orange</option>
-            </select>
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-              <svg className="w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
+        <div className="w-full max-w-sm">
+          <Select 
+            label="Choose a fruit" 
+            options={[
+              { value: 'apple', label: 'Apple' },
+              { value: 'banana', label: 'Banana' },
+              { value: 'orange', label: 'Orange' }
+            ]} 
+            placeholder="Select a fruit" 
+          />
         </div>
       )
     },
@@ -609,13 +602,7 @@ export function SliderWithMarks() {
 
 export function RatingExample() {
   return <Rating value={4} max={5} />`,
-      preview: (
-        <div className="flex items-center space-x-1">
-          {[1, 2, 3, 4, 5].map((star) => (
-            <span key={star} className={`text-2xl ${star <= 4 ? 'text-yellow-400' : 'text-gray-300'}`}>★</span>
-          ))}
-        </div>
-      )
+      preview: <Rating value={4} max={5} />
     }
   ],
 
@@ -627,7 +614,7 @@ export function RatingExample() {
 
 export function SkeletonExample() {
   return <Skeleton className="h-4 w-[250px]" />`,
-      preview: <div className="h-4 w-[250px] animate-pulse rounded-md bg-muted"></div>
+      preview: <Skeleton className="h-4 w-[250px]" />
     }
   ],
 
@@ -639,7 +626,7 @@ export function SkeletonExample() {
 
 export function TextareaExample() {
   return <Textarea placeholder="Enter your message..." />`,
-      preview: <textarea className="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground" placeholder="Enter your message..."></textarea>
+      preview: <Textarea placeholder="Enter your message..." />
     }
   ],
 
@@ -651,7 +638,7 @@ export function TextareaExample() {
 
 export function BadgeExample() {
   return <Badge>Badge</Badge>`,
-      preview: <span className="inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-primary text-primary-foreground hover:bg-primary/80">Badge</span>
+      preview: <Badge>Badge</Badge>
     },
     {
       title: 'Badge Variants',
@@ -707,6 +694,100 @@ export function AlertExample() {
       preview: (
         <div className="relative w-full rounded-lg border p-4 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-4 [&>svg]:top-4 [&>svg]:text-foreground">
           <p>This is an alert message.</p>
+        </div>
+      )
+    }
+  ],
+
+  accordion: [
+    {
+      title: 'Basic Accordion',
+      description: 'A simple accordion component',
+      code: `import { Accordion } from 'mad-ui-components'
+
+export function AccordionExample() {
+  const items = [
+    {
+      id: 'item-1',
+      title: 'What is React?',
+      content: 'React is a JavaScript library for building user interfaces.'
+    },
+    {
+      id: 'item-2',
+      title: 'What is TypeScript?',
+      content: 'TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.'
+    }
+  ]
+
+  return <Accordion items={items} />
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <Accordion 
+            items={[
+              {
+                id: 'item-1',
+                title: 'What is React?',
+                content: 'React is a JavaScript library for building user interfaces.'
+              },
+              {
+                id: 'item-2',
+                title: 'What is TypeScript?',
+                content: 'TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.'
+              }
+            ]} 
+          />
+        </div>
+      )
+    },
+    {
+      title: 'Multiple Open Accordion',
+      description: 'Accordion that allows multiple items to be open',
+      code: `import { Accordion } from 'mad-ui-components'
+
+export function MultipleAccordion() {
+  const items = [
+    {
+      id: 'item-1',
+      title: 'Frontend Technologies',
+      content: 'React, Vue, Angular, Svelte'
+    },
+    {
+      id: 'item-2',
+      title: 'Backend Technologies',
+      content: 'Node.js, Python, Java, Go'
+    },
+    {
+      id: 'item-3',
+      title: 'Database Technologies',
+      content: 'PostgreSQL, MongoDB, Redis, MySQL'
+    }
+  ]
+
+  return <Accordion items={items} multiple={true} />
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <Accordion 
+            items={[
+              {
+                id: 'item-1',
+                title: 'Frontend Technologies',
+                content: 'React, Vue, Angular, Svelte'
+              },
+              {
+                id: 'item-2',
+                title: 'Backend Technologies',
+                content: 'Node.js, Python, Java, Go'
+              },
+              {
+                id: 'item-3',
+                title: 'Database Technologies',
+                content: 'PostgreSQL, MongoDB, Redis, MySQL'
+              }
+            ]} 
+            multiple={true}
+          />
         </div>
       )
     }

@@ -261,7 +261,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
       >
         {/* Track Fill */}
         <div
-          className="absolute top-0 left-0 h-full bg-blue-500 dark:bg-blue-400 rounded-full transition-all duration-200"
+          className="absolute top-0 left-0 h-full bg-blue-500 dark:bg-blue-400 rounded-full transition-all duration-300 ease-out"
           style={{
             backgroundColor: color || undefined,
             ...getTrackFill()
@@ -280,7 +280,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
                 'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
                 thumbSizeClasses[size],
                 'bg-white dark:bg-slate-200 border-2 border-blue-500 dark:border-blue-400 rounded-full shadow-md',
-                'hover:scale-110 hover:shadow-lg transition-all duration-200 active:scale-95',
+                'hover:scale-110 hover:shadow-lg transition-all duration-300 ease-out active:scale-95',
                 disabled && 'cursor-not-allowed opacity-50'
               )}
               style={{
@@ -297,7 +297,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
                 'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
                 thumbSizeClasses[size],
                 'bg-white dark:bg-slate-200 border-2 border-blue-500 dark:border-blue-400 rounded-full shadow-md',
-                'hover:scale-110 hover:shadow-lg transition-all duration-200 active:scale-95',
+                'hover:scale-110 hover:shadow-lg transition-all duration-300 ease-out active:scale-95',
                 disabled && 'cursor-not-allowed opacity-50'
               )}
               style={{
@@ -317,7 +317,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
               'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
               thumbSizeClasses[size],
               'bg-white dark:bg-slate-200 border-2 border-blue-500 dark:border-blue-400 rounded-full shadow-md',
-              'hover:scale-110 transition-transform duration-200',
+              'hover:scale-110 transition-transform duration-300 ease-out',
               disabled && 'cursor-not-allowed opacity-50'
             )}
             style={{
