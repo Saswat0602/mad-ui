@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardFooter, Checkbox, Select, Slider, Switch, Progress, Rating, Skeleton, Textarea, Badge, Accordion } from 'mad-ui-components'
+import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardFooter, Checkbox, Select, Slider, Switch, Progress, Rating, Skeleton, Textarea, Badge, Accordion } from 'mad-ui-components'in th e docs 
 
 export interface ComponentExample {
   title: string
