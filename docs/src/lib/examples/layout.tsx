@@ -1,5 +1,23 @@
 import React, { useState } from 'react'
-import { Drawer, Layout, Modal, Navbar, Popover, Resizable, ScrollArea, Sheet, Sidebar, Tooltip } from 'mad-ui-components'
+import { 
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerClose,
+  Layout, 
+  Modal, 
+  Navbar, 
+  Popover, 
+  Resizable, 
+  ScrollArea, 
+  Sheet, 
+  Sidebar, 
+  Tooltip 
+} from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -13,15 +31,154 @@ export const layoutExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Basic Drawer',
       description: 'A simple drawer component',
-      code: `import { Drawer } from 'mad-ui-components'
+      code: `import { 
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerDescription
+} from 'mad-ui-components'
 
 export function DrawerExample() {
   const [open, setOpen] = useState(false)
-  return <Drawer open={open} onOpenChange={setOpen}>Drawer content</Drawer>
+  
+  return (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <Button variant="outline">Open Drawer</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Drawer Title</DrawerTitle>
+          <DrawerDescription>This is a drawer description.</DrawerDescription>
+        </DrawerHeader>
+        <div className="p-4">
+          <p>Drawer content goes here.</p>
+        </div>
+      </DrawerContent>
+    </Drawer>
+  )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Drawer open={false} onOpenChange={() => {}}>Drawer content</Drawer>
+          <Drawer open={false} onOpenChange={() => {}}>
+            <DrawerTrigger asChild>
+              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Open Drawer</button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>Drawer Title</DrawerTitle>
+                <DrawerDescription>This is a drawer description.</DrawerDescription>
+              </DrawerHeader>
+              <div className="p-4">
+                <p>Drawer content goes here.</p>
+              </div>
+            </DrawerContent>
+          </Drawer>
+        </div>
+      )
+    },
+    {
+      title: 'Drawer with Footer',
+      description: 'A drawer component with header, content, and footer',
+      code: `import { 
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerClose
+} from 'mad-ui-components'
+
+export function DrawerWithFooter() {
+  const [open, setOpen] = useState(false)
+  
+  return (
+    <Drawer open={open} onOpenChange={setOpen}>
+      <DrawerTrigger asChild>
+        <Button variant="outline">Open Drawer</Button>
+      </DrawerTrigger>
+      <DrawerContent>
+        <DrawerHeader>
+          <DrawerTitle>Edit Profile</DrawerTitle>
+          <DrawerDescription>
+            Make changes to your profile here. Click save when you&apos;re done.
+          </DrawerDescription>
+        </DrawerHeader>
+        <div className="p-4">
+          <div className="space-y-4">
+            <div>
+              <label className="text-sm font-medium">Name</label>
+              <input 
+                type="text" 
+                placeholder="Enter your name"
+                className="w-full px-3 py-2 border rounded-md"
+              />
+            </div>
+            <div>
+              <label className="text-sm font-medium">Email</label>
+              <input 
+                type="email" 
+                placeholder="Enter your email"
+                className="w-full px-3 py-2 border rounded-md"
+              />
+            </div>
+          </div>
+        </div>
+        <DrawerFooter>
+          <Button>Save changes</Button>
+          <DrawerClose asChild>
+            <Button variant="outline">Cancel</Button>
+          </DrawerClose>
+        </DrawerFooter>
+      </DrawerContent>
+    </Drawer>
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm">
+          <Drawer open={false} onOpenChange={() => {}}>
+            <DrawerTrigger asChild>
+              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Open Drawer</button>
+            </DrawerTrigger>
+            <DrawerContent>
+              <DrawerHeader>
+                <DrawerTitle>Edit Profile</DrawerTitle>
+                <DrawerDescription>
+                  Make changes to your profile here. Click save when you&apos;re done.
+                </DrawerDescription>
+              </DrawerHeader>
+              <div className="p-4">
+                <div className="space-y-4">
+                  <div>
+                    <label className="text-sm font-medium">Name</label>
+                    <input 
+                      type="text" 
+                      placeholder="Enter your name"
+                      className="w-full px-3 py-2 border rounded-md"
+                    />
+                  </div>
+                  <div>
+                    <label className="text-sm font-medium">Email</label>
+                    <input 
+                      type="email" 
+                      placeholder="Enter your email"
+                      className="w-full px-3 py-2 border rounded-md"
+                    />
+                  </div>
+                </div>
+              </div>
+              <DrawerFooter>
+                <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Save changes</button>
+                <DrawerClose asChild>
+                  <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md">Cancel</button>
+                </DrawerClose>
+              </DrawerFooter>
+            </DrawerContent>
+          </Drawer>
         </div>
       )
     }

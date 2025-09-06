@@ -41,7 +41,23 @@ export { AlertDialog } from './components/overlay/alert-dialog'
 export { HoverCard } from './components/overlay/hover-card'
 export { Collapsible } from './components/overlay/collapsible'
 export { ContextMenu } from './components/overlay/context-menu'
-export { DropdownMenu } from './components/overlay/dropdown-menu'
+export { 
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuCheckboxItem,
+  DropdownMenuRadioItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuShortcut,
+  DropdownMenuGroup,
+  DropdownMenuPortal,
+  DropdownMenuSub,
+  DropdownMenuSubContent,
+  DropdownMenuSubTrigger,
+  DropdownMenuRadioGroup
+} from './components/overlay/dropdown-menu'
 export { Toggle } from './components/overlay/toggle'
 export { Separator } from './components/overlay/separator'
 
@@ -53,7 +69,16 @@ export { Modal } from './components/layout/modal'
 export { Popover } from './components/layout/popover'
 export { Tooltip } from './components/layout/tooltip'
 export { Sheet } from './components/layout/sheet'
-export { Drawer } from './components/layout/drawer'
+export { 
+  Drawer,
+  DrawerTrigger,
+  DrawerContent,
+  DrawerHeader,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerDescription,
+  DrawerClose
+} from './components/layout/drawer'
 export { Resizable } from './components/layout/resizable'
 export { ScrollArea } from './components/layout/scroll-area'
 
@@ -133,7 +158,23 @@ export type { AlertDialogProps } from './components/overlay/alert-dialog'
 export type { HoverCardProps } from './components/overlay/hover-card'
 export type { CollapsibleProps } from './components/overlay/collapsible'
 export type { ContextMenuProps } from './components/overlay/context-menu'
-export type { DropdownMenuProps } from './components/overlay/dropdown-menu'
+export type { 
+  DropdownMenuProps,
+  DropdownMenuTriggerProps,
+  DropdownMenuContentProps,
+  DropdownMenuItemProps,
+  DropdownMenuCheckboxItemProps,
+  DropdownMenuRadioItemProps,
+  DropdownMenuLabelProps,
+  DropdownMenuSeparatorProps,
+  DropdownMenuShortcutProps,
+  DropdownMenuGroupProps,
+  DropdownMenuPortalProps,
+  DropdownMenuSubProps,
+  DropdownMenuSubContentProps,
+  DropdownMenuSubTriggerProps,
+  DropdownMenuRadioGroupProps
+} from './components/overlay/dropdown-menu'
 export type { ToggleProps } from './components/overlay/toggle'
 export type { SeparatorProps } from './components/overlay/separator'
 
@@ -144,7 +185,16 @@ export type { ModalProps } from './components/layout/modal'
 export type { PopoverProps } from './components/layout/popover'
 export type { TooltipProps } from './components/layout/tooltip'
 export type { SheetProps } from './components/layout/sheet'
-export type { DrawerProps } from './components/layout/drawer'
+export type { 
+  DrawerProps,
+  DrawerTriggerProps,
+  DrawerContentProps,
+  DrawerHeaderProps,
+  DrawerFooterProps,
+  DrawerTitleProps,
+  DrawerDescriptionProps,
+  DrawerCloseProps
+} from './components/layout/drawer'
 export type { ResizableProps } from './components/layout/resizable'
 export type { ScrollAreaProps } from './components/layout/scroll-area'
 

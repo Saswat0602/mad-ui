@@ -1,5 +1,21 @@
 import React, { useState } from 'react'
-import { AlertDialog, Collapsible, ContextMenu, Dialog, DropdownMenu, HoverCard, Separator, Toggle } from 'mad-ui-components'
+import { 
+  AlertDialog, 
+  Collapsible, 
+  ContextMenu, 
+  Dialog, 
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuGroup,
+  DropdownMenuCheckboxItem,
+  HoverCard, 
+  Separator, 
+  Toggle 
+} from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -125,19 +141,130 @@ export function DialogExample() {
     {
       title: 'Basic Dropdown Menu',
       description: 'A simple dropdown menu component',
-      code: `import { DropdownMenu } from 'mad-ui-components'
+      code: `import { 
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuGroup
+} from 'mad-ui-components'
 
 export function DropdownMenuExample() {
   return (
     <DropdownMenu>
-      <button>Menu</button>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Open</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56" align="start">
+        <DropdownMenuLabel>My Account</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuGroup>
+          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <DropdownMenuItem>Settings</DropdownMenuItem>
+          <DropdownMenuItem>Logout</DropdownMenuItem>
+        </DropdownMenuGroup>
+      </DropdownMenuContent>
     </DropdownMenu>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
           <DropdownMenu>
-            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Menu</button>
+            <DropdownMenuTrigger asChild>
+              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Open</button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56" align="start">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem>Profile</DropdownMenuItem>
+                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <DropdownMenuItem>Logout</DropdownMenuItem>
+              </DropdownMenuGroup>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+      )
+    },
+    {
+      title: 'Dropdown Menu with Checkboxes',
+      description: 'A dropdown menu with checkbox items',
+      code: `import { 
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuCheckboxItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator
+} from 'mad-ui-components'
+
+export function DropdownMenuCheckboxes() {
+  const [showStatusBar, setShowStatusBar] = useState(true)
+  const [showActivityBar, setShowActivityBar] = useState(false)
+  const [showPanel, setShowPanel] = useState(false)
+
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">Open</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuCheckboxItem
+          checked={showStatusBar}
+          onCheckedChange={setShowStatusBar}
+        >
+          Status Bar
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={showActivityBar}
+          onCheckedChange={setShowActivityBar}
+          disabled
+        >
+          Activity Bar
+        </DropdownMenuCheckboxItem>
+        <DropdownMenuCheckboxItem
+          checked={showPanel}
+          onCheckedChange={setShowPanel}
+        >
+          Panel
+        </DropdownMenuCheckboxItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Open</button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-56">
+              <DropdownMenuLabel>Appearance</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuCheckboxItem
+                checked={true}
+                onCheckedChange={() => {}}
+              >
+                Status Bar
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={false}
+                onCheckedChange={() => {}}
+                disabled
+              >
+                Activity Bar
+              </DropdownMenuCheckboxItem>
+              <DropdownMenuCheckboxItem
+                checked={false}
+                onCheckedChange={() => {}}
+              >
+                Panel
+              </DropdownMenuCheckboxItem>
+            </DropdownMenuContent>
           </DropdownMenu>
         </div>
       )

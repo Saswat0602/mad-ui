@@ -42,6 +42,12 @@ export interface DrawerDescriptionProps {
   className?: string
 }
 
+export interface DrawerCloseProps {
+  children: React.ReactNode
+  asChild?: boolean
+  className?: string
+}
+
 export const Drawer: React.FC<DrawerProps> = ({
   open,
   onOpenChange,
@@ -173,5 +179,23 @@ export const DrawerDescription: React.FC<DrawerDescriptionProps> = ({
     <p className={cn('text-sm text-muted-foreground', className)}>
       {children}
     </p>
+  )
+}
+
+export const DrawerClose: React.FC<DrawerCloseProps> = ({
+  children,
+  asChild = false,
+  className
+}) => {
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      className: cn(children.props.className, className)
+    })
+  }
+  
+  return (
+    <div className={cn('inline-block', className)}>
+      {children}
+    </div>
   )
 }
