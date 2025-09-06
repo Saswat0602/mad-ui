@@ -28,41 +28,48 @@ export function ComponentPreview({
   }
 
   return (
-    <div className="border rounded-lg overflow-hidden">
+    <div className="border border-border rounded-lg overflow-hidden bg-card shadow-sm hover:shadow-md transition-shadow duration-200">
       {title && (
-        <div className="border-b px-4 py-2">
-          <h3 className="font-semibold">{title}</h3>
+        <div className="border-b border-border px-6 py-4 bg-muted/30">
+          <h4 className="font-semibold text-lg">{title}</h4>
           {description && (
-            <p className="text-sm text-muted-foreground">{description}</p>
+            <p className="text-sm text-muted-foreground mt-1">{description}</p>
           )}
         </div>
       )}
       
       <div className="relative">
-        <div className="absolute top-2 right-2 z-10 flex gap-2">
+        <div className="absolute top-4 right-4 z-10 flex gap-2">
           <Button
             variant="outline"
             size="sm"
             onClick={() => setShowCode(!showCode)}
+            className="h-8 px-3 text-xs hover:bg-accent hover:text-accent-foreground transition-colors"
           >
-            {showCode ? <Eye className="w-4 h-4" /> : <Code className="w-4 h-4" />}
+            {showCode ? <Eye className="w-3 h-3" /> : <Code className="w-3 h-3" />}
+            {showCode ? 'Preview' : 'Code'}
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={handleCopy}
+            className="h-8 px-3 text-xs hover:bg-accent hover:text-accent-foreground transition-colors"
           >
-            <Copy className="w-4 h-4" />
+            <Copy className="w-3 h-3 mr-1" />
             {copied ? 'Copied!' : 'Copy'}
           </Button>
         </div>
         
         {!showCode ? (
-          <div className="p-6 bg-card">
-            {children}
+          <div className="p-8 bg-background min-h-[200px] flex items-center justify-center">
+            <div className="w-full">
+              {children}
+            </div>
           </div>
         ) : (
-          <CodeBlock language="tsx" code={code} />
+          <div className="bg-muted/50">
+            <CodeBlock language="tsx" code={code} />
+          </div>
         )}
       </div>
     </div>

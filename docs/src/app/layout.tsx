@@ -1,9 +1,10 @@
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
-import { ThemeProvider } from "@/components/theme-provider"
+import { ThemeProvider } from "@/components/ThemeProvider"
 import { Header } from "@/components/header"
 import { Sparkles } from "lucide-react"
+import Link from "next/link"
 
 const inter = Inter({ 
   subsets: ["latin"],
@@ -119,7 +120,7 @@ export default function RootLayout({
                     <h3 className="font-semibold text-lg mb-6 text-foreground">Documentation</h3>
                     <ul className="space-y-3">
                       <li><a href="/docs/getting-started" className="text-muted-foreground hover:text-primary transition-colors duration-200">Getting Started</a></li>
-                      <li><a href="/docs/components" className="text-muted-foreground hover:text-primary transition-colors duration-200">Components</a></li>
+                      <li><Link href="/docs/components" className="text-muted-foreground hover:text-primary transition-colors duration-200">Components</Link></li>
                       <li><a href="/docs/examples" className="text-muted-foreground hover:text-primary transition-colors duration-200">Examples</a></li>
                       <li><a href="/docs/installation" className="text-muted-foreground hover:text-primary transition-colors duration-200">Installation</a></li>
                     </ul>

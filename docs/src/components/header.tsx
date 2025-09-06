@@ -2,12 +2,30 @@
 
 import Link from "next/link"
 import { MainNav } from "./main-nav"
-import { ThemeToggle } from "./theme-toggle"
-import { Github, Sparkles, Menu, X, BookOpen } from "lucide-react"
-import { useState } from "react"
+import { ThemeToggle } from "./ThemeToggle"
+import { Github, Sparkles, Menu, X, BookOpen, Search } from "lucide-react"
+import { useState, useEffect } from "react"
+import { ComponentSearch } from "./ComponentSearch"
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [isSearchOpen, setIsSearchOpen] = useState(false)
+
+  // Keyboard shortcut for search (Cmd/Ctrl + K)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+        event.preventDefault()
+        setIsSearchOpen(true)
+      }
+      if (event.key === 'Escape') {
+        setIsSearchOpen(false)
+      }
+    }
+
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [])
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 w-full bg-background/95 backdrop-blur-xl border-b border-border/20 shadow-lg shadow-black/5">
@@ -33,6 +51,17 @@ export function Header() {
 
           {/* Right Side Actions */}
           <div className="hidden lg:flex items-center space-x-3">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-muted/50 hover:bg-muted/80 transition-all duration-200 text-sm font-medium border border-border/50 hover:border-border/80"
+            >
+              <Search className="h-4 w-4" />
+              <span>Search</span>
+              <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
+                <span className="text-xs">⌘</span>K
+              </kbd>
+            </button>
+            
             <Link 
               href="/docs"
               className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-muted/50 hover:bg-muted/80 transition-all duration-200 text-sm font-medium border border-border/50 hover:border-border/80"
@@ -95,6 +124,11 @@ export function Header() {
           </div>
         )}
       </div>
+      
+      {/* Search Modal */}
+      {isSearchOpen && (
+        <ComponentSearch onClose={() => setIsSearchOpen(false)} />
+      )}
     </header>
   )
 }

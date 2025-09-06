@@ -10,60 +10,151 @@ export interface ComponentExample {
 export const COMPONENT_EXAMPLES: Record<string, ComponentExample[]> = {
   button: [
     {
-      title: 'Basic Button',
-      description: 'A simple button with default styling',
+      title: 'Default',
+      description: 'The default button variant.',
       code: `import { Button } from 'mad-ui-components'
 
-export function ButtonExample() {
-  return <Button>Click me</Button>
-}`,
-      preview: <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Click me</button>
-    },
-    {
-      title: 'Button Variants',
-      description: 'Different button variants for various use cases',
-      code: `import { Button } from 'mad-ui-components'
-
-export function ButtonVariants() {
-  return (
-    <div className="flex gap-4">
-      <Button variant="default">Default</Button>
-      <Button variant="primary">Primary</Button>
-      <Button variant="destructive">Destructive</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
-    </div>
-  )
+export function ButtonDemo() {
+  return <Button>Button</Button>
 }`,
       preview: (
-        <div className="flex gap-4">
-          <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Default</button>
-          <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Primary</button>
-          <button className="px-4 py-2 bg-destructive text-destructive-foreground rounded-md hover:bg-destructive/90 transition-colors">Destructive</button>
-          <button className="px-4 py-2 border border-input rounded-md hover:bg-accent transition-colors">Outline</button>
-          <button className="px-4 py-2 hover:bg-accent rounded-md transition-colors">Ghost</button>
+        <div className="flex items-center space-x-2">
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+            Button
+          </button>
         </div>
       )
     },
     {
-      title: 'Button Sizes',
-      description: 'Different button sizes for various use cases',
+      title: 'Destructive',
+      description: 'Destructive variant for dangerous actions.',
       code: `import { Button } from 'mad-ui-components'
 
-export function ButtonSizes() {
+export function ButtonDestructive() {
+  return <Button variant="destructive">Destructive</Button>
+}`,
+      preview: (
+        <div className="flex items-center space-x-2">
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2">
+            Destructive
+          </button>
+        </div>
+      )
+    },
+    {
+      title: 'Outline',
+      description: 'Outline variant for secondary actions.',
+      code: `import { Button } from 'mad-ui-components'
+
+export function ButtonOutline() {
+  return <Button variant="outline">Outline</Button>
+}`,
+      preview: (
+        <div className="flex items-center space-x-2">
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+            Outline
+          </button>
+        </div>
+      )
+    },
+    {
+      title: 'Secondary',
+      description: 'Secondary variant for less prominent actions.',
+      code: `import { Button } from 'mad-ui-components'
+
+export function ButtonSecondary() {
+  return <Button variant="secondary">Secondary</Button>
+}`,
+      preview: (
+        <div className="flex items-center space-x-2">
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2">
+            Secondary
+          </button>
+        </div>
+      )
+    },
+    {
+      title: 'Ghost',
+      description: 'Ghost variant for subtle actions.',
+      code: `import { Button } from 'mad-ui-components'
+
+export function ButtonGhost() {
+  return <Button variant="ghost">Ghost</Button>
+}`,
+      preview: (
+        <div className="flex items-center space-x-2">
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
+            Ghost
+          </button>
+        </div>
+      )
+    },
+    {
+      title: 'Link',
+      description: 'Link variant for navigation actions.',
+      code: `import { Button } from 'mad-ui-components'
+
+export function ButtonLink() {
+  return <Button variant="link">Link</Button>
+}`,
+      preview: (
+        <div className="flex items-center space-x-2">
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary underline-offset-4 hover:underline h-10 px-4 py-2">
+            Link
+          </button>
+        </div>
+      )
+    },
+    {
+      title: 'With Icon',
+      description: 'Button with an icon.',
+      code: `import { Button } from 'mad-ui-components'
+import { Download } from 'lucide-react'
+
+export function ButtonWithIcon() {
   return (
-    <div className="flex items-center gap-4">
-      <Button size="sm">Small</Button>
-      <Button size="default">Default</Button>
-      <Button size="lg">Large</Button>
-    </div>
+    <Button>
+      <Download className="mr-2 h-4 w-4" />
+      Download
+    </Button>
   )
 }`,
       preview: (
-        <div className="flex items-center gap-4">
-          <button className="px-3 py-1.5 text-sm bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Small</button>
-          <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Default</button>
-          <button className="px-6 py-3 text-lg bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Large</button>
+        <div className="flex items-center space-x-2">
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+            <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Download
+          </button>
+        </div>
+      )
+    },
+    {
+      title: 'Loading',
+      description: 'Button in a loading state.',
+      code: `import { Button } from 'mad-ui-components'
+
+export function ButtonLoading() {
+  return (
+    <Button disabled>
+      <svg className="mr-2 h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+        <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Please wait
+    </Button>
+  )
+}`,
+      preview: (
+        <div className="flex items-center space-x-2">
+          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" disabled>
+            <svg className="mr-2 h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+              <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            Please wait
+          </button>
         </div>
       )
     }
@@ -71,36 +162,104 @@ export function ButtonSizes() {
 
   input: [
     {
-      title: 'Basic Input',
-      description: 'A simple text input field',
+      title: 'Default',
+      description: 'The default input variant.',
       code: `import { Input } from 'mad-ui-components'
 
-export function InputExample() {
+export function InputDemo() {
   return <Input placeholder="Enter text..." />
 }`,
-      preview: <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground" placeholder="Enter text..." />
+      preview: (
+        <div className="w-full max-w-sm">
+          <input 
+            className="h-11 w-full rounded-lg border-2 border-slate-300 bg-white px-4 text-sm transition-all duration-200 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20" 
+            placeholder="Enter text..." 
+          />
+        </div>
+      )
     },
     {
-      title: 'Input Types',
-      description: 'Different input types for various use cases',
+      title: 'With Label',
+      description: 'Input with a label and helper text.',
       code: `import { Input } from 'mad-ui-components'
 
-export function InputTypes() {
+export function InputWithLabel() {
   return (
-    <div className="space-y-4">
-      <Input type="text" placeholder="Text input" />
-      <Input type="email" placeholder="Email input" />
-      <Input type="password" placeholder="Password input" />
-      <Input type="number" placeholder="Number input" />
-    </div>
+    <Input 
+      label="Email" 
+      type="email" 
+      placeholder="Enter your email" 
+      helperText="We'll never share your email." 
+    />
   )
 }`,
       preview: (
-        <div className="space-y-4">
-          <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground" type="text" placeholder="Text input" />
-          <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground" type="email" placeholder="Email input" />
-          <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground" type="password" placeholder="Password input" />
-          <input className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm placeholder:text-muted-foreground" type="number" placeholder="Number input" />
+        <div className="w-full max-w-sm space-y-2">
+          <label className="text-sm font-medium leading-none">Email</label>
+          <input 
+            className="h-11 w-full rounded-lg border-2 border-slate-300 bg-white px-4 text-sm transition-all duration-200 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20" 
+            type="email" 
+            placeholder="Enter your email" 
+          />
+          <p className="text-xs leading-relaxed text-slate-500">We&apos;ll never share your email.</p>
+        </div>
+      )
+    },
+    {
+      title: 'Error State',
+      description: 'Input in an error state.',
+      code: `import { Input } from 'mad-ui-components'
+
+export function InputError() {
+  return (
+    <Input 
+      label="Password" 
+      type="password" 
+      error="Password must be at least 8 characters" 
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm space-y-2">
+          <label className="text-sm font-medium leading-none">Password</label>
+          <input 
+            className="h-11 w-full rounded-lg border-2 border-red-500 bg-white px-4 text-sm transition-all duration-200 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/20 dark:border-red-400 dark:bg-slate-800 dark:text-red-100 dark:focus:border-red-400 dark:focus:ring-red-400/20" 
+            type="password" 
+          />
+          <p className="text-xs leading-relaxed text-red-500">Password must be at least 8 characters</p>
+        </div>
+      )
+    },
+    {
+      title: 'Success State',
+      description: 'Input in a success state.',
+      code: `import { Input } from 'mad-ui-components'
+
+export function InputSuccess() {
+  return (
+    <Input 
+      label="Username" 
+      variant="success" 
+      value="john_doe" 
+      helperText="Username is available" 
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm space-y-2">
+          <label className="text-sm font-medium leading-none">Username</label>
+          <div className="relative">
+            <input 
+              className="h-11 w-full rounded-lg border-2 border-green-500 bg-white px-4 pr-10 text-sm transition-all duration-200 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-green-400 dark:bg-slate-800 dark:text-green-100 dark:focus:border-green-400 dark:focus:ring-green-400/20" 
+              value="john_doe"
+            />
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+              <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <p className="text-xs leading-relaxed text-slate-500">Username is available</p>
         </div>
       )
     }
@@ -108,11 +267,11 @@ export function InputTypes() {
 
   card: [
     {
-      title: 'Basic Card',
-      description: 'A simple card component',
+      title: 'Default',
+      description: 'The default card variant.',
       code: `import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components'
 
-export function CardExample() {
+export function CardDemo() {
   return (
     <Card>
       <CardHeader>
@@ -125,12 +284,12 @@ export function CardExample() {
   )
 }`,
       preview: (
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+        <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
           <div className="flex flex-col space-y-1.5 p-6">
-            <h3 className="text-2xl font-semibold leading-none tracking-tight">Card Title</h3>
+            <h3 className="font-semibold leading-none tracking-tight">Card Title</h3>
           </div>
           <div className="p-6 pt-0">
-            <p>Card content goes here.</p>
+            <p className="text-slate-600 dark:text-slate-400">Card content goes here.</p>
           </div>
         </div>
       )
@@ -156,15 +315,17 @@ export function CardWithFooter() {
   )
 }`,
       preview: (
-        <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
+        <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
           <div className="flex flex-col space-y-1.5 p-6">
-            <h3 className="text-2xl font-semibold leading-none tracking-tight">Card with Footer</h3>
+            <h3 className="font-semibold leading-none tracking-tight">Card with Footer</h3>
           </div>
           <div className="p-6 pt-0">
-            <p>This card has a footer section.</p>
+            <p className="text-slate-600 dark:text-slate-400">This card has a footer section.</p>
           </div>
           <div className="flex items-center p-6 pt-0">
-            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors">Action</button>
+            <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
+              Action
+            </button>
           </div>
         </div>
       )

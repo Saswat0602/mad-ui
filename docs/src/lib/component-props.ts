@@ -11,17 +11,45 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
   button: [
     {
       name: 'variant',
-      type: "'default' | 'primary' | 'destructive' | 'outline' | 'ghost'",
+      type: "'primary' | 'secondary' | 'outline' | 'ghost' | 'success' | 'warning' | 'error' | 'info'",
       required: false,
-      default: 'default',
+      default: 'primary',
       description: 'The visual style variant of the button'
     },
     {
       name: 'size',
-      type: "'sm' | 'default' | 'lg'",
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
       required: false,
-      default: 'default',
+      default: 'md',
       description: 'The size of the button'
+    },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the button should take full width'
+    },
+    {
+      name: 'loading',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the button is in a loading state'
+    },
+    {
+      name: 'leftIcon',
+      type: 'React.ReactNode',
+      required: false,
+      default: 'undefined',
+      description: 'Icon to display on the left side of the button'
+    },
+    {
+      name: 'rightIcon',
+      type: 'React.ReactNode',
+      required: false,
+      default: 'undefined',
+      description: 'Icon to display on the right side of the button'
     },
     {
       name: 'disabled',
@@ -50,7 +78,72 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       type: 'string',
       required: false,
       default: 'text',
-      description: 'The type of input field'
+      description: 'The type of input (text, email, password, etc.)'
+    },
+    {
+      name: 'label',
+      type: 'string',
+      required: false,
+      description: 'Label text for the input'
+    },
+    {
+      name: 'error',
+      type: 'string',
+      required: false,
+      description: 'Error message to display'
+    },
+    {
+      name: 'helperText',
+      type: 'string',
+      required: false,
+      description: 'Helper text to display below the input'
+    },
+    {
+      name: 'success',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the input is in a success state'
+    },
+    {
+      name: 'leftIcon',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Icon to display on the left side of the input'
+    },
+    {
+      name: 'rightIcon',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Icon to display on the right side of the input'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'error' | 'success'",
+      required: false,
+      default: 'default',
+      description: 'The visual variant of the input'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'The size of the input'
+    },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether the input should take full width'
+    },
+    {
+      name: 'floatingLabel',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to use a floating label'
     },
     {
       name: 'placeholder',

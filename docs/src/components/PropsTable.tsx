@@ -24,55 +24,59 @@ export function PropsTable({ props }: PropsTableProps) {
   }
 
   return (
-    <div className="overflow-x-auto">
-      <table className="w-full text-sm">
-        <thead>
-          <tr className="border-b">
-            <th className="text-left p-2">Prop</th>
-            <th className="text-left p-2">Type</th>
-            <th className="text-left p-2">Default</th>
-            <th className="text-left p-2">Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {props.map((prop) => (
-            <tr key={prop.name} className="border-b">
-              <td className="p-2">
-                <code className="text-xs bg-muted px-1 py-0.5 rounded">
-                  {prop.name}
-                </code>
-                {prop.required && (
-                  <Badge variant="destructive" className="ml-1 text-xs">
-                    required
-                  </Badge>
-                )}
-                {prop.deprecated && (
-                  <Badge variant="outline" className="ml-1 text-xs">
-                    deprecated
-                  </Badge>
-                )}
-              </td>
-              <td className="p-2">
-                <code className="text-xs text-muted-foreground">
-                  {prop.type}
-                </code>
-              </td>
-              <td className="p-2">
-                {prop.default !== undefined ? (
-                  <code className="text-xs bg-muted px-1 py-0.5 rounded">
-                    {String(prop.default)}
-                  </code>
-                ) : (
-                  <span className="text-muted-foreground">-</span>
-                )}
-              </td>
-              <td className="p-2 text-muted-foreground">
-                {prop.description}
-              </td>
+    <div className="border border-border rounded-lg overflow-hidden bg-card">
+      <div className="overflow-x-auto">
+        <table className="w-full text-sm">
+          <thead className="bg-muted/50">
+            <tr className="border-b border-border">
+              <th className="text-left p-4 font-semibold">Prop</th>
+              <th className="text-left p-4 font-semibold">Type</th>
+              <th className="text-left p-4 font-semibold">Default</th>
+              <th className="text-left p-4 font-semibold">Description</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {props.map((prop, index) => (
+              <tr key={prop.name} className={`border-b border-border ${index % 2 === 0 ? 'bg-background' : 'bg-muted/20'}`}>
+                <td className="p-4">
+                  <div className="flex items-center gap-2">
+                    <code className="text-sm bg-muted px-2 py-1 rounded font-mono">
+                      {prop.name}
+                    </code>
+                    {prop.required && (
+                      <Badge variant="destructive" className="text-xs">
+                        required
+                      </Badge>
+                    )}
+                    {prop.deprecated && (
+                      <Badge variant="outline" className="text-xs">
+                        deprecated
+                      </Badge>
+                    )}
+                  </div>
+                </td>
+                <td className="p-4">
+                  <code className="text-sm text-muted-foreground font-mono">
+                    {prop.type}
+                  </code>
+                </td>
+                <td className="p-4">
+                  {prop.default !== undefined ? (
+                    <code className="text-sm bg-muted px-2 py-1 rounded font-mono">
+                      {String(prop.default)}
+                    </code>
+                  ) : (
+                    <span className="text-muted-foreground">-</span>
+                  )}
+                </td>
+                <td className="p-4 text-muted-foreground">
+                  {prop.description}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   )
 }
