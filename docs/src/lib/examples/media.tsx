@@ -206,7 +206,7 @@ export function TypographySpecial() {
           <TypographyBlockquote>
             This is a blockquote with some important information.
           </TypographyBlockquote>
-          <TypographyCode>const example = "Hello World";</TypographyCode>
+          <TypographyCode>const example = &quot;Hello World&quot;;</TypographyCode>
         </div>
       )
     }

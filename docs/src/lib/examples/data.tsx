@@ -17,9 +17,9 @@ export const dataExamples: Record<string, ComponentExample[]> = {
 
 export function TableExample() {
   const columns = [
-    { key: 'name', label: 'Name' },
-    { key: 'age', label: 'Age' },
-    { key: 'email', label: 'Email' }
+    { key: 'name', header: 'Name' },
+    { key: 'age', header: 'Age' },
+    { key: 'email', header: 'Email' }
   ]
 
   const data = [
@@ -34,9 +34,9 @@ export function TableExample() {
         <div className="w-full max-w-md">
           <Table 
             columns={[
-              { key: 'name', label: 'Name' },
-              { key: 'age', label: 'Age' },
-              { key: 'email', label: 'Email' }
+              { key: 'name', header: 'Name' },
+              { key: 'age', header: 'Age' },
+              { key: 'email', header: 'Email' }
             ]} 
             data={[
               { name: 'John Doe', age: 30, email: 'john@example.com' },
@@ -57,9 +57,9 @@ export function TableExample() {
 
 export function DataTableExample() {
   const columns = [
-    { key: 'id', label: 'ID' },
-    { key: 'name', label: 'Name' },
-    { key: 'status', label: 'Status' }
+    { key: 'id', header: 'ID' },
+    { key: 'name', header: 'Name' },
+    { key: 'status', header: 'Status' }
   ]
 
   const data = [
@@ -74,9 +74,9 @@ export function DataTableExample() {
         <div className="w-full max-w-md">
           <DataTable 
             columns={[
-              { key: 'id', label: 'ID' },
-              { key: 'name', label: 'Name' },
-              { key: 'status', label: 'Status' }
+              { key: 'id', header: 'ID' },
+              { key: 'name', header: 'Name' },
+              { key: 'status', header: 'Status' }
             ]} 
             data={[
               { id: 1, name: 'Project A', status: 'Active' },

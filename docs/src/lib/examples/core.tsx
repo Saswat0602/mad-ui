@@ -625,7 +625,7 @@ export function RatingWithLabel() {
       preview: (
         <div className="space-y-2">
           <label className="text-sm font-medium">Rate this product</label>
-          <Rating defaultValue={4} max={5} />
+          <Rating value={4} max={5} />
         </div>
       )
     }

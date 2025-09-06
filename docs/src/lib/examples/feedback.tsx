@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Alert, Sonner, Toast } from 'mad-ui-components'
 
 export interface ComponentExample {
@@ -41,13 +41,13 @@ export function AlertVariants() {
       <Alert variant="default">
         <p>Default alert message.</p>
       </Alert>
-      <Alert variant="destructive">
-        <p>Destructive alert message.</p>
+      <Alert type="error">
+        <p>Error alert message.</p>
       </Alert>
-      <Alert variant="success">
+      <Alert type="success">
         <p>Success alert message.</p>
       </Alert>
-      <Alert variant="warning">
+      <Alert type="warning">
         <p>Warning alert message.</p>
       </Alert>
     </div>
@@ -58,13 +58,13 @@ export function AlertVariants() {
           <Alert variant="default">
             <p>Default alert message.</p>
           </Alert>
-          <Alert variant="destructive">
-            <p>Destructive alert message.</p>
+          <Alert type="error">
+            <p>Error alert message.</p>
           </Alert>
-          <Alert variant="success">
+          <Alert type="success">
             <p>Success alert message.</p>
           </Alert>
-          <Alert variant="warning">
+          <Alert type="warning">
             <p>Warning alert message.</p>
           </Alert>
         </div>
@@ -79,24 +79,38 @@ export function AlertVariants() {
       code: `import { Sonner } from 'mad-ui-components'
 
 export function SonnerExample() {
+  const [toasts, setToasts] = useState([])
+  
+  const showToast = (message: string, type: 'success' | 'error' | 'warning' | 'info' = 'success') => {
+    const newToast = {
+      id: Date.now().toString(),
+      title: message,
+      type
+    }
+    setToasts(prev => [...prev, newToast])
+  }
+
+  const dismissToast = (id: string) => {
+    setToasts(prev => prev.filter(toast => toast.id !== id))
+  }
+
   return (
-    <Sonner>
-      <button onClick={() => Sonner.success('Success message!')}>
+    <div>
+      <button onClick={() => showToast('Success message!', 'success')}>
         Show Success
       </button>
-    </Sonner>
+      <Sonner toasts={toasts} onDismiss={dismissToast} />
+    </div>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Sonner>
-            <button 
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-md"
-              onClick={() => Sonner.success('Success message!')}
-            >
-              Show Success
-            </button>
-          </Sonner>
+          <button 
+            className="px-4 py-2 bg-primary text-primary-foreground rounded-md"
+            onClick={() => console.log('Show Success')}
+          >
+            Show Success
+          </button>
         </div>
       )
     }
@@ -110,23 +124,12 @@ export function SonnerExample() {
 
 export function ToastExample() {
   return (
-    <Toast>
-      <button onClick={() => Toast.success('Success!')}>
-        Show Toast
-      </button>
-    </Toast>
+    <Toast message="This is a toast message" type="success" />
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Toast>
-            <button 
-              className="px-4 py-2 bg-primary text-primary-foreground rounded-md"
-              onClick={() => Toast.success('Success!')}
-            >
-              Show Toast
-            </button>
-          </Toast>
+          <Toast message="This is a toast message" type="success" />
         </div>
       )
     }

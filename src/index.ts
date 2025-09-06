@@ -17,7 +17,7 @@ export { Skeleton } from './components/core/skeleton'
 export { Textarea } from './components/core/textarea'
 
 // Form Components
-export { RadioGroup } from './components/forms/radio-group'
+export { RadioGroup, RadioGroupItem } from './components/forms/radio-group'
 export { Accordion } from './components/forms/accordion'
 export { Calendar } from './components/forms/calendar'
 export { DatePicker } from './components/forms/date-picker'
@@ -110,7 +110,7 @@ export type { RatingProps } from './components/core/rating'
 export type { SkeletonProps } from './components/core/skeleton'
 export type { TextareaProps } from './components/core/textarea'
 
-export type { RadioGroupProps } from './components/forms/radio-group'
+export type { RadioGroupProps, RadioGroupItemProps } from './components/forms/radio-group'
 export type { AccordionProps, AccordionItem } from './components/forms/accordion'
 export type { CalendarProps } from './components/forms/calendar'
 export type { DatePickerProps } from './components/forms/date-picker'

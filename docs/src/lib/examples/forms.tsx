@@ -1,5 +1,5 @@
-import React from 'react'
-import { Accordion, Breadcrumbs, Calendar, DatePicker, TimePicker, InputOTP, RadioGroup, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormDescription, FormMessage } from 'mad-ui-components'
+import React, { useState } from 'react'
+import { Accordion, Breadcrumbs, Calendar, DatePicker, TimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -192,11 +192,12 @@ export function TimePickerExample() {
       code: `import { InputOTP } from 'mad-ui-components'
 
 export function InputOTPExample() {
-  return <InputOTP length={6} />
+  const [value, setValue] = useState('')
+  return <InputOTP value={value} onChange={setValue} length={6} />
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <InputOTP length={6} />
+          <InputOTP value="" onChange={() => {}} length={6} />
         </div>
       )
     }
@@ -209,23 +210,21 @@ export function InputOTPExample() {
       code: `import { RadioGroup } from 'mad-ui-components'
 
 export function RadioGroupExample() {
-  const options = [
-    { value: 'option1', label: 'Option 1' },
-    { value: 'option2', label: 'Option 2' },
-    { value: 'option3', label: 'Option 3' }
-  ]
-
-  return <RadioGroup options={options} />
+  return (
+    <RadioGroup>
+      <RadioGroupItem value="option1">Option 1</RadioGroupItem>
+      <RadioGroupItem value="option2">Option 2</RadioGroupItem>
+      <RadioGroupItem value="option3">Option 3</RadioGroupItem>
+    </RadioGroup>
+  )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <RadioGroup 
-            options={[
-              { value: 'option1', label: 'Option 1' },
-              { value: 'option2', label: 'Option 2' },
-              { value: 'option3', label: 'Option 3' }
-            ]} 
-          />
+          <RadioGroup>
+            <RadioGroupItem value="option1">Option 1</RadioGroupItem>
+            <RadioGroupItem value="option2">Option 2</RadioGroupItem>
+            <RadioGroupItem value="option3">Option 3</RadioGroupItem>
+          </RadioGroup>
         </div>
       )
     }
