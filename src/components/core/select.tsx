@@ -115,7 +115,7 @@ const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           
           <select
             className={cn(
-              "w-full rounded-lg border-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-200",
+              "w-full rounded-lg border-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-sm transform hover:scale-[1.01] active:scale-[0.99]",
               sizeClasses[size],
               shadowClasses[shadow],
               leftIcon && "pl-10",

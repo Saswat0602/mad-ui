@@ -49,7 +49,7 @@ const Card = React.forwardRef<HTMLDivElement, CardProps>(
           baseClasses,
           variantClasses[variant],
           elevationClasses[elevation],
-          interactive && "cursor-pointer hover-lift", // Custom Material Design lift effect
+          interactive && "cursor-pointer hover:scale-[1.02] hover:-translate-y-1 transition-all duration-300", // Enhanced hover effects
           className
         )}
         {...props}

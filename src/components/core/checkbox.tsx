@@ -48,7 +48,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
     }
     
     // Base classes with Material Design improvements and proper visibility
-    const baseClasses = "rounded border-2 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer bg-white dark:bg-slate-800"
+    const baseClasses = "rounded border-2 shadow-sm transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 cursor-pointer bg-white dark:bg-slate-800 hover:scale-105 active:scale-95 transform"
     
     // Enhanced variant classes with Material Design states and proper visibility
     const variantClasses = {

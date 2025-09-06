@@ -48,7 +48,7 @@ const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
     // Animation classes
     const animationClasses = {
       pulse: "animate-pulse",
-      wave: "animate-pulse",
+      wave: "animate-pulse bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 dark:from-slate-600 dark:via-slate-500 dark:to-slate-600 bg-[length:200%_100%] animate-[shimmer_2s_infinite]",
       none: ""
     }
     

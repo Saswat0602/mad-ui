@@ -143,9 +143,10 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         >
           <div
             className={cn(
-              "h-full transition-all duration-300 ease-out",
+              "h-full transition-all duration-500 ease-out transform",
               striped && "bg-gradient-to-r from-transparent via-white/20 to-transparent bg-[length:20px_100%]",
-              animated && striped && "animate-pulse"
+              animated && striped && "animate-pulse",
+              "hover:scale-y-110 origin-bottom"
             )}
             style={progressStyles}
           />

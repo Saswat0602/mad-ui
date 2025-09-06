@@ -113,9 +113,9 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           >
             <div
               className={cn(
-                "absolute left-0.5 bg-white dark:bg-slate-200 rounded-full transition-transform duration-200 ease-in-out shadow-sm",
+                "absolute left-0.5 bg-white dark:bg-slate-200 rounded-full transition-all duration-300 ease-in-out shadow-sm hover:shadow-md transform hover:scale-110 active:scale-95",
                 thumbSizeClasses[size],
-                "peer-checked:translate-x-full"
+                "peer-checked:translate-x-full peer-checked:shadow-lg"
               )}
             />
           </div>
