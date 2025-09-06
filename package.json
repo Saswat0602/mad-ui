@@ -1,6 +1,6 @@
 {
   "name": "mad-ui-components",
-  "version": "2.9.4",
+  "version": "2.9.5",
   "description": "A comprehensive UI component library built with React and Tailwind CSS",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
