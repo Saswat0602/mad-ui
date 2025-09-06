@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { AlertDialog, Collapsible, ContextMenu, Dialog, DropdownMenu, HoverCard, Separator, Toggle } from 'mad-ui-components'
 
 export interface ComponentExample {
@@ -16,9 +16,10 @@ export const overlayExamples: Record<string, ComponentExample[]> = {
       code: `import { AlertDialog } from 'mad-ui-components'
 
 export function AlertDialogExample() {
+  const [open, setOpen] = useState(false)
   return (
-    <AlertDialog>
-      <button>Open Alert</button>
+    <AlertDialog open={open} onOpenChange={setOpen}>
+      <button onClick={() => setOpen(true)}>Open Alert</button>
       <div className="p-4">
         <h3>Alert Dialog</h3>
         <p>This is an alert dialog content.</p>
@@ -28,7 +29,7 @@ export function AlertDialogExample() {
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <AlertDialog>
+          <AlertDialog open={false} onOpenChange={() => {}}>
             <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Open Alert</button>
             <div className="p-4">
               <h3>Alert Dialog</h3>
@@ -72,27 +73,15 @@ export function CollapsibleExample() {
       code: `import { ContextMenu } from 'mad-ui-components'
 
 export function ContextMenuExample() {
-  const items = [
-    { label: 'Copy', action: () => console.log('Copy') },
-    { label: 'Paste', action: () => console.log('Paste') },
-    { label: 'Delete', action: () => console.log('Delete') }
-  ]
-
   return (
-    <ContextMenu items={items}>
+    <ContextMenu>
       <div className="p-4 border rounded-md">Right click me</div>
     </ContextMenu>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <ContextMenu 
-            items={[
-              { label: 'Copy', action: () => console.log('Copy') },
-              { label: 'Paste', action: () => console.log('Paste') },
-              { label: 'Delete', action: () => console.log('Delete') }
-            ]}
-          >
+          <ContextMenu>
             <div className="p-4 border rounded-md">Right click me</div>
           </ContextMenu>
         </div>
@@ -107,9 +96,10 @@ export function ContextMenuExample() {
       code: `import { Dialog } from 'mad-ui-components'
 
 export function DialogExample() {
+  const [open, setOpen] = useState(false)
   return (
-    <Dialog>
-      <button>Open Dialog</button>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <button onClick={() => setOpen(true)}>Open Dialog</button>
       <div className="p-4">
         <h3>Dialog Title</h3>
         <p>This is dialog content.</p>
@@ -119,7 +109,7 @@ export function DialogExample() {
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Dialog>
+          <Dialog open={false} onOpenChange={() => {}}>
             <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Open Dialog</button>
             <div className="p-4">
               <h3>Dialog Title</h3>
@@ -138,27 +128,15 @@ export function DialogExample() {
       code: `import { DropdownMenu } from 'mad-ui-components'
 
 export function DropdownMenuExample() {
-  const items = [
-    { label: 'Profile', action: () => console.log('Profile') },
-    { label: 'Settings', action: () => console.log('Settings') },
-    { label: 'Logout', action: () => console.log('Logout') }
-  ]
-
   return (
-    <DropdownMenu items={items}>
+    <DropdownMenu>
       <button>Menu</button>
     </DropdownMenu>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <DropdownMenu 
-            items={[
-              { label: 'Profile', action: () => console.log('Profile') },
-              { label: 'Settings', action: () => console.log('Settings') },
-              { label: 'Logout', action: () => console.log('Logout') }
-            ]}
-          >
+          <DropdownMenu>
             <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Menu</button>
           </DropdownMenu>
         </div>

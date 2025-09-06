@@ -109,23 +109,21 @@ export function AspectRatioExample() {
       code: `import { Carousel } from 'mad-ui-components'
 
 export function CarouselExample() {
-  const items = [
-    { id: '1', content: 'Slide 1' },
-    { id: '2', content: 'Slide 2' },
-    { id: '3', content: 'Slide 3' }
-  ]
-
-  return <Carousel items={items} />
+  return (
+    <Carousel>
+      <div>Slide 1</div>
+      <div>Slide 2</div>
+      <div>Slide 3</div>
+    </Carousel>
+  )
 }`,
       preview: (
         <div className="w-full max-w-md">
-          <Carousel 
-            items={[
-              { id: '1', content: 'Slide 1' },
-              { id: '2', content: 'Slide 2' },
-              { id: '3', content: 'Slide 3' }
-            ]} 
-          />
+          <Carousel>
+            <div>Slide 1</div>
+            <div>Slide 2</div>
+            <div>Slide 3</div>
+          </Carousel>
         </div>
       )
     }

@@ -46,23 +46,21 @@ export function ComboboxExample() {
       code: `import { Command } from 'mad-ui-components'
 
 export function CommandExample() {
-  const items = [
-    { id: '1', label: 'Search', icon: '🔍' },
-    { id: '2', label: 'Settings', icon: '⚙️' },
-    { id: '3', label: 'Help', icon: '❓' }
-  ]
-
-  return <Command items={items} />
+  return (
+    <Command>
+      <div>🔍 Search</div>
+      <div>⚙️ Settings</div>
+      <div>❓ Help</div>
+    </Command>
+  )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Command 
-            items={[
-              { id: '1', label: 'Search', icon: '🔍' },
-              { id: '2', label: 'Settings', icon: '⚙️' },
-              { id: '3', label: 'Help', icon: '❓' }
-            ]} 
-          />
+          <Command>
+            <div>🔍 Search</div>
+            <div>⚙️ Settings</div>
+            <div>❓ Help</div>
+          </Command>
         </div>
       )
     }
@@ -75,49 +73,19 @@ export function CommandExample() {
       code: `import { Menubar } from 'mad-ui-components'
 
 export function MenubarExample() {
-  const items = [
-    {
-      label: 'File',
-      items: [
-        { label: 'New', action: () => console.log('New') },
-        { label: 'Open', action: () => console.log('Open') },
-        { label: 'Save', action: () => console.log('Save') }
-      ]
-    },
-    {
-      label: 'Edit',
-      items: [
-        { label: 'Cut', action: () => console.log('Cut') },
-        { label: 'Copy', action: () => console.log('Copy') },
-        { label: 'Paste', action: () => console.log('Paste') }
-      ]
-    }
-  ]
-
-  return <Menubar items={items} />
+  return (
+    <Menubar>
+      <div>File</div>
+      <div>Edit</div>
+    </Menubar>
+  )
 }`,
       preview: (
         <div className="w-full max-w-md">
-          <Menubar 
-            items={[
-              {
-                label: 'File',
-                items: [
-                  { label: 'New', action: () => console.log('New') },
-                  { label: 'Open', action: () => console.log('Open') },
-                  { label: 'Save', action: () => console.log('Save') }
-                ]
-              },
-              {
-                label: 'Edit',
-                items: [
-                  { label: 'Cut', action: () => console.log('Cut') },
-                  { label: 'Copy', action: () => console.log('Copy') },
-                  { label: 'Paste', action: () => console.log('Paste') }
-                ]
-              }
-            ]} 
-          />
+          <Menubar>
+            <div>File</div>
+            <div>Edit</div>
+          </Menubar>
         </div>
       )
     }
@@ -130,25 +98,23 @@ export function MenubarExample() {
       code: `import { NavigationMenu } from 'mad-ui-components'
 
 export function NavigationMenuExample() {
-  const items = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Services', href: '/services' },
-    { label: 'Contact', href: '/contact' }
-  ]
-
-  return <NavigationMenu items={items} />
+  return (
+    <NavigationMenu>
+      <div>Home</div>
+      <div>About</div>
+      <div>Services</div>
+      <div>Contact</div>
+    </NavigationMenu>
+  )
 }`,
       preview: (
         <div className="w-full max-w-md">
-          <NavigationMenu 
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'About', href: '/about' },
-              { label: 'Services', href: '/services' },
-              { label: 'Contact', href: '/contact' }
-            ]} 
-          />
+          <NavigationMenu>
+            <div>Home</div>
+            <div>About</div>
+            <div>Services</div>
+            <div>Contact</div>
+          </NavigationMenu>
         </div>
       )
     }

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Drawer, Layout, Modal, Navbar, Popover, Resizable, ScrollArea, Sheet, Sidebar, Tooltip } from 'mad-ui-components'
 
 export interface ComponentExample {
@@ -16,11 +16,12 @@ export const layoutExamples: Record<string, ComponentExample[]> = {
       code: `import { Drawer } from 'mad-ui-components'
 
 export function DrawerExample() {
-  return <Drawer>Drawer content</Drawer>
+  const [open, setOpen] = useState(false)
+  return <Drawer open={open} onOpenChange={setOpen}>Drawer content</Drawer>
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Drawer>Drawer content</Drawer>
+          <Drawer open={false} onOpenChange={() => {}}>Drawer content</Drawer>
         </div>
       )
     }
@@ -56,15 +57,16 @@ export function LayoutExample() {
       code: `import { Modal } from 'mad-ui-components'
 
 export function ModalExample() {
+  const [isOpen, setIsOpen] = useState(false)
   return (
-    <Modal>
+    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
       <div className="p-4">Modal content</div>
     </Modal>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Modal>
+          <Modal isOpen={false} onClose={() => {}}>
             <div className="p-4">Modal content</div>
           </Modal>
         </div>
@@ -79,23 +81,11 @@ export function ModalExample() {
       code: `import { Navbar } from 'mad-ui-components'
 
 export function NavbarExample() {
-  const items = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Contact', href: '/contact' }
-  ]
-
-  return <Navbar items={items} />
+  return <Navbar title="My App" />
 }`,
       preview: (
         <div className="w-full max-w-md">
-          <Navbar 
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'About', href: '/about' },
-              { label: 'Contact', href: '/contact' }
-            ]} 
-          />
+          <Navbar title="My App" />
         </div>
       )
     }
@@ -108,17 +98,24 @@ export function NavbarExample() {
       code: `import { Popover } from 'mad-ui-components'
 
 export function PopoverExample() {
+  const [isOpen, setIsOpen] = useState(false)
   return (
-    <Popover>
-      <button>Trigger</button>
+    <Popover 
+      isOpen={isOpen} 
+      onClose={() => setIsOpen(false)} 
+      trigger={<button onClick={() => setIsOpen(true)}>Trigger</button>}
+    >
       <div className="p-4">Popover content</div>
     </Popover>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Popover>
-            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Trigger</button>
+          <Popover 
+            isOpen={false} 
+            onClose={() => {}} 
+            trigger={<button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Trigger</button>}
+          >
             <div className="p-4">Popover content</div>
           </Popover>
         </div>
@@ -193,15 +190,16 @@ export function ScrollAreaExample() {
       code: `import { Sheet } from 'mad-ui-components'
 
 export function SheetExample() {
+  const [open, setOpen] = useState(false)
   return (
-    <Sheet>
+    <Sheet open={open} onOpenChange={setOpen}>
       <div className="p-4">Sheet content</div>
     </Sheet>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Sheet>
+          <Sheet open={false} onOpenChange={() => {}}>
             <div className="p-4">Sheet content</div>
           </Sheet>
         </div>
