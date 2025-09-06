@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import { CodeBlock } from './CodeBlock'
-import { Button } from '../../../src/components/core/button'
+import { Button } from 'mad-ui-components'
 import { Copy, Eye, Code } from 'lucide-react'
 
 interface ComponentPreviewProps {

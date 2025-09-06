@@ -5,7 +5,7 @@
 export { Button } from './components/core/button'
 export { Input } from './components/core/input'
 export { Label } from './components/core/label'
-export { Card } from './components/core/card'
+export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/core/card'
 export { Checkbox } from './components/core/checkbox'
 export { Radio } from './components/core/radio'
 export { Select } from './components/core/select'

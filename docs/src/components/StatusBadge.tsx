@@ -1,5 +1,5 @@
 import React from 'react'
-import { Badge } from '../../../src/components/media/badge'
+import { Badge } from 'mad-ui-components'
 
 interface StatusBadgeProps {
   status: 'stable' | 'beta' | 'alpha' | 'deprecated'

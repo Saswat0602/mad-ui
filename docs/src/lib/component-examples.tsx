@@ -1,4 +1,5 @@
 import React from 'react'
+import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardFooter, Checkbox, Select, Slider, Switch, Progress } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -19,9 +20,7 @@ export function ButtonDemo() {
 }`,
       preview: (
         <div className="flex items-center space-x-2">
-          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
-            Button
-          </button>
+          <Button>Button</Button>
         </div>
       )
     },
@@ -35,9 +34,7 @@ export function ButtonDestructive() {
 }`,
       preview: (
         <div className="flex items-center space-x-2">
-          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-destructive text-destructive-foreground hover:bg-destructive/90 h-10 px-4 py-2">
-            Destructive
-          </button>
+          <Button variant="error">Error</Button>
         </div>
       )
     },
@@ -51,9 +48,7 @@ export function ButtonOutline() {
 }`,
       preview: (
         <div className="flex items-center space-x-2">
-          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-            Outline
-          </button>
+          <Button variant="outline">Outline</Button>
         </div>
       )
     },
@@ -67,9 +62,7 @@ export function ButtonSecondary() {
 }`,
       preview: (
         <div className="flex items-center space-x-2">
-          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-secondary text-secondary-foreground hover:bg-secondary/80 h-10 px-4 py-2">
-            Secondary
-          </button>
+          <Button variant="secondary">Secondary</Button>
         </div>
       )
     },
@@ -83,9 +76,7 @@ export function ButtonGhost() {
 }`,
       preview: (
         <div className="flex items-center space-x-2">
-          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2">
-            Ghost
-          </button>
+          <Button variant="ghost">Ghost</Button>
         </div>
       )
     },
@@ -99,9 +90,7 @@ export function ButtonLink() {
 }`,
       preview: (
         <div className="flex items-center space-x-2">
-          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 text-primary underline-offset-4 hover:underline h-10 px-4 py-2">
-            Link
-          </button>
+          <Button variant="ghost">Ghost</Button>
         </div>
       )
     },
@@ -121,12 +110,13 @@ export function ButtonWithIcon() {
 }`,
       preview: (
         <div className="flex items-center space-x-2">
-          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
-            <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <Button leftIcon={
+            <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
             </svg>
+          }>
             Download
-          </button>
+          </Button>
         </div>
       )
     },
@@ -148,13 +138,9 @@ export function ButtonLoading() {
 }`,
       preview: (
         <div className="flex items-center space-x-2">
-          <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2" disabled>
-            <svg className="mr-2 h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-              <path className="opacity-75" fill="currentColor" d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
+          <Button loading disabled>
             Please wait
-          </button>
+          </Button>
         </div>
       )
     }
@@ -171,10 +157,7 @@ export function InputDemo() {
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <input 
-            className="h-11 w-full rounded-lg border-2 border-slate-300 bg-white px-4 text-sm transition-all duration-200 placeholder:text-slate-500 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus:border-blue-400 dark:focus:ring-blue-400/20" 
-            placeholder="Enter text..." 
-          />
+          <Input placeholder="Enter text..." />
         </div>
       )
     },
@@ -220,13 +203,12 @@ export function InputError() {
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm space-y-2">
-          <label className="text-sm font-medium leading-none">Password</label>
-          <input 
-            className="h-11 w-full rounded-lg border-2 border-red-500 bg-white px-4 text-sm transition-all duration-200 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/20 dark:border-red-400 dark:bg-slate-800 dark:text-red-100 dark:focus:border-red-400 dark:focus:ring-red-400/20" 
+        <div className="w-full max-w-sm">
+          <Input 
+            label="Password" 
             type="password" 
+            error="Password must be at least 8 characters" 
           />
-          <p className="text-xs leading-relaxed text-red-500">Password must be at least 8 characters</p>
         </div>
       )
     },
@@ -246,20 +228,13 @@ export function InputSuccess() {
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm space-y-2">
-          <label className="text-sm font-medium leading-none">Username</label>
-          <div className="relative">
-            <input 
-              className="h-11 w-full rounded-lg border-2 border-green-500 bg-white px-4 pr-10 text-sm transition-all duration-200 focus:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-500/20 dark:border-green-400 dark:bg-slate-800 dark:text-green-100 dark:focus:border-green-400 dark:focus:ring-green-400/20" 
-              value="john_doe"
-            />
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-              <svg className="h-4 w-4 text-green-500" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-              </svg>
-            </div>
-          </div>
-          <p className="text-xs leading-relaxed text-slate-500">Username is available</p>
+        <div className="w-full max-w-sm">
+          <Input 
+            label="Username" 
+            variant="success" 
+            value="john_doe" 
+            helperText="Username is available" 
+          />
         </div>
       )
     }
@@ -284,13 +259,15 @@ export function CardDemo() {
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
-          <div className="flex flex-col space-y-1.5 p-6">
-            <h3 className="font-semibold leading-none tracking-tight">Card Title</h3>
-          </div>
-          <div className="p-6 pt-0">
-            <p className="text-slate-600 dark:text-slate-400">Card content goes here.</p>
-          </div>
+        <div className="w-full max-w-sm">
+          <Card>
+            <CardHeader>
+              <CardTitle>Card Title</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>Card content goes here.</p>
+            </CardContent>
+          </Card>
         </div>
       )
     },
@@ -315,18 +292,18 @@ export function CardWithFooter() {
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm rounded-xl border border-slate-200 bg-white shadow-sm transition-all duration-300 hover:shadow-md dark:border-slate-700 dark:bg-slate-800">
-          <div className="flex flex-col space-y-1.5 p-6">
-            <h3 className="font-semibold leading-none tracking-tight">Card with Footer</h3>
-          </div>
-          <div className="p-6 pt-0">
-            <p className="text-slate-600 dark:text-slate-400">This card has a footer section.</p>
-          </div>
-          <div className="flex items-center p-6 pt-0">
-            <button className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2">
-              Action
-            </button>
-          </div>
+        <div className="w-full max-w-sm">
+          <Card>
+            <CardHeader>
+              <CardTitle>Card with Footer</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p>This card has a footer section.</p>
+            </CardContent>
+            <CardFooter>
+              <Button>Action</Button>
+            </CardFooter>
+          </Card>
         </div>
       )
     }
@@ -342,22 +319,7 @@ export function CheckboxDemo() {
   return <Checkbox label="Accept terms and conditions" />
 }`,
       preview: (
-        <div className="flex items-start space-x-3">
-          <div className="relative flex items-center">
-            <input
-              type="checkbox"
-              className="h-5 w-5 rounded border-2 border-slate-400 bg-white text-blue-600 shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:border-blue-500 hover:shadow-md cursor-pointer"
-            />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <svg className="h-3 w-3 text-current" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-              </svg>
-            </div>
-          </div>
-          <label className="text-sm font-medium leading-none cursor-pointer">
-            Accept terms and conditions
-          </label>
-        </div>
+        <Checkbox label="Accept terms and conditions" />
       )
     },
     {
@@ -369,22 +331,7 @@ export function CheckboxIndeterminate() {
   return <Checkbox label="Select all items" indeterminate />
 }`,
       preview: (
-        <div className="flex items-start space-x-3">
-          <div className="relative flex items-center">
-            <input
-              type="checkbox"
-              className="h-5 w-5 rounded border-2 border-slate-400 bg-white text-blue-600 shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:border-blue-500 hover:shadow-md cursor-pointer"
-            />
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <svg className="h-3 w-3 text-current" fill="currentColor" viewBox="0 0 20 20">
-                <path fillRule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-              </svg>
-            </div>
-          </div>
-          <label className="text-sm font-medium leading-none cursor-pointer">
-            Select all items
-          </label>
-        </div>
+        <Checkbox label="Select all items" indeterminate />
       )
     },
     {
@@ -401,22 +348,10 @@ export function CheckboxError() {
   )
 }`,
       preview: (
-        <div className="flex items-start space-x-3">
-          <div className="relative flex items-center">
-            <input
-              type="checkbox"
-              className="h-5 w-5 rounded border-2 border-red-500 bg-white text-red-600 shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 hover:border-red-600 hover:shadow-md cursor-pointer"
-            />
-          </div>
-          <div className="flex-1 space-y-1">
-            <label className="text-sm font-medium leading-none cursor-pointer">
-              I agree to the terms
-            </label>
-            <p className="text-xs leading-relaxed text-red-500">
-              You must agree to the terms to continue
-            </p>
-          </div>
-        </div>
+        <Checkbox 
+          label="I agree to the terms" 
+          error="You must agree to the terms to continue" 
+        />
       )
     }
   ],
@@ -529,24 +464,17 @@ export function SelectWithHelper() {
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm space-y-2">
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-            Country
-          </label>
-          <div className="relative">
-            <select className="w-full rounded-lg border-2 border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 transition-all duration-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-blue-400 dark:focus:ring-blue-400/20">
-              <option value="" disabled>Select your country</option>
-              <option value="us">United States</option>
-              <option value="ca">Canada</option>
-              <option value="uk">United Kingdom</option>
-            </select>
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-              <svg className="w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
-          <p className="text-sm text-slate-500">Choose the country where you live</p>
+        <div className="w-full max-w-sm">
+          <Select 
+            label="Country" 
+            options={[
+              { value: 'us', label: 'United States' },
+              { value: 'ca', label: 'Canada' },
+              { value: 'uk', label: 'United Kingdom' }
+            ]} 
+            placeholder="Select your country" 
+            helperText="Choose the country where you live" 
+          />
         </div>
       )
     },
@@ -571,23 +499,16 @@ export function SelectError() {
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm space-y-2">
-          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
-            Size
-          </label>
-          <div className="relative">
-            <select className="w-full rounded-lg border-2 border-red-500 bg-white px-3 py-2 text-sm text-slate-900 transition-all duration-200 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/20 dark:border-red-400 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-red-400 dark:focus:ring-red-400/20">
-              <option value="small">Small</option>
-              <option value="medium">Medium</option>
-              <option value="large">Large</option>
-            </select>
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-              <svg className="w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-              </svg>
-            </div>
-          </div>
-          <p className="text-sm text-red-500">Please select a size</p>
+        <div className="w-full max-w-sm">
+          <Select 
+            label="Size" 
+            options={[
+              { value: 'small', label: 'Small' },
+              { value: 'medium', label: 'Medium' },
+              { value: 'large', label: 'Large' }
+            ]} 
+            error="Please select a size" 
+          />
         </div>
       )
     }
@@ -601,7 +522,7 @@ export function SelectError() {
 
 export function SwitchExample() {
   return <Switch />`,
-      preview: <input type="checkbox" className="peer h-6 w-11 shrink-0 rounded-full border border-input bg-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50" />
+      preview: <Switch />
     }
   ],
 
@@ -613,11 +534,7 @@ export function SwitchExample() {
 
 export function ProgressExample() {
   return <Progress value={60} />`,
-      preview: (
-        <div className="relative h-4 w-full overflow-hidden rounded-full bg-secondary">
-          <div className="h-full w-3/5 bg-primary transition-all" style={{ width: '60%' }}></div>
-        </div>
-      )
+      preview: <Progress value={60} />
     }
   ],
 
@@ -630,15 +547,7 @@ export function ProgressExample() {
 export function SliderDemo() {
   return <Slider defaultValue={50} max={100} step={1} />
 }`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <div className="mb-2 text-sm font-medium">50</div>
-          <div className="relative h-3 w-full cursor-pointer rounded-full bg-slate-200 dark:bg-slate-600">
-            <div className="absolute top-0 left-0 h-full w-1/2 rounded-full bg-blue-500 dark:bg-blue-400 transition-all duration-200"></div>
-            <div className="absolute top-1/2 left-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-blue-500 bg-white shadow-md transition-transform duration-200 hover:scale-110 active:cursor-grabbing dark:border-blue-400 dark:bg-slate-200"></div>
-          </div>
-        </div>
-      )
+      preview: <Slider defaultValue={50} max={100} step={1} />
     },
     {
       title: 'Range Slider',
@@ -648,16 +557,7 @@ export function SliderDemo() {
 export function RangeSliderDemo() {
   return <Slider defaultValue={[20, 80]} max={100} step={1} range />
 }`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <div className="mb-2 text-sm font-medium">20 - 80</div>
-          <div className="relative h-3 w-full cursor-pointer rounded-full bg-slate-200 dark:bg-slate-600">
-            <div className="absolute top-0 left-1/5 h-full w-3/5 rounded-full bg-blue-500 dark:bg-blue-400 transition-all duration-200"></div>
-            <div className="absolute top-1/2 left-1/5 h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-blue-500 bg-white shadow-md transition-transform duration-200 hover:scale-110 active:cursor-grabbing dark:border-blue-400 dark:bg-slate-200"></div>
-            <div className="absolute top-1/2 left-4/5 h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-blue-500 bg-white shadow-md transition-transform duration-200 hover:scale-110 active:cursor-grabbing dark:border-blue-400 dark:bg-slate-200"></div>
-          </div>
-        </div>
-      )
+      preview: <Slider defaultValue={[20, 80]} max={100} step={1} range />
     },
     {
       title: 'With Marks',
@@ -684,18 +584,19 @@ export function SliderWithMarks() {
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm">
-          <div className="mb-2 text-sm font-medium">30</div>
-          <div className="relative h-3 w-full cursor-pointer rounded-full bg-slate-200 dark:bg-slate-600">
-            <div className="absolute top-0 left-0 h-full w-3/10 rounded-full bg-blue-500 dark:bg-blue-400 transition-all duration-200"></div>
-            <div className="absolute top-1/2 left-3/10 h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-blue-500 bg-white shadow-md transition-transform duration-200 hover:scale-110 active:cursor-grabbing dark:border-blue-400 dark:bg-slate-200"></div>
-            <div className="absolute bottom-0 left-0 text-xs text-slate-500 dark:text-slate-400">0°C</div>
-            <div className="absolute bottom-0 left-1/4 -translate-x-1/2 text-xs text-slate-500 dark:text-slate-400">25°C</div>
-            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-xs text-slate-500 dark:text-slate-400">50°C</div>
-            <div className="absolute bottom-0 left-3/4 -translate-x-1/2 text-xs text-slate-500 dark:text-slate-400">75°C</div>
-            <div className="absolute bottom-0 right-0 text-xs text-slate-500 dark:text-slate-400">100°C</div>
-          </div>
-        </div>
+        <Slider 
+          defaultValue={30} 
+          max={100} 
+          step={1} 
+          showMarks 
+          marks={[
+            { value: 0, label: '0°C' },
+            { value: 25, label: '25°C' },
+            { value: 50, label: '50°C' },
+            { value: 75, label: '75°C' },
+            { value: 100, label: '100°C' }
+          ]} 
+        />
       )
     }
   ],
