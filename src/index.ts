@@ -64,6 +64,8 @@ export { Chart } from './components/data/chart'
 
 // Feedback Components
 export { Alert } from './components/feedback/alert'
+export { Sonner } from './components/feedback/sonner'
+export { Toast } from './components/feedback/toast'
 
 // Navigation Components
 export { NavigationMenu } from './components/navigation/navigation-menu'
@@ -151,6 +153,8 @@ export type { DataTableProps } from './components/data/data-table'
 export type { ChartProps } from './components/data/chart'
 
 export type { AlertProps } from './components/feedback/alert'
+export type { SonnerProps } from './components/feedback/sonner'
+export type { ToastProps } from './components/feedback/toast'
 
 export type { NavigationMenuProps } from './components/navigation/navigation-menu'
 export type { MenubarProps } from './components/navigation/menubar'
