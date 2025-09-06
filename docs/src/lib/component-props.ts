@@ -189,6 +189,52 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
 
   checkbox: [
     {
+      name: 'label',
+      type: 'string',
+      required: false,
+      description: 'Label text for the checkbox'
+    },
+    {
+      name: 'error',
+      type: 'string',
+      required: false,
+      description: 'Error message to display'
+    },
+    {
+      name: 'helperText',
+      type: 'string',
+      required: false,
+      description: 'Helper text to display below the checkbox'
+    },
+    {
+      name: 'success',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the checkbox is in a success state'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'error' | 'success'",
+      required: false,
+      default: 'default',
+      description: 'The visual variant of the checkbox'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'The size of the checkbox'
+    },
+    {
+      name: 'indeterminate',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the checkbox is in an indeterminate state'
+    },
+    {
       name: 'checked',
       type: 'boolean',
       required: false,

@@ -334,31 +334,88 @@ export function CardWithFooter() {
 
   checkbox: [
     {
-      title: 'Basic Checkbox',
-      description: 'A simple checkbox component',
+      title: 'Default',
+      description: 'The default checkbox variant.',
       code: `import { Checkbox } from 'mad-ui-components'
 
-export function CheckboxExample() {
-  return <Checkbox />`,
-      preview: <input type="checkbox" className="h-4 w-4 rounded border border-input" />
+export function CheckboxDemo() {
+  return <Checkbox label="Accept terms and conditions" />
+}`,
+      preview: (
+        <div className="flex items-start space-x-3">
+          <div className="relative flex items-center">
+            <input
+              type="checkbox"
+              className="h-5 w-5 rounded border-2 border-slate-400 bg-white text-blue-600 shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:border-blue-500 hover:shadow-md cursor-pointer"
+            />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <svg className="h-3 w-3 text-current" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <label className="text-sm font-medium leading-none cursor-pointer">
+            Accept terms and conditions
+          </label>
+        </div>
+      )
     },
     {
-      title: 'Checkbox with Label',
-      description: 'A checkbox with a label',
-      code: `import { Checkbox, Label } from 'mad-ui-components'
+      title: 'Indeterminate',
+      description: 'Checkbox in an indeterminate state.',
+      code: `import { Checkbox } from 'mad-ui-components'
 
-export function CheckboxWithLabel() {
+export function CheckboxIndeterminate() {
+  return <Checkbox label="Select all items" indeterminate />
+}`,
+      preview: (
+        <div className="flex items-start space-x-3">
+          <div className="relative flex items-center">
+            <input
+              type="checkbox"
+              className="h-5 w-5 rounded border-2 border-slate-400 bg-white text-blue-600 shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 hover:border-blue-500 hover:shadow-md cursor-pointer"
+            />
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <svg className="h-3 w-3 text-current" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
+              </svg>
+            </div>
+          </div>
+          <label className="text-sm font-medium leading-none cursor-pointer">
+            Select all items
+          </label>
+        </div>
+      )
+    },
+    {
+      title: 'Error State',
+      description: 'Checkbox in an error state.',
+      code: `import { Checkbox } from 'mad-ui-components'
+
+export function CheckboxError() {
   return (
-    <div className="flex items-center space-x-2">
-      <Checkbox id="terms" />
-      <Label htmlFor="terms">Accept terms and conditions</Label>
-    </div>
+    <Checkbox 
+      label="I agree to the terms" 
+      error="You must agree to the terms to continue" 
+    />
   )
 }`,
       preview: (
-        <div className="flex items-center space-x-2">
-          <input type="checkbox" id="terms" className="h-4 w-4 rounded border border-input" />
-          <label htmlFor="terms" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">Accept terms and conditions</label>
+        <div className="flex items-start space-x-3">
+          <div className="relative flex items-center">
+            <input
+              type="checkbox"
+              className="h-5 w-5 rounded border-2 border-red-500 bg-white text-red-600 shadow-sm transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 hover:border-red-600 hover:shadow-md cursor-pointer"
+            />
+          </div>
+          <div className="flex-1 space-y-1">
+            <label className="text-sm font-medium leading-none cursor-pointer">
+              I agree to the terms
+            </label>
+            <p className="text-xs leading-relaxed text-red-500">
+              You must agree to the terms to continue
+            </p>
+          </div>
         </div>
       )
     }
@@ -410,25 +467,128 @@ export function RadioGroup() {
 
   select: [
     {
-      title: 'Basic Select',
-      description: 'A simple select dropdown component',
+      title: 'Default',
+      description: 'The default select variant.',
       code: `import { Select } from 'mad-ui-components'
 
-export function SelectExample() {
+export function SelectDemo() {
+  const options = [
+    { value: 'apple', label: 'Apple' },
+    { value: 'banana', label: 'Banana' },
+    { value: 'orange', label: 'Orange' }
+  ]
+
   return (
-    <Select>
-      <option value="option1">Option 1</option>
-      <option value="option2">Option 2</option>
-      <option value="option3">Option 3</option>
-    </Select>
+    <Select 
+      label="Choose a fruit" 
+      options={options} 
+      placeholder="Select a fruit" 
+    />
   )
 }`,
       preview: (
-        <select className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm">
-          <option value="option1">Option 1</option>
-          <option value="option2">Option 2</option>
-          <option value="option3">Option 3</option>
-        </select>
+        <div className="w-full max-w-sm space-y-2">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            Choose a fruit
+          </label>
+          <div className="relative">
+            <select className="w-full rounded-lg border-2 border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 transition-all duration-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-blue-400 dark:focus:ring-blue-400/20">
+              <option value="" disabled>Select a fruit</option>
+              <option value="apple">Apple</option>
+              <option value="banana">Banana</option>
+              <option value="orange">Orange</option>
+            </select>
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <svg className="w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'With Helper Text',
+      description: 'Select with helper text.',
+      code: `import { Select } from 'mad-ui-components'
+
+export function SelectWithHelper() {
+  const options = [
+    { value: 'us', label: 'United States' },
+    { value: 'ca', label: 'Canada' },
+    { value: 'uk', label: 'United Kingdom' }
+  ]
+
+  return (
+    <Select 
+      label="Country" 
+      options={options} 
+      placeholder="Select your country" 
+      helperText="Choose the country where you live" 
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm space-y-2">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            Country
+          </label>
+          <div className="relative">
+            <select className="w-full rounded-lg border-2 border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 transition-all duration-200 focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-blue-400 dark:focus:ring-blue-400/20">
+              <option value="" disabled>Select your country</option>
+              <option value="us">United States</option>
+              <option value="ca">Canada</option>
+              <option value="uk">United Kingdom</option>
+            </select>
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <svg className="w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+          <p className="text-sm text-slate-500">Choose the country where you live</p>
+        </div>
+      )
+    },
+    {
+      title: 'Error State',
+      description: 'Select in an error state.',
+      code: `import { Select } from 'mad-ui-components'
+
+export function SelectError() {
+  const options = [
+    { value: 'small', label: 'Small' },
+    { value: 'medium', label: 'Medium' },
+    { value: 'large', label: 'Large' }
+  ]
+
+  return (
+    <Select 
+      label="Size" 
+      options={options} 
+      error="Please select a size" 
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm space-y-2">
+          <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            Size
+          </label>
+          <div className="relative">
+            <select className="w-full rounded-lg border-2 border-red-500 bg-white px-3 py-2 text-sm text-slate-900 transition-all duration-200 focus:border-red-500 focus:outline-none focus:ring-2 focus:ring-red-500/20 dark:border-red-400 dark:bg-slate-800 dark:text-slate-100 dark:focus:border-red-400 dark:focus:ring-red-400/20">
+              <option value="small">Small</option>
+              <option value="medium">Medium</option>
+              <option value="large">Large</option>
+            </select>
+            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
+              <svg className="w-4 h-4 text-slate-400 dark:text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </div>
+          </div>
+          <p className="text-sm text-red-500">Please select a size</p>
+        </div>
       )
     }
   ],
@@ -463,15 +623,78 @@ export function ProgressExample() {
 
   slider: [
     {
-      title: 'Basic Slider',
-      description: 'A simple range slider component',
+      title: 'Default',
+      description: 'The default slider variant.',
       code: `import { Slider } from 'mad-ui-components'
 
-export function SliderExample() {
-  return <Slider defaultValue={[50]} max={100} step={1} />`,
+export function SliderDemo() {
+  return <Slider defaultValue={50} max={100} step={1} />
+}`,
       preview: (
-        <div className="relative flex w-full touch-none select-none items-center">
-          <input type="range" min="0" max="100" defaultValue="50" className="w-full h-2 bg-secondary rounded-lg appearance-none cursor-pointer" />
+        <div className="w-full max-w-sm">
+          <div className="mb-2 text-sm font-medium">50</div>
+          <div className="relative h-3 w-full cursor-pointer rounded-full bg-slate-200 dark:bg-slate-600">
+            <div className="absolute top-0 left-0 h-full w-1/2 rounded-full bg-blue-500 dark:bg-blue-400 transition-all duration-200"></div>
+            <div className="absolute top-1/2 left-1/2 h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-blue-500 bg-white shadow-md transition-transform duration-200 hover:scale-110 active:cursor-grabbing dark:border-blue-400 dark:bg-slate-200"></div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Range Slider',
+      description: 'A range slider with two handles.',
+      code: `import { Slider } from 'mad-ui-components'
+
+export function RangeSliderDemo() {
+  return <Slider defaultValue={[20, 80]} max={100} step={1} range />
+}`,
+      preview: (
+        <div className="w-full max-w-sm">
+          <div className="mb-2 text-sm font-medium">20 - 80</div>
+          <div className="relative h-3 w-full cursor-pointer rounded-full bg-slate-200 dark:bg-slate-600">
+            <div className="absolute top-0 left-1/5 h-full w-3/5 rounded-full bg-blue-500 dark:bg-blue-400 transition-all duration-200"></div>
+            <div className="absolute top-1/2 left-1/5 h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-blue-500 bg-white shadow-md transition-transform duration-200 hover:scale-110 active:cursor-grabbing dark:border-blue-400 dark:bg-slate-200"></div>
+            <div className="absolute top-1/2 left-4/5 h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-blue-500 bg-white shadow-md transition-transform duration-200 hover:scale-110 active:cursor-grabbing dark:border-blue-400 dark:bg-slate-200"></div>
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'With Marks',
+      description: 'Slider with value marks.',
+      code: `import { Slider } from 'mad-ui-components'
+
+export function SliderWithMarks() {
+  const marks = [
+    { value: 0, label: '0°C' },
+    { value: 25, label: '25°C' },
+    { value: 50, label: '50°C' },
+    { value: 75, label: '75°C' },
+    { value: 100, label: '100°C' }
+  ]
+
+  return (
+    <Slider 
+      defaultValue={30} 
+      max={100} 
+      step={1} 
+      showMarks 
+      marks={marks} 
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm">
+          <div className="mb-2 text-sm font-medium">30</div>
+          <div className="relative h-3 w-full cursor-pointer rounded-full bg-slate-200 dark:bg-slate-600">
+            <div className="absolute top-0 left-0 h-full w-3/10 rounded-full bg-blue-500 dark:bg-blue-400 transition-all duration-200"></div>
+            <div className="absolute top-1/2 left-3/10 h-5 w-5 -translate-x-1/2 -translate-y-1/2 cursor-grab rounded-full border-2 border-blue-500 bg-white shadow-md transition-transform duration-200 hover:scale-110 active:cursor-grabbing dark:border-blue-400 dark:bg-slate-200"></div>
+            <div className="absolute bottom-0 left-0 text-xs text-slate-500 dark:text-slate-400">0°C</div>
+            <div className="absolute bottom-0 left-1/4 -translate-x-1/2 text-xs text-slate-500 dark:text-slate-400">25°C</div>
+            <div className="absolute bottom-0 left-1/2 -translate-x-1/2 text-xs text-slate-500 dark:text-slate-400">50°C</div>
+            <div className="absolute bottom-0 left-3/4 -translate-x-1/2 text-xs text-slate-500 dark:text-slate-400">75°C</div>
+            <div className="absolute bottom-0 right-0 text-xs text-slate-500 dark:text-slate-400">100°C</div>
+          </div>
         </div>
       )
     }
