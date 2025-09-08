@@ -181,14 +181,16 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
                     {/* Individual Component Installation */}
                     {getIndividualInstallCommand(slug) && (
                       <div className="space-y-2">
-                        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Individual Component (Coming Soon)</h4>
-                        <div className="relative opacity-50">
+                        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Individual Component</h4>
+                        <div className="relative">
                           <CodeBlock language="bash" code={getIndividualInstallCommand(slug)!} />
-                          <div className="absolute inset-0 bg-background/50 backdrop-blur-sm rounded flex items-center justify-center">
-                            <span className="text-xs text-muted-foreground bg-background px-2 py-1 rounded border">
-                              Available in next release
-                            </span>
-                          </div>
+                          <button
+                            onClick={() => navigator.clipboard.writeText(getIndividualInstallCommand(slug)!)}
+                            className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
+                            title="Copy individual installation"
+                          >
+                            <Copy className="w-3 h-3" />
+                          </button>
                         </div>
                       </div>
                     )}
@@ -236,17 +238,19 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
                     {/* Tree-shaking Import */}
                     {getIndividualImportCommand(slug) && (
                       <div className="space-y-2">
-                        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Tree-shaking Optimized (Coming Soon)</h4>
-                        <div className="relative opacity-50">
+                        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Tree-shaking Optimized</h4>
+                        <div className="relative">
                           <CodeBlock 
                             language="tsx" 
                             code={getIndividualImportCommand(slug)!} 
                           />
-                          <div className="absolute inset-0 bg-background/50 backdrop-blur-sm rounded flex items-center justify-center">
-                            <span className="text-xs text-muted-foreground bg-background px-2 py-1 rounded border">
-                              Available in next release
-                            </span>
-                          </div>
+                          <button
+                            onClick={() => navigator.clipboard.writeText(getIndividualImportCommand(slug)!)}
+                            className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
+                            title="Copy optimized import"
+                          >
+                            <Copy className="w-3 h-3" />
+                          </button>
                         </div>
                       </div>
                     )}
