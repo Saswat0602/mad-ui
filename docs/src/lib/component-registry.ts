@@ -6,18 +6,18 @@ export const COMPONENT_REGISTRY = {
   'button': {
     category: 'Core' as ComponentCategory,
     title: 'Button',
-    description: 'A versatile button component with multiple variants and sizes',
-    version: '1.0.0',
+    description: 'Enterprise-level button component with analytics, accessibility, ripple effects, and advanced theming',
+    version: '2.12.0',
     status: 'stable' as const,
-    tags: ['form', 'action', 'interactive']
+    tags: ['form', 'action', 'interactive', 'enterprise', 'analytics', 'accessibility']
   },
   'input': {
     category: 'Core' as ComponentCategory,
     title: 'Input',
-    description: 'A flexible input component for text, email, password, and other input types',
-    version: '1.0.0',
+    description: 'Enterprise-level input component with validation, analytics, accessibility, and character counting',
+    version: '2.12.0',
     status: 'stable' as const,
-    tags: ['form', 'input', 'text']
+    tags: ['form', 'input', 'text', 'enterprise', 'validation', 'analytics']
   },
   'label': {
     category: 'Core' as ComponentCategory,
@@ -30,10 +30,10 @@ export const COMPONENT_REGISTRY = {
   'card': {
     category: 'Core' as ComponentCategory,
     title: 'Card',
-    description: 'A flexible card component for displaying content',
-    version: '1.0.0',
+    description: 'Enterprise-level card component with analytics, badges, loading states, and drag-and-drop support',
+    version: '2.12.0',
     status: 'stable' as const,
-    tags: ['layout', 'content', 'container']
+    tags: ['layout', 'content', 'container', 'enterprise', 'analytics', 'interactive']
   },
   'checkbox': {
     category: 'Core' as ComponentCategory,

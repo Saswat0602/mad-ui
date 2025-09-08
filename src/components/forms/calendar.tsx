@@ -33,6 +33,39 @@ export interface CalendarProps extends Omit<React.HTMLAttributes<HTMLDivElement>
   showYearNavigation?: boolean
   highlightWeekends?: boolean
   highlightHolidays?: boolean
+  // Enterprise features
+  analyticsId?: string
+  analyticsEvent?: string
+  analyticsData?: Record<string, any>
+  ariaLabel?: string
+  ariaDescribedBy?: string
+  role?: string
+  dataTestId?: string
+  onAnalytics?: (event: string, data?: Record<string, any>) => void
+  tooltip?: string
+  loading?: boolean
+  error?: string
+  success?: boolean
+  validation?: {
+    required?: boolean
+    custom?: (date: Date) => boolean | string
+  }
+  shortcuts?: Array<{
+    label: string
+    value: Date
+    onClick: () => void
+  }>
+  customDays?: Array<{
+    date: Date
+    label?: string
+    className?: string
+    disabled?: boolean
+    tooltip?: string
+  }>
+  onDateHover?: (date: Date) => void
+  onDateFocus?: (date: Date) => void
+  keyboardNavigation?: boolean
+  autoFocus?: boolean
 }
 
 const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(

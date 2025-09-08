@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { Alert, Sonner, Toast } from 'mad-ui-components'
+import React from 'react'
+import { Alert, Toast } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string

@@ -1,5 +1,6 @@
 "use client"
 
+import Link from "next/link"
 import { Button } from "mad-ui-components/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
 import { Badge } from "mad-ui-components/badge"
@@ -33,13 +34,13 @@ export default function ComponentsPage() {
           Explore our collection of carefully crafted components. Each component is built with accessibility in mind and follows modern design principles.
         </p>
         <div className="mt-6">
-          <a 
+          <Link 
             href="/docs/components" 
             className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
           >
             View All Components
             <ArrowRight className="w-4 h-4" />
-          </a>
+          </Link>
         </div>
       </div>
 

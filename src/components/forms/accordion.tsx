@@ -8,6 +8,18 @@ export interface AccordionItem {
   content: React.ReactNode
   disabled?: boolean
   defaultOpen?: boolean
+  // Enterprise features
+  analyticsId?: string
+  analyticsData?: Record<string, any>
+  tooltip?: string
+  icon?: React.ReactNode
+  badge?: string | number
+  badgeColor?: "default" | "primary" | "secondary" | "success" | "warning" | "error"
+  loading?: boolean
+  error?: string
+  metadata?: Record<string, any>
+  onExpand?: () => void
+  onCollapse?: () => void
 }
 
 export interface AccordionProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
@@ -24,6 +36,61 @@ export interface AccordionProps extends Omit<React.HTMLAttributes<HTMLDivElement
   shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
   fullWidth?: boolean
   onChange?: (openItems: string[]) => void
+  // Enterprise features
+  analyticsId?: string
+  analyticsEvent?: string
+  analyticsData?: Record<string, any>
+  ariaLabel?: string
+  ariaDescribedBy?: string
+  role?: string
+  dataTestId?: string
+  onAnalytics?: (event: string, data?: Record<string, any>) => void
+  tooltip?: string
+  loading?: boolean
+  searchable?: boolean
+  searchPlaceholder?: string
+  onSearch?: (query: string) => void
+  filterable?: boolean
+  filterOptions?: Array<{
+    label: string
+    value: string
+    count?: number
+  }>
+  onFilter?: (filters: string[]) => void
+  sortable?: boolean
+  sortOptions?: Array<{
+    label: string
+    value: string
+    direction?: 'asc' | 'desc'
+  }>
+  onSort?: (sortBy: string, direction: 'asc' | 'desc') => void
+  keyboardNavigation?: boolean
+  autoFocus?: boolean
+  lazy?: boolean
+  virtualized?: boolean
+  onItemClick?: (item: AccordionItem) => void
+  onItemDoubleClick?: (item: AccordionItem) => void
+  onItemRightClick?: (item: AccordionItem, event: React.MouseEvent) => void
+  contextMenuItems?: Array<{
+    label: string
+    onClick: (item: AccordionItem) => void
+    icon?: React.ReactNode
+    disabled?: boolean
+  }>
+  dragAndDrop?: boolean
+  onReorder?: (items: AccordionItem[]) => void
+  onItemDragStart?: (item: AccordionItem) => void
+  onDragComplete?: (item: AccordionItem) => void
+  onItemDrop?: (item: AccordionItem, targetItem: AccordionItem) => void
+  expandAll?: boolean
+  collapseAll?: boolean
+  onExpandAll?: () => void
+  onCollapseAll?: () => void
+  showExpandAll?: boolean
+  showCollapseAll?: boolean
+  persistState?: boolean
+  storageKey?: string
+  onStateChange?: (state: { openItems: string[]; searchQuery?: string; filters?: string[] }) => void
 }
 
 const Accordion = forwardRef<HTMLDivElement, AccordionProps>(({

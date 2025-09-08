@@ -48,6 +48,51 @@ export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   brandPosition?: "left" | "center" | "right"
   navigationPosition?: "left" | "center" | "right"
   actionsPosition?: "left" | "center" | "right"
+  // Enterprise features
+  analyticsId?: string
+  analyticsEvent?: string
+  analyticsData?: Record<string, any>
+  ariaLabel?: string
+  ariaDescribedBy?: string
+  role?: string
+  dataTestId?: string
+  onAnalytics?: (event: string, data?: Record<string, any>) => void
+  tooltip?: string
+  loading?: boolean
+  collapsed?: boolean
+  onCollapse?: (collapsed: boolean) => void
+  breadcrumbs?: Array<{
+    label: string
+    href?: string
+    onClick?: () => void
+  }>
+  showBreadcrumbs?: boolean
+  searchSuggestions?: Array<{
+    label: string
+    value: string
+    onClick?: () => void
+  }>
+  onSearchSuggestionClick?: (suggestion: any) => void
+  notificationCount?: number
+  notificationBadge?: boolean
+  userAvatar?: string
+  userStatus?: "online" | "offline" | "away" | "busy"
+  keyboardShortcuts?: Record<string, () => void>
+  onKeyboardShortcut?: (key: string) => void
+  responsive?: boolean
+  mobileMenuItems?: Array<{
+    label: string
+    href?: string
+    onClick?: () => void
+    icon?: React.ReactNode
+  }>
+  onMobileMenuToggle?: (open: boolean) => void
+  sticky?: boolean
+  scrollBehavior?: "hide" | "show" | "none"
+  onScrollChange?: (scrollY: number) => void
+  zIndex?: number
+  backdrop?: boolean
+  blur?: boolean
 }
 
 const Navbar = React.forwardRef<HTMLElement, NavbarProps>(

@@ -12,6 +12,32 @@ export interface InputProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
   size?: "sm" | "md" | "lg"
   fullWidth?: boolean
   floatingLabel?: boolean
+  // Enterprise features
+  tooltip?: string
+  analyticsId?: string
+  analyticsEvent?: string
+  analyticsData?: Record<string, any>
+  ariaLabel?: string
+  ariaDescribedBy?: string
+  ariaRequired?: boolean
+  ariaInvalid?: boolean
+  role?: string
+  dataTestId?: string
+  onAnalytics?: (event: string, data?: Record<string, any>) => void
+  debounceMs?: number
+  validation?: {
+    required?: boolean
+    minLength?: number
+    maxLength?: number
+    pattern?: RegExp
+    custom?: (value: string) => boolean | string
+  }
+  showCharacterCount?: boolean
+  autoComplete?: string
+  autoFocus?: boolean
+  spellCheck?: boolean
+  autoCorrect?: string
+  autoCapitalize?: string
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
@@ -29,14 +55,82 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     fullWidth = true,
     floatingLabel = false,
     placeholder,
+    // Enterprise features
+    tooltip,
+    analyticsId,
+    analyticsEvent,
+    analyticsData,
+    ariaLabel,
+    ariaDescribedBy,
+    ariaRequired,
+    ariaInvalid,
+    role,
+    dataTestId,
+    onAnalytics,
+    debounceMs = 300,
+    validation,
+    showCharacterCount = false,
+    autoComplete,
+    autoFocus,
+    spellCheck,
+    autoCorrect,
+    autoCapitalize,
     ...props 
   }, ref) => {
     
     const [focused, setFocused] = React.useState(false)
     const [hasValue, setHasValue] = React.useState(false)
+    const [value, setValue] = React.useState(props.value || props.defaultValue || '')
+    const [validationError, setValidationError] = React.useState<string | null>(null)
+    const debounceRef = React.useRef<ReturnType<typeof setTimeout>>()
+    const inputRef = React.useRef<HTMLInputElement>(null)
+    
+    // Combine refs
+    React.useImperativeHandle(ref, () => inputRef.current!)
+    
+    // Validation function
+    const validateInput = React.useCallback((inputValue: string) => {
+      if (!validation) return null
+      
+      if (validation.required && !inputValue.trim()) {
+        return 'This field is required'
+      }
+      
+      if (validation.minLength && inputValue.length < validation.minLength) {
+        return `Minimum length is ${validation.minLength} characters`
+      }
+      
+      if (validation.maxLength && inputValue.length > validation.maxLength) {
+        return `Maximum length is ${validation.maxLength} characters`
+      }
+      
+      if (validation.pattern && !validation.pattern.test(inputValue)) {
+        return 'Invalid format'
+      }
+      
+      if (validation.custom) {
+        const result = validation.custom(inputValue)
+        if (typeof result === 'string') return result
+        if (!result) return 'Invalid value'
+      }
+      
+      return null
+    }, [validation])
+    
+    // Analytics tracking
+    const trackAnalytics = React.useCallback((event: string, data?: Record<string, any>) => {
+      if (onAnalytics && analyticsId) {
+        onAnalytics(event, {
+          component: 'Input',
+          analyticsId,
+          ...analyticsData,
+          ...data
+        })
+      }
+    }, [onAnalytics, analyticsId, analyticsData])
     
     // Determine variant based on states
-    const inputVariant = error ? "error" : success ? "success" : variant
+    const inputVariant = error || validationError ? "error" : success ? "success" : variant
     
     // Size classes with Material Design heights
     const sizeClasses = {
@@ -65,19 +159,59 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
     
     const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
       setFocused(true)
+      trackAnalytics('input_focus', { value: e.target.value })
       props.onFocus?.(e)
     }
     
     const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
       setFocused(false)
-      setHasValue(e.target.value.length > 0)
+      const inputValue = e.target.value
+      setHasValue(inputValue.length > 0)
+      
+      // Validate on blur
+      if (validation) {
+        const validationResult = validateInput(inputValue)
+        setValidationError(validationResult)
+      }
+      
+      trackAnalytics('input_blur', { value: inputValue, hasError: !!validationError })
       props.onBlur?.(e)
     }
     
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setHasValue(e.target.value.length > 0)
+      const inputValue = e.target.value
+      setValue(inputValue)
+      setHasValue(inputValue.length > 0)
+      
+      // Clear validation error on change
+      if (validationError) {
+        setValidationError(null)
+      }
+      
+      // Debounced validation
+      if (validation && debounceMs > 0) {
+        if (debounceRef.current) {
+          clearTimeout(debounceRef.current)
+        }
+        
+        debounceRef.current = setTimeout(() => {
+          const validationResult = validateInput(inputValue)
+          setValidationError(validationResult)
+        }, debounceMs)
+      }
+      
+      trackAnalytics('input_change', { value: inputValue })
       props.onChange?.(e)
     }
+    
+    // Cleanup debounce on unmount
+    React.useEffect(() => {
+      return () => {
+        if (debounceRef.current) {
+          clearTimeout(debounceRef.current)
+        }
+      }
+    }, [])
     
     return (
       <div className={cn("space-y-2", fullWidth && "w-full")}>
@@ -110,10 +244,24 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
               className
             )}
             placeholder={floatingLabel ? "" : placeholder}
-            ref={ref}
+            ref={inputRef}
+            value={value}
             onFocus={handleFocus}
             onBlur={handleBlur}
             onChange={handleChange}
+            // Enterprise accessibility features
+            aria-label={ariaLabel || label}
+            aria-describedby={ariaDescribedBy}
+            aria-required={ariaRequired || validation?.required}
+            aria-invalid={ariaInvalid || !!validationError}
+            role={role}
+            data-testid={dataTestId}
+            // Enterprise input features
+            autoComplete={autoComplete}
+            autoFocus={autoFocus}
+            spellCheck={spellCheck}
+            autoCorrect={autoCorrect}
+            autoCapitalize={autoCapitalize}
             {...props}
           />
           
@@ -149,13 +297,32 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
         </div>
         
         {/* Helper Text / Error Message */}
-        {(error || helperText) && (
+        {(error || validationError || helperText) && (
           <p className={cn(
             "text-xs leading-relaxed",
-            error ? "text-red-500" : "text-muted-foreground"
+            (error || validationError) ? "text-red-500" : "text-muted-foreground"
           )}>
-            {error || helperText}
+            {error || validationError || helperText}
           </p>
+        )}
+        
+        {/* Character Count */}
+        {showCharacterCount && validation?.maxLength && (
+          <div className="flex justify-end">
+            <span className={cn(
+              "text-xs",
+              String(value).length > validation.maxLength ? "text-red-500" : "text-muted-foreground"
+            )}>
+              {String(value).length}/{validation.maxLength}
+            </span>
+          </div>
+        )}
+        
+        {/* Tooltip */}
+        {tooltip && (
+          <div className="absolute -top-10 left-0 bg-slate-900 text-white text-xs px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none z-50">
+            {tooltip}
+          </div>
         )}
       </div>
     )

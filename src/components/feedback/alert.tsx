@@ -20,6 +20,34 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   shadow?: "none" | "sm" | "md" | "lg"
   icon?: React.ReactNode
   actions?: React.ReactNode
+  // Enterprise features
+  analyticsId?: string
+  analyticsEvent?: string
+  analyticsData?: Record<string, any>
+  ariaLabel?: string
+  ariaDescribedBy?: string
+  role?: string
+  dataTestId?: string
+  onAnalytics?: (event: string, data?: Record<string, any>) => void
+  tooltip?: string
+  loading?: boolean
+  dismissible?: boolean
+  autoDismiss?: boolean
+  dismissTimeout?: number
+  onDismiss?: () => void
+  onShow?: () => void
+  persistent?: boolean
+  priority?: "low" | "medium" | "high" | "critical"
+  category?: string
+  tags?: string[]
+  metadata?: Record<string, any>
+  sound?: boolean
+  vibration?: boolean
+  position?: "top" | "bottom" | "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right"
+  animation?: "fade" | "slide" | "scale" | "bounce" | "none"
+  progress?: boolean
+  progressValue?: number
+  onProgressComplete?: () => void
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(

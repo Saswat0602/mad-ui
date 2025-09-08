@@ -20,6 +20,93 @@ export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   borderRadius?: string | number
   shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
   onClose?: (id?: string) => void
+  // Enterprise features
+  analyticsId?: string
+  analyticsEvent?: string
+  analyticsData?: Record<string, any>
+  ariaLabel?: string
+  ariaDescribedBy?: string
+  role?: string
+  dataTestId?: string
+  onAnalytics?: (event: string, data?: Record<string, any>) => void
+  tooltip?: string
+  loading?: boolean
+  progress?: boolean
+  progressValue?: number
+  onProgressComplete?: () => void
+  priority?: 'low' | 'medium' | 'high' | 'critical'
+  category?: string
+  tags?: string[]
+  metadata?: Record<string, any>
+  sound?: boolean
+  vibration?: boolean
+  onShow?: () => void
+  onHide?: () => void
+  onAction?: (action: string) => void
+  actions?: Array<{
+    label: string
+    onClick: () => void
+    variant?: 'default' | 'primary' | 'secondary' | 'ghost'
+    icon?: React.ReactNode
+  }>
+  avatar?: string
+  timestamp?: Date
+  showTimestamp?: boolean
+  groupable?: boolean
+  groupId?: string
+  maxGroupSize?: number
+  onGroup?: (toasts: ToastProps[]) => void
+  stackable?: boolean
+  maxStackSize?: number
+  onStack?: (toasts: ToastProps[]) => void
+  draggable?: boolean
+  onDragMove?: (position: { x: number; y: number }) => void
+  onDragComplete?: (position: { x: number; y: number }) => void
+  swipeable?: boolean
+  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
+  keyboardDismissible?: boolean
+  onKeyboardDismiss?: (key: string) => void
+  clickable?: boolean
+  onClick?: () => void
+  onDoubleClick?: () => void
+  onRightClick?: (event: React.MouseEvent) => void
+  contextMenuItems?: Array<{
+    label: string
+    onClick: () => void
+    icon?: React.ReactNode
+    disabled?: boolean
+  }>
+  retryable?: boolean
+  onRetry?: () => void
+  retryCount?: number
+  maxRetries?: number
+  onRetryExhausted?: () => void
+  linkable?: boolean
+  link?: string
+  onLinkClick?: () => void
+  linkTarget?: '_blank' | '_self' | '_parent' | '_top'
+  expandable?: boolean
+  expandedContent?: React.ReactNode
+  onExpand?: () => void
+  onCollapse?: () => void
+  collapsible?: boolean
+  collapsed?: boolean
+  onToggle?: (collapsed: boolean) => void
+  animated?: boolean
+  animation?: 'fade' | 'slide' | 'scale' | 'bounce' | 'flip' | 'none'
+  animationDuration?: number
+  onAnimationStart?: () => void
+  onAnimationEnd?: () => void
+  theme?: 'light' | 'dark' | 'auto'
+  locale?: string
+  rtl?: boolean
+  onLocaleChange?: (locale: string) => void
+  accessibility?: {
+    announce?: boolean
+    announceMessage?: string
+    role?: string
+    liveRegion?: 'polite' | 'assertive' | 'off'
+  }
 }
 
 const Toast = forwardRef<HTMLDivElement, ToastProps>(({
