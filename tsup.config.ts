@@ -11,7 +11,7 @@ export default defineConfig([
     splitting: false,
     sourcemap: false,
     clean: true,
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
     esbuildOptions(options) {
       options.jsx = 'automatic'
       options.minifyIdentifiers = true
@@ -36,7 +36,7 @@ export default defineConfig([
     splitting: false,
     sourcemap: false,
     clean: false,
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
     esbuildOptions(options) {
       options.jsx = 'automatic'
       options.minifyIdentifiers = true
@@ -69,7 +69,7 @@ export default defineConfig([
     splitting: false,
     sourcemap: false,
     clean: false,
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
     esbuildOptions(options) {
       options.jsx = 'automatic'
       options.minifyIdentifiers = true
@@ -106,7 +106,7 @@ export default defineConfig([
     splitting: false,
     sourcemap: false,
     clean: false,
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
     esbuildOptions(options) {
       options.jsx = 'automatic'
       options.minifyIdentifiers = true
@@ -141,7 +141,7 @@ export default defineConfig([
     splitting: false,
     sourcemap: false,
     clean: false,
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
     esbuildOptions(options) {
       options.jsx = 'automatic'
       options.minifyIdentifiers = true
@@ -176,7 +176,7 @@ export default defineConfig([
     splitting: false,
     sourcemap: false,
     clean: false,
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
     esbuildOptions(options) {
       options.jsx = 'automatic'
       options.minifyIdentifiers = true
@@ -209,7 +209,7 @@ export default defineConfig([
     splitting: false,
     sourcemap: false,
     clean: false,
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
     esbuildOptions(options) {
       options.jsx = 'automatic'
       options.minifyIdentifiers = true
@@ -242,7 +242,7 @@ export default defineConfig([
     splitting: false,
     sourcemap: false,
     clean: false,
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
     esbuildOptions(options) {
       options.jsx = 'automatic'
       options.minifyIdentifiers = true
@@ -276,7 +276,7 @@ export default defineConfig([
     splitting: false,
     sourcemap: false,
     clean: false,
-    external: ['react', 'react-dom'],
+    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
     esbuildOptions(options) {
       options.jsx = 'automatic'
       options.minifyIdentifiers = true
