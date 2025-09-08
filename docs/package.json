@@ -17,7 +17,7 @@
     "framer-motion": "^12.23.12",
     "gray-matter": "^4.0.3",
     "lucide-react": "^0.542.0",
-    "mad-ui-components": "^2.12.4",
+    "mad-ui-components": "^2.12.5",
     "next": "15.5.2",
     "prismjs": "^1.30.0",
     "react": "19.1.0",
