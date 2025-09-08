@@ -112,10 +112,10 @@ export const COMPONENT_REGISTRY = {
   'accordion': {
     category: 'Form' as ComponentCategory,
     title: 'Accordion',
-    description: 'A collapsible accordion component for organizing content',
-    version: '1.0.0',
+    description: 'Enterprise-level accordion component with search functionality, analytics, accessibility, and advanced features',
+    version: '2.12.3',
     status: 'stable' as const,
-    tags: ['form', 'accordion', 'collapsible']
+    tags: ['form', 'accordion', 'collapsible', 'enterprise', 'analytics', 'accessibility']
   },
   'breadcrumbs': {
     category: 'Form' as ComponentCategory,
@@ -183,22 +183,6 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['layout', 'structure', 'container']
   },
-  'navbar': {
-    category: 'Layout' as ComponentCategory,
-    title: 'Navbar',
-    description: 'A navigation bar component',
-    version: '1.0.0',
-    status: 'stable' as const,
-    tags: ['layout', 'navbar', 'navigation']
-  },
-  'sidebar': {
-    category: 'Layout' as ComponentCategory,
-    title: 'Sidebar',
-    description: 'A sidebar component for navigation and content',
-    version: '1.0.0',
-    status: 'stable' as const,
-    tags: ['layout', 'sidebar', 'navigation']
-  },
   'modal': {
     category: 'Layout' as ComponentCategory,
     title: 'Modal',
@@ -257,14 +241,6 @@ export const COMPONENT_REGISTRY = {
   },
 
   // Data Components
-  'table': {
-    category: 'Data Display' as ComponentCategory,
-    title: 'Table',
-    description: 'A table component for displaying tabular data',
-    version: '1.0.0',
-    status: 'stable' as const,
-    tags: ['data', 'table', 'tabular']
-  },
   'datatable': {
     category: 'Data Display' as ComponentCategory,
     title: 'Data Table',
@@ -283,30 +259,6 @@ export const COMPONENT_REGISTRY = {
   },
 
   // Feedback Components
-  'alert': {
-    category: 'Feedback' as ComponentCategory,
-    title: 'Alert',
-    description: 'An alert component for displaying messages',
-    version: '1.0.0',
-    status: 'stable' as const,
-    tags: ['feedback', 'alert', 'message']
-  },
-  'toast': {
-    category: 'Feedback' as ComponentCategory,
-    title: 'Toast',
-    description: 'A toast notification component',
-    version: '1.0.0',
-    status: 'stable' as const,
-    tags: ['feedback', 'toast', 'notification']
-  },
-  'sonner': {
-    category: 'Feedback' as ComponentCategory,
-    title: 'Sonner',
-    description: 'A modern toast notification system',
-    version: '1.0.0',
-    status: 'stable' as const,
-    tags: ['feedback', 'sonner', 'notification']
-  },
 
   // Navigation Components
   'navigationmenu': {
@@ -444,7 +396,7 @@ export const COMPONENT_REGISTRY = {
   'carousel': {
     category: 'Media' as ComponentCategory,
     title: 'Carousel',
-    description: 'Enterprise-level carousel component with image carousel, autoplay, manual controls, infinite scroll, and enterprise features',
+    description: 'Enterprise-level carousel component with autoplay, analytics, accessibility, and advanced image gallery features',
     version: '2.12.3',
     status: 'stable' as const,
     tags: ['media', 'carousel', 'gallery', 'enterprise', 'analytics', 'accessibility']
@@ -456,6 +408,72 @@ export const COMPONENT_REGISTRY = {
     version: '1.0.0',
     status: 'stable' as const,
     tags: ['media', 'typography', 'text']
+  },
+
+  // Navigation Components
+  'navbar': {
+    category: 'Navigation' as ComponentCategory,
+    title: 'Navbar',
+    description: 'A responsive navigation bar component with brand logo, navigation items, mobile menu support, and enterprise features like analytics tracking and accessibility.',
+    version: '2.12.3',
+    status: 'stable' as const,
+    tags: ['navbar', 'navigation', 'header', 'mobile', 'responsive', 'enterprise', 'analytics', 'accessibility']
+  },
+
+  'sidebar': {
+    category: 'Navigation' as ComponentCategory,
+    title: 'Sidebar',
+    description: 'A collapsible sidebar navigation component with persistent state, multiple variants, and enterprise features for building modern web applications.',
+    version: '2.12.3',
+    status: 'stable' as const,
+    tags: ['sidebar', 'navigation', 'collapsible', 'persistent', 'enterprise', 'analytics', 'accessibility']
+  },
+
+  'breadcrumb': {
+    category: 'Navigation' as ComponentCategory,
+    title: 'Breadcrumb',
+    description: 'A breadcrumb navigation component for showing the current page location within a site hierarchy with customizable separators and enterprise features.',
+    version: '2.12.3',
+    status: 'stable' as const,
+    tags: ['breadcrumb', 'navigation', 'hierarchy', 'enterprise', 'analytics', 'accessibility']
+  },
+
+  // Data Components
+  'table': {
+    category: 'Data' as ComponentCategory,
+    title: 'Table',
+    description: 'A powerful data table component with sorting, selection, pagination, and enterprise features for displaying and managing large datasets.',
+    version: '2.12.3',
+    status: 'stable' as const,
+    tags: ['table', 'data', 'sorting', 'pagination', 'selection', 'enterprise', 'analytics', 'accessibility']
+  },
+
+  // Feedback Components
+  'alert': {
+    category: 'Feedback' as ComponentCategory,
+    title: 'Alert',
+    description: 'A flexible alert component for displaying important messages with multiple variants, dismissible options, and enterprise features.',
+    version: '2.12.3',
+    status: 'stable' as const,
+    tags: ['alert', 'notification', 'message', 'dismissible', 'enterprise', 'analytics', 'accessibility']
+  },
+
+  'toast': {
+    category: 'Feedback' as ComponentCategory,
+    title: 'Toast',
+    description: 'A toast notification component for displaying temporary messages with customizable positioning, duration, and enterprise features.',
+    version: '2.12.3',
+    status: 'stable' as const,
+    tags: ['toast', 'notification', 'message', 'temporary', 'enterprise', 'analytics', 'accessibility']
+  },
+
+  'sonner': {
+    category: 'Feedback' as ComponentCategory,
+    title: 'Sonner',
+    description: 'A modern toast notification system with rich features, customizable themes, and enterprise-grade analytics and accessibility support.',
+    version: '2.12.3',
+    status: 'stable' as const,
+    tags: ['sonner', 'toast', 'notification', 'modern', 'enterprise', 'analytics', 'accessibility']
   }
 } as const
 

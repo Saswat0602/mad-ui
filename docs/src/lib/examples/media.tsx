@@ -126,6 +126,88 @@ export function CarouselExample() {
           </Carousel>
         </div>
       )
+    },
+    {
+      title: 'Enterprise Features',
+      description: 'Carousel with autoplay, analytics, and accessibility features',
+      code: `import { Carousel } from 'mad-ui-components'
+
+export function EnterpriseCarousel() {
+  const items = [
+    {
+      id: 'slide-1',
+      image: '/api/placeholder/400/300',
+      title: 'Welcome to Our Platform',
+      description: 'Discover amazing features and capabilities'
+    },
+    {
+      id: 'slide-2',
+      image: '/api/placeholder/400/300',
+      title: 'Advanced Analytics',
+      description: 'Get insights with our powerful analytics tools'
+    },
+    {
+      id: 'slide-3',
+      image: '/api/placeholder/400/300',
+      title: 'Enterprise Security',
+      description: 'Bank-grade security for your data and applications'
+    }
+  ]
+
+  return (
+    <Carousel
+      items={items}
+      autoplay={true}
+      autoplayInterval={4000}
+      loop={true}
+      showDots={true}
+      showArrows={true}
+      orientation="horizontal"
+      analyticsId="hero-carousel"
+      analyticsEvent="carousel_interaction"
+      analyticsData={{ section: 'hero' }}
+      ariaLabel="Hero carousel with platform features"
+      dataTestId="hero-carousel"
+      onSlideChange={(index) => console.log('Slide changed to:', index)}
+      onAnalytics={(event, data) => {
+        console.log('Carousel analytics:', event, data)
+      }}
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <Carousel
+            analyticsId="hero-carousel"
+            analyticsEvent="carousel_interaction"
+            analyticsData={{ section: 'hero' }}
+            ariaLabel="Hero carousel with platform features"
+            dataTestId="hero-carousel"
+            onAnalytics={(event, data) => {
+              console.log('Carousel analytics:', event, data)
+            }}
+          >
+            <div className="flex items-center justify-center h-64 bg-gray-100 rounded-lg">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold">Welcome to Our Platform</h3>
+                <p className="text-sm text-gray-600">Discover amazing features and capabilities</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-center h-64 bg-gray-200 rounded-lg">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold">Advanced Analytics</h3>
+                <p className="text-sm text-gray-600">Get insights with our powerful analytics tools</p>
+              </div>
+            </div>
+            <div className="flex items-center justify-center h-64 bg-gray-300 rounded-lg">
+              <div className="text-center">
+                <h3 className="text-lg font-semibold">Enterprise Security</h3>
+                <p className="text-sm text-gray-600">Bank-grade security for your data and applications</p>
+              </div>
+            </div>
+          </Carousel>
+        </div>
+      )
     }
   ],
 

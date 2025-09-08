@@ -756,22 +756,6 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
     }
   ],
 
-  alert: [
-    {
-      name: 'variant',
-      type: "'default' | 'destructive'",
-      required: false,
-      default: 'default',
-      description: 'The visual style variant of the alert'
-    },
-    {
-      name: 'children',
-      type: 'React.ReactNode',
-      required: false,
-      description: 'The content to display inside the alert'
-    }
-  ],
-
   label: [
     {
       name: 'htmlFor',
@@ -784,6 +768,1315 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       type: 'React.ReactNode',
       required: false,
       description: 'The content to display inside the label'
+    }
+  ],
+
+  // Form Components
+  accordion: [
+    {
+      name: 'items',
+      type: 'AccordionItem[]',
+      required: true,
+      description: 'Array of accordion items to display'
+    },
+    {
+      name: 'allowMultiple',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether multiple items can be open at once'
+    },
+    {
+      name: 'defaultOpenItems',
+      type: 'string[]',
+      required: false,
+      default: '[]',
+      description: 'Array of item IDs that should be open by default'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'outlined' | 'filled' | 'ghost'",
+      required: false,
+      default: 'default',
+      description: 'The visual style variant'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'The size of the accordion'
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the accordion is disabled'
+    },
+    {
+      name: 'searchable',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to show search functionality'
+    },
+    {
+      name: 'searchPlaceholder',
+      type: 'string',
+      required: false,
+      default: 'Search items...',
+      description: 'Placeholder text for search input'
+    },
+    {
+      name: 'onSearch',
+      type: '(query: string) => void',
+      required: false,
+      description: 'Callback when search query changes'
+    },
+    {
+      name: 'keyboardNavigation',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether to enable keyboard navigation'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onToggle',
+      type: '(itemId: string, isOpen: boolean) => void',
+      required: false,
+      description: 'Callback when an accordion item is toggled'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  calendar: [
+    {
+      name: 'value',
+      type: 'Date | Date[]',
+      required: false,
+      description: 'Selected date(s)'
+    },
+    {
+      name: 'defaultValue',
+      type: 'Date | Date[]',
+      required: false,
+      description: 'Default selected date(s)'
+    },
+    {
+      name: 'mode',
+      type: "'single' | 'multiple' | 'range'",
+      required: false,
+      default: 'single',
+      description: 'Selection mode'
+    },
+    {
+      name: 'locale',
+      type: 'string',
+      required: false,
+      default: 'en-US',
+      description: 'Locale for date formatting'
+    },
+    {
+      name: 'disabled',
+      type: 'boolean | Date[]',
+      required: false,
+      default: 'false',
+      description: 'Whether calendar is disabled or specific dates are disabled'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onSelect',
+      type: '(date: Date | Date[]) => void',
+      required: false,
+      description: 'Callback when date is selected'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  tabs: [
+    {
+      name: 'defaultValue',
+      type: 'string',
+      required: false,
+      description: 'Default active tab value'
+    },
+    {
+      name: 'value',
+      type: 'string',
+      required: false,
+      description: 'Controlled active tab value'
+    },
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      required: false,
+      default: 'horizontal',
+      description: 'Orientation of the tabs'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'outlined' | 'pills' | 'underline'",
+      required: false,
+      default: 'default',
+      description: 'Visual style variant'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'Size of the tabs'
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether tabs are disabled'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: string) => void',
+      required: false,
+      description: 'Callback when tab value changes'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  // Layout Components
+  modal: [
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the modal is open'
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+      description: 'Callback when modal open state changes'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      required: false,
+      description: 'Modal title'
+    },
+    {
+      name: 'description',
+      type: 'string',
+      required: false,
+      description: 'Modal description'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg' | 'xl' | 'full'",
+      required: false,
+      default: 'md',
+      description: 'Size of the modal'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'centered' | 'sidebar' | 'fullscreen'",
+      required: false,
+      default: 'default',
+      description: 'Modal variant'
+    },
+    {
+      name: 'dismissible',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether modal can be dismissed'
+    },
+    {
+      name: 'closeOnOverlayClick',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether clicking overlay closes modal'
+    },
+    {
+      name: 'closeOnEscape',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether pressing Escape closes modal'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  drawer: [
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the drawer is open'
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+      description: 'Callback when drawer open state changes'
+    },
+    {
+      name: 'side',
+      type: "'top' | 'right' | 'bottom' | 'left'",
+      required: false,
+      default: 'right',
+      description: 'Which side the drawer opens from'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg' | 'xl' | 'full'",
+      required: false,
+      default: 'md',
+      description: 'Size of the drawer'
+    },
+    {
+      name: 'dismissible',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether drawer can be dismissed'
+    },
+    {
+      name: 'closeOnOverlayClick',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether clicking overlay closes drawer'
+    },
+    {
+      name: 'closeOnEscape',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether pressing Escape closes drawer'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  tooltip: [
+    {
+      name: 'content',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'Tooltip content'
+    },
+    {
+      name: 'side',
+      type: "'top' | 'right' | 'bottom' | 'left'",
+      required: false,
+      default: 'top',
+      description: 'Preferred side of the trigger to render against'
+    },
+    {
+      name: 'align',
+      type: "'start' | 'center' | 'end'",
+      required: false,
+      default: 'center',
+      description: 'Alignment of the tooltip'
+    },
+    {
+      name: 'sideOffset',
+      type: 'number',
+      required: false,
+      default: '4',
+      description: 'Distance in pixels from the trigger'
+    },
+    {
+      name: 'alignOffset',
+      type: 'number',
+      required: false,
+      default: '0',
+      description: 'Offset in pixels from the alignment'
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: 'Controlled open state'
+    },
+    {
+      name: 'onOpenChange',
+      type: '(open: boolean) => void',
+      required: false,
+      description: 'Callback when open state changes'
+    },
+    {
+      name: 'delayDuration',
+      type: 'number',
+      required: false,
+      default: '700',
+      description: 'Delay in milliseconds before showing tooltip'
+    },
+    {
+      name: 'disableHoverableContent',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to disable hoverable content'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  // Media Components
+  carousel: [
+    {
+      name: 'items',
+      type: 'CarouselItem[]',
+      required: true,
+      description: 'Array of carousel items'
+    },
+    {
+      name: 'autoplay',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to autoplay the carousel'
+    },
+    {
+      name: 'autoplayInterval',
+      type: 'number',
+      required: false,
+      default: '5000',
+      description: 'Autoplay interval in milliseconds'
+    },
+    {
+      name: 'loop',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether to loop the carousel'
+    },
+    {
+      name: 'showDots',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether to show navigation dots'
+    },
+    {
+      name: 'showArrows',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether to show navigation arrows'
+    },
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      required: false,
+      default: 'horizontal',
+      description: 'Carousel orientation'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onSlideChange',
+      type: '(index: number) => void',
+      required: false,
+      description: 'Callback when slide changes'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  // Navigation Components
+  navbar: [
+    {
+      name: 'brand',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Brand/logo content'
+    },
+    {
+      name: 'items',
+      type: 'NavItem[]',
+      required: false,
+      description: 'Navigation items'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'transparent' | 'solid' | 'bordered'",
+      required: false,
+      default: 'default',
+      description: 'Visual style variant'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'Size of the navbar'
+    },
+    {
+      name: 'sticky',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether navbar should stick to top'
+    },
+    {
+      name: 'mobileMenu',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Mobile menu content'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  sidebar: [
+    {
+      name: 'items',
+      type: 'SidebarItem[]',
+      required: true,
+      description: 'Sidebar navigation items'
+    },
+    {
+      name: 'collapsed',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether sidebar is collapsed'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'minimal' | 'bordered' | 'floating'",
+      required: false,
+      default: 'default',
+      description: 'Visual style variant'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'Size of the sidebar'
+    },
+    {
+      name: 'persistent',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether sidebar state persists across sessions'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onCollapse',
+      type: '(collapsed: boolean) => void',
+      required: false,
+      description: 'Callback when sidebar collapse state changes'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  breadcrumb: [
+    {
+      name: 'items',
+      type: 'BreadcrumbItem[]',
+      required: true,
+      description: 'Breadcrumb items'
+    },
+    {
+      name: 'separator',
+      type: 'React.ReactNode',
+      required: false,
+      default: '/',
+      description: 'Separator between breadcrumb items'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'minimal' | 'bordered' | 'pills'",
+      required: false,
+      default: 'default',
+      description: 'Visual style variant'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'Size of the breadcrumb'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  // Data Components
+  table: [
+    {
+      name: 'data',
+      type: 'T[]',
+      required: true,
+      description: 'Array of data objects'
+    },
+    {
+      name: 'columns',
+      type: 'TableColumn<T>[]',
+      required: true,
+      description: 'Column definitions'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'striped' | 'bordered' | 'hoverable'",
+      required: false,
+      default: 'default',
+      description: 'Visual style variant'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'Size of the table'
+    },
+    {
+      name: 'sortable',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether columns are sortable'
+    },
+    {
+      name: 'selectable',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether rows are selectable'
+    },
+    {
+      name: 'pagination',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to show pagination'
+    },
+    {
+      name: 'pageSize',
+      type: 'number',
+      required: false,
+      default: '10',
+      description: 'Number of items per page'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onSort',
+      type: '(column: string, direction: "asc" | "desc") => void',
+      required: false,
+      description: 'Callback when sorting changes'
+    },
+    {
+      name: 'onSelect',
+      type: '(selectedRows: T[]) => void',
+      required: false,
+      description: 'Callback when row selection changes'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  // Feedback Components
+  alert: [
+    {
+      name: 'variant',
+      type: "'default' | 'destructive' | 'success' | 'warning' | 'info'",
+      required: false,
+      default: 'default',
+      description: 'Visual style variant'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'Size of the alert'
+    },
+    {
+      name: 'dismissible',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether alert can be dismissed'
+    },
+    {
+      name: 'icon',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Custom icon for the alert'
+    },
+    {
+      name: 'title',
+      type: 'string',
+      required: false,
+      description: 'Alert title'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onDismiss',
+      type: '() => void',
+      required: false,
+      description: 'Callback when alert is dismissed'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  toast: [
+    {
+      name: 'title',
+      type: 'string',
+      required: false,
+      description: 'Toast title'
+    },
+    {
+      name: 'description',
+      type: 'string',
+      required: false,
+      description: 'Toast description'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'destructive' | 'success' | 'warning' | 'info'",
+      required: false,
+      default: 'default',
+      description: 'Visual style variant'
+    },
+    {
+      name: 'duration',
+      type: 'number',
+      required: false,
+      default: '5000',
+      description: 'Duration in milliseconds before auto-dismiss'
+    },
+    {
+      name: 'position',
+      type: "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
+      required: false,
+      default: 'top-right',
+      description: 'Position of the toast'
+    },
+    {
+      name: 'dismissible',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether toast can be dismissed'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onDismiss',
+      type: '() => void',
+      required: false,
+      description: 'Callback when toast is dismissed'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  sonner: [
+    {
+      name: 'position',
+      type: "'top-left' | 'top-center' | 'top-right' | 'bottom-left' | 'bottom-center' | 'bottom-right'",
+      required: false,
+      default: 'top-right',
+      description: 'Position of the toast notifications'
+    },
+    {
+      name: 'theme',
+      type: "'light' | 'dark' | 'system'",
+      required: false,
+      default: 'system',
+      description: 'Theme for the toast notifications'
+    },
+    {
+      name: 'richColors',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to use rich colors'
+    },
+    {
+      name: 'closeButton',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to show close button'
+    },
+    {
+      name: 'duration',
+      type: 'number',
+      required: false,
+      default: '4000',
+      description: 'Default duration in milliseconds'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
     }
   ]
 } as const

@@ -100,6 +100,86 @@ export function MultipleAccordion() {
           />
         </div>
       )
+    },
+    {
+      title: 'Enterprise Features',
+      description: 'Accordion with analytics, search, and accessibility features',
+      code: `import { Accordion } from 'mad-ui-components'
+
+export function EnterpriseAccordion() {
+  const items = [
+    {
+      id: 'item-1',
+      title: 'Getting Started',
+      content: 'Learn the basics of our platform and how to get started quickly.'
+    },
+    {
+      id: 'item-2',
+      title: 'Advanced Features',
+      content: 'Explore advanced features and customization options.'
+    },
+    {
+      id: 'item-3',
+      title: 'API Reference',
+      content: 'Complete API documentation and examples.'
+    }
+  ]
+
+  return (
+    <Accordion
+      items={items}
+      allowMultiple={true}
+      variant="outlined"
+      size="md"
+      searchable={true}
+      searchPlaceholder="Search documentation..."
+      keyboardNavigation={true}
+      analyticsId="docs-accordion"
+      analyticsEvent="accordion_interaction"
+      analyticsData={{ section: 'documentation' }}
+      ariaLabel="Documentation sections"
+      dataTestId="docs-accordion"
+      onSearch={(query) => console.log('Search:', query)}
+      onToggle={(itemId, isOpen) => console.log('Toggle:', itemId, isOpen)}
+      onAnalytics={(event, data) => {
+        console.log('Analytics:', event, data)
+      }}
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <Accordion
+            items={[
+              {
+                id: 'item-1',
+                title: 'Getting Started',
+                content: 'Learn the basics of our platform and how to get started quickly.'
+              },
+              {
+                id: 'item-2',
+                title: 'Advanced Features',
+                content: 'Explore advanced features and customization options.'
+              },
+              {
+                id: 'item-3',
+                title: 'API Reference',
+                content: 'Complete API documentation and examples.'
+              }
+            ]}
+            variant="default"
+            size="md"
+            analyticsId="docs-accordion"
+            analyticsEvent="accordion_interaction"
+            analyticsData={{ section: 'documentation' }}
+            ariaLabel="Documentation sections"
+            dataTestId="docs-accordion"
+            onAnalytics={(event, data) => {
+              console.log('Analytics:', event, data)
+            }}
+          />
+        </div>
+      )
     }
   ],
 
