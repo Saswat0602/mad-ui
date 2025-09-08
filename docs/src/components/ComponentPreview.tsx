@@ -28,24 +28,24 @@ export function ComponentPreview({
     <div className="border border-border rounded-lg overflow-hidden bg-card/50 backdrop-blur-sm hover:bg-card transition-all duration-200 hover:shadow-md hover:shadow-primary/5">
       <div className="relative">
         {/* Action Buttons */}
-        <div className="absolute top-3 right-3 z-10 flex gap-2">
+        <div className="absolute top-2 right-2 z-10 flex gap-1.5">
           <Button
             variant={showCode ? "secondary" : "outline"}
             size="sm"
             onClick={() => setShowCode(!showCode)}
-            className="h-7 px-2 text-xs bg-background/80 backdrop-blur-sm border-border/50 hover:bg-background/90"
+            className="h-6 px-2 text-xs bg-background/90 backdrop-blur-sm border-border/50 hover:bg-background shadow-sm"
           >
-            {showCode ? <Eye className="w-3 h-3 mr-1" /> : <Code className="w-3 h-3 mr-1" />}
-            {showCode ? 'View' : 'Code'}
+            {showCode ? <Eye className="w-3 h-3" /> : <Code className="w-3 h-3" />}
+            <span className="ml-1 hidden sm:inline">{showCode ? 'View' : 'Code'}</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={handleCopy}
-            className="h-7 px-2 text-xs bg-background/80 backdrop-blur-sm border-border/50 hover:bg-background/90"
+            className="h-6 px-2 text-xs bg-background/90 backdrop-blur-sm border-border/50 hover:bg-background shadow-sm"
           >
-            <Copy className="w-3 h-3 mr-1" />
-            {copied ? 'Copied!' : 'Copy'}
+            <Copy className="w-3 h-3" />
+            <span className="ml-1 hidden sm:inline">{copied ? 'Copied!' : 'Copy'}</span>
           </Button>
         </div>
         
@@ -53,7 +53,7 @@ export function ComponentPreview({
           {!showCode ? (
             <div 
               key="preview"
-              className="p-6 bg-gradient-to-br from-background to-muted/20 min-h-[120px] flex items-center justify-center"
+              className="p-4 sm:p-6 bg-gradient-to-br from-background to-muted/20 min-h-[100px] flex items-center justify-center"
             >
               <div className="w-full">
                 {children}
@@ -62,9 +62,11 @@ export function ComponentPreview({
           ) : (
             <div 
               key="code"
-              className="bg-muted/30"
+              className="bg-muted/30 overflow-hidden"
             >
-              <CodeBlock language="tsx" code={code} />
+              <div className="pt-8">
+                <CodeBlock language="tsx" code={code} />
+              </div>
             </div>
           )}
         </AnimatePresence>

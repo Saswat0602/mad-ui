@@ -12,74 +12,173 @@ export const dataExamples: Record<string, ComponentExample[]> = {
   table: [
     {
       title: 'Basic Table',
-      description: 'A simple table component',
+      description: 'A clean, responsive table with sortable columns',
       code: `import { Table } from 'mad-ui-components'
 
-export function TableExample() {
+export function BasicTable() {
   const columns = [
-    { key: 'name', header: 'Name' },
-    { key: 'age', header: 'Age' },
+    { key: 'name', header: 'Name', sortable: true },
+    { key: 'role', header: 'Role', sortable: true },
+    { key: 'status', header: 'Status', sortable: true },
     { key: 'email', header: 'Email' }
   ]
 
   const data = [
-    { name: 'John Doe', age: 30, email: 'john@example.com' },
-    { name: 'Jane Smith', age: 25, email: 'jane@example.com' },
-    { name: 'Bob Johnson', age: 35, email: 'bob@example.com' }
+    { id: '1', name: 'Alex Johnson', role: 'Developer', status: 'Active', email: 'alex@company.com' },
+    { id: '2', name: 'Sarah Chen', role: 'Designer', status: 'Active', email: 'sarah@company.com' },
+    { id: '3', name: 'Mike Wilson', role: 'Manager', status: 'Inactive', email: 'mike@company.com' },
+    { id: '4', name: 'Emma Davis', role: 'Developer', status: 'Active', email: 'emma@company.com' }
   ]
 
-  return <Table columns={columns} data={data} />
+  return (
+    <Table 
+      columns={columns} 
+      data={data} 
+      variant="outlined"
+      hoverable
+      size="md"
+    />
+  )
 }`,
       preview: (
-        <div className="w-full max-w-md">
+        <div className="w-full">
           <Table 
             columns={[
-              { key: 'name', header: 'Name' },
-              { key: 'age', header: 'Age' },
+              { key: 'name', header: 'Name', sortable: true },
+              { key: 'role', header: 'Role', sortable: true },
+              { key: 'status', header: 'Status', sortable: true },
               { key: 'email', header: 'Email' }
             ]} 
             data={[
-              { name: 'John Doe', age: 30, email: 'john@example.com' },
-              { name: 'Jane Smith', age: 25, email: 'jane@example.com' },
-              { name: 'Bob Johnson', age: 35, email: 'bob@example.com' }
-            ]} 
+              { id: '1', name: 'Alex Johnson', role: 'Developer', status: 'Active', email: 'alex@company.com' },
+              { id: '2', name: 'Sarah Chen', role: 'Designer', status: 'Active', email: 'sarah@company.com' },
+              { id: '3', name: 'Mike Wilson', role: 'Manager', status: 'Inactive', email: 'mike@company.com' },
+              { id: '4', name: 'Emma Davis', role: 'Developer', status: 'Active', email: 'emma@company.com' }
+            ]}
+            variant="outlined"
+            hoverable
+            size="md"
           />
         </div>
       )
     },
     {
-      title: 'Editable Table',
-      description: 'A table with add/delete row functionality and inline editing',
-      code: `import { Table } from 'mad-ui-components'
+      title: 'Advanced Table with Selection',
+      description: 'Table with row selection, striped rows, and custom rendering',
+      code: `import { Table, Badge } from 'mad-ui-components'
+import { useState } from 'react'
 
-export function EditableTableExample() {
+export function AdvancedTable() {
+  const [selectedRows, setSelectedRows] = useState<string[]>([])
+
+  const columns = [
+    { key: 'name', header: 'Employee', sortable: true },
+    { key: 'department', header: 'Department', sortable: true },
+    { 
+      key: 'status', 
+      header: 'Status', 
+      render: (value: unknown) => (
+        <Badge variant={value === 'Active' ? 'success' : 'secondary'}>
+          {String(value)}
+        </Badge>
+      )
+    },
+    { key: 'salary', header: 'Salary', align: 'right' as const }
+  ]
+
+  const data = [
+    { id: '1', name: 'John Smith', department: 'Engineering', status: 'Active', salary: '$85,000' },
+    { id: '2', name: 'Lisa Wong', department: 'Design', status: 'Active', salary: '$78,000' },
+    { id: '3', name: 'David Brown', department: 'Marketing', status: 'Inactive', salary: '$65,000' },
+    { id: '4', name: 'Anna Garcia', department: 'Engineering', status: 'Active', salary: '$92,000' }
+  ]
+
+  return (
+    <Table
+      columns={columns}
+      data={data}
+      selectable
+      striped
+      hoverable
+      selectedRows={selectedRows}
+      onSelectionChange={setSelectedRows}
+      variant="elevated"
+      shadow="md"
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full">
+          <Table 
+            columns={[
+              { key: 'name', header: 'Employee', sortable: true },
+              { key: 'department', header: 'Department', sortable: true },
+              { 
+                key: 'status', 
+                header: 'Status', 
+                render: (value: unknown) => (
+                  <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                    value === 'Active' 
+                      ? 'bg-green-100 text-green-800 dark:bg-green-900/20 dark:text-green-400' 
+                      : 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400'
+                  }`}>
+                    {String(value)}
+                  </span>
+                )
+              },
+              { key: 'salary', header: 'Salary', align: 'right' as const }
+            ]} 
+            data={[
+              { id: '1', name: 'John Smith', department: 'Engineering', status: 'Active', salary: '$85,000' },
+              { id: '2', name: 'Lisa Wong', department: 'Design', status: 'Active', salary: '$78,000' },
+              { id: '3', name: 'David Brown', department: 'Marketing', status: 'Inactive', salary: '$65,000' },
+              { id: '4', name: 'Anna Garcia', department: 'Engineering', status: 'Active', salary: '$92,000' }
+            ]}
+            selectable
+            striped
+            hoverable
+            selectedRows={[]}
+            onSelectionChange={() => {}}
+            variant="elevated"
+            shadow="md"
+          />
+        </div>
+      )
+    },
+    {
+      title: 'Interactive Table',
+      description: 'Editable table with add/delete functionality',
+      code: `import { Table } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function InteractiveTable() {
   const [data, setData] = useState([
-    { id: '1', name: 'John Doe', age: 30, email: 'john@example.com' },
-    { id: '2', name: 'Jane Smith', age: 25, email: 'jane@example.com' },
-    { id: '3', name: 'Bob Johnson', age: 35, email: 'bob@example.com' }
+    { id: '1', task: 'Review code', priority: 'High', assignee: 'John' },
+    { id: '2', task: 'Update docs', priority: 'Medium', assignee: 'Sarah' },
+    { id: '3', task: 'Fix bug #123', priority: 'High', assignee: 'Mike' }
   ])
 
   const columns = [
-    { key: 'name', header: 'Name', sortable: true },
-    { key: 'age', header: 'Age', sortable: true },
-    { key: 'email', header: 'Email', sortable: true }
+    { key: 'task', header: 'Task', sortable: true },
+    { key: 'priority', header: 'Priority', sortable: true },
+    { key: 'assignee', header: 'Assignee', sortable: true }
   ]
 
   const handleAddRow = () => {
-    const newRow = {
-      id: String(data.length + 1),
-      name: 'New User',
-      age: 25,
-      email: 'new@example.com'
+    const newTask = {
+      id: String(Date.now()),
+      task: 'New Task',
+      priority: 'Medium',
+      assignee: 'Unassigned'
     }
-    setData([...data, newRow])
+    setData([...data, newTask])
   }
 
   const handleDeleteRow = (row: any, index: number) => {
     setData(data.filter((_, i) => i !== index))
   }
 
-  const handleEditCell = (row: any, column: string, value: any) => {
+  const handleEditCell = (row: any, column: any, value: any) => {
     setData(data.map(item => 
       item.id === row.id ? { ...item, [column]: value } : item
     ))
@@ -95,28 +194,32 @@ export function EditableTableExample() {
       onAddRow={handleAddRow}
       onDeleteRow={handleDeleteRow}
       onEditCell={handleEditCell}
+      variant="outlined"
+      hoverable
     />
   )
 }`,
       preview: (
-        <div className="w-full max-w-md">
+        <div className="w-full">
           <Table 
             columns={[
-              { key: 'name', header: 'Name', sortable: true },
-              { key: 'age', header: 'Age', sortable: true },
-              { key: 'email', header: 'Email', sortable: true }
+              { key: 'task', header: 'Task', sortable: true },
+              { key: 'priority', header: 'Priority', sortable: true },
+              { key: 'assignee', header: 'Assignee', sortable: true }
             ]} 
             data={[
-              { id: '1', name: 'John Doe', age: 30, email: 'john@example.com' },
-              { id: '2', name: 'Jane Smith', age: 25, email: 'jane@example.com' },
-              { id: '3', name: 'Bob Johnson', age: 35, email: 'bob@example.com' }
+              { id: '1', task: 'Review code', priority: 'High', assignee: 'John' },
+              { id: '2', task: 'Update docs', priority: 'Medium', assignee: 'Sarah' },
+              { id: '3', task: 'Fix bug #123', priority: 'High', assignee: 'Mike' }
             ]}
             editable
             showAddRowButton
             showDeleteRowButton
-            onAddRow={() => console.log('Add row')}
+            onAddRow={() => console.log('Add row clicked')}
             onDeleteRow={(row, index) => console.log('Delete row:', row, index)}
             onEditCell={(row, column, value) => console.log('Edit cell:', row, column, value)}
+            variant="outlined"
+            hoverable
           />
         </div>
       )

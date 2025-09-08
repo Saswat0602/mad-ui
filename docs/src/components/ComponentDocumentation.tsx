@@ -174,18 +174,41 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <h3 className="text-lg font-semibold">Installation</h3>
-                    <p className="text-sm text-muted-foreground">Install the MAD UI component library.</p>
+                    <p className="text-sm text-muted-foreground">Choose your preferred installation method.</p>
                   </div>
                   
-                  <div className="relative">
-                    <CodeBlock language="bash" code={`npm install mad-ui-components`} />
-                    <button
-                      onClick={() => navigator.clipboard.writeText('npm install mad-ui-components')}
-                      className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
-                      title="Copy installation command"
-                    >
-                      <Copy className="w-3 h-3" />
-                    </button>
+                  <div className="space-y-3">
+                    {/* Individual Component Installation */}
+                    {getIndividualInstallCommand(slug) && (
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Individual Component</h4>
+                        <div className="relative">
+                          <CodeBlock language="bash" code={getIndividualInstallCommand(slug)!} />
+                          <button
+                            onClick={() => navigator.clipboard.writeText(getIndividualInstallCommand(slug)!)}
+                            className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
+                            title="Copy individual installation"
+                          >
+                            <Copy className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                    
+                    {/* Full Package */}
+                    <div className="space-y-2">
+                      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Full Package</h4>
+                      <div className="relative">
+                        <CodeBlock language="bash" code={`npm install mad-ui-components`} />
+                        <button
+                          onClick={() => navigator.clipboard.writeText('npm install mad-ui-components')}
+                          className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
+                          title="Copy full installation"
+                        >
+                          <Copy className="w-3 h-3" />
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 
@@ -293,6 +316,49 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
 }
 
 // Helper functions for installation and import commands
+function getIndividualInstallCommand(slug: string): string | null {
+  // Map component slugs to their package.json export names
+  const componentMap: Record<string, string> = {
+    button: 'button',
+    input: 'input',
+    label: 'label',
+    card: 'card',
+    checkbox: 'checkbox',
+    radio: 'radio',
+    select: 'select',
+    switch: 'switch',
+    progress: 'progress',
+    slider: 'slider',
+    rating: 'rating',
+    textarea: 'textarea',
+    accordion: 'accordion',
+    breadcrumbs: 'breadcrumbs',
+    calendar: 'calendar',
+    datepicker: 'date-picker',
+    timepicker: 'timepicker',
+    inputotp: 'input-otp',
+    radiogroup: 'radio-group',
+    tabs: 'tabs',
+    modal: 'modal',
+    tooltip: 'tooltip',
+    drawer: 'drawer',
+    popover: 'popover',
+    navbar: 'navbar',
+    sidebar: 'sidebar',
+    table: 'table',
+    alert: 'alert',
+    toast: 'toast',
+    sonner: 'sonner',
+    avatar: 'avatar',
+    badge: 'badge',
+    carousel: 'carousel',
+    skeleton: 'skeleton'
+  }
+  
+  const exportName = componentMap[slug]
+  return exportName ? `npm install mad-ui-components/${exportName}` : null
+}
+
 function getIndividualImportCommand(slug: string): string | null {
   // Map component slugs to their package.json export names
   const componentMap: Record<string, string> = {
