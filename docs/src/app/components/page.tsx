@@ -1,21 +1,27 @@
 "use client"
 
 import Link from "next/link"
-import { Button } from "mad-ui-components/button"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "mad-ui-components/card"
-import { Badge } from "mad-ui-components/badge"
-import { Input } from "mad-ui-components/input"
-import { Label } from "mad-ui-components/label"
-import { Checkbox } from "mad-ui-components/checkbox"
-import { Radio } from "mad-ui-components/radio"
-import { Switch } from "mad-ui-components/switch"
-import { Slider } from "mad-ui-components/slider"
-import { Progress } from "mad-ui-components/progress"
-import { Rating } from "mad-ui-components/rating"
-import { Skeleton } from "mad-ui-components/skeleton"
-import { Textarea } from "mad-ui-components/textarea"
-import { Select } from "mad-ui-components/select"
-import { Separator } from "mad-ui-components/separator"
+import { 
+  Button,
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardHeader, 
+  CardTitle,
+  Badge,
+  Input,
+  Label,
+  Checkbox,
+  Radio,
+  Switch,
+  Slider,
+  Progress,
+  Rating,
+  Skeleton,
+  Textarea,
+  Select,
+  Separator
+} from "mad-ui-components"
 import { 
   Package, 
   Code, 
