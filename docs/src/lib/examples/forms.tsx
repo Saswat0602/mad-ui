@@ -1,6 +1,5 @@
 import React from 'react'
-import { Accordion } from '../../../../src/components/forms/accordion'
-import { Breadcrumbs, Calendar, DatePicker, TimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
+import { Accordion, Breadcrumbs, Calendar, DatePicker, TimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string

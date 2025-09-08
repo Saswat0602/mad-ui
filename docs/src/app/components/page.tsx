@@ -1,8 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Drawer } from '../../../../src/components/layout/drawer'
-import { Accordion } from '../../../../src/components/forms/accordion'
+import { Drawer, Accordion } from 'mad-ui-components'
 import { Menu } from 'lucide-react'
 
 export default function ComponentsDemo() {
