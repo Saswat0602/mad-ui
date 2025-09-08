@@ -1,517 +1,720 @@
-import React, { forwardRef, useState, useEffect, useRef } from 'react'
-import { cn } from '../../lib/utils'
-import { Button } from '../core/button'
-import { MenuIcon, SearchIcon, BellIcon, UserIcon, SettingsIcon, LogOutIcon, SunIcon, MoonIcon, ChevronDownIcon } from '../../icons'
+import React, { useState, useEffect } from 'react';
+import { 
+  Search, Bell, User, Menu, X, ChevronDown, Sun, Moon, Globe, 
+  Settings, LogOut, Heart, Star, ShoppingCart, MessageCircle,
+  Home, Info, Mail, Phone, Briefcase, Image, Award, Zap
+} from 'lucide-react';
+import { cn } from '../../lib/utils';
 
+// Enhanced Navbar Component
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
-  variant?: "default" | "elevated" | "outlined" | "minimal" | "centered" | "split" | "sidebar" | "floating"
-  size?: "sm" | "md" | "lg"
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  shadow?: "none" | "sm" | "md" | "lg" | "xl"
-  fullWidth?: boolean
-  fixed?: boolean
-  transparent?: boolean
-  glassmorphism?: boolean
-  showSearch?: boolean
-  showNotifications?: boolean
-  showUserMenu?: boolean
-  showThemeToggle?: boolean
-  showSidebarToggle?: boolean
-  onSidebarToggle?: () => void
-  onThemeToggle?: () => void
-  onSearch?: (query: string) => void
-  onNotificationClick?: () => void
-  onUserMenuClick?: () => void
-  logo?: React.ReactNode
-  title?: string
-  subtitle?: string
-  actions?: React.ReactNode
-  searchPlaceholder?: string
-  userMenuItems?: Array<{
-    label?: string
-    icon?: React.ReactNode
-    onClick?: () => void
-    divider?: boolean
-  }>
-  navigationItems?: Array<{
-    label: string
-    href?: string
-    onClick?: () => void
-    active?: boolean
-    icon?: React.ReactNode
-  }>
-  showNavigation?: boolean
-  showBrand?: boolean
-  showActions?: boolean
-  brandPosition?: "left" | "center" | "right"
-  navigationPosition?: "left" | "center" | "right"
-  actionsPosition?: "left" | "center" | "right"
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  collapsed?: boolean
-  onCollapse?: (collapsed: boolean) => void
-  breadcrumbs?: Array<{
-    label: string
-    href?: string
-    onClick?: () => void
-  }>
-  showBreadcrumbs?: boolean
-  searchSuggestions?: Array<{
-    label: string
-    value: string
-    onClick?: () => void
-  }>
-  onSearchSuggestionClick?: (suggestion: any) => void
-  notificationCount?: number
-  notificationBadge?: boolean
-  userAvatar?: string
-  userStatus?: "online" | "offline" | "away" | "busy"
-  keyboardShortcuts?: Record<string, () => void>
-  onKeyboardShortcut?: (key: string) => void
-  responsive?: boolean
-  mobileMenuItems?: Array<{
-    label: string
-    href?: string
-    onClick?: () => void
-    icon?: React.ReactNode
-  }>
-  onMobileMenuToggle?: (open: boolean) => void
-  sticky?: boolean
-  scrollBehavior?: "hide" | "show" | "none"
-  onScrollChange?: (scrollY: number) => void
-  zIndex?: number
-  backdrop?: boolean
-  blur?: boolean
+  // Content props
+  brand?: string;
+  brandLogo?: React.ReactNode;
+  navItems?: Array<{
+    id: string;
+    label: string;
+    icon?: React.ComponentType<{ size?: number; className?: string }>;
+    active?: boolean;
+    badge?: string;
+    badgeColor?: string;
+    dropdown?: Array<{
+      label: string;
+      icon?: React.ComponentType<{ size?: number; className?: string }>;
+      action?: () => void;
+      danger?: boolean;
+    }>;
+  }>;
+  
+  // User/Profile props
+  showProfile?: boolean;
+  profileImage?: string;
+  profileName?: string;
+  profileRole?: string;
+  profileMenuItems?: Array<{
+    label: string;
+    icon?: React.ComponentType<{ size?: number; className?: string }>;
+    action?: () => void;
+    danger?: boolean;
+  }>;
+  
+  // Search props
+  showSearch?: boolean;
+  searchPlaceholder?: string;
+  searchWidth?: string;
+  onSearch?: (query: string) => void;
+  
+  // Notification props
+  showNotifications?: boolean;
+  notificationCount?: number;
+  notificationItems?: Array<{
+    title: string;
+    message: string;
+    time: string;
+    unread?: boolean;
+  }>;
+  onNotificationClick?: () => void;
+  
+  // Theme & Styling
+  theme?: "light" | "dark" | "gradient" | "glass" | "colorful";
+  position?: "sticky" | "fixed" | "static";
+  height?: string;
+  backgroundColor?: string;
+  textColor?: string;
+  primaryColor?: string;
+  gradient?: string;
+  blur?: boolean;
+  shadow?: string;
+  borderRadius?: string;
+  
+  // Layout props
+  container?: string;
+  padding?: string;
+  alignment?: "justify-between" | "justify-center" | "justify-start";
+  mobileBreakpoint?: string;
+  
+  // Behavior props
+  showMobileMenu?: boolean;
+  onMobileToggle?: (open: boolean) => void;
+  hideOnScroll?: boolean;
+  shrinkOnScroll?: boolean;
+  animationDuration?: string;
+  
+  // Additional features
+  showLanguageSwitch?: boolean;
+  showThemeToggle?: boolean;
+  showCTA?: boolean;
+  ctaText?: string;
+  ctaAction?: () => void;
+  
+  // Advanced customization
+  leftContent?: React.ReactNode;
+  centerContent?: React.ReactNode;
+  rightContent?: React.ReactNode;
+  customClasses?: string;
+  itemCustomClasses?: string;
+  
+  // Callbacks
+  onItemClick?: (item: any, index: number) => void;
+  onBrandClick?: () => void;
 }
 
 const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
-  ({ 
-    className, 
-    variant = "default",
-    size = "md",
-    color,
-    backgroundColor,
-    borderColor,
-    shadow = "md",
-    fullWidth = true,
-    fixed = false,
-    transparent = false,
-    glassmorphism = false,
+  ({
+    // Content props
+    brand = "Brand",
+    brandLogo = null,
+    navItems = [],
+    
+    // User/Profile props
+    showProfile = true,
+    profileImage = "",
+    profileName = "User",
+    profileRole = "",
+    profileMenuItems = [],
+    
+    // Search props
     showSearch = true,
-    showNotifications = true,
-    showUserMenu = true,
-    showThemeToggle = true,
-    showSidebarToggle = false,
-    onSidebarToggle,
-    onThemeToggle,
-    onSearch,
-    onNotificationClick,
-    onUserMenuClick,
-    logo,
-    title = "Dashboard",
-    subtitle,
-    actions,
     searchPlaceholder = "Search...",
-    userMenuItems = [
-      { label: "Profile", icon: <UserIcon className="w-4 h-4" />, onClick: () => {} },
-      { label: "Settings", icon: <SettingsIcon className="w-4 h-4" />, onClick: () => {} },
-      { divider: true },
-      { label: "Logout", icon: <LogOutIcon className="w-4 h-4" />, onClick: () => {} }
-    ],
-    navigationItems = [],
-    showNavigation = false,
-    showBrand = true,
-    showActions = true,
-    brandPosition = "left",
-    navigationPosition = "center",
-    actionsPosition = "right",
-    style,
-    ...props 
+    searchWidth = "w-96",
+    onSearch = () => {},
+    
+    // Notification props
+    showNotifications = true,
+    notificationCount = 0,
+    notificationItems = [],
+    onNotificationClick = () => {},
+    
+    // Theme & Styling
+    theme = "light",
+    position = "sticky",
+    height = "h-16",
+    backgroundColor = "",
+    textColor = "",
+    primaryColor = "blue",
+    gradient = "from-blue-600 to-purple-600",
+    blur = true,
+    shadow = "shadow-lg",
+    borderRadius = "",
+    
+    // Layout props
+    container = "container mx-auto",
+    padding = "px-6",
+    alignment = "justify-between",
+    mobileBreakpoint = "lg",
+    
+    // Behavior props
+    showMobileMenu = false,
+    onMobileToggle = () => {},
+    hideOnScroll = false,
+    shrinkOnScroll = false,
+    animationDuration = "duration-300",
+    
+    // Additional features
+    showLanguageSwitch = false,
+    showThemeToggle = false,
+    showCTA = false,
+    ctaText = "Get Started",
+    ctaAction = () => {},
+    
+    // Advanced customization
+    leftContent = null,
+    centerContent = null,
+    rightContent = null,
+    customClasses = "",
+    itemCustomClasses = "",
+    
+    // Callbacks
+    onItemClick = () => {},
+    onBrandClick = () => {},
+    
+    className,
+    ...props
   }, ref) => {
-    
-    const [isSearchOpen, setIsSearchOpen] = React.useState(false)
-    const [isUserMenuOpen, setIsUserMenuOpen] = React.useState(false)
-    const [searchQuery, setSearchQuery] = React.useState("")
-    const [isScrolled, setIsScrolled] = React.useState(false)
-    const searchRef = React.useRef<HTMLInputElement>(null)
-    const userMenuRef = React.useRef<HTMLDivElement>(null)
-    
-    // Size classes
-    const sizeClasses = {
-      sm: "h-12 px-4",
-      md: "h-16 px-6",
-      lg: "h-20 px-8"
-    }
-    
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg",
-      xl: "shadow-xl"
-    }
-    
-    // Variant styles
-    const getVariantStyles = () => {
-      switch (variant) {
-        case "elevated":
-          return {
-            backgroundColor: backgroundColor || "var(--bg-card)",
-            border: "none",
-            boxShadow: glassmorphism ? "0 8px 32px rgba(0, 0, 0, 0.1)" : shadowClasses[shadow]
-          }
-        case "outlined":
-          return {
-            backgroundColor: transparent ? "transparent" : (backgroundColor || "var(--bg-card)"),
-            border: `1px solid ${borderColor || "var(--border-primary)"}`,
-            boxShadow: "none"
-          }
-        case "minimal":
-          return {
-            backgroundColor: "transparent",
-            border: "none",
-            boxShadow: "none"
-          }
-        case "centered":
-          return {
-            backgroundColor: backgroundColor || "var(--bg-card)",
-            border: `1px solid ${borderColor || "var(--border-primary)"}`,
-            boxShadow: shadowClasses[shadow]
-          }
-        case "split":
-          return {
-            backgroundColor: backgroundColor || "var(--bg-card)",
-            border: `1px solid ${borderColor || "var(--border-primary)"}`,
-            boxShadow: shadowClasses[shadow]
-          }
-        case "sidebar":
-          return {
-            backgroundColor: backgroundColor || "var(--bg-card)",
-            border: "none",
-            boxShadow: shadowClasses[shadow]
-          }
-        case "floating":
-          return {
-            backgroundColor: backgroundColor || "var(--bg-card)",
-            border: "none",
-            boxShadow: "0 4px 20px rgba(0, 0, 0, 0.15)",
-            borderRadius: "12px"
-          }
-        default:
-          return {
-            backgroundColor: backgroundColor || "var(--bg-card)",
-            border: `1px solid ${borderColor || "var(--border-primary)"}`,
-            boxShadow: shadowClasses[shadow]
-          }
-      }
-    }
-    
-    // Custom styles
-    const customStyles: React.CSSProperties = {
-      color: color || "var(--text-primary)",
-      ...getVariantStyles(),
-      ...style
-    }
-    
-    // Handle scroll effect
-    React.useEffect(() => {
-      const handleScroll = () => {
-        setIsScrolled(window.scrollY > 10)
-      }
-      
-      if (fixed) {
-        window.addEventListener('scroll', handleScroll)
-        return () => window.removeEventListener('scroll', handleScroll)
-      }
-    }, [fixed])
-    
-    // Handle click outside
-    React.useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
-          setIsSearchOpen(false)
-        }
-        if (userMenuRef.current && !userMenuRef.current.contains(event.target as Node)) {
-          setIsUserMenuOpen(false)
-        }
-      }
+    const [isScrolled, setIsScrolled] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
+    const [showProfileMenu, setShowProfileMenu] = useState(false);
+    const [showNotificationMenu, setShowNotificationMenu] = useState(false);
+    const [currentTheme, setCurrentTheme] = useState("light");
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(showMobileMenu);
 
-      document.addEventListener("mousedown", handleClickOutside)
-      return () => document.removeEventListener("mousedown", handleClickOutside)
-    }, [])
-    
-    // Handle search
-    const handleSearch = (e: React.FormEvent) => {
-      e.preventDefault()
-      if (onSearch && searchQuery.trim()) {
-        onSearch(searchQuery.trim())
-        setIsSearchOpen(false)
-        setSearchQuery("")
+    // Handle scroll effects
+    useEffect(() => {
+      if (hideOnScroll || shrinkOnScroll) {
+        const handleScroll = () => {
+          setIsScrolled(window.scrollY > 20);
+        };
+        window.addEventListener('scroll', handleScroll);
+        return () => window.removeEventListener('scroll', handleScroll);
       }
-    }
-    
-    // Handle search toggle
-    const toggleSearch = () => {
-      setIsSearchOpen(!isSearchOpen)
-      if (!isSearchOpen && searchRef.current) {
-        setTimeout(() => searchRef.current?.focus(), 100)
+    }, [hideOnScroll, shrinkOnScroll]);
+
+    // Theme configurations
+    const themes = {
+      light: {
+        bg: blur ? "bg-white/80 backdrop-blur-xl" : "bg-white",
+        text: "text-gray-900",
+        textSecondary: "text-gray-600",
+        hover: "hover:text-blue-600 hover:bg-gray-100",
+        border: "border-gray-200",
+        dropdown: "bg-white border-gray-200 shadow-xl"
+      },
+      dark: {
+        bg: blur ? "bg-gray-900/80 backdrop-blur-xl" : "bg-gray-900",
+        text: "text-white",
+        textSecondary: "text-gray-300",
+        hover: "hover:text-blue-400 hover:bg-gray-800",
+        border: "border-gray-700",
+        dropdown: "bg-gray-800 border-gray-700 shadow-xl"
+      },
+      gradient: {
+        bg: `bg-gradient-to-r ${gradient} ${blur ? 'backdrop-blur-xl' : ''}`,
+        text: "text-white",
+        textSecondary: "text-white/80",
+        hover: "hover:text-white hover:bg-white/10",
+        border: "border-white/20",
+        dropdown: "bg-gray-900 border-gray-700 shadow-xl"
+      },
+      glass: {
+        bg: "bg-white/10 backdrop-blur-2xl border-white/20",
+        text: "text-white",
+        textSecondary: "text-white/70",
+        hover: "hover:text-white hover:bg-white/20",
+        border: "border-white/30",
+        dropdown: "bg-white/10 backdrop-blur-xl border-white/20 shadow-xl"
+      },
+      colorful: {
+        bg: "bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500",
+        text: "text-white",
+        textSecondary: "text-white/90",
+        hover: "hover:text-white hover:bg-black/10",
+        border: "border-white/30",
+        dropdown: "bg-gray-900 border-gray-700 shadow-xl"
       }
-    }
-    
+    };
+
+    const themeConfig = themes[theme];
+
+    // Dynamic classes based on scroll
+    const navbarClasses = cn(
+      position === 'fixed' ? 'fixed' : position === 'sticky' ? 'sticky' : 'relative',
+      'top-0 left-0 right-0 z-50',
+      shrinkOnScroll && isScrolled ? 'h-12' : height,
+      themeConfig.bg,
+      themeConfig.text,
+      shadow,
+      borderRadius,
+      customClasses,
+      `transition-all ${animationDuration}`,
+      hideOnScroll && isScrolled ? '-translate-y-full' : 'translate-y-0',
+      `border-b ${themeConfig.border}`,
+      className
+    );
+
+    const handleMobileToggle = () => {
+      setIsMobileMenuOpen(!isMobileMenuOpen);
+      onMobileToggle(!isMobileMenuOpen);
+    };
+
+    const handleSearch = (value: string) => {
+      setSearchQuery(value);
+      onSearch(value);
+    };
+
+    // Profile menu items default
+    const defaultProfileItems = [
+      { icon: User, label: "Profile", action: () => console.log("Profile") },
+      { icon: Settings, label: "Settings", action: () => console.log("Settings") },
+      { icon: LogOut, label: "Sign Out", action: () => console.log("Sign Out"), danger: true }
+    ];
+
+    const profileItems = profileMenuItems.length > 0 ? profileMenuItems : defaultProfileItems;
+
     return (
-      <nav
-        ref={ref}
-        className={cn(
-          "relative z-50 transition-all duration-300 ease-in-out",
-          fixed && "fixed top-0 left-0 right-0",
-          fullWidth ? "w-full" : "max-w-7xl mx-auto",
-          sizeClasses[size],
-          glassmorphism && "backdrop-blur-md bg-opacity-80",
-          isScrolled && "bg-opacity-95 backdrop-blur-md",
-          className
-        )}
-        style={customStyles}
-        {...props}
-      >
-        {/* Render different layouts based on variant */}
-        {variant === "centered" ? (
-          <div className="flex items-center justify-center h-full">
-            {showBrand && (
-              <div className="flex items-center space-x-4">
-                {logo && <div className="flex-shrink-0">{logo}</div>}
-                <div className="flex flex-col">
-                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h1>
-                  {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
-                </div>
-              </div>
-            )}
-          </div>
-        ) : variant === "split" ? (
-          <div className="flex items-center justify-between h-full">
-            <div className="flex items-center space-x-4">
-              {showSidebarToggle && (
-                <Button variant="ghost" size="sm" onClick={onSidebarToggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                  <MenuIcon className="w-5 h-5" />
-                </Button>
-              )}
-              {showBrand && (
-                <>
-                  {logo && <div className="flex-shrink-0">{logo}</div>}
-                  <div className="flex flex-col">
-                    <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h1>
-                    {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
-                  </div>
-                </>
-              )}
-            </div>
-            <div className="flex items-center space-x-2">
-              {showNavigation && navigationItems.map((item, index) => (
-                <a
-                  key={index}
-                  href={item.href}
-                  onClick={item.onClick}
-                  className={cn(
-                    "px-3 py-2 text-sm font-medium rounded-md transition-colors",
-                    item.active 
-                      ? "bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300" 
-                      : "text-gray-600 hover:text-gray-900 dark:text-gray-300 dark:hover:text-white"
-                  )}
-                >
-                  {item.icon && <span className="mr-2">{item.icon}</span>}
-                  {item.label}
-                </a>
-              ))}
-            </div>
-            <div className="flex items-center space-x-2">
-              {showActions && actions}
-              {showThemeToggle && (
-                <Button variant="ghost" size="sm" onClick={onThemeToggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                  <SunIcon className="w-5 h-5 dark:hidden" />
-                  <MoonIcon className="w-5 h-5 hidden dark:block" />
-                </Button>
-              )}
-              {showUserMenu && (
-                <div className="relative" ref={userMenuRef}>
-                  <Button variant="ghost" size="sm" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                      <UserIcon className="w-4 h-4 text-white" />
-                    </div>
-                    <span className="hidden md:block text-sm font-medium">User</span>
-                    <ChevronDownIcon className={cn("w-4 h-4 transition-transform duration-200", isUserMenuOpen && "rotate-180")} />
-                  </Button>
-                  {isUserMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
-                      {userMenuItems.map((item, index) => (
-                        <React.Fragment key={index}>
-                          {item.divider ? (
-                            <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
-                          ) : (
-                            <button onClick={item.onClick || (() => {})} className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-150">
-                              {item.icon}
-                              <span>{item.label}</span>
-                            </button>
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        ) : variant === "floating" ? (
-          <div className="flex items-center justify-between h-full px-6">
-            {showBrand && (
-              <div className="flex items-center space-x-4">
-                {logo && <div className="flex-shrink-0">{logo}</div>}
-                <div className="flex flex-col">
-                  <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h1>
-                  {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
-                </div>
-              </div>
-            )}
-            <div className="flex items-center space-x-2">
-              {showActions && actions}
-              {showThemeToggle && (
-                <Button variant="ghost" size="sm" onClick={onThemeToggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                  <SunIcon className="w-5 h-5 dark:hidden" />
-                  <MoonIcon className="w-5 h-5 hidden dark:block" />
-                </Button>
-              )}
-              {showUserMenu && (
-                <div className="relative" ref={userMenuRef}>
-                  <Button variant="ghost" size="sm" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                      <UserIcon className="w-4 h-4 text-white" />
-                    </div>
-                    <span className="hidden md:block text-sm font-medium">User</span>
-                    <ChevronDownIcon className={cn("w-4 h-4 transition-transform duration-200", isUserMenuOpen && "rotate-180")} />
-                  </Button>
-                  {isUserMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
-                      {userMenuItems.map((item, index) => (
-                        <React.Fragment key={index}>
-                          {item.divider ? (
-                            <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
-                          ) : (
-                            <button onClick={item.onClick || (() => {})} className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-150">
-                              {item.icon}
-                              <span>{item.label}</span>
-                            </button>
-                          )}
-                        </React.Fragment>
-                      ))}
-                    </div>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="flex items-center justify-between h-full">
-            {/* Left Section - Logo & Title */}
-            <div className="flex items-center space-x-4">
-              {showSidebarToggle && (
-                <Button variant="ghost" size="sm" onClick={onSidebarToggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                  <MenuIcon className="w-5 h-5" />
-                </Button>
-              )}
-              {showBrand && (
-                <>
-                  {logo && <div className="flex-shrink-0">{logo}</div>}
-                  <div className="flex flex-col">
-                    <h1 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h1>
-                    {subtitle && <p className="text-sm text-gray-500 dark:text-gray-400">{subtitle}</p>}
-                  </div>
-                </>
-              )}
-            </div>
+      <nav ref={ref} className={navbarClasses} {...props}>
+        <div className={cn(container, padding, "h-full")}>
+          <div className={cn("flex items-center", alignment, "h-full")}>
             
-            {/* Center Section - Search */}
-            {showSearch && (
-              <div className="flex-1 max-w-md mx-8">
-                <form onSubmit={handleSearch} className="relative">
-                  <div className="relative">
-                    <SearchIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                    <input
-                      ref={searchRef}
-                      type="text"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                      placeholder={searchPlaceholder}
-                      className={cn(
-                        "w-full pl-10 pr-4 py-2 bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg text-sm transition-all duration-200",
-                        "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-                        "placeholder-gray-400 dark:placeholder-gray-500"
+            {/* Left Content */}
+            <div className="flex items-center space-x-8">
+              {leftContent || (
+                <>
+                  {/* Brand/Logo */}
+                  <button
+                    onClick={onBrandClick}
+                    className={cn(
+                      "flex items-center space-x-3",
+                      themeConfig.hover,
+                      "rounded-lg px-3 py-2 transition-all",
+                      animationDuration,
+                      "group"
+                    )}
+                  >
+                    {brandLogo && (
+                      <div className={cn(
+                        shrinkOnScroll && isScrolled ? 'w-6 h-6' : 'w-8 h-8',
+                        "transition-all",
+                        animationDuration,
+                        "group-hover:scale-110"
+                      )}>
+                        {brandLogo}
+                      </div>
+                    )}
+                    <span className={cn(
+                      "font-bold",
+                      shrinkOnScroll && isScrolled ? 'text-lg' : 'text-xl',
+                      "transition-all",
+                      animationDuration
+                    )}>
+                      {brand}
+                    </span>
+                  </button>
+
+                  {/* Desktop Navigation Items */}
+                  <div className={cn("hidden", `${mobileBreakpoint}:flex`, "items-center space-x-1")}>
+                    {navItems.map((item, index) => {
+                      const Icon = item.icon;
+                      const hasDropdown = item.dropdown && item.dropdown.length > 0;
+                      
+                      return (
+                        <div key={item.id || index} className="relative group">
+                          <button
+                            onClick={() => onItemClick(item, index)}
+                            className={cn(
+                              "flex items-center space-x-2 px-4 py-2 rounded-lg",
+                              `transition-all ${animationDuration}`,
+                              themeConfig.hover,
+                              item.active ? `bg-${primaryColor}-100 text-${primaryColor}-600` : '',
+                              itemCustomClasses,
+                              "group"
+                            )}
+                          >
+                            {Icon && <Icon size={18} className="group-hover:scale-110 transition-transform" />}
+                            <span className="font-medium">{item.label}</span>
+                            {hasDropdown && <ChevronDown size={16} className="group-hover:rotate-180 transition-transform" />}
+                            {item.badge && (
+                              <span className={cn(
+                                "ml-2 px-2 py-1 text-xs rounded-full",
+                                item.badgeColor || `bg-${primaryColor}-500 text-white`,
+                                "animate-pulse"
+                              )}>
+                                {item.badge}
+                              </span>
+                            )}
+                          </button>
+                          
+                          {/* Dropdown Menu */}
+                          {hasDropdown && (
+                            <div className={cn(
+                              "absolute top-full left-0 mt-2 w-48 rounded-xl",
+                              themeConfig.dropdown,
+                              `border ${themeConfig.border}`,
+                              "opacity-0 invisible group-hover:opacity-100 group-hover:visible",
+                              `transition-all ${animationDuration}`,
+                              "transform translate-y-2 group-hover:translate-y-0"
+                            )}>
+                              {item.dropdown?.map((dropItem, dropIndex) => {
+                                const DropIcon = dropItem.icon;
+                                return (
+                                  <button
+                                    key={dropIndex}
+                                    onClick={() => dropItem.action && dropItem.action()}
+                                    className={cn(
+                                      "w-full flex items-center space-x-3 px-4 py-3",
+                                      themeConfig.hover,
+                                      `transition-all ${animationDuration}`,
+                                      dropIndex === 0 ? 'rounded-t-xl' : '',
+                                      dropIndex === (item.dropdown?.length || 0) - 1 ? 'rounded-b-xl' : '',
+                                      dropItem.danger ? 'text-red-500 hover:text-red-400' : ''
+                                    )}
+                                  >
+                                    {DropIcon && <DropIcon size={16} />}
+                                    <span>{dropItem.label}</span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
+            </div>
+
+            {/* Center Content */}
+            <div className="flex-1 flex justify-center">
+              {centerContent || (
+                showSearch && (
+                  <div className={cn("hidden md:block", searchWidth, "max-w-lg")}>
+                    <div className="relative">
+                      <Search size={20} className={cn("absolute left-3 top-1/2 transform -translate-y-1/2", themeConfig.textSecondary)} />
+                      <input
+                        type="text"
+                        placeholder={searchPlaceholder}
+                        value={searchQuery}
+                        onChange={(e) => handleSearch(e.target.value)}
+                        className={cn(
+                          "w-full pl-10 pr-4 py-2 rounded-xl border",
+                          themeConfig.border,
+                          themeConfig.hover,
+                          "bg-transparent placeholder-gray-400",
+                          `focus:outline-none focus:ring-2 focus:ring-${primaryColor}-500`,
+                          `transition-all ${animationDuration}`,
+                          "backdrop-blur-sm"
+                        )}
+                      />
+                      {searchQuery && (
+                        <button
+                          onClick={() => handleSearch("")}
+                          className={cn("absolute right-3 top-1/2 transform -translate-y-1/2", themeConfig.textSecondary, "hover:text-red-500")}
+                        >
+                          <X size={16} />
+                        </button>
                       )}
-                    />
-                  </div>
-                </form>
-              </div>
-            )}
-            
-            {/* Right Section - Actions & User Menu */}
-            <div className="flex items-center space-x-2">
-              {showActions && actions}
-              {showThemeToggle && (
-                <Button variant="ghost" size="sm" onClick={onThemeToggle} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                  <SunIcon className="w-5 h-5 dark:hidden" />
-                  <MoonIcon className="w-5 h-5 hidden dark:block" />
-                </Button>
-              )}
-              {showNotifications && (
-                <Button variant="ghost" size="sm" onClick={onNotificationClick} className="p-2 hover:bg-gray-100 dark:hover:bg-gray-800 relative">
-                  <BellIcon className="w-5 h-5" />
-                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
-                </Button>
-              )}
-              {showUserMenu && (
-                <div className="relative" ref={userMenuRef}>
-                  <Button variant="ghost" size="sm" onClick={() => setIsUserMenuOpen(!isUserMenuOpen)} className="flex items-center space-x-2 p-2 hover:bg-gray-100 dark:hover:bg-gray-800">
-                    <div className="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                      <UserIcon className="w-4 h-4 text-white" />
                     </div>
-                    <span className="hidden md:block text-sm font-medium">User</span>
-                    <ChevronDownIcon className={cn("w-4 h-4 transition-transform duration-200", isUserMenuOpen && "rotate-180")} />
-                  </Button>
-                  {isUserMenuOpen && (
-                    <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-50">
-                      {userMenuItems.map((item, index) => (
-                        <React.Fragment key={index}>
-                          {item.divider ? (
-                            <div className="border-t border-gray-200 dark:border-gray-700 my-1" />
-                          ) : (
-                            <button onClick={item.onClick || (() => {})} className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-center space-x-2 transition-colors duration-150">
-                              {item.icon}
-                              <span>{item.label}</span>
-                            </button>
-                          )}
-                        </React.Fragment>
-                      ))}
+                  </div>
+                )
+              )}
+            </div>
+
+            {/* Right Content */}
+            <div className="flex items-center space-x-4">
+              {rightContent || (
+                <>
+                  {/* Theme Toggle */}
+                  {showThemeToggle && (
+                    <button
+                      onClick={() => setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light')}
+                      className={cn(
+                        "p-2 rounded-lg",
+                        themeConfig.hover,
+                        `transition-all ${animationDuration}`,
+                        "group"
+                      )}
+                      title="Toggle theme"
+                    >
+                      <div className="group-hover:rotate-180 transition-transform duration-500">
+                        {currentTheme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
+                      </div>
+                    </button>
+                  )}
+
+                  {/* Language Switch */}
+                  {showLanguageSwitch && (
+                    <button
+                      className={cn(
+                        "p-2 rounded-lg",
+                        themeConfig.hover,
+                        `transition-all ${animationDuration}`,
+                        "group"
+                      )}
+                      title="Language"
+                    >
+                      <Globe size={20} className="group-hover:scale-110 transition-transform" />
+                    </button>
+                  )}
+
+                  {/* Notifications */}
+                  {showNotifications && (
+                    <div className="relative">
+                      <button
+                        onClick={() => {
+                          setShowNotificationMenu(!showNotificationMenu);
+                          onNotificationClick();
+                        }}
+                        className={cn(
+                          "relative p-2 rounded-lg",
+                          themeConfig.hover,
+                          `transition-all ${animationDuration}`,
+                          "group"
+                        )}
+                        title="Notifications"
+                      >
+                        <Bell size={20} className="group-hover:animate-pulse" />
+                        {notificationCount > 0 && (
+                          <span className={cn(
+                            "absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse"
+                          )}>
+                            {notificationCount > 9 ? '9+' : notificationCount}
+                          </span>
+                        )}
+                      </button>
+
+                      {/* Notifications Dropdown */}
+                      {showNotificationMenu && (
+                        <div className={cn(
+                          "absolute top-full right-0 mt-2 w-80 rounded-xl",
+                          themeConfig.dropdown,
+                          `border ${themeConfig.border}`,
+                          "max-h-96 overflow-y-auto",
+                          "animate-in slide-in-from-top-2 duration-200"
+                        )}>
+                          <div className="p-4 border-b border-gray-200">
+                            <h3 className="font-semibold">Notifications</h3>
+                          </div>
+                          <div className="max-h-64 overflow-y-auto">
+                            {notificationItems.length > 0 ? (
+                              notificationItems.map((notification, index) => (
+                                <div
+                                  key={index}
+                                  className={cn(
+                                    "p-4 border-b border-gray-100 last:border-b-0",
+                                    themeConfig.hover,
+                                    `transition-all ${animationDuration}`
+                                  )}
+                                >
+                                  <div className="flex items-start space-x-3">
+                                    <div className={cn(
+                                      "w-2 h-2 rounded-full mt-2",
+                                      notification.unread ? 'bg-blue-500' : 'bg-gray-300'
+                                    )}></div>
+                                    <div className="flex-1">
+                                      <p className="font-medium text-sm">{notification.title}</p>
+                                      <p className={cn("text-sm", themeConfig.textSecondary, "mt-1")}>{notification.message}</p>
+                                      <p className={cn("text-xs", themeConfig.textSecondary, "mt-2")}>{notification.time}</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <div className="p-8 text-center">
+                                <Bell size={32} className={cn("mx-auto", themeConfig.textSecondary, "mb-2")} />
+                                <p className={themeConfig.textSecondary}>No notifications</p>
+                              </div>
+                            )}
+                          </div>
+                        </div>
+                      )}
                     </div>
                   )}
-                </div>
+
+                  {/* CTA Button */}
+                  {showCTA && (
+                    <button
+                      onClick={ctaAction}
+                      className={cn(
+                        "hidden md:block px-6 py-2",
+                        `bg-${primaryColor}-600 hover:bg-${primaryColor}-700`,
+                        "text-white rounded-lg font-medium",
+                        `transition-all ${animationDuration}`,
+                        "transform hover:scale-105 hover:shadow-lg"
+                      )}
+                    >
+                      {ctaText}
+                    </button>
+                  )}
+
+                  {/* Profile Menu */}
+                  {showProfile && (
+                    <div className="relative">
+                      <button
+                        onClick={() => setShowProfileMenu(!showProfileMenu)}
+                        className={cn(
+                          "flex items-center space-x-3",
+                          themeConfig.hover,
+                          "rounded-lg px-3 py-2",
+                          `transition-all ${animationDuration}`,
+                          "group"
+                        )}
+                      >
+                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                          {profileImage ? (
+                            <img src={profileImage} alt="Profile" className="w-full h-full rounded-full object-cover" />
+                          ) : (
+                            <User size={16} className="text-white" />
+                          )}
+                        </div>
+                        <div className="hidden md:block text-left">
+                          <p className="font-medium text-sm">{profileName}</p>
+                          {profileRole && (
+                            <p className={cn("text-xs", themeConfig.textSecondary)}>{profileRole}</p>
+                          )}
+                        </div>
+                        <ChevronDown size={16} className={cn("hidden md:block group-hover:rotate-180 transition-transform", animationDuration)} />
+                      </button>
+
+                      {/* Profile Dropdown */}
+                      {showProfileMenu && (
+                        <div className={cn(
+                          "absolute top-full right-0 mt-2 w-48 rounded-xl",
+                          themeConfig.dropdown,
+                          `border ${themeConfig.border}`,
+                          "animate-in slide-in-from-top-2 duration-200"
+                        )}>
+                          {profileItems.map((item, index) => {
+                            const Icon = item.icon;
+                            return (
+                              <button
+                                key={index}
+                                onClick={() => {
+                                  item.action && item.action();
+                                  setShowProfileMenu(false);
+                                }}
+                                className={cn(
+                                  "w-full flex items-center space-x-3 px-4 py-3",
+                                  themeConfig.hover,
+                                  `transition-all ${animationDuration}`,
+                                  index === 0 ? 'rounded-t-xl' : '',
+                                  index === profileItems.length - 1 ? 'rounded-b-xl' : '',
+                                  item.danger ? 'text-red-500 hover:text-red-400' : ''
+                                )}
+                              >
+                                {Icon && <Icon size={16} />}
+                                <span>{item.label}</span>
+                              </button>
+                            );
+                          })}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Mobile Menu Toggle */}
+                  <button
+                    onClick={handleMobileToggle}
+                    className={cn(
+                      `${mobileBreakpoint}:hidden`,
+                      "p-2 rounded-lg",
+                      themeConfig.hover,
+                      `transition-all ${animationDuration}`
+                    )}
+                    aria-label="Toggle mobile menu"
+                  >
+                    {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                  </button>
+                </>
               )}
             </div>
           </div>
-        )}
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={cn(
+          mobileBreakpoint + ":hidden",
+          isMobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0',
+          "overflow-hidden transition-all",
+          animationDuration,
+          themeConfig.bg,
+          `border-t ${themeConfig.border}`
+        )}>
+          <div className="p-6 space-y-4">
+            {/* Mobile Search */}
+            {showSearch && (
+              <div className="relative">
+                <Search size={20} className={cn("absolute left-3 top-1/2 transform -translate-y-1/2", themeConfig.textSecondary)} />
+                <input
+                  type="text"
+                  placeholder={searchPlaceholder}
+                  value={searchQuery}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  className={cn(
+                    "w-full pl-10 pr-4 py-3 rounded-xl border",
+                    themeConfig.border,
+                    themeConfig.hover,
+                    "bg-transparent placeholder-gray-400",
+                    `focus:outline-none focus:ring-2 focus:ring-${primaryColor}-500`,
+                    `transition-all ${animationDuration}`
+                  )}
+                />
+              </div>
+            )}
+
+            {/* Mobile Navigation Items */}
+            <div className="space-y-2">
+              {navItems.map((item, index) => {
+                const Icon = item.icon;
+                return (
+                  <button
+                    key={item.id || index}
+                    onClick={() => {
+                      onItemClick(item, index);
+                      setIsMobileMenuOpen(false);
+                    }}
+                    className={cn(
+                      "w-full flex items-center space-x-3 p-3 rounded-lg",
+                      themeConfig.hover,
+                      `transition-all ${animationDuration}`,
+                      item.active ? `bg-${primaryColor}-100 text-${primaryColor}-600` : ''
+                    )}
+                  >
+                    {Icon && <Icon size={20} />}
+                    <span className="font-medium">{item.label}</span>
+                    {item.badge && (
+                      <span className={cn(
+                        "ml-auto px-2 py-1 text-xs rounded-full",
+                        item.badgeColor || `bg-${primaryColor}-500 text-white`
+                      )}>
+                        {item.badge}
+                      </span>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Mobile CTA */}
+            {showCTA && (
+              <button
+                onClick={ctaAction}
+                className={cn(
+                  "w-full px-6 py-3",
+                  `bg-${primaryColor}-600 hover:bg-${primaryColor}-700`,
+                  "text-white rounded-lg font-medium",
+                  `transition-all ${animationDuration}`
+                )}
+              >
+                {ctaText}
+              </button>
+            )}
+          </div>
+        </div>
       </nav>
-    )
+    );
   }
-)
+);
 
-Navbar.displayName = "Navbar"
+Navbar.displayName = "Navbar";
 
-export { Navbar }
+export { Navbar };

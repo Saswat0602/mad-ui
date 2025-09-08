@@ -87,12 +87,10 @@ const Layout = React.forwardRef<HTMLDivElement, LayoutProps>(
         {showNavbar && (
           <Navbar
             {...navbar}
-            fixed={fixedNavbar}
-            showSidebarToggle={showSidebar}
-            onSidebarToggle={() => handleSidebarCollapsedChange(!isSidebarCollapsed)}
+            position={fixedNavbar ? "fixed" : "static"}
+            height={`h-${navbarHeight}`}
             style={{
               ...navbar?.style,
-              height: navbarHeight,
               zIndex: 60
             }}
           />
@@ -102,13 +100,10 @@ const Layout = React.forwardRef<HTMLDivElement, LayoutProps>(
         {showSidebar && (
           <Sidebar
             {...sidebar}
-            fixed={fixedSidebar}
-            overlay={overlaySidebar}
-            collapsed={isSidebarCollapsed}
-            onCollapsedChange={handleSidebarCollapsedChange}
-            width={sidebarWidth}
-            collapsedWidth={sidebarCollapsedWidth}
-            mobileBreakpoint={mobileBreakpoint}
+            defaultCollapsed={isSidebarCollapsed}
+            onToggle={handleSidebarCollapsedChange}
+            width={`w-${sidebarWidth}`}
+            collapsedWidth={`w-${sidebarCollapsedWidth}`}
             style={{
               ...sidebar?.style,
               top: navbarOffset,
