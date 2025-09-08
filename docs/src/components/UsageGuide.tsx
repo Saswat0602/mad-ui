@@ -2,7 +2,7 @@
 
 import React from 'react'
 import { CodeBlock } from './CodeBlock'
-import { Badge } from '../../../src/components/media/badge'
+import { Badge } from 'mad-ui-components'
 import { CheckCircle, AlertTriangle, Info, Lightbulb } from 'lucide-react'
 
 interface UsageGuideProps {

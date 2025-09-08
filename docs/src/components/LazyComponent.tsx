@@ -1,7 +1,7 @@
 'use client'
 
 import React, { ComponentType } from 'react'
-import { Skeleton } from '../../../src/components/core/skeleton'
+import { Skeleton } from 'mad-ui-components'
 
 interface LazyComponentProps {
   componentName: string
@@ -18,9 +18,9 @@ const loadComponent = async (componentName: string) => {
   }
 
   try {
-    // Import the component dynamically
-    const componentModule = await import(`../../../src/components/core/${componentName}`)
-    const Component = componentModule[componentName] || componentModule.default
+    // Import the component dynamically from the built package
+    const componentModule = await import(`mad-ui-components`)
+    const Component = (componentModule as unknown as Record<string, ComponentType<unknown>>)[componentName]
     
     if (Component) {
       componentRegistry[componentName] = Component
