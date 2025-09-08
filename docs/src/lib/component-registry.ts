@@ -202,10 +202,10 @@ export const COMPONENT_REGISTRY = {
   'modal': {
     category: 'Layout' as ComponentCategory,
     title: 'Modal',
-    description: 'A modal dialog component for overlays',
-    version: '1.0.0',
+    description: 'Enterprise-level modal component with analytics, accessibility, drag-and-drop, and advanced animations',
+    version: '2.12.2',
     status: 'stable' as const,
-    tags: ['layout', 'modal', 'overlay']
+    tags: ['layout', 'modal', 'overlay', 'enterprise', 'analytics', 'accessibility']
   },
   'popover': {
     category: 'Layout' as ComponentCategory,
@@ -218,18 +218,18 @@ export const COMPONENT_REGISTRY = {
   'tooltip': {
     category: 'Layout' as ComponentCategory,
     title: 'Tooltip',
-    description: 'A tooltip component for additional information',
-    version: '1.0.0',
+    description: 'Enterprise-level tooltip component with analytics, accessibility, advanced positioning, and animations',
+    version: '2.12.2',
     status: 'stable' as const,
-    tags: ['layout', 'tooltip', 'help']
+    tags: ['layout', 'tooltip', 'help', 'enterprise', 'analytics', 'accessibility']
   },
   'drawer': {
     category: 'Layout' as ComponentCategory,
     title: 'Drawer',
-    description: 'A drawer component for slide-out content',
-    version: '1.0.0',
+    description: 'Enterprise-level drawer component with analytics, accessibility, drag-and-drop, and advanced animations',
+    version: '2.12.2',
     status: 'stable' as const,
-    tags: ['layout', 'drawer', 'slide']
+    tags: ['layout', 'drawer', 'slide', 'enterprise', 'analytics', 'accessibility']
   },
   'sheet': {
     category: 'Layout' as ComponentCategory,
