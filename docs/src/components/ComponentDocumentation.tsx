@@ -8,10 +8,11 @@ import { PropsTable } from './PropsTable'
 import { CodeBlock } from './CodeBlock'
 import { StatusBadge } from './StatusBadge'
 import { Badge } from 'mad-ui-components'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Copy } from 'lucide-react'
 import Link from 'next/link'
 import { getComponentExamples } from '@/lib/component-examples'
 import { getComponentProps } from '@/lib/component-props'
+import { getComponentBySlug } from '@/lib/component-registry'
 import { UsageGuide } from './UsageGuide'
 
 interface ComponentDocumentationProps {
@@ -120,34 +121,32 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
         <div className="space-y-8">
           <AnimatePresence mode="wait">
             {activeTab === 'examples' && (
-              <div className="space-y-12">
+              <div className="space-y-6">
                 {examples.length > 0 ? (
                   examples.map((example, index) => (
-                    <div key={index} className="space-y-4">
-                      <div className="space-y-2">
-                        <h3 className="text-xl font-semibold">
+                    <div key={index} className="space-y-3">
+                      <div className="space-y-1">
+                        <h3 className="text-lg font-semibold">
                           {example.title}
                         </h3>
                         {example.description && (
-                          <p className="text-muted-foreground leading-relaxed">
+                          <p className="text-sm text-muted-foreground leading-relaxed">
                             {example.description}
                           </p>
                         )}
                       </div>
                       <ComponentPreview
                         code={example.code}
-                        title={example.title}
-                        description={example.description}
                       >
                         {example.preview}
                       </ComponentPreview>
                     </div>
                   ))
                 ) : (
-                  <div className="text-center py-12">
-                    <div className="text-4xl mb-4">🎨</div>
+                  <div className="text-center py-8">
+                    <div className="text-3xl mb-3">🎨</div>
                     <h3 className="text-lg font-semibold mb-2">No Examples Available</h3>
-                    <p className="text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                       Examples for this component are coming soon.
                     </p>
                   </div>
@@ -170,35 +169,90 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
             )}
 
             {activeTab === 'usage' && (
-              <div className="space-y-8">
-                <div className="space-y-6">
+              <div className="space-y-6">
+                {/* Installation */}
+                <div className="space-y-4">
                   <div className="space-y-2">
-                    <h3 className="text-xl font-semibold">Installation</h3>
-                    <p className="text-muted-foreground">Install the component library to get started.</p>
+                    <h3 className="text-lg font-semibold">Installation</h3>
+                    <p className="text-sm text-muted-foreground">Install the MAD UI component library.</p>
                   </div>
-                  <CodeBlock language="bash" code={`npm install mad-ui-components`} />
+                  
+                  <div className="relative">
+                    <CodeBlock language="bash" code={`npm install mad-ui-components`} />
+                    <button
+                      onClick={() => navigator.clipboard.writeText('npm install mad-ui-components')}
+                      className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
+                      title="Copy installation command"
+                    >
+                      <Copy className="w-3 h-3" />
+                    </button>
+                  </div>
                 </div>
                 
-                <div className="space-y-6">
+                {/* Import */}
+                <div className="space-y-4">
                   <div className="space-y-2">
-                    <h3 className="text-xl font-semibold">Import</h3>
-                    <p className="text-muted-foreground">Import the component in your React application.</p>
+                    <h3 className="text-lg font-semibold">Import</h3>
+                    <p className="text-sm text-muted-foreground">Import the component in your React application.</p>
                   </div>
-                  <CodeBlock 
-                    language="tsx" 
-                    code={`import { ${component.title} } from 'mad-ui-components'`} 
-                  />
+                  
+                  <div className="space-y-3">
+                    {/* Main Import */}
+                    <div className="relative">
+                      <CodeBlock 
+                        language="tsx" 
+                        code={`import { ${component.title} } from 'mad-ui-components'`} 
+                      />
+                      <button
+                        onClick={() => navigator.clipboard.writeText(`import { ${component.title} } from 'mad-ui-components'`)}
+                        className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
+                        title="Copy import statement"
+                      >
+                        <Copy className="w-3 h-3" />
+                      </button>
+                    </div>
+                    
+                    {/* Tree-shaking Import */}
+                    {getIndividualImportCommand(slug) && (
+                      <div className="space-y-2">
+                        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Tree-shaking Optimized</h4>
+                        <div className="relative">
+                          <CodeBlock 
+                            language="tsx" 
+                            code={getIndividualImportCommand(slug)!} 
+                          />
+                          <button
+                            onClick={() => navigator.clipboard.writeText(getIndividualImportCommand(slug)!)}
+                            className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
+                            title="Copy optimized import"
+                          >
+                            <Copy className="w-3 h-3" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 
-                <div className="space-y-6">
+                {/* Basic Usage */}
+                <div className="space-y-4">
                   <div className="space-y-2">
-                    <h3 className="text-xl font-semibold">Basic Usage</h3>
-                    <p className="text-muted-foreground">Here&apos;s a simple example to get you started.</p>
+                    <h3 className="text-lg font-semibold">Basic Usage</h3>
+                    <p className="text-sm text-muted-foreground">Here&apos;s a simple example to get you started.</p>
                   </div>
-                  <CodeBlock 
-                    language="tsx" 
-                    code={examples[0]?.code || `// Basic usage example\n<${component.title} />`} 
-                  />
+                  <div className="relative">
+                    <CodeBlock 
+                      language="tsx" 
+                      code={examples[0]?.code || `// Basic usage example\n<${component.title} />`} 
+                    />
+                    <button
+                      onClick={() => navigator.clipboard.writeText(examples[0]?.code || `// Basic usage example\n<${component.title} />`)}
+                      className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
+                      title="Copy usage example"
+                    >
+                      <Copy className="w-3 h-3" />
+                    </button>
+                  </div>
                 </div>
               </div>
             )}
@@ -236,6 +290,56 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
       </div>
     </div>
   )
+}
+
+// Helper functions for installation and import commands
+function getIndividualImportCommand(slug: string): string | null {
+  // Map component slugs to their package.json export names
+  const componentMap: Record<string, string> = {
+    button: 'button',
+    input: 'input',
+    label: 'label',
+    card: 'card',
+    checkbox: 'checkbox',
+    radio: 'radio',
+    select: 'select',
+    switch: 'switch',
+    progress: 'progress',
+    slider: 'slider',
+    rating: 'rating',
+    textarea: 'textarea',
+    accordion: 'accordion',
+    breadcrumbs: 'breadcrumbs',
+    calendar: 'calendar',
+    datepicker: 'date-picker',
+    timepicker: 'timepicker',
+    inputotp: 'input-otp',
+    radiogroup: 'radio-group',
+    tabs: 'tabs',
+    modal: 'modal',
+    tooltip: 'tooltip',
+    drawer: 'drawer',
+    popover: 'popover',
+    navbar: 'navbar',
+    sidebar: 'sidebar',
+    table: 'table',
+    alert: 'alert',
+    toast: 'toast',
+    sonner: 'sonner',
+    avatar: 'avatar',
+    badge: 'badge',
+    carousel: 'carousel',
+    skeleton: 'skeleton'
+  }
+  
+  const exportName = componentMap[slug]
+  if (!exportName) return null
+  
+  // Get component title from registry
+  const component = getComponentBySlug(slug)
+  const componentName = component?.title || slug
+  
+  return `import { ${componentName} } from 'mad-ui-components/${exportName}'`
 }
 
 // Helper functions for usage guide data

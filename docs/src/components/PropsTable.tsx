@@ -39,21 +39,21 @@ export function PropsTable({ props }: PropsTableProps) {
       </div>
 
       {/* Table */}
-      <div className="rounded-lg border border-border bg-card overflow-hidden">
+      <div className="rounded-lg border border-border bg-card/50 backdrop-blur-sm overflow-hidden shadow-sm">
         <div className="overflow-x-auto">
           <table className="w-full">
             <thead>
-              <tr className="border-b border-border bg-muted/30">
-                <th className="text-left px-6 py-4 text-sm font-semibold text-foreground w-1/4">
+              <tr className="border-b border-border bg-muted/50 dark:bg-muted/30">
+                <th className="text-left px-4 py-3 text-sm font-semibold text-foreground w-1/4">
                   Prop
                 </th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-foreground w-1/4">
+                <th className="text-left px-4 py-3 text-sm font-semibold text-foreground w-1/4">
                   Type
                 </th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-foreground w-1/6">
+                <th className="text-left px-4 py-3 text-sm font-semibold text-foreground w-1/6">
                   Default
                 </th>
-                <th className="text-left px-6 py-4 text-sm font-semibold text-foreground">
+                <th className="text-left px-4 py-3 text-sm font-semibold text-foreground">
                   Description
                 </th>
               </tr>
@@ -62,14 +62,14 @@ export function PropsTable({ props }: PropsTableProps) {
               {props.map((prop, index) => (
                 <tr 
                   key={prop.name} 
-                  className={`border-b border-border/50 hover:bg-muted/20 transition-colors ${
+                  className={`border-b border-border/40 hover:bg-muted/30 transition-colors ${
                     index === props.length - 1 ? 'border-b-0' : ''
-                  }`}
+                  } ${index % 2 === 0 ? 'bg-background/50' : 'bg-muted/10'}`}
                 >
-                  <td className="px-6 py-4 align-top">
+                  <td className="px-4 py-3 align-top">
                     <div className="space-y-2">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <code className="text-sm bg-primary/10 text-primary px-2 py-1 rounded font-mono font-semibold">
+                        <code className="text-sm bg-primary/15 dark:bg-primary/10 text-primary px-2 py-1 rounded font-mono font-semibold border border-primary/20">
                           {prop.name}
                         </code>
                         {prop.required && (
@@ -85,21 +85,21 @@ export function PropsTable({ props }: PropsTableProps) {
                       </div>
                     </div>
                   </td>
-                  <td className="px-6 py-4 align-top">
-                    <code className="text-sm text-muted-foreground bg-muted/50 px-2 py-1 rounded font-mono break-all">
+                  <td className="px-4 py-3 align-top">
+                    <code className="text-sm text-muted-foreground bg-muted/60 dark:bg-muted/50 px-2 py-1 rounded font-mono break-all border border-border/30">
                       {prop.type}
                     </code>
                   </td>
-                  <td className="px-6 py-4 align-top">
+                  <td className="px-4 py-3 align-top">
                     {prop.default !== undefined ? (
-                      <code className="text-sm bg-muted/50 text-foreground px-2 py-1 rounded font-mono">
+                      <code className="text-sm bg-muted/60 dark:bg-muted/50 text-foreground px-2 py-1 rounded font-mono border border-border/30">
                         {String(prop.default)}
                       </code>
                     ) : (
                       <span className="text-muted-foreground text-sm font-medium">—</span>
                     )}
                   </td>
-                  <td className="px-6 py-4 align-top">
+                  <td className="px-4 py-3 align-top">
                     <p className="text-sm text-muted-foreground leading-relaxed">
                       {prop.description}
                     </p>
