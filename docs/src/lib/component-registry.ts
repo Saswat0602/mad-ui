@@ -88,7 +88,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Rating',
     description: 'A rating component for displaying and selecting ratings',
     version: '1.0.0',
-    status: 'stable' as const,
+    status: 'beta' as const,
     tags: ['form', 'rating', 'stars']
   },
   'skeleton': {
@@ -114,7 +114,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Accordion',
     description: 'Enterprise-level accordion component with search functionality, analytics, accessibility, and advanced features',
     version: '2.12.3',
-    status: 'stable' as const,
+    status: 'beta' as const,
     tags: ['form', 'accordion', 'collapsible', 'enterprise', 'analytics', 'accessibility']
   },
   'breadcrumbs': {
@@ -130,7 +130,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Calendar',
     description: 'A calendar component for date selection',
     version: '1.0.0',
-    status: 'stable' as const,
+    status: 'alpha' as const,
     tags: ['form', 'calendar', 'date']
   },
   'datepicker': {
@@ -138,7 +138,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Date Picker',
     description: 'A date picker component with calendar integration',
     version: '1.0.0',
-    status: 'stable' as const,
+    status: 'alpha' as const,
     tags: ['form', 'datepicker', 'date']
   },
   'timepicker': {
@@ -146,7 +146,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Time Picker',
     description: 'A time picker component for time selection',
     version: '1.0.0',
-    status: 'stable' as const,
+    status: 'alpha' as const,
     tags: ['form', 'timepicker', 'time']
   },
   'inputotp': {
@@ -154,7 +154,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Input OTP',
     description: 'An OTP input component for verification codes',
     version: '1.0.0',
-    status: 'stable' as const,
+    status: 'beta' as const,
     tags: ['form', 'otp', 'verification']
   },
   'radiogroup': {
@@ -416,7 +416,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Navbar',
     description: 'A responsive navigation bar component with brand logo, navigation items, mobile menu support, and enterprise features like analytics tracking and accessibility.',
     version: '2.12.3',
-    status: 'stable' as const,
+    status: 'beta' as const,
     tags: ['navbar', 'navigation', 'header', 'mobile', 'responsive', 'enterprise', 'analytics', 'accessibility']
   },
 
@@ -425,7 +425,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Sidebar',
     description: 'A collapsible sidebar navigation component with persistent state, multiple variants, and enterprise features for building modern web applications.',
     version: '2.12.3',
-    status: 'stable' as const,
+    status: 'beta' as const,
     tags: ['sidebar', 'navigation', 'collapsible', 'persistent', 'enterprise', 'analytics', 'accessibility']
   },
 
@@ -444,7 +444,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Table',
     description: 'A powerful data table component with sorting, selection, pagination, and enterprise features for displaying and managing large datasets.',
     version: '2.12.3',
-    status: 'stable' as const,
+    status: 'beta' as const,
     tags: ['table', 'data', 'sorting', 'pagination', 'selection', 'enterprise', 'analytics', 'accessibility']
   },
 
@@ -463,7 +463,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Toast',
     description: 'A toast notification component for displaying temporary messages with customizable positioning, duration, and enterprise features.',
     version: '2.12.3',
-    status: 'stable' as const,
+    status: 'beta' as const,
     tags: ['toast', 'notification', 'message', 'temporary', 'enterprise', 'analytics', 'accessibility']
   },
 
@@ -472,7 +472,7 @@ export const COMPONENT_REGISTRY = {
     title: 'Sonner',
     description: 'A modern toast notification system with rich features, customizable themes, and enterprise-grade analytics and accessibility support.',
     version: '2.12.3',
-    status: 'stable' as const,
+    status: 'alpha' as const,
     tags: ['sonner', 'toast', 'notification', 'modern', 'enterprise', 'analytics', 'accessibility']
   }
 } as const

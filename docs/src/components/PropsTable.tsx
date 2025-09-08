@@ -1,16 +1,5 @@
 import React from 'react'
-import { Badge, Table } from 'mad-ui-components'
-
-// Define the TableColumn type locally since it's not exported
-interface TableColumn<T> {
-  key: keyof T
-  header: string
-  sortable?: boolean
-  render?: (value: unknown, row: T) => React.ReactNode
-  width?: string | number
-  align?: "left" | "center" | "right"
-  className?: string
-}
+import { Badge } from 'mad-ui-components'
 
 interface ComponentProp {
   name: string
@@ -25,74 +14,102 @@ interface PropsTableProps {
   props: ComponentProp[]
 }
 
-type TableData = {
-  prop: React.ReactNode
-  type: React.ReactNode
-  default: React.ReactNode
-  description: React.ReactNode
-}
-
 export function PropsTable({ props }: PropsTableProps) {
   if (props.length === 0) {
     return (
-      <div className="text-sm text-muted-foreground">
-        No props available for this component.
+      <div className="flex flex-col items-center justify-center py-12 text-center">
+        <div className="text-4xl mb-4">📝</div>
+        <h3 className="text-lg font-semibold mb-2">No Props Available</h3>
+        <p className="text-muted-foreground">
+          This component doesn&apos;t have any configurable props, or they haven&apos;t been documented yet.
+        </p>
       </div>
     )
   }
 
-  const tableData: TableData[] = props.map((prop) => ({
-    prop: (
-      <div className="flex items-center gap-2">
-        <code className="text-sm bg-muted px-2 py-1 rounded font-mono">
-          {prop.name}
-        </code>
-        {prop.required && (
-          <Badge variant="destructive" className="text-xs">
-            required
-          </Badge>
-        )}
-        {prop.deprecated && (
-          <Badge variant="outline" className="text-xs">
-            deprecated
-          </Badge>
-        )}
-      </div>
-    ),
-    type: (
-      <code className="text-sm text-muted-foreground font-mono">
-        {prop.type}
-      </code>
-    ),
-    default: prop.default !== undefined ? (
-      <code className="text-sm bg-muted px-2 py-1 rounded font-mono">
-        {String(prop.default)}
-      </code>
-    ) : (
-      <span className="text-muted-foreground">-</span>
-    ),
-    description: (
-      <span className="text-muted-foreground">
-        {prop.description}
-      </span>
-    )
-  }))
-
-  const columns: TableColumn<TableData>[] = [
-    { key: 'prop', header: 'Prop' },
-    { key: 'type', header: 'Type' },
-    { key: 'default', header: 'Default' },
-    { key: 'description', header: 'Description' }
-  ]
-
   return (
-    <Table
-      data={tableData}
-      columns={columns}
-      variant="default"
-      size="md"
-      striped={true}
-      hoverable={true}
-    />
+    <div className="space-y-4">
+      {/* Header */}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-medium">
+            {props.length} {props.length === 1 ? 'prop' : 'props'}
+          </span>
+        </div>
+      </div>
+
+      {/* Table */}
+      <div className="rounded-lg border border-border bg-card overflow-hidden">
+        <div className="overflow-x-auto">
+          <table className="w-full">
+            <thead>
+              <tr className="border-b border-border bg-muted/30">
+                <th className="text-left px-6 py-4 text-sm font-semibold text-foreground w-1/4">
+                  Prop
+                </th>
+                <th className="text-left px-6 py-4 text-sm font-semibold text-foreground w-1/4">
+                  Type
+                </th>
+                <th className="text-left px-6 py-4 text-sm font-semibold text-foreground w-1/6">
+                  Default
+                </th>
+                <th className="text-left px-6 py-4 text-sm font-semibold text-foreground">
+                  Description
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {props.map((prop, index) => (
+                <tr 
+                  key={prop.name} 
+                  className={`border-b border-border/50 hover:bg-muted/20 transition-colors ${
+                    index === props.length - 1 ? 'border-b-0' : ''
+                  }`}
+                >
+                  <td className="px-6 py-4 align-top">
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <code className="text-sm bg-primary/10 text-primary px-2 py-1 rounded font-mono font-semibold">
+                          {prop.name}
+                        </code>
+                        {prop.required && (
+                          <Badge variant="destructive" className="text-xs font-medium">
+                            required
+                          </Badge>
+                        )}
+                        {prop.deprecated && (
+                          <Badge variant="outline" className="text-xs font-medium">
+                            deprecated
+                          </Badge>
+                        )}
+                      </div>
+                    </div>
+                  </td>
+                  <td className="px-6 py-4 align-top">
+                    <code className="text-sm text-muted-foreground bg-muted/50 px-2 py-1 rounded font-mono break-all">
+                      {prop.type}
+                    </code>
+                  </td>
+                  <td className="px-6 py-4 align-top">
+                    {prop.default !== undefined ? (
+                      <code className="text-sm bg-muted/50 text-foreground px-2 py-1 rounded font-mono">
+                        {String(prop.default)}
+                      </code>
+                    ) : (
+                      <span className="text-muted-foreground text-sm font-medium">—</span>
+                    )}
+                  </td>
+                  <td className="px-6 py-4 align-top">
+                    <p className="text-sm text-muted-foreground leading-relaxed">
+                      {prop.description}
+                    </p>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
   )
 }

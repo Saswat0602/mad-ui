@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import { AnimatePresence } from 'framer-motion'
 import { ComponentCategory } from '@/types/component'
 import { ComponentPreview } from './ComponentPreview'
 import { PropsTable } from './PropsTable'
@@ -35,149 +35,105 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-4 py-8 max-w-6xl">
-        {/* Header */}
-        <motion.div 
-          className="mb-12"
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.1 }}
+      {/* Breadcrumb */}
+      <div className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-40">
+        <div className="container mx-auto px-6 py-4 max-w-7xl">
+          <Link 
+            href="/docs/components" 
+            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
           >
-            <Link 
-              href="/docs/components" 
-              className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground mb-6 transition-all duration-200 hover:scale-105 group"
-            >
-              <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-              Back to Components
-            </Link>
-          </motion.div>
-          
-          <motion.div 
-            className="flex items-center gap-4 mb-6"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-          >
-            <h1 className="text-5xl font-bold tracking-tight bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-              {component.title}
-            </h1>
-            <StatusBadge status={component.status} />
-          </motion.div>
-          
-          <motion.p 
-            className="text-xl text-muted-foreground mb-6 leading-relaxed"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-          >
-            {component.description}
-          </motion.p>
-          
-          <motion.div 
-            className="flex flex-wrap gap-2 mb-6"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-          >
-            {component.tags.map((tag, index) => (
-              <motion.div
-                key={tag}
-                initial={{ opacity: 0, scale: 0.8 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ duration: 0.3, delay: 0.5 + index * 0.1 }}
-              >
-                <Badge 
-                  variant="secondary" 
-                  className="text-xs transition-all duration-200 hover:scale-105 hover:shadow-md"
-                >
-                  {tag}
-                </Badge>
-              </motion.div>
-            ))}
-          </motion.div>
-          
-          <motion.div 
-            className="text-sm text-muted-foreground bg-muted/50 px-3 py-2 rounded-lg inline-block"
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5, delay: 0.6 }}
-          >
-            Version {component.version} • {component.category} Component
-          </motion.div>
-        </motion.div>
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            Back to Components
+          </Link>
+        </div>
+      </div>
 
-        {/* Tabs */}
-        <motion.div 
-          className="border-b border-border mb-12"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.7 }}
-        >
-          <nav className="flex space-x-8">
-            {[
-              { id: 'examples', label: 'Examples' },
-              { id: 'props', label: 'API Reference' },
-              { id: 'usage', label: 'Usage' },
-              { id: 'guide', label: 'Best Practices' }
-            ].map((tab, index) => (
-              <motion.button
-                key={tab.id}
-                onClick={() => setActiveTab(tab.id as 'examples' | 'props' | 'usage' | 'guide')}
-                className={`py-3 px-1 border-b-2 font-medium text-sm transition-all duration-200 hover:scale-105 ${
-                  activeTab === tab.id
-                    ? 'border-primary text-primary'
-                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
-                }`}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: 0.8 + index * 0.1 }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
+      <div className="container mx-auto px-6 py-8 max-w-7xl">
+        {/* Header */}
+        <div className="mb-12 space-y-6">
+          <div className="flex items-start justify-between">
+            <div className="space-y-4">
+              <div className="flex items-center gap-4">
+                <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
+                  {component.title}
+                </h1>
+                <StatusBadge status={component.status} />
+              </div>
+              
+              <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed">
+                {component.description}
+              </p>
+            </div>
+            
+            <div className="text-right space-y-2">
+              <div className="text-sm text-muted-foreground">
+                Version {component.version}
+              </div>
+              <div className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded">
+                {component.category}
+              </div>
+            </div>
+          </div>
+          
+          {/* Tags */}
+          <div className="flex flex-wrap gap-2">
+            {component.tags.map((tag) => (
+              <Badge 
+                key={tag}
+                variant="secondary" 
+                className="text-xs font-medium"
               >
-                {tab.label}
-              </motion.button>
+                {tag}
+              </Badge>
             ))}
-          </nav>
-        </motion.div>
+          </div>
+        </div>
+
+        {/* Navigation Tabs */}
+        <div className="mb-8">
+          <div className="border-b border-border">
+            <nav className="flex space-x-8">
+              {[
+                { id: 'examples', label: 'Examples', icon: '🎨' },
+                { id: 'props', label: 'API Reference', icon: '📝' },
+                { id: 'usage', label: 'Usage', icon: '⚡' },
+                { id: 'guide', label: 'Best Practices', icon: '💡' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id as 'examples' | 'props' | 'usage' | 'guide')}
+                  className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
+                    activeTab === tab.id
+                      ? 'border-primary text-primary'
+                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
+                  }`}
+                >
+                  <span className="text-base">{tab.icon}</span>
+                  {tab.label}
+                </button>
+              ))}
+            </nav>
+          </div>
+        </div>
 
         {/* Content */}
-        <div className="max-w-5xl">
+        <div className="space-y-8">
           <AnimatePresence mode="wait">
             {activeTab === 'examples' && (
-              <motion.div 
-                key="examples"
-                className="space-y-12"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                {examples.map((example, index) => (
-                  <motion.div 
-                    key={index} 
-                    className="space-y-4"
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.4, delay: index * 0.1 }}
-                  >
-                    <div>
-                      <h3 className="text-2xl font-semibold mb-2 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-                        {example.title}
-                      </h3>
-                      {example.description && (
-                        <p className="text-muted-foreground text-lg leading-relaxed">{example.description}</p>
-                      )}
-                    </div>
-                    <motion.div 
-                      className="hover-lift"
-                      whileHover={{ scale: 1.01 }}
-                      transition={{ duration: 0.2 }}
-                    >
+              <div className="space-y-12">
+                {examples.length > 0 ? (
+                  examples.map((example, index) => (
+                    <div key={index} className="space-y-4">
+                      <div className="space-y-2">
+                        <h3 className="text-xl font-semibold">
+                          {example.title}
+                        </h3>
+                        {example.description && (
+                          <p className="text-muted-foreground leading-relaxed">
+                            {example.description}
+                          </p>
+                        )}
+                      </div>
                       <ComponentPreview
                         code={example.code}
                         title={example.title}
@@ -185,138 +141,78 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
                       >
                         {example.preview}
                       </ComponentPreview>
-                    </motion.div>
-                  </motion.div>
-                ))}
-              </motion.div>
+                    </div>
+                  ))
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="text-4xl mb-4">🎨</div>
+                    <h3 className="text-lg font-semibold mb-2">No Examples Available</h3>
+                    <p className="text-muted-foreground">
+                      Examples for this component are coming soon.
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
 
             {activeTab === 'props' && (
-              <motion.div 
-                key="props"
-                className="space-y-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div>
-                  <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
+              <div className="space-y-6">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold">
                     API Reference
                   </h3>
-                  <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
+                  <p className="text-muted-foreground">
                     Complete reference for all props and their types.
                   </p>
                 </div>
-                <motion.div 
-                  className="hover-lift"
-                  whileHover={{ scale: 1.01 }}
-                  transition={{ duration: 0.2 }}
-                >
-                  <PropsTable props={props} />
-                </motion.div>
-              </motion.div>
+                <PropsTable props={props} />
+              </div>
             )}
 
             {activeTab === 'usage' && (
-              <motion.div 
-                key="usage"
-                className="space-y-8"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.1 }}
-                >
-                  <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-                    Installation
-                  </h3>
-                  <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
-                    Install the component library to get started.
-                  </p>
-                  <motion.div 
-                    className="hover-lift"
-                    whileHover={{ scale: 1.01 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <CodeBlock language="bash" code={`npm install mad-ui-components`} />
-                  </motion.div>
-                </motion.div>
+              <div className="space-y-8">
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-semibold">Installation</h3>
+                    <p className="text-muted-foreground">Install the component library to get started.</p>
+                  </div>
+                  <CodeBlock language="bash" code={`npm install mad-ui-components`} />
+                </div>
                 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.2 }}
-                >
-                  <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-                    Import
-                  </h3>
-                  <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
-                    Import the component in your React application.
-                  </p>
-                  <motion.div 
-                    className="hover-lift"
-                    whileHover={{ scale: 1.01 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <CodeBlock 
-                      language="tsx" 
-                      code={`import { ${component.title} } from 'mad-ui-components'`} 
-                    />
-                  </motion.div>
-                </motion.div>
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-semibold">Import</h3>
+                    <p className="text-muted-foreground">Import the component in your React application.</p>
+                  </div>
+                  <CodeBlock 
+                    language="tsx" 
+                    code={`import { ${component.title} } from 'mad-ui-components'`} 
+                  />
+                </div>
                 
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.4, delay: 0.3 }}
-                >
-                  <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-                    Basic Usage
-                  </h3>
-                  <p className="text-muted-foreground text-lg mb-4 leading-relaxed">
-                    Here&apos;s a simple example to get you started.
-                  </p>
-                  <motion.div 
-                    className="hover-lift"
-                    whileHover={{ scale: 1.01 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <CodeBlock 
-                      language="tsx" 
-                      code={examples[0]?.code || `// Basic usage example\n<${component.title} />`} 
-                    />
-                  </motion.div>
-                </motion.div>
-              </motion.div>
+                <div className="space-y-6">
+                  <div className="space-y-2">
+                    <h3 className="text-xl font-semibold">Basic Usage</h3>
+                    <p className="text-muted-foreground">Here&apos;s a simple example to get you started.</p>
+                  </div>
+                  <CodeBlock 
+                    language="tsx" 
+                    code={examples[0]?.code || `// Basic usage example\n<${component.title} />`} 
+                  />
+                </div>
+              </div>
             )}
 
             {activeTab === 'guide' && (
-              <motion.div 
-                key="guide"
-                className="space-y-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.3 }}
-              >
-                <div>
-                  <h3 className="text-2xl font-semibold mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text text-transparent">
-                    Best Practices & Guidelines
-                  </h3>
-                  <p className="text-muted-foreground text-lg mb-6 leading-relaxed">
+              <div className="space-y-8">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-semibold">Best Practices & Guidelines</h3>
+                  <p className="text-muted-foreground">
                     Learn how to use {component.title} effectively with best practices, common mistakes to avoid, and accessibility guidelines.
                   </p>
                 </div>
-                <motion.div 
-                  className="hover-lift"
-                  whileHover={{ scale: 1.01 }}
-                  transition={{ duration: 0.2 }}
-                >
+                
+                {getBestPractices(slug).length > 0 || getCommonMistakes(slug).length > 0 || getTips(slug).length > 0 ? (
                   <UsageGuide 
                     componentName={component.title}
                     bestPractices={getBestPractices(slug)}
@@ -324,8 +220,16 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
                     tips={getTips(slug)}
                     examples={getUsageExamples(slug)}
                   />
-                </motion.div>
-              </motion.div>
+                ) : (
+                  <div className="text-center py-12">
+                    <div className="text-4xl mb-4">💡</div>
+                    <h3 className="text-lg font-semibold mb-2">Best Practices Coming Soon</h3>
+                    <p className="text-muted-foreground">
+                      Best practices and guidelines for this component are being prepared.
+                    </p>
+                  </div>
+                )}
+              </div>
             )}
           </AnimatePresence>
         </div>
