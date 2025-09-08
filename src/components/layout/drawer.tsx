@@ -1,581 +1,125 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { cn } from '../../lib/utils'
+import React, { useState, useEffect, useRef } from 'react';
+import { X } from 'lucide-react';
+import { cn } from '../../lib/utils';
+
+// Base utility classes for consistent styling
+const baseClasses = {
+  transition: 'transition-all duration-300 ease-in-out',
+  overlay: 'fixed inset-0 bg-black/50 z-40',
+  focusRing: 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+};
 
 export interface DrawerProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
-  children: React.ReactNode
-  className?: string
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  dismissible?: boolean
-  persistent?: boolean
-  onShow?: () => void
-  onHide?: () => void
-  animation?: 'slide' | 'fade' | 'scale' | 'none'
-  animationDuration?: number
-  onAnimationStart?: () => void
-  onAnimationEnd?: () => void
-  theme?: 'light' | 'dark' | 'auto'
-  locale?: string
-  rtl?: boolean
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
-}
-
-export interface DrawerTriggerProps {
-  children: React.ReactNode
-  asChild?: boolean
-  className?: string
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  disabled?: boolean
-  loading?: boolean
-  onClick?: () => void
-}
-
-export interface DrawerContentProps {
-  children: React.ReactNode
-  className?: string
-  side?: 'top' | 'right' | 'bottom' | 'left'
-  onEscapeKeyDown?: () => void
-  onInteractOutside?: () => void
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  dismissible?: boolean
-  persistent?: boolean
-  onShow?: () => void
-  onHide?: () => void
-  animation?: 'slide' | 'fade' | 'scale' | 'none'
-  animationDuration?: number
-  onAnimationStart?: () => void
-  onAnimationEnd?: () => void
-  theme?: 'light' | 'dark' | 'auto'
-  locale?: string
-  rtl?: boolean
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'full'
-  fullWidth?: boolean
-  fullHeight?: boolean
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  borderRadius?: string | number
-  shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
-  overlayColor?: string
-  overlayBlur?: boolean
-  zIndex?: number
-  keyboardDismissible?: boolean
-  onKeyboardDismiss?: (key: string) => void
-  clickable?: boolean
-  onClick?: () => void
-  onDoubleClick?: () => void
-  onRightClick?: (event: React.MouseEvent) => void
-  contextMenuItems?: Array<{
-    label: string
-    onClick: () => void
-    icon?: React.ReactNode
-    disabled?: boolean
-  }>
-  draggable?: boolean
-  onDragMove?: (position: { x: number; y: number }) => void
-  onDragComplete?: (position: { x: number; y: number }) => void
-  swipeable?: boolean
-  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
-  resizable?: boolean
-  onResize?: (size: { width: number; height: number }) => void
-  scrollable?: boolean
-  onScroll?: (scrollY: number) => void
-  focusable?: boolean
-  autoFocus?: boolean
-  onFocus?: () => void
-  onBlur?: () => void
-  tabIndex?: number
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
-}
-
-export interface DrawerHeaderProps {
-  children: React.ReactNode
-  className?: string
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  sticky?: boolean
-  collapsible?: boolean
-  onCollapse?: () => void
-  onExpand?: () => void
-  collapsed?: boolean
-  onToggle?: (collapsed: boolean) => void
-  actions?: React.ReactNode
-  breadcrumbs?: Array<{
-    label: string
-    href?: string
-    onClick?: () => void
-  }>
-  showBreadcrumbs?: boolean
-  searchable?: boolean
-  searchPlaceholder?: string
-  onSearch?: (query: string) => void
-  filterable?: boolean
-  filterOptions?: Array<{
-    label: string
-    value: string
-    count?: number
-  }>
-  onFilter?: (filters: string[]) => void
-  sortable?: boolean
-  sortOptions?: Array<{
-    label: string
-    value: string
-    direction?: 'asc' | 'desc'
-  }>
-  onSort?: (sortBy: string, direction: 'asc' | 'desc') => void
-  keyboardNavigation?: boolean
-  autoFocus?: boolean
-  lazy?: boolean
-  virtualized?: boolean
-  onItemClick?: (item: any) => void
-  onItemDoubleClick?: (item: any) => void
-  onItemRightClick?: (item: any, event: React.MouseEvent) => void
-  contextMenuItems?: Array<{
-    label: string
-    onClick: (item: any) => void
-    icon?: React.ReactNode
-    disabled?: boolean
-  }>
-  dragAndDrop?: boolean
-  onReorder?: (items: any[]) => void
-  onItemDragStart?: (item: any) => void
-  onDragComplete?: (item: any) => void
-  onItemDrop?: (item: any, targetItem: any) => void
-  expandAll?: boolean
-  collapseAll?: boolean
-  onExpandAll?: () => void
-  onCollapseAll?: () => void
-  showExpandAll?: boolean
-  showCollapseAll?: boolean
-  persistState?: boolean
-  storageKey?: string
-  onStateChange?: (state: { openItems: string[]; searchQuery?: string; filters?: string[] }) => void
-}
-
-export interface DrawerFooterProps {
-  children: React.ReactNode
-  className?: string
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  sticky?: boolean
-  collapsible?: boolean
-  onCollapse?: () => void
-  onExpand?: () => void
-  collapsed?: boolean
-  onToggle?: (collapsed: boolean) => void
-  actions?: React.ReactNode
-  breadcrumbs?: Array<{
-    label: string
-    href?: string
-    onClick?: () => void
-  }>
-  showBreadcrumbs?: boolean
-  searchable?: boolean
-  searchPlaceholder?: string
-  onSearch?: (query: string) => void
-  filterable?: boolean
-  filterOptions?: Array<{
-    label: string
-    value: string
-    count?: number
-  }>
-  onFilter?: (filters: string[]) => void
-  sortable?: boolean
-  sortOptions?: Array<{
-    label: string
-    value: string
-    direction?: 'asc' | 'desc'
-  }>
-  onSort?: (sortBy: string, direction: 'asc' | 'desc') => void
-  keyboardNavigation?: boolean
-  autoFocus?: boolean
-  lazy?: boolean
-  virtualized?: boolean
-  onItemClick?: (item: any) => void
-  onItemDoubleClick?: (item: any) => void
-  onItemRightClick?: (item: any, event: React.MouseEvent) => void
-  contextMenuItems?: Array<{
-    label: string
-    onClick: (item: any) => void
-    icon?: React.ReactNode
-    disabled?: boolean
-  }>
-  dragAndDrop?: boolean
-  onReorder?: (items: any[]) => void
-  onItemDragStart?: (item: any) => void
-  onDragComplete?: (item: any) => void
-  onItemDrop?: (item: any, targetItem: any) => void
-  expandAll?: boolean
-  collapseAll?: boolean
-  onExpandAll?: () => void
-  onCollapseAll?: () => void
-  showExpandAll?: boolean
-  showCollapseAll?: boolean
-  persistState?: boolean
-  storageKey?: string
-  onStateChange?: (state: { openItems: string[]; searchQuery?: string; filters?: string[] }) => void
-}
-
-export interface DrawerTitleProps {
-  children: React.ReactNode
-  className?: string
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  level?: 1 | 2 | 3 | 4 | 5 | 6
-  truncate?: boolean
-  ellipsis?: boolean
-  maxLines?: number
-  showTooltip?: boolean
-  tooltipContent?: string
-  tooltipPosition?: 'top' | 'bottom' | 'left' | 'right'
-  tooltipDelay?: number
-  onClick?: () => void
-  onDoubleClick?: () => void
-  onRightClick?: (event: React.MouseEvent) => void
-  contextMenuItems?: Array<{
-    label: string
-    onClick: () => void
-    icon?: React.ReactNode
-    disabled?: boolean
-  }>
-  draggable?: boolean
-  onDragMove?: (position: { x: number; y: number }) => void
-  onDragComplete?: (position: { x: number; y: number }) => void
-  swipeable?: boolean
-  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
-  resizable?: boolean
-  onResize?: (size: { width: number; height: number }) => void
-  scrollable?: boolean
-  onScroll?: (scrollY: number) => void
-  focusable?: boolean
-  autoFocus?: boolean
-  onFocus?: () => void
-  onBlur?: () => void
-  tabIndex?: number
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
-}
-
-export interface DrawerDescriptionProps {
-  children: React.ReactNode
-  className?: string
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  level?: 1 | 2 | 3 | 4 | 5 | 6
-  truncate?: boolean
-  ellipsis?: boolean
-  maxLines?: number
-  showTooltip?: boolean
-  tooltipContent?: string
-  tooltipPosition?: 'top' | 'bottom' | 'left' | 'right'
-  tooltipDelay?: number
-  onClick?: () => void
-  onDoubleClick?: () => void
-  onRightClick?: (event: React.MouseEvent) => void
-  contextMenuItems?: Array<{
-    label: string
-    onClick: () => void
-    icon?: React.ReactNode
-    disabled?: boolean
-  }>
-  draggable?: boolean
-  onDragMove?: (position: { x: number; y: number }) => void
-  onDragComplete?: (position: { x: number; y: number }) => void
-  swipeable?: boolean
-  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
-  resizable?: boolean
-  onResize?: (size: { width: number; height: number }) => void
-  scrollable?: boolean
-  onScroll?: (scrollY: number) => void
-  focusable?: boolean
-  autoFocus?: boolean
-  onFocus?: () => void
-  onBlur?: () => void
-  tabIndex?: number
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
-}
-
-export interface DrawerCloseProps {
-  children: React.ReactNode
-  asChild?: boolean
-  className?: string
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  disabled?: boolean
-  loading?: boolean
-  onClick?: () => void
-  onDoubleClick?: () => void
-  onRightClick?: (event: React.MouseEvent) => void
-  contextMenuItems?: Array<{
-    label: string
-    onClick: () => void
-    icon?: React.ReactNode
-    disabled?: boolean
-  }>
-  draggable?: boolean
-  onDragMove?: (position: { x: number; y: number }) => void
-  onDragComplete?: (position: { x: number; y: number }) => void
-  swipeable?: boolean
-  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
-  resizable?: boolean
-  onResize?: (size: { width: number; height: number }) => void
-  scrollable?: boolean
-  onScroll?: (scrollY: number) => void
-  focusable?: boolean
-  autoFocus?: boolean
-  onFocus?: () => void
-  onBlur?: () => void
-  tabIndex?: number
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
+  /** Whether the drawer is open */
+  isOpen?: boolean;
+  /** Callback when drawer should close */
+  onClose?: () => void;
+  /** Position of the drawer */
+  position?: 'right' | 'left' | 'top' | 'bottom';
+  /** Size of the drawer */
+  size?: 'sm' | 'md' | 'lg' | 'full';
+  /** Whether to show overlay */
+  overlay?: boolean;
+  /** Whether to close on overlay click */
+  closeOnOverlayClick?: boolean;
+  /** Whether to show close button */
+  showCloseButton?: boolean;
+  /** Additional CSS classes */
+  className?: string;
+  /** Overlay CSS classes */
+  overlayClassName?: string;
+  /** Drawer content */
+  children: React.ReactNode;
+  /** Additional props */
+  [key: string]: any;
 }
 
 export const Drawer: React.FC<DrawerProps> = ({
-  open,
-  onOpenChange,
+  isOpen = false,
+  onClose,
+  position = 'right',
+  size = 'md',
+  overlay = true,
+  closeOnOverlayClick = true,
+  showCloseButton = true,
+  className = '',
+  overlayClassName = '',
   children,
-  className
+  ...props
 }) => {
+  const drawerRef = useRef<HTMLDivElement>(null);
+
+  const sizes = {
+    sm: position === 'left' || position === 'right' ? 'w-80' : 'h-80',
+    md: position === 'left' || position === 'right' ? 'w-96' : 'h-96',
+    lg: position === 'left' || position === 'right' ? 'w-[32rem]' : 'h-[32rem]',
+    full: position === 'left' || position === 'right' ? 'w-full' : 'h-full',
+  };
+
+  const positions = {
+    right: `fixed top-0 right-0 h-full transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`,
+    left: `fixed top-0 left-0 h-full transform ${isOpen ? 'translate-x-0' : '-translate-x-full'}`,
+    top: `fixed top-0 left-0 w-full transform ${isOpen ? 'translate-y-0' : '-translate-y-full'}`,
+    bottom: `fixed bottom-0 left-0 w-full transform ${isOpen ? 'translate-y-0' : 'translate-y-full'}`,
+  };
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && open) {
-        onOpenChange(false)
+      if (e.key === 'Escape' && onClose) {
+        onClose();
       }
-    }
+    };
 
-    if (open) {
-      document.addEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'hidden'
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden';
     }
 
     return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
-    }
-  }, [open, onOpenChange])
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [isOpen, onClose]);
 
-  if (!open) return null
-
-  return (
-    <div className={cn('fixed inset-0 z-50', className)}>
-      {children}
-    </div>
-  )
-}
-
-export const DrawerTrigger: React.FC<DrawerTriggerProps> = ({
-  children,
-  asChild = false,
-  className
-}) => {
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      className: cn(children.props.className, className)
-    })
-  }
-  
-  return (
-    <div className={cn('inline-block', className)}>
-      {children}
-    </div>
-  )
-}
-
-export const DrawerContent: React.FC<DrawerContentProps> = ({
-  children,
-  className,
-  side = 'right',
-  onEscapeKeyDown,
-  onInteractOutside
-}) => {
-  const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && onInteractOutside) {
-      onInteractOutside()
-    }
-  }
-
-  const sideClasses = {
-    top: 'inset-x-0 top-0 h-auto max-h-[80vh] border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top',
-    right: 'inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm',
-    bottom: 'inset-x-0 bottom-0 h-auto max-h-[80vh] border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
-    left: 'inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm'
-  }
+  if (!isOpen) return null;
 
   return (
-    <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-      onClick={handleOverlayClick}
-    >
+    <>
+      {overlay && (
+        <div
+          className={cn(baseClasses.overlay, baseClasses.transition, overlayClassName)}
+          onClick={closeOnOverlayClick ? onClose : undefined}
+        />
+      )}
       <div
+        ref={drawerRef}
         className={cn(
-          'fixed z-50 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500',
-          sideClasses[side],
+          positions[position],
+          sizes[size],
+          'bg-white shadow-xl z-50',
+          baseClasses.transition,
           className
         )}
-        onClick={(e) => e.stopPropagation()}
+        {...props}
       >
-        {children}
+        {showCloseButton && (
+          <button
+            onClick={onClose}
+            className={cn(
+              'absolute top-4 p-2 rounded-md hover:bg-gray-100',
+              position === 'left' ? 'right-4' : 'left-4',
+              baseClasses.focusRing
+            )}
+          >
+            <X size={20} />
+          </button>
+        )}
+        <div className={cn('p-6 h-full overflow-y-auto', showCloseButton ? 'pt-16' : '')}>
+          {children}
+        </div>
       </div>
-    </div>
-  )
-}
+    </>
+  );
+};
 
-export const DrawerHeader: React.FC<DrawerHeaderProps> = ({
-  children,
-  className
-}) => {
-  return (
-    <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)}>
-      {children}
-    </div>
-  )
-}
-
-export const DrawerFooter: React.FC<DrawerFooterProps> = ({
-  children,
-  className
-}) => {
-  return (
-    <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}>
-      {children}
-    </div>
-  )
-}
-
-export const DrawerTitle: React.FC<DrawerTitleProps> = ({
-  children,
-  className
-}) => {
-  return (
-    <h2 className={cn('text-lg font-semibold text-foreground', className)}>
-      {children}
-    </h2>
-  )
-}
-
-export const DrawerDescription: React.FC<DrawerDescriptionProps> = ({
-  children,
-  className
-}) => {
-  return (
-    <p className={cn('text-sm text-muted-foreground', className)}>
-      {children}
-    </p>
-  )
-}
-
-export const DrawerClose: React.FC<DrawerCloseProps> = ({
-  children,
-  asChild = false,
-  className
-}) => {
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      className: cn(children.props.className, className)
-    })
-  }
-  
-  return (
-    <div className={cn('inline-block', className)}>
-      {children}
-    </div>
-  )
-}
+export default Drawer;

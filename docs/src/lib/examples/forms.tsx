@@ -1,5 +1,6 @@
 import React from 'react'
-import { Accordion, Breadcrumbs, Calendar, DatePicker, TimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
+import { Accordion } from '../../../../src/components/forms/accordion'
+import { Breadcrumbs, Calendar, DatePicker, TimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -12,7 +13,7 @@ export const formsExamples: Record<string, ComponentExample[]> = {
   accordion: [
     {
       title: 'Basic Accordion',
-      description: 'A simple accordion component',
+      description: 'A simple accordion component with smooth animations',
       code: `import { Accordion } from 'mad-ui-components'
 
 export function AccordionExample() {
@@ -20,12 +21,12 @@ export function AccordionExample() {
     {
       id: 'item-1',
       title: 'What is React?',
-      content: 'React is a JavaScript library for building user interfaces.'
+      content: 'React is a JavaScript library for building user interfaces. It lets you compose complex UIs from small and isolated pieces of code called "components".'
     },
     {
       id: 'item-2',
       title: 'What is TypeScript?',
-      content: 'TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.'
+      content: 'TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. It adds static type definitions to JavaScript.'
     }
   ]
 
@@ -38,12 +39,12 @@ export function AccordionExample() {
               {
                 id: 'item-1',
                 title: 'What is React?',
-                content: 'React is a JavaScript library for building user interfaces.'
+                content: 'React is a JavaScript library for building user interfaces. It lets you compose complex UIs from small and isolated pieces of code called "components".'
               },
               {
                 id: 'item-2',
                 title: 'What is TypeScript?',
-                content: 'TypeScript is a typed superset of JavaScript that compiles to plain JavaScript.'
+                content: 'TypeScript is a typed superset of JavaScript that compiles to plain JavaScript. It adds static type definitions to JavaScript.'
               }
             ]} 
           />
@@ -52,7 +53,7 @@ export function AccordionExample() {
     },
     {
       title: 'Multiple Open Accordion',
-      description: 'Accordion that allows multiple items to be open',
+      description: 'Accordion that allows multiple items to be open simultaneously',
       code: `import { Accordion } from 'mad-ui-components'
 
 export function MultipleAccordion() {
@@ -74,7 +75,7 @@ export function MultipleAccordion() {
     }
   ]
 
-  return <Accordion items={items} multiple={true} />
+  return <Accordion items={items} allowMultiple={true} />
 }`,
       preview: (
         <div className="w-full max-w-md">
@@ -96,14 +97,62 @@ export function MultipleAccordion() {
                 content: 'PostgreSQL, MongoDB, Redis, MySQL'
               }
             ]} 
-            multiple={true}
+            allowMultiple={true}
           />
         </div>
       )
     },
     {
-      title: 'Enterprise Features',
-      description: 'Accordion with analytics, search, and accessibility features',
+      title: 'Custom Icon Position',
+      description: 'Accordion with icon positioned on the left side',
+      code: `import { Accordion } from 'mad-ui-components'
+import { ChevronRight } from 'lucide-react'
+
+export function CustomIconAccordion() {
+  const items = [
+    {
+      id: 'item-1',
+      title: 'Getting Started',
+      content: 'Learn the basics of our platform'
+    },
+    {
+      id: 'item-2',
+      title: 'Advanced Features',
+      content: 'Explore advanced functionality'
+    }
+  ]
+
+  return (
+    <Accordion 
+      items={items} 
+      iconPosition="left"
+      customIcon={ChevronRight}
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <Accordion 
+            items={[
+              {
+                id: 'item-1',
+                title: 'Getting Started',
+                content: 'Learn the basics of our platform'
+              },
+              {
+                id: 'item-2',
+                title: 'Advanced Features',
+                content: 'Explore advanced functionality'
+              }
+            ]} 
+            iconPosition="left"
+          />
+        </div>
+      )
+    },
+    {
+      title: 'Rich Content',
+      description: 'Accordion with complex content including lists and formatting',
       code: `import { Accordion } from 'mad-ui-components'
 
 export function EnterpriseAccordion() {
@@ -174,7 +223,7 @@ export function EnterpriseAccordion() {
             analyticsData={{ section: 'documentation' }}
             ariaLabel="Documentation sections"
             dataTestId="docs-accordion"
-            onAnalytics={(event, data) => {
+            onAnalytics={(event: string, data?: Record<string, unknown>) => {
               console.log('Analytics:', event, data)
             }}
           />

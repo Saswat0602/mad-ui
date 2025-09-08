@@ -1,13 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
+import { Drawer } from '../../../../src/components/layout/drawer'
 import { 
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerFooter,
-  DrawerTitle,
-  DrawerDescription,
-  DrawerClose,
   Layout, 
   Modal, 
   Navbar, 
@@ -26,22 +19,12 @@ import {
   Calendar, 
   Mail, 
   Settings, 
-  HelpCircle, 
-  LogOut,
-  Search,
-  Bell,
   User,
-  Menu,
-  ChevronDown,
-  Sun,
-  Moon,
-  Globe,
   Heart,
   Star,
   ShoppingCart,
   MessageCircle,
   Info,
-  Phone,
   Briefcase,
   Image,
   Award,
@@ -60,155 +43,227 @@ export const layoutExamples: Record<string, ComponentExample[]> = {
   drawer: [
     {
       title: 'Basic Drawer',
-      description: 'A simple drawer component',
-      code: `import { 
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerDescription
-} from 'mad-ui-components'
+      description: 'A simple drawer component with smooth animations',
+      code: `import { Drawer } from 'mad-ui-components'
+import { useState } from 'react'
 
 export function DrawerExample() {
-  const [open, setOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline">Open Drawer</Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>Drawer Title</DrawerTitle>
-          <DrawerDescription>This is a drawer description.</DrawerDescription>
-        </DrawerHeader>
-        <div className="p-4">
-          <p>Drawer content goes here.</p>
-        </div>
-      </DrawerContent>
-    </Drawer>
+    <>
+      <button 
+        onClick={() => setIsOpen(true)}
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+      >
+        Open Drawer
+      </button>
+      
+      <Drawer 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)}
+        position="right"
+        size="md"
+      >
+        <h3 className="text-xl font-bold mb-4">Drawer Title</h3>
+        <p className="text-gray-700 mb-4">
+          This is a simple drawer component with smooth animations and flexible positioning.
+        </p>
+        <button 
+          onClick={() => setIsOpen(false)}
+          className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+        >
+          Close Drawer
+        </button>
+      </Drawer>
+    </>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Drawer open={false} onOpenChange={() => {}}>
-            <DrawerTrigger asChild>
-              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Open Drawer</button>
-            </DrawerTrigger>
-            <DrawerContent>
-              <DrawerHeader>
-                <DrawerTitle>Drawer Title</DrawerTitle>
-                <DrawerDescription>This is a drawer description.</DrawerDescription>
-              </DrawerHeader>
-              <div className="p-4">
-                <p>Drawer content goes here.</p>
-              </div>
-            </DrawerContent>
+          <Drawer 
+            isOpen={false} 
+            onClose={() => {}}
+            position="right"
+            size="md"
+          >
+            <h3 className="text-xl font-bold mb-4">Drawer Title</h3>
+            <p className="text-gray-700 mb-4">
+              This is a simple drawer component with smooth animations and flexible positioning.
+            </p>
+            <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
+              Close Drawer
+            </button>
           </Drawer>
         </div>
       )
     },
     {
-      title: 'Drawer with Footer',
-      description: 'A drawer component with header, content, and footer',
-      code: `import { 
-  Drawer,
-  DrawerTrigger,
-  DrawerContent,
-  DrawerHeader,
-  DrawerFooter,
-  DrawerTitle,
-  DrawerDescription,
-  DrawerClose
-} from 'mad-ui-components'
+      title: 'Different Positions',
+      description: 'Drawer component with different positioning options',
+      code: `import { Drawer } from 'mad-ui-components'
+import { useState } from 'react'
 
-export function DrawerWithFooter() {
-  const [open, setOpen] = useState(false)
+export function PositionDrawer() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [position, setPosition] = useState<'left' | 'right' | 'top' | 'bottom'>('right')
   
   return (
-    <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button variant="outline">Open Drawer</Button>
-      </DrawerTrigger>
-      <DrawerContent>
-        <DrawerHeader>
-          <DrawerTitle>Edit Profile</DrawerTitle>
-          <DrawerDescription>
-            Make changes to your profile here. Click save when you&apos;re done.
-          </DrawerDescription>
-        </DrawerHeader>
-        <div className="p-4">
-          <div className="space-y-4">
-            <div>
-              <label className="text-sm font-medium">Name</label>
-              <input 
-                type="text" 
-                placeholder="Enter your name"
-                className="w-full px-3 py-2 border rounded-md"
-              />
-            </div>
-            <div>
-              <label className="text-sm font-medium">Email</label>
-              <input 
-                type="email" 
-                placeholder="Enter your email"
-                className="w-full px-3 py-2 border rounded-md"
-              />
-            </div>
-          </div>
-        </div>
-        <DrawerFooter>
-          <Button>Save changes</Button>
-          <DrawerClose asChild>
-            <Button variant="outline">Cancel</Button>
-          </DrawerClose>
-        </DrawerFooter>
-      </DrawerContent>
-    </Drawer>
+    <>
+      <div className="space-x-2 mb-4">
+        {(['left', 'right', 'top', 'bottom'] as const).map((pos) => (
+          <button
+            key={pos}
+            onClick={() => setPosition(pos)}
+            className={\`px-3 py-1 text-sm rounded \${position === pos ? 'bg-blue-600 text-white' : 'bg-gray-200'}\`}
+          >
+            {pos}
+          </button>
+        ))}
+      </div>
+      
+      <button 
+        onClick={() => setIsOpen(true)}
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+      >
+        Open {position} Drawer
+      </button>
+      
+      <Drawer 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)}
+        position={position}
+        size="md"
+      >
+        <h3 className="text-xl font-bold mb-4">Drawer from {position}</h3>
+        <p className="text-gray-700">
+          This drawer slides in from the {position} side.
+        </p>
+      </Drawer>
+    </>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Drawer open={false} onOpenChange={() => {}}>
-            <DrawerTrigger asChild>
-              <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Open Drawer</button>
-            </DrawerTrigger>
-            <DrawerContent>
-              <DrawerHeader>
-                <DrawerTitle>Edit Profile</DrawerTitle>
-                <DrawerDescription>
-                  Make changes to your profile here. Click save when you&apos;re done.
-                </DrawerDescription>
-              </DrawerHeader>
-              <div className="p-4">
-                <div className="space-y-4">
-                  <div>
-                    <label className="text-sm font-medium">Name</label>
-                    <input 
-                      type="text" 
-                      placeholder="Enter your name"
-                      className="w-full px-3 py-2 border rounded-md"
-                    />
-                  </div>
-                  <div>
-                    <label className="text-sm font-medium">Email</label>
-                    <input 
-                      type="email" 
-                      placeholder="Enter your email"
-                      className="w-full px-3 py-2 border rounded-md"
-                    />
-                  </div>
-                </div>
-              </div>
-              <DrawerFooter>
-                <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Save changes</button>
-                <DrawerClose asChild>
-                  <button className="px-4 py-2 bg-secondary text-secondary-foreground rounded-md">Cancel</button>
-                </DrawerClose>
-              </DrawerFooter>
-            </DrawerContent>
-          </Drawer>
+          <div className="space-x-2 mb-4">
+            <button className="px-3 py-1 text-sm rounded bg-blue-600 text-white">right</button>
+            <button className="px-3 py-1 text-sm rounded bg-gray-200">left</button>
+            <button className="px-3 py-1 text-sm rounded bg-gray-200">top</button>
+            <button className="px-3 py-1 text-sm rounded bg-gray-200">bottom</button>
+          </div>
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            Open right Drawer
+          </button>
+        </div>
+      )
+    },
+    {
+      title: 'Different Sizes',
+      description: 'Drawer component with different size options',
+      code: `import { Drawer } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function SizeDrawer() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'full'>('md')
+  
+  return (
+    <>
+      <div className="space-x-2 mb-4">
+        {(['sm', 'md', 'lg', 'full'] as const).map((s) => (
+          <button
+            key={s}
+            onClick={() => setSize(s)}
+            className={\`px-3 py-1 text-sm rounded \${size === s ? 'bg-blue-600 text-white' : 'bg-gray-200'}\`}
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+      
+      <button 
+        onClick={() => setIsOpen(true)}
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+      >
+        Open {size} Drawer
+      </button>
+      
+      <Drawer 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)}
+        position="right"
+        size={size}
+      >
+        <h3 className="text-xl font-bold mb-4">Drawer Size: {size}</h3>
+        <p className="text-gray-700">
+          This drawer has a {size} size.
+        </p>
+      </Drawer>
+    </>
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm">
+          <div className="space-x-2 mb-4">
+            <button className="px-3 py-1 text-sm rounded bg-gray-200">sm</button>
+            <button className="px-3 py-1 text-sm rounded bg-blue-600 text-white">md</button>
+            <button className="px-3 py-1 text-sm rounded bg-gray-200">lg</button>
+            <button className="px-3 py-1 text-sm rounded bg-gray-200">full</button>
+          </div>
+          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+            Open md Drawer
+          </button>
+        </div>
+      )
+    },
+    {
+      title: 'Custom Styling',
+      description: 'Drawer with custom styling and no close button',
+      code: `import { Drawer } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function CustomDrawer() {
+  const [isOpen, setIsOpen] = useState(false)
+  
+  return (
+    <>
+      <button 
+        onClick={() => setIsOpen(true)}
+        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+      >
+        Open Custom Drawer
+      </button>
+      
+      <Drawer 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)}
+        position="right"
+        size="lg"
+        showCloseButton={false}
+        className="bg-gradient-to-br from-blue-50 to-white"
+        overlayClassName="bg-black/30"
+      >
+        <div className="text-center">
+          <h3 className="text-2xl font-bold mb-4 text-blue-800">Custom Styled Drawer</h3>
+          <p className="text-gray-700 mb-6">
+            This drawer has custom styling with a gradient background and no close button.
+          </p>
+          <button 
+            onClick={() => setIsOpen(false)}
+            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold"
+          >
+            Close Drawer
+          </button>
+        </div>
+      </Drawer>
+    </>
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm">
+          <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
+            Open Custom Drawer
+          </button>
         </div>
       )
     }

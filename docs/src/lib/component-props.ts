@@ -776,7 +776,8 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
     {
       name: 'items',
       type: 'AccordionItem[]',
-      required: true,
+      required: false,
+      default: '[]',
       description: 'Array of accordion items to display'
     },
     {
@@ -787,39 +788,55 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       description: 'Whether multiple items can be open at once'
     },
     {
-      name: 'defaultOpenItems',
-      type: 'string[]',
+      name: 'defaultOpen',
+      type: 'number[]',
       required: false,
       default: '[]',
-      description: 'Array of item IDs that should be open by default'
+      description: 'Array of indices that should be open by default'
     },
     {
-      name: 'variant',
-      type: "'default' | 'outlined' | 'filled' | 'ghost'",
+      name: 'className',
+      type: 'string',
       required: false,
-      default: 'default',
-      description: 'The visual style variant'
+      description: 'Additional CSS classes for the accordion container'
     },
     {
-      name: 'size',
-      type: "'sm' | 'md' | 'lg'",
+      name: 'itemClassName',
+      type: 'string',
       required: false,
-      default: 'md',
-      description: 'The size of the accordion'
+      description: 'Additional CSS classes for each accordion item'
     },
     {
-      name: 'disabled',
+      name: 'headerClassName',
+      type: 'string',
+      required: false,
+      description: 'Additional CSS classes for accordion headers'
+    },
+    {
+      name: 'contentClassName',
+      type: 'string',
+      required: false,
+      description: 'Additional CSS classes for accordion content'
+    },
+    {
+      name: 'iconPosition',
+      type: "'left' | 'right'",
+      required: false,
+      default: 'right',
+      description: 'Position of the expand/collapse icon'
+    },
+    {
+      name: 'customIcon',
+      type: 'React.ComponentType<{ size?: number; className?: string }>',
+      required: false,
+      description: 'Custom icon component'
+    },
+    {
+      name: 'animated',
       type: 'boolean',
       required: false,
-      default: 'false',
-      description: 'Whether the accordion is disabled'
-    },
-    {
-      name: 'searchable',
-      type: 'boolean',
-      required: false,
-      default: 'false',
-      description: 'Whether to show search functionality'
+      default: 'true',
+      description: 'Whether to animate the expand/collapse'
     },
     {
       name: 'searchPlaceholder',
@@ -1174,94 +1191,70 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
 
   drawer: [
     {
-      name: 'open',
+      name: 'isOpen',
       type: 'boolean',
       required: false,
       default: 'false',
       description: 'Whether the drawer is open'
     },
     {
-      name: 'onOpenChange',
-      type: '(open: boolean) => void',
+      name: 'onClose',
+      type: '() => void',
       required: false,
-      description: 'Callback when drawer open state changes'
+      description: 'Callback when drawer should close'
     },
     {
-      name: 'side',
-      type: "'top' | 'right' | 'bottom' | 'left'",
+      name: 'position',
+      type: "'right' | 'left' | 'top' | 'bottom'",
       required: false,
       default: 'right',
-      description: 'Which side the drawer opens from'
+      description: 'Position of the drawer'
     },
     {
       name: 'size',
-      type: "'sm' | 'md' | 'lg' | 'xl' | 'full'",
+      type: "'sm' | 'md' | 'lg' | 'full'",
       required: false,
       default: 'md',
       description: 'Size of the drawer'
     },
     {
-      name: 'dismissible',
+      name: 'overlay',
       type: 'boolean',
       required: false,
       default: 'true',
-      description: 'Whether drawer can be dismissed'
+      description: 'Whether to show overlay'
     },
     {
       name: 'closeOnOverlayClick',
       type: 'boolean',
       required: false,
       default: 'true',
-      description: 'Whether clicking overlay closes drawer'
+      description: 'Whether to close on overlay click'
     },
     {
-      name: 'closeOnEscape',
+      name: 'showCloseButton',
       type: 'boolean',
       required: false,
       default: 'true',
-      description: 'Whether pressing Escape closes drawer'
+      description: 'Whether to show close button'
     },
     {
-      name: 'analyticsId',
+      name: 'className',
       type: 'string',
       required: false,
-      default: 'undefined',
-      description: 'Unique identifier for analytics tracking'
+      description: 'Additional CSS classes'
     },
     {
-      name: 'analyticsEvent',
+      name: 'overlayClassName',
       type: 'string',
       required: false,
-      default: 'undefined',
-      description: 'Event name for analytics tracking'
+      description: 'Overlay CSS classes'
     },
     {
-      name: 'analyticsData',
-      type: 'Record<string, any>',
-      required: false,
-      default: 'undefined',
-      description: 'Additional data for analytics tracking'
-    },
-    {
-      name: 'ariaLabel',
-      type: 'string',
-      required: false,
-      default: 'undefined',
-      description: 'Accessible label for screen readers'
-    },
-    {
-      name: 'dataTestId',
-      type: 'string',
-      required: false,
-      default: 'undefined',
-      description: 'Test identifier for automated testing'
-    },
-    {
-      name: 'onAnalytics',
-      type: '(event: string, data?: Record<string, any>) => void',
-      required: false,
-      default: 'undefined',
-      description: 'Callback for analytics events'
+      name: 'children',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'Drawer content'
     }
   ],
 

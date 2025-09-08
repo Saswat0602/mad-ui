@@ -1,470 +1,284 @@
-"use client"
+'use client'
 
-import Link from "next/link"
-import { 
-  Button,
-  Card, 
-  CardContent, 
-  CardDescription, 
-  CardHeader, 
-  CardTitle,
-  Badge,
-  Input,
-  Label,
-  Checkbox,
-  Radio,
-  Switch,
-  Slider,
-  Progress,
-  Rating,
-  Skeleton,
-  Textarea,
-  Select,
-  Separator
-} from "mad-ui-components"
-import { 
-  Package, 
-  Code, 
-  Layers,
-  Zap,
-  ArrowRight
-} from "lucide-react"
+import React, { useState } from 'react'
+import { Drawer } from '../../../../src/components/layout/drawer'
+import { Accordion } from '../../../../src/components/forms/accordion'
+import { Menu } from 'lucide-react'
 
-export default function ComponentsPage() {
+export default function ComponentsDemo() {
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  const [drawerPosition, setDrawerPosition] = useState<'right' | 'left' | 'top' | 'bottom'>('right')
+  const [drawerSize, setDrawerSize] = useState<'sm' | 'md' | 'lg' | 'full'>('md')
+
+  const accordionItems = [
+    {
+      id: 'item1',
+      title: 'What is React?',
+      content: 'React is a JavaScript library for building user interfaces. It lets you compose complex UIs from small and isolated pieces of code called &quot;components&quot;.'
+    },
+    {
+      id: 'item2',
+      title: 'How do components work?',
+      content: (
+        <div>
+          <p>Components are like JavaScript functions. They accept arbitrary inputs (called &quot;props&quot;) and return React elements describing what should appear on the screen.</p>
+          <ul className="mt-2 list-disc list-inside">
+            <li>Reusable pieces of UI</li>
+            <li>Can have their own state</li>
+            <li>Can receive data via props</li>
+          </ul>
+        </div>
+      )
+    },
+    {
+      id: 'item3',
+      title: 'Why use custom components?',
+      content: 'Custom components give you complete control over styling, behavior, and functionality. They can be tailored to your exact needs and maintain consistency across your application.'
+    }
+  ]
+
   return (
-    <div className="container mx-auto max-w-7xl px-4 py-8">
-      {/* Header */}
-      <div className="mb-12">
-        <h1 className="text-4xl font-bold mb-4">Components</h1>
-        <p className="text-xl text-muted-foreground max-w-3xl">
-          Explore our collection of carefully crafted components. Each component is built with accessibility in mind and follows modern design principles.
-        </p>
-        <div className="mt-6">
-          <Link 
-            href="/docs/components" 
-            className="inline-flex items-center gap-2 text-primary hover:text-primary/80 font-medium transition-colors"
-          >
-            View All Components
-            <ArrowRight className="w-4 h-4" />
-          </Link>
+    <div className="min-h-screen bg-gray-50 py-12">
+      <div className="max-w-6xl mx-auto px-6">
+        {/* Header */}
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            New Drawer & Accordion Components
+          </h1>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            Clean, simple, and powerful components with smooth animations and flexible APIs
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          {/* Drawer Demo */}
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900">Drawer Component</h2>
+            
+            <div className="space-y-6">
+              {/* Position Controls */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Position
+                </label>
+                <div className="flex gap-2">
+                  {(['right', 'left', 'top', 'bottom'] as const).map((pos) => (
+                    <button
+                      key={pos}
+                      onClick={() => setDrawerPosition(pos)}
+                      className={`px-3 py-2 text-sm rounded-md transition-colors ${
+                        drawerPosition === pos
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      {pos}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Size Controls */}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Size
+                </label>
+                <div className="flex gap-2">
+                  {(['sm', 'md', 'lg', 'full'] as const).map((size) => (
+                    <button
+                      key={size}
+                      onClick={() => setDrawerSize(size)}
+                      className={`px-3 py-2 text-sm rounded-md transition-colors ${
+                        drawerSize === size
+                          ? 'bg-blue-600 text-white'
+                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                      }`}
+                    >
+                      {size}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Open Drawer Button */}
+              <button
+                onClick={() => setDrawerOpen(true)}
+                className="w-full bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+              >
+                <Menu size={20} />
+                Open {drawerPosition} Drawer ({drawerSize})
+              </button>
+            </div>
+
+            {/* Drawer Component */}
+            <Drawer
+              isOpen={drawerOpen}
+              onClose={() => setDrawerOpen(false)}
+              position={drawerPosition}
+              size={drawerSize}
+              className="bg-gradient-to-br from-blue-50 to-white"
+            >
+              <h3 className="text-2xl font-bold mb-4 text-blue-800">Custom Drawer</h3>
+              <p className="text-gray-700 mb-6">
+                This drawer is completely customizable! You can control:
+              </p>
+              <ul className="list-disc list-inside space-y-2 text-gray-700 mb-6">
+                <li>Position (left, right, top, bottom)</li>
+                <li>Size (sm, md, lg, full)</li>
+                <li>Overlay behavior</li>
+                <li>Close button visibility</li>
+                <li>Custom styling and animations</li>
+              </ul>
+              <div className="pt-4 border-t border-gray-200">
+                <button
+                  onClick={() => setDrawerOpen(false)}
+                  className="w-full bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
+                >
+                  Close Drawer
+                </button>
+              </div>
+            </Drawer>
+          </div>
+
+          {/* Accordion Demo */}
+          <div className="bg-white rounded-lg shadow-lg p-8">
+            <h2 className="text-2xl font-bold mb-6 text-gray-900">Accordion Component</h2>
+            
+            <div className="space-y-6">
+              {/* Basic Accordion */}
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Basic Accordion</h3>
+                <Accordion 
+                  items={accordionItems}
+                  allowMultiple={false}
+                  defaultOpen={[0]}
+                />
+              </div>
+
+              {/* Multiple Open Accordion */}
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Multiple Open</h3>
+                <Accordion 
+                  items={accordionItems}
+                  allowMultiple={true}
+                  defaultOpen={[0, 1]}
+                />
+              </div>
+
+              {/* Custom Icon Position */}
+              <div>
+                <h3 className="text-lg font-semibold mb-3 text-gray-800">Left Icon Position</h3>
+                <Accordion 
+                  items={accordionItems.slice(0, 2)}
+                  iconPosition="left"
+                  allowMultiple={true}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Code Examples */}
+        <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold mb-6 text-gray-900">Usage Examples</h2>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {/* Drawer Code */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3 text-gray-800">Drawer Usage</h3>
+              <pre className="bg-gray-100 p-4 rounded-md text-sm overflow-x-auto">
+                <code>{`import { Drawer } from 'mad-ui-components'
+
+function MyComponent() {
+  const [isOpen, setIsOpen] = useState(false)
+  
+  return (
+    <>
+      <button onClick={() => setIsOpen(true)}>
+        Open Drawer
+      </button>
+      
+      <Drawer 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)}
+        position="right"
+        size="md"
+      >
+        <h3>Drawer Content</h3>
+        <p>Your content here...</p>
+      </Drawer>
+    </>
+  )
+}`}</code>
+              </pre>
+            </div>
+
+            {/* Accordion Code */}
+            <div>
+              <h3 className="text-lg font-semibold mb-3 text-gray-800">Accordion Usage</h3>
+              <pre className="bg-gray-100 p-4 rounded-md text-sm overflow-x-auto">
+                <code>{`import { Accordion } from 'mad-ui-components'
+
+function MyComponent() {
+  const items = [
+    {
+      id: 'item1',
+      title: 'What is React?',
+      content: 'React is a JavaScript library...'
+    },
+    {
+      id: 'item2', 
+      title: 'How do components work?',
+      content: 'Components are like functions...'
+    }
+  ]
+  
+  return (
+    <Accordion 
+      items={items}
+      allowMultiple={true}
+      defaultOpen={[0]}
+    />
+  )
+}`}</code>
+              </pre>
+            </div>
+          </div>
+        </div>
+
+        {/* Features */}
+        <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
+          <h2 className="text-2xl font-bold mb-6 text-gray-900">Key Features</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div>
+              <h3 className="text-lg font-semibold mb-3 text-gray-800">Drawer Features</h3>
+              <ul className="space-y-2 text-gray-700">
+                <li>• Multiple positions (left, right, top, bottom)</li>
+                <li>• Flexible sizing (sm, md, lg, full)</li>
+                <li>• Smooth animations</li>
+                <li>• Keyboard navigation (ESC to close)</li>
+                <li>• Overlay click to close</li>
+                <li>• Customizable styling</li>
+                <li>• TypeScript support</li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="text-lg font-semibold mb-3 text-gray-800">Accordion Features</h3>
+              <ul className="space-y-2 text-gray-700">
+                <li>• Single or multiple open items</li>
+                <li>• Smooth expand/collapse animations</li>
+                <li>• Custom icon positioning</li>
+                <li>• Rich content support</li>
+                <li>• Default open items</li>
+                <li>• Customizable styling</li>
+                <li>• TypeScript support</li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
-
-      {/* Core Components */}
-      <section className="mb-16">
-        <div className="flex items-center gap-2 mb-8">
-          <Package className="h-6 w-6 text-primary" />
-          <h2 className="text-2xl font-bold">Core Components</h2>
-        </div>
-        <p className="text-muted-foreground mb-8">
-          Essential building blocks for every application. These components provide the foundation for user interfaces.
-        </p>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Button</CardTitle>
-              <CardDescription>
-                Versatile button with multiple variants and sizes.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="flex flex-wrap gap-2">
-                <Button size="sm">Small</Button>
-                <Button>Default</Button>
-                <Button size="lg">Large</Button>
-              </div>
-              <div className="flex flex-wrap gap-2">
-                <Button variant="outline">Outline</Button>
-                <Button variant="secondary">Secondary</Button>
-                <Button variant="ghost">Ghost</Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Input</CardTitle>
-              <CardDescription>
-                Flexible input for text, email, password, and more.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="Enter your email" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" placeholder="Enter password" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Label</CardTitle>
-              <CardDescription>
-                Semantic labels for form controls and accessibility.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <Input id="username" placeholder="Enter username" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="bio">Bio</Label>
-                <Textarea id="bio" placeholder="Tell us about yourself" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Card</CardTitle>
-              <CardDescription>
-                A container component for grouping related content and actions.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="p-4 bg-muted rounded-lg">
-                <p className="text-sm text-muted-foreground">Card content example</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Checkbox</CardTitle>
-              <CardDescription>
-                A checkbox component for boolean input with custom styling.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="terms" />
-                <Label htmlFor="terms">Accept terms and conditions</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="newsletter" />
-                <Label htmlFor="newsletter">Subscribe to newsletter</Label>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Radio</CardTitle>
-              <CardDescription>
-                A radio button component for single selection from a group.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center space-x-2">
-                <Radio id="option1" name="options" />
-                <Label htmlFor="option1">Option 1</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Radio id="option2" name="options" />
-                <Label htmlFor="option2">Option 2</Label>
-              </div>
-              <div className="flex items-center space-x-2">
-                <Radio id="option3" name="options" />
-                <Label htmlFor="option3">Option 3</Label>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Form Components */}
-      <section className="mb-16">
-        <div className="flex items-center gap-2 mb-8">
-          <Code className="h-6 w-6 text-primary" />
-          <h2 className="text-2xl font-bold">Form Components</h2>
-        </div>
-        <p className="text-muted-foreground mb-8">
-          Advanced form elements with built-in validation and accessibility features.
-        </p>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Select</CardTitle>
-              <CardDescription>
-                A dropdown select component for choosing from multiple options.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Select options={[
-                { value: "option1", label: "Option 1" },
-                { value: "option2", label: "Option 2" },
-                { value: "option3", label: "Option 3" }
-              ]} />
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Textarea</CardTitle>
-              <CardDescription>
-                A multi-line text input component for longer content.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <Textarea placeholder="Enter your message here..." rows={4} />
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Switch</CardTitle>
-              <CardDescription>
-                A toggle switch component for boolean settings.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="notifications">Notifications</Label>
-                <Switch id="notifications" />
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="darkmode">Dark Mode</Label>
-                <Switch id="darkmode" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Slider</CardTitle>
-              <CardDescription>
-                A range slider component for selecting numeric values.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Volume: 50</Label>
-                <Slider defaultValue={50} max={100} step={1} />
-              </div>
-              <div className="space-y-2">
-                <Label>Brightness: 75</Label>
-                <Slider defaultValue={75} max={100} step={5} />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Progress</CardTitle>
-              <CardDescription>
-                A progress bar component for showing completion status.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Upload Progress</Label>
-                <Progress value={65} className="w-full" />
-              </div>
-              <div className="space-y-2">
-                <Label>Download Progress</Label>
-                <Progress value={30} className="w-full" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Rating</CardTitle>
-              <CardDescription>
-                A star rating component for user feedback and reviews.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label>Product Rating</Label>
-                <Rating value={4} />
-              </div>
-              <div className="space-y-2">
-                <Label>Service Rating</Label>
-                <Rating value={5} />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Layout Components */}
-      <section className="mb-16">
-        <div className="flex items-center gap-2 mb-8">
-          <Layers className="h-6 w-6 text-primary" />
-          <h2 className="text-2xl font-bold">Layout Components</h2>
-        </div>
-        <p className="text-muted-foreground mb-8">
-          Structure and organization components for complex application layouts.
-        </p>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Badge</CardTitle>
-              <CardDescription>
-                Small status indicators and labels for content categorization.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="flex flex-wrap gap-2">
-              <Badge>Default</Badge>
-              <Badge variant="secondary">Secondary</Badge>
-              <Badge variant="outline">Outline</Badge>
-              <Badge variant="destructive">Destructive</Badge>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Separator</CardTitle>
-              <CardDescription>
-                Visual dividers for separating content sections.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                <p>Content above</p>
-                <Separator />
-                <p>Content below</p>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Skeleton</CardTitle>
-              <CardDescription>
-                Loading placeholders for content while data is being fetched.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <Skeleton className="h-4 w-full" />
-              <Skeleton className="h-4 w-3/4" />
-              <Skeleton className="h-4 w-1/2" />
-              <div className="flex gap-2">
-                <Skeleton className="h-8 w-20" />
-                <Skeleton className="h-8 w-20" />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* Interactive Components */}
-      <section className="mb-16">
-        <div className="flex items-center gap-2 mb-8">
-          <Zap className="h-6 w-6 text-primary" />
-          <h2 className="text-2xl font-bold">Interactive Components</h2>
-        </div>
-        <p className="text-muted-foreground mb-8">
-          Components that provide rich user interactions and feedback.
-        </p>
-        
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Button Group</CardTitle>
-              <CardDescription>
-                A collection of related buttons grouped together.
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm">Save</Button>
-                <Button variant="outline" size="sm">Cancel</Button>
-                <Button size="sm">Submit</Button>
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Form Layout</CardTitle>
-              <CardDescription>
-                A complete form example with multiple input types.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="firstname">First Name</Label>
-                  <Input id="firstname" placeholder="John" />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="lastname">Last Name</Label>
-                  <Input id="lastname" placeholder="Doe" />
-                </div>
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="john@example.com" />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="message">Message</Label>
-                <Textarea id="message" placeholder="Your message..." />
-              </div>
-              <div className="flex items-center space-x-2">
-                <Checkbox id="agree" />
-                <Label htmlFor="agree">I agree to the terms</Label>
-              </div>
-              <Button className="w-full">Send Message</Button>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-lg transition-all duration-200">
-            <CardHeader className="pb-4">
-              <CardTitle className="text-lg mb-2">Settings Panel</CardTitle>
-              <CardDescription>
-                A settings interface with various control types.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="autosave">Auto-save</Label>
-                <Switch id="autosave" />
-              </div>
-              <div className="flex items-center justify-between">
-                <Label htmlFor="notifications">Notifications</Label>
-                <Switch id="notifications" />
-              </div>
-              <div className="space-y-2">
-                <Label>Theme</Label>
-                <Select options={[
-                  { value: "light", label: "Light" },
-                  { value: "dark", label: "Dark" },
-                  { value: "system", label: "System" }
-                ]} />
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="text-center py-12 bg-muted/30 rounded-lg">
-        <h2 className="text-2xl font-bold mb-4">Ready to get started?</h2>
-        <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-          Start building beautiful user interfaces with Mad UI components. Copy the components you need and customize them to match your design system.
-        </p>
-        <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button size="lg">
-            <Package className="mr-2 h-4 w-4" />
-            View All Components
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
-          <Button variant="outline" size="lg">
-            <Code className="mr-2 h-4 w-4" />
-            View Source Code
-          </Button>
-        </div>
-      </section>
     </div>
   )
 }

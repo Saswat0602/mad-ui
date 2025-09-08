@@ -112,10 +112,10 @@ export const COMPONENT_REGISTRY = {
   'accordion': {
     category: 'Form' as ComponentCategory,
     title: 'Accordion',
-    description: 'Enterprise-level accordion component with search functionality, analytics, accessibility, and advanced features',
-    version: '2.12.3',
-    status: 'beta' as const,
-    tags: ['form', 'accordion', 'collapsible', 'enterprise', 'analytics', 'accessibility']
+    description: 'Clean and simple accordion component with smooth animations, customizable icons, and flexible content support',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['form', 'accordion', 'collapsible', 'animation', 'content']
   },
   'breadcrumbs': {
     category: 'Form' as ComponentCategory,
@@ -210,10 +210,10 @@ export const COMPONENT_REGISTRY = {
   'drawer': {
     category: 'Layout' as ComponentCategory,
     title: 'Drawer',
-    description: 'Enterprise-level drawer component with analytics, accessibility, drag-and-drop, and advanced animations',
-    version: '2.12.2',
+    description: 'Simple and flexible drawer component with multiple positions, sizes, and smooth animations',
+    version: '3.0.0',
     status: 'stable' as const,
-    tags: ['layout', 'drawer', 'slide', 'enterprise', 'analytics', 'accessibility']
+    tags: ['layout', 'drawer', 'slide', 'overlay', 'modal']
   },
   'sheet': {
     category: 'Layout' as ComponentCategory,
