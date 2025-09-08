@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { 
   Drawer,
   DrawerTrigger,
@@ -18,6 +18,36 @@ import {
   Sidebar, 
   Tooltip 
 } from 'mad-ui-components'
+import { 
+  Home, 
+  BarChart, 
+  Users, 
+  FileText, 
+  Calendar, 
+  Mail, 
+  Settings, 
+  HelpCircle, 
+  LogOut,
+  Search,
+  Bell,
+  User,
+  Menu,
+  ChevronDown,
+  Sun,
+  Moon,
+  Globe,
+  Heart,
+  Star,
+  ShoppingCart,
+  MessageCircle,
+  Info,
+  Phone,
+  Briefcase,
+  Image,
+  Award,
+  Zap,
+  Palette
+} from 'lucide-react'
 
 export interface ComponentExample {
   title: string
@@ -233,89 +263,386 @@ export function ModalExample() {
 
   navbar: [
     {
-      title: 'Basic Navbar',
-      description: 'A simple navbar component',
+      title: 'Enhanced Navbar',
+      description: 'A modern navbar with advanced features',
       code: `import { Navbar } from 'mad-ui-components'
+import { Home, Info, Mail, Phone, Briefcase, Image, Award, Zap } from 'lucide-react'
 
-export function NavbarExample() {
-  return <Navbar title="My App" />
-}`,
-      preview: (
-        <div className="w-full max-w-md">
-          <Navbar title="My App" />
-        </div>
-      )
+export function EnhancedNavbarExample() {
+  const [activeNavItem, setActiveNavItem] = useState('home')
+  
+  const sampleNavItems = [
+    {
+      id: 'home',
+      label: 'Home',
+      icon: Home,
+      active: activeNavItem === 'home'
     },
     {
-      title: 'Centered Navbar',
-      description: 'A navbar with centered navigation',
-      code: `import { Navbar } from 'mad-ui-components'
-
-export function CenteredNavbarExample() {
-  const navigationItems = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Contact', href: '/contact' }
+      id: 'about',
+      label: 'About',
+      icon: Info,
+      active: activeNavItem === 'about',
+      dropdown: [
+        { icon: Award, label: 'Our Story', action: () => console.log('Our Story') },
+        { icon: Briefcase, label: 'Careers', action: () => console.log('Careers') },
+        { icon: Heart, label: 'Values', action: () => console.log('Values') }
+      ]
+    },
+    {
+      id: 'services',
+      label: 'Services',
+      icon: Briefcase,
+      active: activeNavItem === 'services',
+      badge: 'New'
+    },
+    {
+      id: 'portfolio',
+      label: 'Portfolio',
+      icon: Image,
+      active: activeNavItem === 'portfolio'
+    },
+    {
+      id: 'contact',
+      label: 'Contact',
+      icon: Mail,
+      active: activeNavItem === 'contact'
+    }
   ]
 
+  const sampleNotifications = [
+    {
+      title: 'New message received',
+      message: 'You have a new message from John Doe',
+      time: '2 minutes ago',
+      unread: true
+    },
+    {
+      title: 'Project updated',
+      message: 'Your project has been successfully updated',
+      time: '1 hour ago',
+      unread: true
+    }
+  ]
+
+  const handleNavClick = (item) => {
+    setActiveNavItem(item.id)
+    console.log('Nav clicked:', item.label)
+  }
+
   return (
-    <Navbar 
-      title="My App"
-      variant="centered"
-      navigationItems={navigationItems}
-      showNavigation
+    <Navbar
+      brand="Creative Studio"
+      brandLogo={<Zap className="w-full h-full text-purple-600" />}
+      navItems={sampleNavItems}
+      onItemClick={handleNavClick}
+      
+      // Enhanced features
+      theme="light"
+      primaryColor="purple"
+      showProfile={true}
+      profileName="Alex Johnson"
+      profileRole="Designer"
+      
+      // Search
+      showSearch={true}
+      
+      // Notifications
+      showNotifications={true}
+      notificationCount={2}
+      notificationItems={sampleNotifications}
+      
+      // Additional features
+      showThemeToggle={true}
+      showLanguageSwitch={true}
+      showCTA={true}
+      ctaText="Sign Up Free"
+      ctaAction={() => console.log('CTA clicked')}
+      
+      // Behavior
+      shrinkOnScroll={true}
+      blur={true}
+      shadow="shadow-xl"
+      
+      customClasses="border-b-2 border-purple-100"
     />
   )
 }`,
       preview: (
-        <div className="w-full max-w-md">
-          <Navbar 
-            title="My App"
-            variant="centered"
-            navigationItems={[
-              { label: 'Home', href: '/' },
-              { label: 'About', href: '/about' },
-              { label: 'Contact', href: '/contact' }
+        <div className="w-full max-w-4xl">
+          <Navbar
+            brand="Creative Studio"
+            brandLogo={<Zap className="w-full h-full text-purple-600" />}
+            navItems={[
+              {
+                id: 'home',
+                label: 'Home',
+                icon: Home,
+                active: true
+              },
+              {
+                id: 'about',
+                label: 'About',
+                icon: Info,
+                active: false,
+                dropdown: [
+                  { icon: Award, label: 'Our Story', action: () => {} },
+                  { icon: Briefcase, label: 'Careers', action: () => {} },
+                  { icon: Heart, label: 'Values', action: () => {} }
+                ]
+              },
+              {
+                id: 'services',
+                label: 'Services',
+                icon: Briefcase,
+                active: false,
+                badge: 'New'
+              },
+              {
+                id: 'portfolio',
+                label: 'Portfolio',
+                icon: Image,
+                active: false
+              },
+              {
+                id: 'contact',
+                label: 'Contact',
+                icon: Mail,
+                active: false
+              }
             ]}
-            showNavigation
+            onItemClick={() => {}}
+            theme="light"
+            primaryColor="purple"
+            showProfile={true}
+            profileName="Alex Johnson"
+            profileRole="Designer"
+            showSearch={true}
+            showNotifications={true}
+            notificationCount={2}
+            notificationItems={[
+              {
+                title: 'New message received',
+                message: 'You have a new message from John Doe',
+                time: '2 minutes ago',
+                unread: true
+              },
+              {
+                title: 'Project updated',
+                message: 'Your project has been successfully updated',
+                time: '1 hour ago',
+                unread: true
+              }
+            ]}
+            showThemeToggle={true}
+            showLanguageSwitch={true}
+            showCTA={true}
+            ctaText="Sign Up Free"
+            ctaAction={() => {}}
+            shrinkOnScroll={true}
+            blur={true}
+            shadow="shadow-xl"
+            customClasses="border-b-2 border-purple-100"
           />
         </div>
       )
     },
     {
-      title: 'Floating Navbar',
-      description: 'A floating navbar with modern design',
+      title: 'Dark Theme Navbar',
+      description: 'A navbar with dark theme and glassmorphism',
       code: `import { Navbar } from 'mad-ui-components'
+import { Home, BarChart, Users, Settings, Zap } from 'lucide-react'
 
-export function FloatingNavbarExample() {
-  const navigationItems = [
-    { label: 'Home', href: '/' },
-    { label: 'About', href: '/about' },
-    { label: 'Contact', href: '/contact' }
+export function DarkNavbarExample() {
+  const navItems = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: Home,
+      active: true
+    },
+    {
+      id: 'analytics',
+      label: 'Analytics',
+      icon: BarChart,
+      active: false,
+      badge: '5'
+    },
+    {
+      id: 'users',
+      label: 'Users',
+      icon: Users,
+      active: false
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      icon: Settings,
+      active: false
+    }
   ]
 
   return (
-    <Navbar 
-      title="My App"
-      variant="floating"
-      navigationItems={navigationItems}
-      showNavigation
-      showActions
+    <Navbar
+      brand="Dashboard"
+      brandLogo={<Zap className="w-full h-full text-blue-400" />}
+      navItems={navItems}
+      theme="dark"
+      primaryColor="blue"
+      showProfile={true}
+      profileName="John Doe"
+      profileRole="Admin"
+      showSearch={true}
+      showNotifications={true}
+      notificationCount={3}
+      blur={true}
+      gradient="from-slate-900 to-slate-800"
     />
   )
 }`,
       preview: (
-        <div className="w-full max-w-md">
-          <Navbar 
-            title="My App"
-            variant="floating"
-            navigationItems={[
-              { label: 'Home', href: '/' },
-              { label: 'About', href: '/about' },
-              { label: 'Contact', href: '/contact' }
+        <div className="w-full max-w-4xl bg-slate-900 p-4 rounded-lg">
+          <Navbar
+            brand="Dashboard"
+            brandLogo={<Zap className="w-full h-full text-blue-400" />}
+            navItems={[
+              {
+                id: 'dashboard',
+                label: 'Dashboard',
+                icon: Home,
+                active: true
+              },
+              {
+                id: 'analytics',
+                label: 'Analytics',
+                icon: BarChart,
+                active: false,
+                badge: '5'
+              },
+              {
+                id: 'users',
+                label: 'Users',
+                icon: Users,
+                active: false
+              },
+              {
+                id: 'settings',
+                label: 'Settings',
+                icon: Settings,
+                active: false
+              }
             ]}
-            showNavigation
-            showActions
+            onItemClick={() => {}}
+            theme="dark"
+            primaryColor="blue"
+            showProfile={true}
+            profileName="John Doe"
+            profileRole="Admin"
+            showSearch={true}
+            showNotifications={true}
+            notificationCount={3}
+            blur={true}
+            gradient="from-slate-900 to-slate-800"
+          />
+        </div>
+      )
+    },
+    {
+      title: 'Gradient Navbar',
+      description: 'A navbar with colorful gradient theme',
+      code: `import { Navbar } from 'mad-ui-components'
+import { Heart, Star, ShoppingCart, MessageCircle, Palette } from 'lucide-react'
+
+export function GradientNavbarExample() {
+  const navItems = [
+    {
+      id: 'home',
+      label: 'Home',
+      icon: Heart,
+      active: true
+    },
+    {
+      id: 'products',
+      label: 'Products',
+      icon: Star,
+      active: false,
+      badge: 'Hot'
+    },
+    {
+      id: 'cart',
+      label: 'Cart',
+      icon: ShoppingCart,
+      active: false,
+      badge: '3'
+    },
+    {
+      id: 'contact',
+      label: 'Contact',
+      icon: MessageCircle,
+      active: false
+    }
+  ]
+
+  return (
+    <Navbar
+      brand="Creative Store"
+      brandLogo={<Palette className="w-full h-full text-white" />}
+      navItems={navItems}
+      theme="colorful"
+      primaryColor="pink"
+      showProfile={true}
+      profileName="Sarah Wilson"
+      profileRole="Customer"
+      showSearch={true}
+      showCTA={true}
+      ctaText="Shop Now"
+      ctaAction={() => console.log('Shop now clicked')}
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-4xl">
+          <Navbar
+            brand="Creative Store"
+            brandLogo={<Palette className="w-full h-full text-white" />}
+            navItems={[
+              {
+                id: 'home',
+                label: 'Home',
+                icon: Heart,
+                active: true
+              },
+              {
+                id: 'products',
+                label: 'Products',
+                icon: Star,
+                active: false,
+                badge: 'Hot'
+              },
+              {
+                id: 'cart',
+                label: 'Cart',
+                icon: ShoppingCart,
+                active: false,
+                badge: '3'
+              },
+              {
+                id: 'contact',
+                label: 'Contact',
+                icon: MessageCircle,
+                active: false
+              }
+            ]}
+            onItemClick={() => {}}
+            theme="colorful"
+            primaryColor="pink"
+            showProfile={true}
+            profileName="Sarah Wilson"
+            profileRole="Customer"
+            showSearch={true}
+            showCTA={true}
+            ctaText="Shop Now"
+            ctaAction={() => {}}
           />
         </div>
       )
@@ -440,28 +767,429 @@ export function SheetExample() {
 
   sidebar: [
     {
-      title: 'Basic Sidebar',
-      description: 'A simple sidebar component',
+      title: 'Enhanced Sidebar',
+      description: 'A modern sidebar with advanced features',
       code: `import { Sidebar } from 'mad-ui-components'
+import { Home, BarChart, Users, FileText, Calendar, Mail, Settings, User, Palette } from 'lucide-react'
 
-export function SidebarExample() {
-  const items = [
-    { label: 'Dashboard', href: '/dashboard' },
-    { label: 'Analytics', href: '/analytics' },
-    { label: 'Settings', href: '/settings' }
+export function EnhancedSidebarExample() {
+  const [activeItem, setActiveItem] = useState('dashboard')
+
+  const sampleSections = [
+    {
+      title: "Main",
+      items: [
+        {
+          id: 'dashboard',
+          label: 'Dashboard',
+          icon: Home,
+          active: activeItem === 'dashboard',
+          shortcut: '⌘D'
+        },
+        {
+          id: 'analytics',
+          label: 'Analytics',
+          icon: BarChart,
+          active: activeItem === 'analytics',
+          badge: '5',
+          badgeColor: 'bg-green-500 text-white'
+        },
+        {
+          id: 'calendar',
+          label: 'Calendar',
+          icon: Calendar,
+          active: activeItem === 'calendar',
+          shortcut: '⌘C'
+        }
+      ]
+    },
+    {
+      title: "Content",
+      items: [
+        {
+          id: 'documents',
+          label: 'Documents',
+          icon: FileText,
+          active: activeItem === 'documents',
+          badge: '12'
+        },
+        {
+          id: 'users',
+          label: 'Users',
+          icon: Users,
+          active: activeItem === 'users'
+        },
+        {
+          id: 'messages',
+          label: 'Messages',
+          icon: Mail,
+          active: activeItem === 'messages',
+          badge: '3',
+          badgeColor: 'bg-red-500 text-white'
+        }
+      ]
+    },
+    {
+      title: "Settings",
+      items: [
+        {
+          id: 'profile',
+          label: 'Profile',
+          icon: User,
+          active: activeItem === 'profile'
+        },
+        {
+          id: 'settings',
+          label: 'Settings',
+          icon: Settings,
+          active: activeItem === 'settings',
+          shortcut: '⌘S'
+        }
+      ]
+    }
   ]
 
-  return <Sidebar items={items} />
+  const handleItemClick = (item) => {
+    setActiveItem(item.id)
+    console.log('Clicked:', item.label)
+  }
+
+  return (
+    <div className="flex h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden">
+      <Sidebar
+        title="Creative Studio"
+        subtitle="Design Dashboard"
+        sections={sampleSections}
+        onItemClick={handleItemClick}
+        
+        // Enhanced styling
+        theme="dark"
+        primaryColor="purple"
+        width="w-80"
+        borderRadius="rounded-2xl"
+        shadow="shadow-2xl"
+        
+        // Advanced features
+        showAvatar={true}
+        userName="John Doe"
+        userRole="Creative Director"
+        showSearch={true}
+        hoverEffect="glow"
+        animationType="slide"
+        
+        // Logo
+        logo={<Palette className="w-full h-full text-purple-400" />}
+        
+        customClasses="m-4 border border-white/10"
+      />
+    </div>
+  )
 }`,
       preview: (
-        <div className="w-full max-w-sm">
-          <Sidebar 
-            items={[
-              { label: 'Dashboard', href: '/dashboard' },
-              { label: 'Analytics', href: '/analytics' },
-              { label: 'Settings', href: '/settings' }
-            ]} 
-          />
+        <div className="w-full max-w-4xl">
+          <div className="flex h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden">
+            <Sidebar
+              title="Creative Studio"
+              subtitle="Design Dashboard"
+              sections={[
+                {
+                  title: "Main",
+                  items: [
+                    {
+                      id: 'dashboard',
+                      label: 'Dashboard',
+                      icon: Home,
+                      active: true,
+                      shortcut: '⌘D'
+                    },
+                    {
+                      id: 'analytics',
+                      label: 'Analytics',
+                      icon: BarChart,
+                      active: false,
+                      badge: '5',
+                      badgeColor: 'bg-green-500 text-white'
+                    },
+                    {
+                      id: 'calendar',
+                      label: 'Calendar',
+                      icon: Calendar,
+                      active: false,
+                      shortcut: '⌘C'
+                    }
+                  ]
+                },
+                {
+                  title: "Content",
+                  items: [
+                    {
+                      id: 'documents',
+                      label: 'Documents',
+                      icon: FileText,
+                      active: false,
+                      badge: '12'
+                    },
+                    {
+                      id: 'users',
+                      label: 'Users',
+                      icon: Users,
+                      active: false
+                    },
+                    {
+                      id: 'messages',
+                      label: 'Messages',
+                      icon: Mail,
+                      active: false,
+                      badge: '3',
+                      badgeColor: 'bg-red-500 text-white'
+                    }
+                  ]
+                },
+                {
+                  title: "Settings",
+                  items: [
+                    {
+                      id: 'profile',
+                      label: 'Profile',
+                      icon: User,
+                      active: false
+                    },
+                    {
+                      id: 'settings',
+                      label: 'Settings',
+                      icon: Settings,
+                      active: false,
+                      shortcut: '⌘S'
+                    }
+                  ]
+                }
+              ]}
+              onItemClick={() => {}}
+              theme="dark"
+              primaryColor="purple"
+              width="w-80"
+              borderRadius="rounded-2xl"
+              shadow="shadow-2xl"
+              showAvatar={true}
+              userName="John Doe"
+              userRole="Creative Director"
+              showSearch={true}
+              hoverEffect="glow"
+              animationType="slide"
+              logo={<Palette className="w-full h-full text-purple-400" />}
+              customClasses="m-4 border border-white/10"
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Light Theme Sidebar',
+      description: 'A sidebar with light theme and clean design',
+      code: `import { Sidebar } from 'mad-ui-components'
+import { Home, BarChart, Users, Settings, Zap } from 'lucide-react'
+
+export function LightSidebarExample() {
+  const items = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: Home,
+      active: true
+    },
+    {
+      id: 'analytics',
+      label: 'Analytics',
+      icon: BarChart,
+      active: false,
+      badge: 'New'
+    },
+    {
+      id: 'users',
+      label: 'Users',
+      icon: Users,
+      active: false
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      icon: Settings,
+      active: false
+    }
+  ]
+
+  return (
+    <div className="flex h-96 bg-white rounded-lg overflow-hidden border">
+      <Sidebar
+        title="Dashboard"
+        subtitle="Admin Panel"
+        items={items}
+        theme="light"
+        primaryColor="blue"
+        width="w-72"
+        showAvatar={true}
+        userName="Admin User"
+        userRole="Administrator"
+        showSearch={true}
+        logo={<Zap className="w-full h-full text-blue-600" />}
+        customClasses="border-r"
+      />
+    </div>
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-4xl">
+          <div className="flex h-96 bg-white rounded-lg overflow-hidden border">
+            <Sidebar
+              title="Dashboard"
+              subtitle="Admin Panel"
+              items={[
+                {
+                  id: 'dashboard',
+                  label: 'Dashboard',
+                  icon: Home,
+                  active: true
+                },
+                {
+                  id: 'analytics',
+                  label: 'Analytics',
+                  icon: BarChart,
+                  active: false,
+                  badge: 'New'
+                },
+                {
+                  id: 'users',
+                  label: 'Users',
+                  icon: Users,
+                  active: false
+                },
+                {
+                  id: 'settings',
+                  label: 'Settings',
+                  icon: Settings,
+                  active: false
+                }
+              ]}
+              onItemClick={() => {}}
+              theme="light"
+              primaryColor="blue"
+              width="w-72"
+              showAvatar={true}
+              userName="Admin User"
+              userRole="Administrator"
+              showSearch={true}
+              logo={<Zap className="w-full h-full text-blue-600" />}
+              customClasses="border-r"
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Collapsible Sidebar',
+      description: 'A sidebar that can be collapsed and expanded',
+      code: `import { Sidebar } from 'mad-ui-components'
+import { Home, BarChart, Users, Settings, Heart } from 'lucide-react'
+
+export function CollapsibleSidebarExample() {
+  const [isCollapsed, setIsCollapsed] = useState(false)
+  
+  const items = [
+    {
+      id: 'dashboard',
+      label: 'Dashboard',
+      icon: Home,
+      active: true
+    },
+    {
+      id: 'analytics',
+      label: 'Analytics',
+      icon: BarChart,
+      active: false
+    },
+    {
+      id: 'users',
+      label: 'Users',
+      icon: Users,
+      active: false
+    },
+    {
+      id: 'settings',
+      label: 'Settings',
+      icon: Settings,
+      active: false
+    }
+  ]
+
+  return (
+    <div className="flex h-96 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg overflow-hidden">
+      <Sidebar
+        title="My App"
+        subtitle="Application"
+        items={items}
+        defaultCollapsed={isCollapsed}
+        onToggle={setIsCollapsed}
+        theme="gradient"
+        primaryColor="purple"
+        width="w-80"
+        collapsedWidth="w-16"
+        showToggleButton={true}
+        showAvatar={true}
+        userName="User Name"
+        userRole="Developer"
+        logo={<Heart className="w-full h-full text-pink-500" />}
+        customClasses="m-2"
+      />
+    </div>
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-4xl">
+          <div className="flex h-96 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg overflow-hidden">
+            <Sidebar
+              title="My App"
+              subtitle="Application"
+              items={[
+                {
+                  id: 'dashboard',
+                  label: 'Dashboard',
+                  icon: Home,
+                  active: true
+                },
+                {
+                  id: 'analytics',
+                  label: 'Analytics',
+                  icon: BarChart,
+                  active: false
+                },
+                {
+                  id: 'users',
+                  label: 'Users',
+                  icon: Users,
+                  active: false
+                },
+                {
+                  id: 'settings',
+                  label: 'Settings',
+                  icon: Settings,
+                  active: false
+                }
+              ]}
+              onItemClick={() => {}}
+              defaultCollapsed={false}
+              onToggle={() => {}}
+              theme="gradient"
+              primaryColor="purple"
+              width="w-80"
+              collapsedWidth="w-16"
+              showToggleButton={true}
+              showAvatar={true}
+              userName="User Name"
+              userRole="Developer"
+              logo={<Heart className="w-full h-full text-pink-500" />}
+              customClasses="m-2"
+            />
+          </div>
         </div>
       )
     }
