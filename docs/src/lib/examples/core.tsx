@@ -33,20 +33,22 @@ export function ButtonVariants() {
   return (
     <div className="flex items-center space-x-2">
       <Button variant="primary">Primary</Button>
-      <Button variant="secondary">Secondary</Button>
-      <Button variant="outline">Outline</Button>
-      <Button variant="ghost">Ghost</Button>
       <Button variant="error">Error</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="info">Info</Button>
     </div>
   )
 }`,
       preview: (
         <div className="flex items-center space-x-2">
           <Button variant="primary">Primary</Button>
-          <Button variant="secondary">Secondary</Button>
-          <Button variant="outline">Outline</Button>
-          <Button variant="ghost">Ghost</Button>
           <Button variant="error">Error</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button variant="info">Info</Button>
         </div>
       )
     },
@@ -512,24 +514,110 @@ export function ProgressExample() {
       preview: <Progress value={60} />
     },
     {
-      title: 'Different Sizes',
-      description: 'Progress bars with different sizes',
+      title: 'Variants',
+      description: 'Progress bars with different variants',
       code: `import { Progress } from 'mad-ui-components'
 
-export function ProgressSizes() {
+export function ProgressVariants() {
   return (
     <div className="space-y-4">
-      <Progress value={30} size="sm" />
-      <Progress value={60} size="md" />
-      <Progress value={90} size="lg" />
+      <Progress value={33} variant="default" />
+      <Progress value={66} variant="success" />
+      <Progress value={25} variant="warning" />
+      <Progress value={90} variant="error" />
+      <Progress value={50} variant="info" />
     </div>
   )
 }`,
       preview: (
         <div className="space-y-4 w-full max-w-sm">
-          <Progress value={30} size="sm" />
-          <Progress value={60} size="md" />
-          <Progress value={90} size="lg" />
+          <Progress value={33} variant="default" />
+          <Progress value={66} variant="success" />
+          <Progress value={25} variant="warning" />
+          <Progress value={90} variant="error" />
+          <Progress value={50} variant="info" />
+        </div>
+      )
+    },
+    {
+      title: 'Animated Progress',
+      description: 'Progress bars with animations and labels',
+      code: `import { Progress } from 'mad-ui-components'
+
+export function AnimatedProgress() {
+  return (
+    <div className="space-y-4">
+      <Progress 
+        value={75} 
+        animated={true}
+        showValue={true}
+        showLabel={true}
+        label="Upload Progress"
+      />
+    </div>
+  )
+}`,
+      preview: (
+        <div className="space-y-4 w-full max-w-sm">
+          <Progress 
+            value={75} 
+            animated={true}
+            showValue={true}
+            showLabel={true}
+            label="Upload Progress"
+          />
+        </div>
+      )
+    },
+    {
+      title: 'Enterprise Features',
+      description: 'Progress with analytics and accessibility features',
+      code: `import { Progress } from 'mad-ui-components'
+
+export function EnterpriseProgress() {
+  return (
+    <Progress
+      value={75}
+      max={100}
+      variant="success"
+      size="lg"
+      animated={true}
+      striped={true}
+      showValue={true}
+      showLabel={true}
+      label="File Upload"
+      analyticsId="file-upload-progress"
+      analyticsEvent="progress_update"
+      analyticsData={{ fileType: 'image', fileSize: '2.5MB' }}
+      ariaLabel="File upload progress"
+      dataTestId="upload-progress"
+      onAnalytics={(event, data) => {
+        console.log('Progress analytics:', event, data)
+      }}
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-sm">
+          <Progress
+            value={75}
+            max={100}
+            variant="success"
+            size="lg"
+            animated={true}
+            striped={true}
+            showValue={true}
+            showLabel={true}
+            label="File Upload"
+            analyticsId="file-upload-progress"
+            analyticsEvent="progress_update"
+            analyticsData={{ fileType: 'image', fileSize: '2.5MB' }}
+            ariaLabel="File upload progress"
+            dataTestId="upload-progress"
+            onAnalytics={(event, data) => {
+              console.log('Progress analytics:', event, data)
+            }}
+          />
         </div>
       )
     }
@@ -621,6 +709,72 @@ export function SmoothRangeSlider() {
           range 
           showValue
           className="w-full"
+        />
+      )
+    },
+    {
+      title: 'Enterprise Features',
+      description: 'Slider with analytics, accessibility, and advanced features',
+      code: `import { Slider } from 'mad-ui-components'
+
+export function EnterpriseSlider() {
+  const marks = [
+    { value: 0, label: 'Min' },
+    { value: 50, label: 'Mid' },
+    { value: 100, label: 'Max' }
+  ]
+
+  return (
+    <Slider
+      value={50}
+      max={100}
+      step={1}
+      variant="default"
+      size="md"
+      orientation="horizontal"
+      range={false}
+      showValue={true}
+      showMarks={true}
+      marks={marks}
+      analyticsId="volume-slider"
+      analyticsEvent="slider_change"
+      analyticsData={{ component: 'audio-controls' }}
+      ariaLabel="Volume control"
+      dataTestId="volume-slider"
+      keyboardNavigation={true}
+      onValueChange={(value) => console.log('Value changed:', value)}
+      onAnalytics={(event, data) => {
+        console.log('Slider analytics:', event, data)
+      }}
+    />
+  )
+}`,
+      preview: (
+        <Slider
+          value={50}
+          max={100}
+          step={1}
+          variant="default"
+          size="md"
+          orientation="horizontal"
+          range={false}
+          showValue={true}
+          showMarks={true}
+          marks={[
+            { value: 0, label: 'Min' },
+            { value: 50, label: 'Mid' },
+            { value: 100, label: 'Max' }
+          ]}
+          analyticsId="volume-slider"
+          analyticsEvent="slider_change"
+          analyticsData={{ component: 'audio-controls' }}
+          ariaLabel="Volume control"
+          dataTestId="volume-slider"
+          keyboardNavigation={true}
+          onValueChange={(value) => console.log('Value changed:', value)}
+          onAnalytics={(event, data) => {
+            console.log('Slider analytics:', event, data)
+          }}
         />
       )
     }

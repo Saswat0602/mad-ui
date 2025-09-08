@@ -70,18 +70,18 @@ export const COMPONENT_REGISTRY = {
   'progress': {
     category: 'Core' as ComponentCategory,
     title: 'Progress',
-    description: 'A progress bar component for showing completion status',
-    version: '1.0.0',
+    description: 'Enterprise-level progress component with smooth animations, analytics, accessibility, and interactive features',
+    version: '2.12.3',
     status: 'stable' as const,
-    tags: ['feedback', 'progress', 'status']
+    tags: ['feedback', 'progress', 'status', 'enterprise', 'analytics', 'accessibility']
   },
   'slider': {
     category: 'Core' as ComponentCategory,
     title: 'Slider',
-    description: 'A range slider component for numeric input',
-    version: '1.0.0',
+    description: 'Enterprise-level slider component with smooth interactions, analytics, accessibility, and advanced functionality',
+    version: '2.12.3',
     status: 'stable' as const,
-    tags: ['form', 'slider', 'range']
+    tags: ['form', 'slider', 'range', 'enterprise', 'analytics', 'accessibility']
   },
   'rating': {
     category: 'Core' as ComponentCategory,
@@ -102,10 +102,10 @@ export const COMPONENT_REGISTRY = {
   'textarea': {
     category: 'Core' as ComponentCategory,
     title: 'Textarea',
-    description: 'A textarea component for multi-line text input',
-    version: '1.0.0',
+    description: 'Enterprise-level textarea component with character counting, auto-resize, validation, and enterprise features',
+    version: '2.12.3',
     status: 'stable' as const,
-    tags: ['form', 'textarea', 'multiline']
+    tags: ['form', 'textarea', 'multiline', 'enterprise', 'analytics', 'accessibility']
   },
 
   // Form Components
@@ -410,10 +410,10 @@ export const COMPONENT_REGISTRY = {
   'collapsible': {
     category: 'Overlay' as ComponentCategory,
     title: 'Collapsible',
-    description: 'A collapsible component for hiding/showing content',
-    version: '1.0.0',
+    description: 'Enterprise-level collapsible component with analytics, accessibility, and smooth animations',
+    version: '2.12.3',
     status: 'stable' as const,
-    tags: ['overlay', 'collapsible', 'expand']
+    tags: ['overlay', 'collapsible', 'expand', 'enterprise', 'analytics', 'accessibility']
   },
 
   // Media Components
@@ -444,10 +444,10 @@ export const COMPONENT_REGISTRY = {
   'carousel': {
     category: 'Media' as ComponentCategory,
     title: 'Carousel',
-    description: 'A carousel component for image galleries',
-    version: '1.0.0',
+    description: 'Enterprise-level carousel component with image carousel, autoplay, manual controls, infinite scroll, and enterprise features',
+    version: '2.12.3',
     status: 'stable' as const,
-    tags: ['media', 'carousel', 'gallery']
+    tags: ['media', 'carousel', 'gallery', 'enterprise', 'analytics', 'accessibility']
   },
   'typography': {
     category: 'Media' as ComponentCategory,

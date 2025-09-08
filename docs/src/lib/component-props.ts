@@ -11,16 +11,16 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
   button: [
     {
       name: 'variant',
-      type: "'primary' | 'secondary' | 'outline' | 'ghost' | 'success' | 'warning' | 'error' | 'info'",
+      type: "'default' | 'destructive' | 'outline' | 'secondary' | 'ghost' | 'link'",
       required: false,
-      default: 'primary',
+      default: 'default',
       description: 'The visual style variant of the button'
     },
     {
       name: 'size',
-      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+      type: "'sm' | 'default' | 'lg'",
       required: false,
-      default: 'md',
+      default: 'default',
       description: 'The size of the button'
     },
     {
@@ -36,6 +36,55 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       required: false,
       default: 'false',
       description: 'Whether the button is in a loading state'
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the button is disabled'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
     },
     {
       name: 'leftIcon',
@@ -334,9 +383,9 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
     {
       name: 'value',
       type: 'number',
-      required: false,
-      default: '0',
-      description: 'The current progress value (0-100)'
+      required: true,
+      default: 'undefined',
+      description: 'The current progress value'
     },
     {
       name: 'max',
@@ -344,28 +393,240 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       required: false,
       default: '100',
       description: 'The maximum progress value'
-    }
-  ],
-
-  slider: [
-    {
-      name: 'value',
-      type: 'number[]',
-      required: false,
-      description: 'The current slider value(s)'
-    },
-    {
-      name: 'onChange',
-      type: '(value: number[]) => void',
-      required: false,
-      description: 'Function to call when the slider value changes'
     },
     {
       name: 'min',
       type: 'number',
       required: false,
       default: '0',
-      description: 'The minimum slider value'
+      description: 'The minimum progress value'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'success' | 'warning' | 'error' | 'info'",
+      required: false,
+      default: 'default',
+      description: 'The visual style variant'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'md',
+      description: 'The size of the progress bar'
+    },
+    {
+      name: 'showValue',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to display the current value'
+    },
+    {
+      name: 'showLabel',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to display a label'
+    },
+    {
+      name: 'label',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'The label text to display'
+    },
+    {
+      name: 'animated',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to show animation'
+    },
+    {
+      name: 'striped',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to show striped pattern'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
+    }
+  ],
+
+  slider: [
+    {
+      name: 'value',
+      type: 'number | [number, number]',
+      required: false,
+      default: 'undefined',
+      description: 'The current value(s) of the slider'
+    },
+    {
+      name: 'defaultValue',
+      type: 'number | [number, number]',
+      required: false,
+      default: 'undefined',
+      description: 'The default value(s) of the slider'
+    },
+    {
+      name: 'min',
+      type: 'number',
+      required: false,
+      default: '0',
+      description: 'The minimum value of the slider'
+    },
+    {
+      name: 'max',
+      type: 'number',
+      required: false,
+      default: '100',
+      description: 'The maximum value of the slider'
+    },
+    {
+      name: 'step',
+      type: 'number',
+      required: false,
+      default: '1',
+      description: 'The step size for value changes'
+    },
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      required: false,
+      default: 'horizontal',
+      description: 'The orientation of the slider'
+    },
+    {
+      name: 'range',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to show range selection'
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the slider is disabled'
+    },
+    {
+      name: 'showValue',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to show the current value'
+    },
+    {
+      name: 'showMarks',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to show marks on the track'
+    },
+    {
+      name: 'marks',
+      type: 'Array<{ value: number; label?: string }>',
+      required: false,
+      default: 'undefined',
+      description: 'Array of marks to display on the track'
+    },
+    {
+      name: 'onValueChange',
+      type: '(value: number | [number, number]) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback when the value changes'
+    },
+    {
+      name: 'analyticsId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Unique identifier for analytics tracking'
+    },
+    {
+      name: 'analyticsEvent',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Event name for analytics tracking'
+    },
+    {
+      name: 'analyticsData',
+      type: 'Record<string, any>',
+      required: false,
+      default: 'undefined',
+      description: 'Additional data for analytics tracking'
+    },
+    {
+      name: 'ariaLabel',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Accessible label for screen readers'
+    },
+    {
+      name: 'dataTestId',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Test identifier for automated testing'
+    },
+    {
+      name: 'keyboardNavigation',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether to enable keyboard navigation'
+    },
+    {
+      name: 'onAnalytics',
+      type: '(event: string, data?: Record<string, any>) => void',
+      required: false,
+      default: 'undefined',
+      description: 'Callback for analytics events'
     },
     {
       name: 'max',
