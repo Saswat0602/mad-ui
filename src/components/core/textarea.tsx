@@ -21,6 +21,70 @@ export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTex
   maxRows?: number
   minRows?: number
   resize?: "none" | "both" | "horizontal" | "vertical"
+  // Enterprise features
+  analyticsId?: string
+  analyticsEvent?: string
+  analyticsData?: Record<string, any>
+  ariaLabel?: string
+  ariaDescribedBy?: string
+  role?: string
+  dataTestId?: string
+  onAnalytics?: (event: string, data?: Record<string, any>) => void
+  tooltip?: string
+  loading?: boolean
+  validation?: {
+    required?: boolean
+    minLength?: number
+    maxLength?: number
+    pattern?: RegExp
+    custom?: (value: string) => boolean | string
+  }
+  characterCount?: boolean
+  maxCharacters?: number
+  showCharacterCount?: boolean
+  autoResize?: boolean
+  onValueChange?: (value: string) => void
+  onValueHover?: (value: string) => void
+  onValueFocus?: (value: string) => void
+  keyboardNavigation?: boolean
+  autoFocus?: boolean
+  interactive?: boolean
+  clickable?: boolean
+  onValueClick?: (value: string) => void
+  onValueDoubleClick?: (value: string) => void
+  onRightClick?: (value: string, event: React.MouseEvent) => void
+  contextMenuItems?: Array<{
+    label: string
+    onClick: (value: string) => void
+    icon?: React.ReactNode
+    disabled?: boolean
+  }>
+  draggable?: boolean
+  onDragMove?: (position: { x: number; y: number }) => void
+  onDragComplete?: (position: { x: number; y: number }) => void
+  swipeable?: boolean
+  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
+  resizable?: boolean
+  onResize?: (size: { width: number; height: number }) => void
+  scrollable?: boolean
+  onScrollChange?: (scrollY: number) => void
+  focusable?: boolean
+  onFocus?: () => void
+  onBlur?: () => void
+  tabIndex?: number
+  animation?: 'slide' | 'fade' | 'scale' | 'bounce' | 'none'
+  animationDuration?: number
+  onAnimationStart?: () => void
+  onAnimationEnd?: () => void
+  theme?: 'light' | 'dark' | 'auto'
+  locale?: string
+  rtl?: boolean
+  accessibility?: {
+    announce?: boolean
+    announceMessage?: string
+    role?: string
+    liveRegion?: 'polite' | 'assertive' | 'off'
+  }
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(

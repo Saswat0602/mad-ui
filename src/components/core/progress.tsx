@@ -21,6 +21,76 @@ export interface ProgressProps extends React.HTMLAttributes<HTMLDivElement> {
   borderRadius?: string | number
   height?: string | number
   shadow?: "none" | "sm" | "md" | "lg"
+  // Enterprise features
+  analyticsId?: string
+  analyticsEvent?: string
+  analyticsData?: Record<string, any>
+  ariaLabel?: string
+  ariaDescribedBy?: string
+  role?: string
+  dataTestId?: string
+  onAnalytics?: (event: string, data?: Record<string, any>) => void
+  tooltip?: string
+  loading?: boolean
+  error?: string
+  success?: boolean
+  validation?: {
+    required?: boolean
+    custom?: (value: number) => boolean | string
+  }
+  shortcuts?: Array<{
+    label: string
+    value: number
+    onClick: () => void
+  }>
+  customMarks?: Array<{
+    value: number
+    label?: string
+    className?: string
+    tooltip?: string
+  }>
+  onValueChange?: (value: number) => void
+  onValueHover?: (value: number) => void
+  onValueFocus?: (value: number) => void
+  keyboardNavigation?: boolean
+  autoFocus?: boolean
+  interactive?: boolean
+  clickable?: boolean
+  onValueClick?: (value: number) => void
+  onValueDoubleClick?: (value: number) => void
+  onRightClick?: (value: number, event: React.MouseEvent) => void
+  contextMenuItems?: Array<{
+    label: string
+    onClick: (value: number) => void
+    icon?: React.ReactNode
+    disabled?: boolean
+  }>
+  draggable?: boolean
+  onDragMove?: (position: { x: number; y: number }) => void
+  onDragComplete?: (position: { x: number; y: number }) => void
+  swipeable?: boolean
+  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
+  resizable?: boolean
+  onResize?: (size: { width: number; height: number }) => void
+  scrollable?: boolean
+  onScrollChange?: (scrollY: number) => void
+  focusable?: boolean
+  onFocus?: () => void
+  onBlur?: () => void
+  tabIndex?: number
+  animation?: 'slide' | 'fade' | 'scale' | 'bounce' | 'none'
+  animationDuration?: number
+  onAnimationStart?: () => void
+  onAnimationEnd?: () => void
+  theme?: 'light' | 'dark' | 'auto'
+  locale?: string
+  rtl?: boolean
+  accessibility?: {
+    announce?: boolean
+    announceMessage?: string
+    role?: string
+    liveRegion?: 'polite' | 'assertive' | 'off'
+  }
 }
 
 const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(

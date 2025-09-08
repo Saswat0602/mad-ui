@@ -6,6 +6,34 @@ export interface DialogProps {
   onOpenChange: (open: boolean) => void
   children: React.ReactNode
   className?: string
+  // Enterprise features
+  analyticsId?: string
+  analyticsEvent?: string
+  analyticsData?: Record<string, any>
+  ariaLabel?: string
+  ariaDescribedBy?: string
+  role?: string
+  dataTestId?: string
+  onAnalytics?: (event: string, data?: Record<string, any>) => void
+  tooltip?: string
+  loading?: boolean
+  dismissible?: boolean
+  persistent?: boolean
+  onShow?: () => void
+  onHide?: () => void
+  animation?: 'slide' | 'fade' | 'scale' | 'none'
+  animationDuration?: number
+  onAnimationStart?: () => void
+  onAnimationEnd?: () => void
+  theme?: 'light' | 'dark' | 'auto'
+  locale?: string
+  rtl?: boolean
+  accessibility?: {
+    announce?: boolean
+    announceMessage?: string
+    role?: string
+    liveRegion?: 'polite' | 'assertive' | 'off'
+  }
 }
 
 export interface DialogTriggerProps {

@@ -8,6 +8,51 @@ export interface CarouselProps {
   interval?: number
   showArrows?: boolean
   showDots?: boolean
+  // Enterprise features
+  analyticsId?: string
+  analyticsEvent?: string
+  analyticsData?: Record<string, any>
+  ariaLabel?: string
+  ariaDescribedBy?: string
+  role?: string
+  dataTestId?: string
+  onAnalytics?: (event: string, data?: Record<string, any>) => void
+  tooltip?: string
+  loading?: boolean
+  infinite?: boolean
+  pauseOnHover?: boolean
+  pauseOnFocus?: boolean
+  swipeable?: boolean
+  draggable?: boolean
+  keyboardNavigation?: boolean
+  showThumbnails?: boolean
+  showCounter?: boolean
+  showFullscreen?: boolean
+  showDownload?: boolean
+  showShare?: boolean
+  onSlideChange?: (index: number) => void
+  onSlideClick?: (index: number) => void
+  onSlideDoubleClick?: (index: number) => void
+  onSlideRightClick?: (index: number, event: React.MouseEvent) => void
+  contextMenuItems?: Array<{
+    label: string
+    onClick: (index: number) => void
+    icon?: React.ReactNode
+    disabled?: boolean
+  }>
+  animation?: 'slide' | 'fade' | 'scale' | 'bounce' | 'none'
+  animationDuration?: number
+  onAnimationStart?: () => void
+  onAnimationEnd?: () => void
+  theme?: 'light' | 'dark' | 'auto'
+  locale?: string
+  rtl?: boolean
+  accessibility?: {
+    announce?: boolean
+    announceMessage?: string
+    role?: string
+    liveRegion?: 'polite' | 'assertive' | 'off'
+  }
 }
 
 export interface CarouselContentProps {
