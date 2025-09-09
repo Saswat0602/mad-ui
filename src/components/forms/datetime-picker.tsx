@@ -28,7 +28,6 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
   const [showYearModal, setShowYearModal] = useState(false);
   const [showMonthModal, setShowMonthModal] = useState(false);
   const [activeTab, setActiveTab] = useState(mode === 'both' ? 'date' : mode);
-  const [portalPosition, setPortalPosition] = useState({ top: 0, left: 0, width: 0 });
   
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,18 +37,6 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
   ];
 
   const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
-
-  // Calculate portal position when opening
-  const calculatePortalPosition = () => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setPortalPosition({
-        top: rect.bottom + window.scrollY + 4,
-        left: rect.left + window.scrollX,
-        width: rect.width
-      });
-    }
-  };
 
   // Close picker when clicking outside
   useEffect(() => {
@@ -63,6 +50,20 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  // Close on Escape key
+  useEffect(() => {
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setIsOpen(false);
+        setShowYearModal(false);
+        setShowMonthModal(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleEscape);
+    return () => document.removeEventListener('keydown', handleEscape);
   }, []);
 
   const formatDisplayValue = () => {
@@ -317,19 +318,18 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
         </div>
       </div>
 
-      {/* HORIZONTAL TIME SELECTION - This is the key change! */}
       <div className="flex space-x-2">
         {/* Hour Selection */}
         <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700 mb-2">Hour</label>
           <Select
             value={String(getHourDisplay())}
-            onValueChange={(val) => handleTimeChange('hour', val)}
+            onValueChange={(value) => handleTimeChange('hour', value)}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Hour" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-h-48 overflow-y-auto">
               {Array.from({ length: timeFormat === '12' ? 12 : 24 }, (_, i) => {
                 const hour = timeFormat === '12' ? (i === 0 ? 12 : i) : i;
                 return (
@@ -347,12 +347,12 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
           <label className="block text-sm font-medium text-gray-700 mb-2">Minute</label>
           <Select
             value={String(selectedDate.getMinutes())}
-            onValueChange={(val) => handleTimeChange('minute', val)}
+            onValueChange={(value) => handleTimeChange('minute', value)}
           >
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Minute" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="max-h-48 overflow-y-auto">
               {Array.from({ length: 60 }, (_, i) => (
                 <SelectItem key={i} value={String(i)}>
                   {String(i).padStart(2, '0')}
@@ -368,7 +368,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
             <label className="block text-sm font-medium text-gray-700 mb-2">Period</label>
             <Select
               value={getAMPM()}
-              onValueChange={(val) => handleTimeChange('ampm', val)}
+              onValueChange={(value) => handleTimeChange('ampm', value)}
             >
               <SelectTrigger className="w-full">
                 <SelectValue placeholder="AM/PM" />
@@ -464,14 +464,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     <div ref={containerRef} className={`relative ${className}`}>
       {/* Input Trigger */}
       <button
-        onClick={() => {
-          if (!disabled) {
-            if (!isOpen) {
-              calculatePortalPosition();
-            }
-            setIsOpen(!isOpen);
-          }
-        }}
+        onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         className={`
           w-full p-3 text-left border border-gray-300 rounded-lg bg-white
@@ -492,20 +485,10 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
         </div>
       </button>
 
-      {/* FULL SCREEN PORTAL - This is the key change! */}
+      {/* Full-screen Modal using Portal */}
       {isOpen && createPortal(
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-          onClick={() => {
-            setIsOpen(false);
-            setShowYearModal(false);
-            setShowMonthModal(false);
-          }}
-        >
-          <div 
-            className="bg-white rounded-lg shadow-xl border border-gray-200 w-full max-w-md max-h-[90vh] overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-50 p-4">
+          <div className="relative bg-white rounded-lg shadow-xl border border-gray-200 z-50 min-w-[320px] max-w-sm w-full">
             {/* Tab Navigation for both mode */}
             {mode === 'both' && (
               <div className="flex border-b border-gray-200">
@@ -539,7 +522,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
             )}
 
             {/* Content */}
-            <div className="relative overflow-y-auto max-h-[60vh]">
+            <div className="relative">
               {(mode === 'date' || (mode === 'both' && activeTab === 'date')) && renderDatePicker()}
               {(mode === 'time' || (mode === 'both' && activeTab === 'time')) && renderTimePicker()}
 

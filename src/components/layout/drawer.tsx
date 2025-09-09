@@ -140,9 +140,9 @@ export const Drawer: React.FC<DrawerProps> = ({
           </button>
         )}
         <div className={cn('p-6 h-full overflow-y-auto', showCloseButton ? 'pt-16' : '')}>
-          {children}
-        </div>
+        {children}
       </div>
+    </div>
     </>,
     document.body
   );
