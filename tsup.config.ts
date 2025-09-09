@@ -134,7 +134,8 @@ export default defineConfig([
       'src/individual/radio-group.ts',
       'src/individual/calendar.ts',
       'src/individual/date-picker.ts',
-      'src/individual/timepicker.ts'
+      'src/individual/timepicker.ts',
+      'src/individual/datetime-picker.ts'
     ],
     format: ['esm'],
     dts: true,

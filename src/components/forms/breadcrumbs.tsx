@@ -14,7 +14,7 @@ export interface BreadcrumbsProps extends React.HTMLAttributes<HTMLElement> {
   items: BreadcrumbItem[]
   separator?: React.ReactNode
   size?: "sm" | "md" | "lg"
-  variant?: "default" | "minimal" | "outlined"
+  variant?: "default" | "minimal" | "outlined" | "modern" | "card" | "pill" | "gradient" | "steps"
   color?: string
   backgroundColor?: string
   textColor?: string
@@ -87,6 +87,35 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
             border: `1px solid ${color || "var(--border-primary)"}`,
             padding: "12px 16px"
           }
+        case "modern":
+          return {
+            backgroundColor: backgroundColor || "rgba(255, 255, 255, 0.05)",
+            backdropFilter: "blur(10px)",
+            border: "1px solid rgba(255, 255, 255, 0.1)",
+            padding: "16px 20px"
+          }
+        case "card":
+          return {
+            backgroundColor: backgroundColor || "white",
+            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+            padding: "16px 20px"
+          }
+        case "pill":
+          return {
+            backgroundColor: backgroundColor || "rgba(59, 130, 246, 0.1)",
+            borderRadius: "9999px",
+            padding: "8px 16px"
+          }
+        case "gradient":
+          return {
+            background: backgroundColor || "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            padding: "16px 20px"
+          }
+        case "steps":
+          return {
+            backgroundColor: backgroundColor || "transparent",
+            padding: "0"
+          }
         default:
           return {
             backgroundColor: backgroundColor || color || "var(--bg-card)",
@@ -129,6 +158,29 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
           {item.label}
         </>
       )
+
+      // Special rendering for steps variant
+      if (variant === "steps") {
+        return (
+          <div className="flex items-center">
+            <div className={cn(
+              "flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors duration-200",
+              isActive 
+                ? "bg-blue-600 border-blue-600 text-white" 
+                : "bg-white border-gray-300 text-gray-600"
+            )}>
+              {item.icon || (index + 1)}
+            </div>
+            <span className={cn(
+              "ml-2",
+              sizeClasses[size],
+              isActive ? "font-semibold text-blue-600" : "font-medium text-gray-600"
+            )}>
+              {item.label}
+            </span>
+          </div>
+        )
+      }
       
       if (isClickable && !item.disabled) {
         if (item.href) {
@@ -180,7 +232,7 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
       <nav
         ref={ref}
         className={cn(
-          "flex items-center space-x-2",
+          variant === "steps" ? "flex items-center space-x-8" : "flex items-center space-x-2",
           fullWidth && "w-full",
           className
         )}
@@ -189,7 +241,7 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
         {...props}
       >
         {/* Home icon */}
-        {showHomeIcon && (
+        {showHomeIcon && variant !== "steps" && (
           <>
             <span
               className={cn(
@@ -215,7 +267,7 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
         {processedItems.map((item, index) => (
           <React.Fragment key={index}>
             {renderItem(item, index, index === processedItems.length - 1)}
-            {index < processedItems.length - 1 && (
+            {index < processedItems.length - 1 && variant !== "steps" && (
               <span
                 className={cn(
                   "text-gray-300",
@@ -225,6 +277,9 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
               >
                 {separator}
               </span>
+            )}
+            {index < processedItems.length - 1 && variant === "steps" && (
+              <div className="flex-1 h-0.5 bg-gray-200 mx-4" />
             )}
           </React.Fragment>
         ))}

@@ -1,5 +1,95 @@
-import React from 'react'
-import { Accordion, Breadcrumbs, Calendar, DatePicker, TimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
+import React, { useState } from 'react'
+import { Accordion, Breadcrumbs, DatePicker, TimePicker, DateTimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
+
+// Breadcrumb Designs Demo Component
+function BreadcrumbDesignsDemo() {
+  const [selectedVariant, setSelectedVariant] = useState('default')
+  
+  const items = [
+    { label: 'Home', href: '/' },
+    { label: 'Products', href: '/products' },
+    { label: 'Electronics', href: '/products/electronics' },
+    { label: 'Smartphones' }
+  ]
+
+  const variants = ['default', 'minimal', 'outlined', 'modern', 'card', 'pill', 'gradient', 'steps']
+
+  return (
+    <div className="space-y-6">
+      {/* Variant Selector */}
+      <div className="flex flex-wrap gap-2">
+        {variants.map((variant) => (
+          <button
+            key={variant}
+            onClick={() => setSelectedVariant(variant)}
+            className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              selectedVariant === variant 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            {variant}
+          </button>
+        ))}
+      </div>
+
+      {/* Breadcrumb Display */}
+      <div className="p-4 bg-gray-50 rounded-lg">
+        <Breadcrumbs 
+          items={items} 
+          variant={selectedVariant as 'default' | 'minimal' | 'outlined' | 'modern' | 'card' | 'pill' | 'gradient' | 'steps'}
+          showHomeIcon={selectedVariant !== 'steps'}
+        />
+      </div>
+    </div>
+  )
+}
+
+// DateTime Picker Demo Component
+function DateTimePickerDemo() {
+  const [selectedMode, setSelectedMode] = useState<'date' | 'time' | 'datetime'>('datetime')
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
+
+  return (
+    <div className="space-y-6">
+      {/* Mode Selector */}
+      <div className="flex gap-2">
+        {(['date', 'time', 'datetime'] as const).map((mode) => (
+          <button
+            key={mode}
+            onClick={() => setSelectedMode(mode)}
+            className={`px-4 py-2 text-sm rounded-md transition-colors ${
+              selectedMode === mode 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            {mode.charAt(0).toUpperCase() + mode.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {/* DateTime Picker */}
+      <div className="max-w-sm">
+        <DateTimePicker 
+          mode={selectedMode}
+          value={selectedDate}
+          onChange={setSelectedDate}
+          placeholder={`Select ${selectedMode}`}
+        />
+      </div>
+
+      {/* Selected Value Display */}
+      {selectedDate && (
+        <div className="p-3 bg-blue-50 rounded-md">
+          <p className="text-sm text-blue-800">
+            <strong>Selected:</strong> {selectedDate.toLocaleString()}
+          </p>
+        </div>
+      )}
+    </div>
+  )
+}
 
 export interface ComponentExample {
   title: string
@@ -233,11 +323,14 @@ export function EnterpriseAccordion() {
 
   breadcrumbs: [
     {
-      title: 'Basic Breadcrumbs',
-      description: 'A simple breadcrumb navigation component',
+      title: 'Multiple Breadcrumb Designs',
+      description: 'Choose from various breadcrumb styles - modern, card, pill, gradient, and steps',
       code: `import { Breadcrumbs } from 'mad-ui-components'
+import { useState } from 'react'
 
-export function BreadcrumbsExample() {
+export function BreadcrumbDesignsDemo() {
+  const [selectedVariant, setSelectedVariant] = useState('default')
+  
   const items = [
     { label: 'Home', href: '/' },
     { label: 'Products', href: '/products' },
@@ -245,66 +338,97 @@ export function BreadcrumbsExample() {
     { label: 'Smartphones' }
   ]
 
-  return <Breadcrumbs items={items} />
+  const variants = ['default', 'minimal', 'outlined', 'modern', 'card', 'pill', 'gradient', 'steps']
+
+  return (
+    <div className="space-y-6">
+      {/* Variant Selector */}
+      <div className="flex flex-wrap gap-2">
+        {variants.map((variant) => (
+          <button
+            key={variant}
+            onClick={() => setSelectedVariant(variant)}
+            className={\`px-3 py-1 text-sm rounded-md transition-colors \${
+              selectedVariant === variant 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }\`}
+          >
+            {variant}
+          </button>
+        ))}
+      </div>
+
+      {/* Breadcrumb Display */}
+      <div className="p-4 bg-gray-50 rounded-lg">
+        <Breadcrumbs 
+          items={items} 
+          variant={selectedVariant}
+          showHomeIcon={selectedVariant !== 'steps'}
+        />
+      </div>
+    </div>
+  )
 }`,
       preview: (
-        <div className="w-full max-w-md">
-          <Breadcrumbs 
-            items={[
-              { label: 'Home', href: '/' },
-              { label: 'Products', href: '/products' },
-              { label: 'Electronics', href: '/products/electronics' },
-              { label: 'Smartphones' }
-            ]} 
-          />
-        </div>
+        <BreadcrumbDesignsDemo />
       )
     }
   ],
 
   calendar: [
     {
-      title: 'Basic Calendar',
-      description: 'A simple calendar component',
-      code: `import { Calendar } from 'mad-ui-components'
+      title: 'Unified Date & Time Picker',
+      description: 'Combined date and time picker with full-screen modal - choose date, time, or both together',
+      code: `import { DateTimePicker } from 'mad-ui-components'
+import { useState } from 'react'
 
-export function CalendarExample() {
-  return <Calendar />
-}`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <Calendar />
-        </div>
-      )
-    },
-    {
-      title: 'Modern Style Calendar',
-      description: 'A calendar with modern design and enhanced features',
-      code: `import { Calendar } from 'mad-ui-components'
+export function DateTimePickerDemo() {
+  const [selectedMode, setSelectedMode] = useState<'date' | 'time' | 'datetime'>('datetime')
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
 
-export function ModernCalendarExample() {
   return (
-    <Calendar 
-      variant="outlined"
-      size="lg"
-      showWeekNumbers
-      showToday
-      highlightWeekends
-      design="modern"
-    />
+    <div className="space-y-6">
+      {/* Mode Selector */}
+      <div className="flex gap-2">
+        {(['date', 'time', 'datetime'] as const).map((mode) => (
+          <button
+            key={mode}
+            onClick={() => setSelectedMode(mode)}
+            className={\`px-4 py-2 text-sm rounded-md transition-colors \${
+              selectedMode === mode 
+                ? 'bg-blue-600 text-white' 
+                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }\`}
+          >
+            {mode.charAt(0).toUpperCase() + mode.slice(1)}
+          </button>
+        ))}
+      </div>
+
+      {/* DateTime Picker */}
+      <div className="max-w-sm">
+        <DateTimePicker 
+          mode={selectedMode}
+          value={selectedDate}
+          onChange={setSelectedDate}
+          placeholder={\`Select \${selectedMode}\`}
+        />
+      </div>
+
+      {/* Selected Value Display */}
+      {selectedDate && (
+        <div className="p-3 bg-blue-50 rounded-md">
+          <p className="text-sm text-blue-800">
+            <strong>Selected:</strong> {selectedDate.toLocaleString()}
+          </p>
+        </div>
+      )}
+    </div>
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm">
-          <Calendar 
-            variant="outlined"
-            size="lg"
-            showWeekNumbers
-            showToday
-            highlightWeekends
-            design="modern"
-          />
-        </div>
+        <DateTimePickerDemo />
       )
     }
   ],
