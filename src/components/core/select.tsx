@@ -1,193 +1,229 @@
 import * as React from "react"
+import { ChevronDown, Check } from "lucide-react"
 import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
 
-export interface SelectOption {
-  value: string
-  label: string
+export interface SelectProps {
+  value?: string
+  onValueChange?: (value: string) => void
+  defaultValue?: string
   disabled?: boolean
-}
-
-export interface SelectProps extends Omit<React.SelectHTMLAttributes<HTMLSelectElement>, 'size'> {
-  label?: string
-  error?: string
-  helperText?: string
-  success?: boolean
-  variant?: "default" | "error" | "success"
-  size?: "sm" | "md" | "lg"
-  fullWidth?: boolean
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  focusColor?: string
-  borderRadius?: string | number
-  shadow?: "none" | "sm" | "md" | "lg"
-  options: SelectOption[]
   placeholder?: string
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
+  children: React.ReactNode
+  className?: string
 }
 
-const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
-  ({ 
-    className, 
-    label, 
-    error, 
-    helperText, 
-    success,
-    variant = "default",
-    size = "md",
-    fullWidth = true,
-    color,
-    backgroundColor,
-    borderColor,
-    textColor,
-    focusColor,
-    borderRadius,
-    shadow = "sm",
-    options,
-    placeholder,
-    leftIcon,
-    rightIcon,
-    style,
-    ...props 
-  }, ref) => {
-    
-    // Determine variant
-    const selectVariant = error ? "error" : success ? "success" : variant
-    
-    // Size classes
-    const sizeClasses = {
-      sm: "px-2 py-1.5 text-sm",
-      md: "px-3 py-2 text-sm",
-      lg: "px-4 py-3 text-base"
+export interface SelectTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  className?: string
+  children: React.ReactNode
+}
+
+export interface SelectContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string
+  children: React.ReactNode
+}
+
+export interface SelectItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  value: string
+  className?: string
+  children: React.ReactNode
+}
+
+export interface SelectGroupProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string
+  children: React.ReactNode
+}
+
+export interface SelectLabelProps extends React.HTMLAttributes<HTMLDivElement> {
+  className?: string
+  children: React.ReactNode
+}
+
+export interface SelectValueProps extends React.HTMLAttributes<HTMLSpanElement> {
+  placeholder?: string
+  className?: string
+}
+
+const SelectContext = React.createContext<{
+  value?: string
+  onValueChange?: (value: string) => void
+  open: boolean
+  setOpen: (open: boolean) => void
+}>({
+  open: false,
+  setOpen: () => {}
+})
+
+const Select: React.FC<SelectProps> = ({
+  value,
+  onValueChange,
+  defaultValue,
+  disabled = false,
+  children,
+  className
+}) => {
+  const [open, setOpen] = React.useState(false)
+  const [internalValue, setInternalValue] = React.useState(defaultValue || "")
+
+  const currentValue = value !== undefined ? value : internalValue
+
+  const handleValueChange = (newValue: string) => {
+    if (value === undefined) {
+      setInternalValue(newValue)
     }
-    
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg"
-    }
-    
-    // Get default colors
-    const defaultColors = componentColors.input[selectVariant as keyof typeof componentColors.input] || componentColors.input.default
-    
-    // Custom styles
-    const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || defaultColors.bg,
-      color: textColor || defaultColors.text,
-      borderColor: borderColor || defaultColors.border,
-      borderRadius: borderRadius,
-      ...style
-    }
-    
-    // Focus and blur handlers
-    const handleFocus = (e: React.FocusEvent<HTMLSelectElement>) => {
-      const focusBorderColor = focusColor || defaultColors.focus
-      e.target.style.borderColor = focusBorderColor
-      e.target.style.boxShadow = `0 0 0 3px ${focusBorderColor}20`
-    }
-    
-    const handleBlur = (e: React.FocusEvent<HTMLSelectElement>) => {
-      e.target.style.borderColor = borderColor || defaultColors.border
-      e.target.style.boxShadow = "none"
-    }
-    
+    onValueChange?.(newValue)
+    setOpen(false)
+  }
+
+  return (
+    <SelectContext.Provider value={{ value: currentValue, onValueChange: handleValueChange, open, setOpen }}>
+      <div className={cn("relative", className)}>
+        {children}
+      </div>
+    </SelectContext.Provider>
+  )
+}
+
+const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerProps>(
+  ({ className, children, ...props }, ref) => {
+    const { open, setOpen } = React.useContext(SelectContext)
+
     return (
-      <div className={cn("w-full", fullWidth && "w-full")}>
-        {label && (
-          <label 
-            className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
-          >
-            {label}
-          </label>
+      <button
+        ref={ref}
+        type="button"
+        className={cn(
+          "flex h-10 w-full items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
+          className
         )}
-        
-        <div className="relative">
-          {leftIcon && (
-            <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none">
-              {leftIcon}
-            </div>
-          )}
-          
-          <select
-            className={cn(
-              "w-full rounded-lg border-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-500 hover:shadow-sm transform hover:scale-[1.01] active:scale-[0.99]",
-              sizeClasses[size],
-              shadowClasses[shadow],
-              leftIcon && "pl-10",
-              rightIcon && "pr-10",
-              "appearance-none",
-              className
-            )}
-            style={customStyles}
-            ref={ref}
-            onFocus={handleFocus}
-            onBlur={handleBlur}
-            {...props}
-          >
-            {placeholder && (
-              <option value="" disabled>
-                {placeholder}
-              </option>
-            )}
-            {options.map((option) => (
-              <option
-                key={option.value}
-                value={option.value}
-                disabled={option.disabled}
-              >
-                {option.label}
-              </option>
-            ))}
-          </select>
-          
-          {rightIcon && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 dark:text-slate-500 pointer-events-none">
-              {rightIcon}
-            </div>
-          )}
-          
-          {/* Custom dropdown arrow */}
-          <div className="absolute right-3 top-1/2 transform -translate-y-1/2 pointer-events-none">
-            <svg
-              className="w-4 h-4 text-slate-400 dark:text-slate-500"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
-          </div>
-        </div>
-        
-        {(error || helperText) && (
-          <p 
-            className="text-sm mt-1"
-            style={{ 
-              color: error 
-                ? "var(--accent-error)" 
-                : helperText 
-                  ? "var(--text-muted)" 
-                  : "var(--text-secondary)" 
-            }}
-          >
-            {error || helperText}
-          </p>
+        onClick={() => setOpen(!open)}
+        {...props}
+      >
+        {children}
+        <ChevronDown className="h-4 w-4 opacity-50" />
+      </button>
+    )
+  }
+)
+SelectTrigger.displayName = "SelectTrigger"
+
+const SelectValue = React.forwardRef<HTMLSpanElement, SelectValueProps>(
+  ({ placeholder, className, ...props }, ref) => {
+    const { value } = React.useContext(SelectContext)
+
+    return (
+      <span
+        ref={ref}
+        className={cn("block truncate", !value && "text-muted-foreground", className)}
+        {...props}
+      >
+        {value || placeholder}
+      </span>
+    )
+  }
+)
+SelectValue.displayName = "SelectValue"
+
+const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps>(
+  ({ className, children, ...props }, ref) => {
+    const { open, setOpen } = React.useContext(SelectContext)
+    const contentRef = React.useRef<HTMLDivElement>(null)
+
+    React.useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+        if (contentRef.current && !contentRef.current.contains(event.target as Node)) {
+          setOpen(false)
+        }
+      }
+
+      if (open) {
+        document.addEventListener("mousedown", handleClickOutside)
+      }
+
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside)
+      }
+    }, [open, setOpen])
+
+    if (!open) return null
+
+    return (
+      <div
+        ref={contentRef}
+        className={cn(
+          "absolute top-full left-0 z-50 w-full mt-1 bg-popover text-popover-foreground border rounded-md shadow-md animate-in fade-in-0 zoom-in-95",
+          className
         )}
+        {...props}
+      >
+        {children}
       </div>
     )
   }
 )
+SelectContent.displayName = "SelectContent"
 
-Select.displayName = "Select"
+const SelectItem = React.forwardRef<HTMLDivElement, SelectItemProps>(
+  ({ className, children, value, ...props }, ref) => {
+    const { value: selectedValue, onValueChange } = React.useContext(SelectContext)
+    const isSelected = selectedValue === value
 
-export { Select }
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-8 pr-2 text-sm outline-none focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50",
+          isSelected && "bg-accent text-accent-foreground",
+          className
+        )}
+        onClick={() => onValueChange?.(value)}
+        {...props}
+      >
+        <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
+          {isSelected && <Check className="h-4 w-4" />}
+        </span>
+        {children}
+      </div>
+    )
+  }
+)
+SelectItem.displayName = "SelectItem"
+
+const SelectGroup = React.forwardRef<HTMLDivElement, SelectGroupProps>(
+  ({ className, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("p-1", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    )
+  }
+)
+SelectGroup.displayName = "SelectGroup"
+
+const SelectLabel = React.forwardRef<HTMLDivElement, SelectLabelProps>(
+  ({ className, children, ...props }, ref) => {
+    return (
+      <div
+        ref={ref}
+        className={cn("py-1.5 pl-8 pr-2 text-sm font-semibold", className)}
+        {...props}
+      >
+        {children}
+      </div>
+    )
+  }
+)
+SelectLabel.displayName = "SelectLabel"
+
+export {
+  Select,
+  SelectTrigger,
+  SelectValue,
+  SelectContent,
+  SelectItem,
+  SelectGroup,
+  SelectLabel
+}

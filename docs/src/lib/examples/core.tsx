@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardFooter, Checkbox, Select, Slider, Switch, Progress, Rating, Skeleton, Textarea, Radio, Label } from 'mad-ui-components'
+import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardFooter, Checkbox, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Slider, Switch, Progress, Rating, Skeleton, Textarea, Radio, Label } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -376,104 +376,118 @@ export function RadioGroup() {
     {
       title: 'Default',
       description: 'The default select variant.',
-      code: `import { Select } from 'mad-ui-components'
+      code: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'mad-ui-components'
 
 export function SelectDemo() {
-  const options = [
-    { value: 'apple', label: 'Apple' },
-    { value: 'banana', label: 'Banana' },
-    { value: 'orange', label: 'Orange' }
-  ]
-
   return (
-    <Select 
-      label="Choose a fruit" 
-      options={options} 
-      placeholder="Select a fruit" 
-    />
+    <Select>
+      <SelectTrigger className="w-full">
+        <SelectValue placeholder="Select a fruit" />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="apple">Apple</SelectItem>
+        <SelectItem value="banana">Banana</SelectItem>
+        <SelectItem value="orange">Orange</SelectItem>
+      </SelectContent>
+    </Select>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Select 
-            label="Choose a fruit" 
-            options={[
-              { value: 'apple', label: 'Apple' },
-              { value: 'banana', label: 'Banana' },
-              { value: 'orange', label: 'Orange' }
-            ]} 
-            placeholder="Select a fruit" 
-          />
+          <Select>
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Select a fruit" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="apple">Apple</SelectItem>
+              <SelectItem value="banana">Banana</SelectItem>
+              <SelectItem value="orange">Orange</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       )
     },
     {
       title: 'With Helper Text',
       description: 'Select with helper text.',
-      code: `import { Select } from 'mad-ui-components'
+      code: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'mad-ui-components'
 
 export function SelectWithHelper() {
-  const options = [
-    { value: 'us', label: 'United States' },
-    { value: 'ca', label: 'Canada' },
-    { value: 'uk', label: 'United Kingdom' }
-  ]
-
   return (
-    <Select 
-      label="Country" 
-      options={options} 
-      placeholder="Select your country" 
-      helperText="Choose the country where you live" 
-    />
+    <div className="space-y-2">
+      <label className="text-sm font-medium">Country</label>
+      <Select>
+        <SelectTrigger className="w-full">
+          <SelectValue placeholder="Select your country" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="us">United States</SelectItem>
+          <SelectItem value="ca">Canada</SelectItem>
+          <SelectItem value="uk">United Kingdom</SelectItem>
+        </SelectContent>
+      </Select>
+      <p className="text-sm text-gray-500">Choose the country where you live</p>
+    </div>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Select 
-            label="Country" 
-            options={[
-              { value: 'us', label: 'United States' },
-              { value: 'ca', label: 'Canada' },
-              { value: 'uk', label: 'United Kingdom' }
-            ]} 
-            placeholder="Select your country" 
-            helperText="Choose the country where you live" 
-          />
+          <div className="space-y-2">
+            <label className="text-sm font-medium">Country</label>
+            <Select>
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="Select your country" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="us">United States</SelectItem>
+                <SelectItem value="ca">Canada</SelectItem>
+                <SelectItem value="uk">United Kingdom</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-gray-500">Choose the country where you live</p>
+          </div>
         </div>
       )
     },
     {
       title: 'Error State',
       description: 'Select in an error state.',
-      code: `import { Select } from 'mad-ui-components'
+      code: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'mad-ui-components'
 
 export function SelectError() {
-  const options = [
-    { value: 'small', label: 'Small' },
-    { value: 'medium', label: 'Medium' },
-    { value: 'large', label: 'Large' }
-  ]
-
   return (
-    <Select 
-      label="Size" 
-      options={options} 
-      error="Please select a size" 
-    />
+    <div className="space-y-2">
+      <label className="text-sm font-medium text-red-600">Size</label>
+      <Select>
+        <SelectTrigger className="w-full border-red-500 focus:border-red-500 focus:ring-red-500">
+          <SelectValue placeholder="Select a size" />
+        </SelectTrigger>
+        <SelectContent>
+          <SelectItem value="small">Small</SelectItem>
+          <SelectItem value="medium">Medium</SelectItem>
+          <SelectItem value="large">Large</SelectItem>
+        </SelectContent>
+      </Select>
+      <p className="text-sm text-red-600">Please select a size</p>
+    </div>
   )
 }`,
       preview: (
         <div className="w-full max-w-sm">
-          <Select 
-            label="Size" 
-            options={[
-              { value: 'small', label: 'Small' },
-              { value: 'medium', label: 'Medium' },
-              { value: 'large', label: 'Large' }
-            ]} 
-            error="Please select a size" 
-          />
+          <div className="space-y-2">
+            <label className="text-sm font-medium text-red-600">Size</label>
+            <Select>
+              <SelectTrigger className="w-full border-red-500 focus:border-red-500 focus:ring-red-500">
+                <SelectValue placeholder="Select a size" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="small">Small</SelectItem>
+                <SelectItem value="medium">Medium</SelectItem>
+                <SelectItem value="large">Large</SelectItem>
+              </SelectContent>
+            </Select>
+            <p className="text-sm text-red-600">Please select a size</p>
+          </div>
         </div>
       )
     }

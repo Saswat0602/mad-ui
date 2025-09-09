@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Accordion, Breadcrumbs, DatePicker, TimePicker, DateTimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
+import { Accordion, Breadcrumbs, DateTimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
 
 // Breadcrumb Designs Demo Component
 function BreadcrumbDesignsDemo() {
@@ -47,14 +47,14 @@ function BreadcrumbDesignsDemo() {
 
 // DateTime Picker Demo Component
 function DateTimePickerDemo() {
-  const [selectedMode, setSelectedMode] = useState<'date' | 'time' | 'datetime'>('datetime')
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
+  const [selectedMode, setSelectedMode] = useState<'date' | 'time' | 'both'>('both')
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date())
 
   return (
     <div className="space-y-6">
       {/* Mode Selector */}
       <div className="flex gap-2">
-        {(['date', 'time', 'datetime'] as const).map((mode) => (
+        {(['date', 'time', 'both'] as const).map((mode) => (
           <button
             key={mode}
             onClick={() => setSelectedMode(mode)}
@@ -378,20 +378,20 @@ export function BreadcrumbDesignsDemo() {
 
   calendar: [
     {
-      title: 'Unified Date & Time Picker',
-      description: 'Combined date and time picker with full-screen modal - choose date, time, or both together',
+      title: 'Modern Date & Time Picker',
+      description: 'Beautiful, modern date and time picker with horizontal time selection and custom Select components - choose date, time, or both together',
       code: `import { DateTimePicker } from 'mad-ui-components'
 import { useState } from 'react'
 
 export function DateTimePickerDemo() {
-  const [selectedMode, setSelectedMode] = useState<'date' | 'time' | 'datetime'>('datetime')
-  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date())
+  const [selectedMode, setSelectedMode] = useState<'date' | 'time' | 'both'>('both')
+  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date())
 
   return (
     <div className="space-y-6">
       {/* Mode Selector */}
       <div className="flex gap-2">
-        {(['date', 'time', 'datetime'] as const).map((mode) => (
+        {(['date', 'time', 'both'] as const).map((mode) => (
           <button
             key={mode}
             onClick={() => setSelectedMode(mode)}
@@ -433,39 +433,6 @@ export function DateTimePickerDemo() {
     }
   ],
 
-  'date-picker': [
-    {
-      title: 'Basic Date Picker',
-      description: 'A simple date picker component',
-      code: `import { DatePicker } from 'mad-ui-components'
-
-export function DatePickerExample() {
-  return <DatePicker />
-}`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <DatePicker />
-        </div>
-      )
-    }
-  ],
-
-  'time-picker': [
-    {
-      title: 'Basic Time Picker',
-      description: 'A simple time picker component',
-      code: `import { TimePicker } from 'mad-ui-components'
-
-export function TimePickerExample() {
-  return <TimePicker />
-}`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <TimePicker />
-        </div>
-      )
-    }
-  ],
 
   'input-otp': [
     {

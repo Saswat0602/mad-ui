@@ -1,504 +1,548 @@
-import * as React from "react"
-import { createPortal } from "react-dom"
-import { cn } from "../../lib/utils"
-import { ChevronLeft, ChevronRight, Calendar, Clock, X } from "lucide-react"
+import React, { useState, useEffect, useRef } from 'react';
+import { ChevronLeft, ChevronRight, Clock, Calendar, X } from 'lucide-react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../core/select';
 
-export interface DateTimePickerProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
-  value?: Date
-  onChange?: (date: Date) => void
-  placeholder?: string
-  disabled?: boolean
-  variant?: "default" | "filled" | "outlined" | "minimal"
-  size?: "sm" | "md" | "lg"
-  mode?: "date" | "time" | "datetime"
-  showIcon?: boolean
-  format?: string
-  minDate?: Date
-  maxDate?: Date
-  showToday?: boolean
-  firstDayOfWeek?: 0 | 1
-  locale?: string
-  design?: "classic" | "modern" | "minimal" | "card" | "grid"
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  borderRadius?: string | number
-  shadow?: "none" | "sm" | "md" | "lg" | "xl"
-  fullWidth?: boolean
-  closeOnSelect?: boolean
-  showHeader?: boolean
-  showFooter?: boolean
-  showMonthNavigation?: boolean
-  showYearNavigation?: boolean
-  highlightWeekends?: boolean
-  highlightHolidays?: boolean
-  // Time picker specific
-  timeFormat?: "12" | "24"
-  showSeconds?: boolean
-  step?: number
-  // Portal rendering
-  portal?: boolean
-  portalTarget?: HTMLElement
+export interface DateTimePickerProps {
+  mode?: 'date' | 'time' | 'both';
+  timeFormat?: '12' | '24';
+  value?: Date | null;
+  onChange?: (date: Date | null) => void;
+  placeholder?: string;
+  disabled?: boolean;
+  className?: string;
 }
 
-const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerProps>(
-  ({
-    className,
-    value,
-    onChange,
-    placeholder = "Select date and time",
-    disabled = false,
-    variant = "default",
-    size = "md",
-    mode = "datetime",
-    showIcon = true,
-    format,
-    minDate,
-    maxDate,
-    showToday = true,
-    firstDayOfWeek = 1,
-    locale = "en-US",
-    design = "modern",
-    color,
-    backgroundColor,
-    borderColor,
-    textColor,
-    borderRadius,
-    shadow = "md",
-    fullWidth = false,
-    closeOnSelect = true,
-    showHeader = true,
-    showFooter = true,
-    showMonthNavigation = true,
-    showYearNavigation = true,
-    highlightWeekends = true,
-    highlightHolidays = false,
-    timeFormat = "12",
-    showSeconds = false,
-    step = 1,
-    portal = true,
-    portalTarget,
-    style,
-    ...props
-  }, ref) => {
-    const [isOpen, setIsOpen] = React.useState(false)
-    const [currentDate, setCurrentDate] = React.useState(value || new Date())
-    const [selectedDate, setSelectedDate] = React.useState(value || new Date())
-    const [selectedTime, setSelectedTime] = React.useState(value || new Date())
-    const [activeTab, setActiveTab] = React.useState<"date" | "time">("date")
-    const inputRef = React.useRef<HTMLInputElement>(null)
-    const pickerRef = React.useRef<HTMLDivElement>(null)
+const DateTimePicker: React.FC<DateTimePickerProps> = ({
+  mode = 'both',
+  timeFormat = '12',
+  value = null,
+  onChange = () => {},
+  placeholder = 'Select date & time',
+  disabled = false,
+  className = ''
+}) => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState(value ? new Date(value) : new Date());
+  const [viewDate, setViewDate] = useState(new Date());
+  const [showYearModal, setShowYearModal] = useState(false);
+  const [showMonthModal, setShowMonthModal] = useState(false);
+  const [activeTab, setActiveTab] = useState(mode === 'both' ? 'date' : mode);
+  
+  const containerRef = useRef<HTMLDivElement>(null);
 
-    // Size classes
-    const sizeClasses = {
-      sm: "text-sm px-3 py-2",
-      md: "text-base px-4 py-3",
-      lg: "text-lg px-5 py-4"
-    }
+  const months = [
+    'January', 'February', 'March', 'April', 'May', 'June',
+    'July', 'August', 'September', 'October', 'November', 'December'
+  ];
 
-    // Variant styles
-    const getVariantStyles = () => {
-      switch (variant) {
-        case "filled":
-          return {
-            backgroundColor: backgroundColor || "var(--bg-input)",
-            border: "none"
-          }
-        case "outlined":
-          return {
-            backgroundColor: "transparent",
-            border: `2px solid ${borderColor || "var(--border-primary)"}`
-          }
-        case "minimal":
-          return {
-            backgroundColor: "transparent",
-            border: "none",
-            borderBottom: `1px solid ${borderColor || "var(--border-primary)"}`
-          }
-        default:
-          return {
-            backgroundColor: backgroundColor || "white",
-            border: `1px solid ${borderColor || "var(--border-primary)"}`
-          }
+  const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+  // Close picker when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setIsOpen(false);
+        setShowYearModal(false);
+        setShowMonthModal(false);
       }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  const formatDisplayValue = () => {
+    if (!value) return placeholder;
+    
+    const date = new Date(value);
+    let result = '';
+    
+    if (mode === 'date' || mode === 'both') {
+      result += date.toLocaleDateString();
+    }
+    
+    if (mode === 'time' || mode === 'both') {
+      if (result) result += ' ';
+      const timeOptions = { 
+        hour12: timeFormat === '12',
+        hour: 'numeric' as const,
+        minute: '2-digit' as const
+      };
+      result += date.toLocaleTimeString([], timeOptions);
+    }
+    
+    return result;
+  };
+
+  const getDaysInMonth = (date: Date) => {
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  };
+
+  const getFirstDayOfMonth = (date: Date) => {
+    return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
+  };
+
+  const generateCalendarDays = () => {
+    const daysInMonth = getDaysInMonth(viewDate);
+    const firstDay = getFirstDayOfMonth(viewDate);
+    const days = [];
+
+    // Previous month's trailing days
+    const prevMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 0);
+    const prevMonthDays = prevMonth.getDate();
+    
+    for (let i = firstDay - 1; i >= 0; i--) {
+      days.push({
+        day: prevMonthDays - i,
+        isCurrentMonth: false,
+        isPrevMonth: true,
+        date: new Date(prevMonth.getFullYear(), prevMonth.getMonth(), prevMonthDays - i)
+      });
     }
 
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg",
-      xl: "shadow-xl"
+    // Current month days
+    for (let day = 1; day <= daysInMonth; day++) {
+      days.push({
+        day,
+        isCurrentMonth: true,
+        date: new Date(viewDate.getFullYear(), viewDate.getMonth(), day)
+      });
     }
 
-    // Custom styles
-    const customStyles: React.CSSProperties = {
-      color: textColor || "var(--text-primary)",
-      borderRadius: borderRadius,
-      ...getVariantStyles(),
-      ...style
+    // Next month's leading days
+    const remainingDays = 42 - days.length; // 6 rows × 7 days
+    for (let day = 1; day <= remainingDays; day++) {
+      days.push({
+        day,
+        isCurrentMonth: false,
+        isNextMonth: true,
+        date: new Date(viewDate.getFullYear(), viewDate.getMonth() + 1, day)
+      });
     }
 
-    // Format date for display
-    const formatDate = (date: Date) => {
-      if (!date) return ""
-      
-      if (mode === "date") {
-        return date.toLocaleDateString(locale)
-      } else if (mode === "time") {
-        return date.toLocaleTimeString(locale, {
-          hour12: timeFormat === "12",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: showSeconds ? "2-digit" : undefined
-        })
+    return days;
+  };
+
+  const handleDateSelect = (date: Date) => {
+    const newDate = new Date(selectedDate);
+    newDate.setFullYear(date.getFullYear());
+    newDate.setMonth(date.getMonth());
+    newDate.setDate(date.getDate());
+    
+    setSelectedDate(newDate);
+    onChange(newDate);
+    
+    if (mode === 'date') {
+      setIsOpen(false);
+    } else if (mode === 'both') {
+      setActiveTab('time');
+    }
+  };
+
+  const handleTimeChange = (type: string, value: string) => {
+    const newDate = new Date(selectedDate);
+    
+    if (type === 'hour') {
+      if (timeFormat === '12') {
+        const currentHours = newDate.getHours();
+        const isPM = currentHours >= 12;
+        let newHours = parseInt(value);
+        
+        if (newHours === 12) {
+          newHours = isPM ? 12 : 0;
+        } else {
+          newHours = isPM ? newHours + 12 : newHours;
+        }
+        
+        newDate.setHours(newHours);
       } else {
-        return date.toLocaleString(locale, {
-          hour12: timeFormat === "12",
-          hour: "2-digit",
-          minute: "2-digit",
-          second: showSeconds ? "2-digit" : undefined
-        })
+        newDate.setHours(parseInt(value));
+      }
+    } else if (type === 'minute') {
+      newDate.setMinutes(parseInt(value));
+    } else if (type === 'ampm') {
+      const currentHours = newDate.getHours();
+      if (value === 'AM' && currentHours >= 12) {
+        newDate.setHours(currentHours - 12);
+      } else if (value === 'PM' && currentHours < 12) {
+        newDate.setHours(currentHours + 12);
       }
     }
+    
+    setSelectedDate(newDate);
+    onChange(newDate);
+  };
 
-    // Handle date selection
-    const handleDateSelect = (date: Date) => {
-      const newDate = new Date(selectedDate)
-      newDate.setFullYear(date.getFullYear(), date.getMonth(), date.getDate())
-      setSelectedDate(newDate)
-      
-      if (mode === "date" || (mode === "datetime" && activeTab === "date")) {
-        onChange?.(newDate)
-        if (closeOnSelect) {
-          setIsOpen(false)
-        }
-      }
+  const navigateMonth = (direction: number) => {
+    const newDate = new Date(viewDate);
+    newDate.setMonth(newDate.getMonth() + direction);
+    setViewDate(newDate);
+  };
+
+  const navigateYear = (direction: number) => {
+    const newDate = new Date(viewDate);
+    newDate.setFullYear(newDate.getFullYear() + direction);
+    setViewDate(newDate);
+  };
+
+  const generateYears = () => {
+    const currentYear = viewDate.getFullYear();
+    const years = [];
+    for (let i = currentYear - 50; i <= currentYear + 50; i++) {
+      years.push(i);
     }
+    return years;
+  };
 
-    // Handle time selection
-    const handleTimeSelect = (time: Date) => {
-      const newDate = new Date(selectedDate)
-      newDate.setHours(time.getHours(), time.getMinutes(), time.getSeconds())
-      setSelectedTime(newDate)
-      
-      if (mode === "time" || (mode === "datetime" && activeTab === "time")) {
-        onChange?.(newDate)
-        if (closeOnSelect) {
-          setIsOpen(false)
-        }
-      }
+  const isToday = (date: Date) => {
+    const today = new Date();
+    return date.toDateString() === today.toDateString();
+  };
+
+  const isSelected = (date: Date) => {
+    return selectedDate && date.toDateString() === selectedDate.toDateString();
+  };
+
+  const getHourDisplay = () => {
+    if (timeFormat === '12') {
+      const hour = selectedDate.getHours();
+      return hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
     }
+    return selectedDate.getHours();
+  };
 
-    // Handle datetime selection
-    const handleDateTimeSelect = () => {
-      const newDate = new Date(selectedDate)
-      newDate.setHours(selectedTime.getHours(), selectedTime.getMinutes(), selectedTime.getSeconds())
-      onChange?.(newDate)
-      setIsOpen(false)
-    }
+  const getAMPM = () => {
+    return selectedDate.getHours() >= 12 ? 'PM' : 'AM';
+  };
 
-    // Generate calendar days
-    const generateCalendarDays = () => {
-      const year = currentDate.getFullYear()
-      const month = currentDate.getMonth()
-      const firstDay = new Date(year, month, 1)
-      const lastDay = new Date(year, month + 1, 0)
-      const startDate = new Date(firstDay)
-      startDate.setDate(startDate.getDate() - (firstDay.getDay() + (7 - firstDayOfWeek)) % 7)
-      
-      const days = []
-      const current = new Date(startDate)
-      
-      for (let i = 0; i < 42; i++) {
-        days.push(new Date(current))
-        current.setDate(current.getDate() + 1)
-      }
-      
-      return days
-    }
-
-    // Generate time options
-    const generateTimeOptions = () => {
-      const options = []
-      const startHour = timeFormat === "12" ? 1 : 0
-      const endHour = timeFormat === "12" ? 12 : 23
-      
-      for (let hour = startHour; hour <= endHour; hour++) {
-        for (let minute = 0; minute < 60; minute += step) {
-          const time = new Date()
-          time.setHours(timeFormat === "12" ? hour : hour, minute, 0)
-          options.push(time)
-        }
-      }
-      
-      return options
-    }
-
-    // Handle click outside
-    React.useEffect(() => {
-      const handleClickOutside = (event: MouseEvent) => {
-        if (pickerRef.current && !pickerRef.current.contains(event.target as Node) &&
-            inputRef.current && !inputRef.current.contains(event.target as Node)) {
-          setIsOpen(false)
-        }
-      }
-
-      if (isOpen) {
-        document.addEventListener("mousedown", handleClickOutside)
-        document.body.style.overflow = "hidden"
-      }
-
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside)
-        document.body.style.overflow = "unset"
-      }
-    }, [isOpen])
-
-    // Handle escape key
-    React.useEffect(() => {
-      const handleEscape = (event: KeyboardEvent) => {
-        if (event.key === "Escape") {
-          setIsOpen(false)
-        }
-      }
-
-      if (isOpen) {
-        document.addEventListener("keydown", handleEscape)
-      }
-
-      return () => {
-        document.removeEventListener("keydown", handleEscape)
-      }
-    }, [isOpen])
-
-    const calendarDays = generateCalendarDays()
-    const timeOptions = generateTimeOptions()
-
-    const PickerContent = () => (
-      <div
-        ref={pickerRef}
-        className={cn(
-          "fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm",
-          "animate-in fade-in duration-200"
-        )}
-      >
-        <div
-          className={cn(
-            "bg-white rounded-xl shadow-xl max-w-md w-full mx-4",
-            "animate-in slide-in-from-bottom-4 duration-300"
-          )}
+  const renderDatePicker = () => (
+    <div className="p-4">
+      {/* Calendar Header */}
+      <div className="flex items-center justify-between mb-4">
+        <button
+          onClick={() => navigateMonth(-1)}
+          className="p-1 hover:bg-gray-100 rounded-full transition-colors"
         >
-          {/* Header */}
-          {showHeader && (
-            <div className="flex items-center justify-between p-4 border-b">
-              <h3 className="text-lg font-semibold">
-                {mode === "date" ? "Select Date" : mode === "time" ? "Select Time" : "Select Date & Time"}
-              </h3>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="p-1 hover:bg-gray-100 rounded-md transition-colors"
-              >
-                <X size={20} />
-              </button>
-            </div>
-          )}
+          <ChevronLeft size={20} className="text-gray-600" />
+        </button>
+        
+        <div className="flex items-center space-x-2">
+          <button
+            onClick={() => setShowMonthModal(true)}
+            className="font-semibold text-gray-800 hover:bg-gray-100 px-2 py-1 rounded transition-colors"
+          >
+            {months[viewDate.getMonth()]}
+          </button>
+          <button
+            onClick={() => setShowYearModal(true)}
+            className="font-semibold text-gray-800 hover:bg-gray-100 px-2 py-1 rounded transition-colors"
+          >
+            {viewDate.getFullYear()}
+          </button>
+        </div>
+        
+        <button
+          onClick={() => navigateMonth(1)}
+          className="p-1 hover:bg-gray-100 rounded-full transition-colors"
+        >
+          <ChevronRight size={20} className="text-gray-600" />
+        </button>
+      </div>
 
-          {/* Tabs for datetime mode */}
-          {mode === "datetime" && (
-            <div className="flex border-b">
-              <button
-                onClick={() => setActiveTab("date")}
-                className={cn(
-                  "flex-1 py-3 px-4 text-sm font-medium transition-colors",
-                  activeTab === "date"
-                    ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50"
-                    : "text-gray-600 hover:text-gray-800"
-                )}
+      {/* Week Days Header */}
+      <div className="grid grid-cols-7 mb-2">
+        {weekDays.map(day => (
+          <div key={day} className="p-2 text-center text-sm font-medium text-gray-500">
+            {day}
+          </div>
+        ))}
+      </div>
+
+      {/* Calendar Days */}
+      <div className="grid grid-cols-7 gap-1">
+        {generateCalendarDays().map((dayObj, index) => (
+          <button
+            key={index}
+            onClick={() => {
+              if (dayObj.isPrevMonth) {
+                navigateMonth(-1);
+              } else if (dayObj.isNextMonth) {
+                navigateMonth(1);
+              }
+              handleDateSelect(dayObj.date);
+            }}
+            className={`
+              p-2 text-sm rounded-lg transition-all duration-200 hover:bg-blue-50
+              ${!dayObj.isCurrentMonth ? 'text-gray-300 hover:text-gray-500' : 'text-gray-700'}
+              ${isSelected(dayObj.date) ? 'bg-blue-600 text-white hover:bg-blue-700' : ''}
+              ${isToday(dayObj.date) && !isSelected(dayObj.date) ? 'bg-blue-100 text-blue-800 font-semibold' : ''}
+            `}
+          >
+            {dayObj.day}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  const renderTimePicker = () => (
+    <div className="p-4">
+      <div className="text-center mb-4">
+        <div className="text-2xl font-bold text-gray-800 mb-2">
+          {String(getHourDisplay()).padStart(2, '0')}:
+          {String(selectedDate.getMinutes()).padStart(2, '0')}
+          {timeFormat === '12' && (
+            <span className="ml-2 text-lg">{getAMPM()}</span>
+          )}
+        </div>
+      </div>
+
+      {/* Horizontal Time Selection */}
+      <div className="flex items-center justify-center space-x-4">
+        {/* Hour Selection */}
+        <div className="flex flex-col items-center">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Hour</label>
+          <Select
+            value={getHourDisplay().toString()}
+            onValueChange={(value) => handleTimeChange('hour', value)}
+          >
+            <SelectTrigger className="w-20 h-10">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="max-h-32">
+              {Array.from({ length: timeFormat === '12' ? 12 : 24 }, (_, i) => {
+                const hour = timeFormat === '12' ? (i === 0 ? 12 : i) : i;
+                return (
+                  <SelectItem key={i} value={hour.toString()}>
+                    {String(hour).padStart(2, '0')}
+                  </SelectItem>
+                );
+              })}
+            </SelectContent>
+          </Select>
+        </div>
+
+        <div className="text-2xl font-bold text-gray-400 mt-6">:</div>
+
+        {/* Minute Selection */}
+        <div className="flex flex-col items-center">
+          <label className="block text-sm font-medium text-gray-700 mb-2">Minute</label>
+          <Select
+            value={selectedDate.getMinutes().toString()}
+            onValueChange={(value) => handleTimeChange('minute', value)}
+          >
+            <SelectTrigger className="w-20 h-10">
+              <SelectValue />
+            </SelectTrigger>
+            <SelectContent className="max-h-32">
+              {Array.from({ length: 60 }, (_, i) => (
+                <SelectItem key={i} value={i.toString()}>
+                  {String(i).padStart(2, '0')}
+                </SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+
+        {/* AM/PM Selection for 12-hour format */}
+        {timeFormat === '12' && (
+          <>
+            <div className="w-2"></div>
+            <div className="flex flex-col items-center">
+              <label className="block text-sm font-medium text-gray-700 mb-2">Period</label>
+              <Select
+                value={getAMPM()}
+                onValueChange={(value) => handleTimeChange('ampm', value)}
               >
-                Date
+                <SelectTrigger className="w-16 h-10">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent className="max-h-20">
+                  <SelectItem value="AM">AM</SelectItem>
+                  <SelectItem value="PM">PM</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+
+  const renderYearModal = () => (
+    <div className="absolute inset-0 bg-white rounded-lg shadow-lg border z-50">
+      <div className="flex items-center justify-between p-4 border-b">
+        <h3 className="font-semibold text-gray-800">Select Year</h3>
+        <button
+          onClick={() => setShowYearModal(false)}
+          className="p-1 hover:bg-gray-100 rounded-full"
+        >
+          <X size={16} />
+        </button>
+      </div>
+      <div className="p-4 h-64 overflow-y-auto">
+        <div className="grid grid-cols-4 gap-2">
+          {generateYears().map(year => (
+            <button
+              key={year}
+              onClick={() => {
+                const newDate = new Date(viewDate);
+                newDate.setFullYear(year);
+                setViewDate(newDate);
+                setShowYearModal(false);
+              }}
+              className={`
+                p-2 text-sm rounded-lg transition-colors
+                ${year === viewDate.getFullYear() 
+                  ? 'bg-blue-600 text-white' 
+                  : 'hover:bg-gray-100 text-gray-700'
+                }
+              `}
+            >
+              {year}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  const renderMonthModal = () => (
+    <div className="absolute inset-0 bg-white rounded-lg shadow-lg border z-50">
+      <div className="flex items-center justify-between p-4 border-b">
+        <h3 className="font-semibold text-gray-800">Select Month</h3>
+        <button
+          onClick={() => setShowMonthModal(false)}
+          className="p-1 hover:bg-gray-100 rounded-full"
+        >
+          <X size={16} />
+        </button>
+      </div>
+      <div className="p-4">
+        <div className="grid grid-cols-3 gap-2">
+          {months.map((month, index) => (
+            <button
+              key={month}
+              onClick={() => {
+                const newDate = new Date(viewDate);
+                newDate.setMonth(index);
+                setViewDate(newDate);
+                setShowMonthModal(false);
+              }}
+              className={`
+                p-2 text-sm rounded-lg transition-colors
+                ${index === viewDate.getMonth()
+                  ? 'bg-blue-600 text-white'
+                  : 'hover:bg-gray-100 text-gray-700'
+                }
+              `}
+            >
+              {month}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div ref={containerRef} className={`relative ${className}`}>
+      {/* Input Trigger */}
+      <button
+        onClick={() => !disabled && setIsOpen(!isOpen)}
+        disabled={disabled}
+        className={`
+          w-full p-3 text-left border border-gray-300 rounded-lg bg-white
+          transition-all duration-200 flex items-center justify-between
+          ${disabled 
+            ? 'bg-gray-100 text-gray-400 cursor-not-allowed' 
+            : 'hover:border-blue-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500'
+          }
+          ${isOpen ? 'border-blue-500 ring-2 ring-blue-200' : ''}
+        `}
+      >
+        <span className={value ? 'text-gray-900' : 'text-gray-500'}>
+          {formatDisplayValue()}
+        </span>
+        <div className="flex items-center space-x-1 text-gray-400">
+          {(mode === 'date' || mode === 'both') && <Calendar size={16} />}
+          {(mode === 'time' || mode === 'both') && <Clock size={16} />}
+        </div>
+      </button>
+
+      {/* Dropdown Panel */}
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-200 z-40 min-w-[320px]">
+          {/* Tab Navigation for both mode */}
+          {mode === 'both' && (
+            <div className="flex border-b border-gray-200">
+              <button
+                onClick={() => setActiveTab('date')}
+                className={`
+                  flex-1 p-3 text-sm font-medium transition-colors flex items-center justify-center space-x-2
+                  ${activeTab === 'date'
+                    ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                  }
+                `}
+              >
+                <Calendar size={16} />
+                <span>Date</span>
               </button>
               <button
-                onClick={() => setActiveTab("time")}
-                className={cn(
-                  "flex-1 py-3 px-4 text-sm font-medium transition-colors",
-                  activeTab === "time"
-                    ? "text-blue-600 border-b-2 border-blue-600 bg-blue-50"
-                    : "text-gray-600 hover:text-gray-800"
-                )}
+                onClick={() => setActiveTab('time')}
+                className={`
+                  flex-1 p-3 text-sm font-medium transition-colors flex items-center justify-center space-x-2
+                  ${activeTab === 'time'
+                    ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                  }
+                `}
               >
-                Time
+                <Clock size={16} />
+                <span>Time</span>
               </button>
             </div>
           )}
 
           {/* Content */}
-          <div className="p-4">
-            {/* Date Picker */}
-            {(mode === "date" || (mode === "datetime" && activeTab === "date")) && (
-              <div>
-                {/* Month Navigation */}
-                {showMonthNavigation && (
-                  <div className="flex items-center justify-between mb-4">
-                    <button
-                      onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1))}
-                      className="p-2 hover:bg-gray-100 rounded-md transition-colors"
-                    >
-                      <ChevronLeft size={20} />
-                    </button>
-                    <h4 className="text-lg font-semibold">
-                      {currentDate.toLocaleDateString(locale, { month: "long", year: "numeric" })}
-                    </h4>
-                    <button
-                      onClick={() => setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1))}
-                      className="p-2 hover:bg-gray-100 rounded-md transition-colors"
-                    >
-                      <ChevronRight size={20} />
-                    </button>
-                  </div>
-                )}
+          <div className="relative">
+            {(mode === 'date' || (mode === 'both' && activeTab === 'date')) && renderDatePicker()}
+            {(mode === 'time' || (mode === 'both' && activeTab === 'time')) && renderTimePicker()}
 
-                {/* Calendar Grid */}
-                <div className="grid grid-cols-7 gap-1 mb-2">
-                  {["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"].map((day) => (
-                    <div key={day} className="p-2 text-center text-sm font-medium text-gray-500">
-                      {day}
-                    </div>
-                  ))}
-                </div>
-                <div className="grid grid-cols-7 gap-1">
-                  {calendarDays.map((day, index) => {
-                    const isCurrentMonth = day.getMonth() === currentDate.getMonth()
-                    const isToday = day.toDateString() === new Date().toDateString()
-                    const isSelected = day.toDateString() === selectedDate.toDateString()
-                    const isWeekend = day.getDay() === 0 || day.getDay() === 6
-                    
-                    return (
-                      <button
-                        key={index}
-                        onClick={() => handleDateSelect(day)}
-                        className={cn(
-                          "p-2 text-sm rounded-md transition-colors",
-                          !isCurrentMonth && "text-gray-300",
-                          isCurrentMonth && "text-gray-900",
-                          isToday && "bg-blue-100 text-blue-600 font-semibold",
-                          isSelected && "bg-blue-600 text-white font-semibold",
-                          !isSelected && !isToday && "hover:bg-gray-100",
-                          highlightWeekends && isWeekend && isCurrentMonth && !isSelected && "text-red-600"
-                        )}
-                      >
-                        {day.getDate()}
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
-
-            {/* Time Picker */}
-            {(mode === "time" || (mode === "datetime" && activeTab === "time")) && (
-              <div>
-                <div className="grid grid-cols-4 gap-2 max-h-64 overflow-y-auto">
-                  {timeOptions.map((time, index) => {
-                    const timeString = time.toLocaleTimeString(locale, {
-                      hour12: timeFormat === "12",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      second: showSeconds ? "2-digit" : undefined
-                    })
-                    const isSelected = time.getHours() === selectedTime.getHours() && 
-                                     time.getMinutes() === selectedTime.getMinutes()
-                    
-                    return (
-                      <button
-                        key={index}
-                        onClick={() => handleTimeSelect(time)}
-                        className={cn(
-                          "p-2 text-sm rounded-md transition-colors",
-                          isSelected
-                            ? "bg-blue-600 text-white font-semibold"
-                            : "hover:bg-gray-100 text-gray-900"
-                        )}
-                      >
-                        {timeString}
-                      </button>
-                    )
-                  })}
-                </div>
-              </div>
-            )}
+            {/* Modals */}
+            {showYearModal && renderYearModal()}
+            {showMonthModal && renderMonthModal()}
           </div>
 
-          {/* Footer */}
-          {showFooter && (
-            <div className="flex items-center justify-between p-4 border-t bg-gray-50 rounded-b-xl">
-              {showToday && (mode === "date" || (mode === "datetime" && activeTab === "date")) && (
-                <button
-                  onClick={() => handleDateSelect(new Date())}
-                  className="text-sm text-blue-600 hover:text-blue-800 font-medium"
-                >
-                  Today
-                </button>
-              )}
-              <div className="flex gap-2">
-                <button
-                  onClick={() => setIsOpen(false)}
-                  className="px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-900 transition-colors"
-                >
-                  Cancel
-                </button>
-                {mode === "datetime" && (
-                  <button
-                    onClick={handleDateTimeSelect}
-                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-md transition-colors"
-                  >
-                    Select
-                  </button>
-                )}
-              </div>
-            </div>
-          )}
+          {/* Action Buttons */}
+          <div className="flex justify-end space-x-2 p-3 border-t border-gray-200">
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                setShowYearModal(false);
+                setShowMonthModal(false);
+              }}
+              className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                setShowYearModal(false);
+                setShowMonthModal(false);
+              }}
+              className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Done
+            </button>
+          </div>
         </div>
-      </div>
-    )
-
-    return (
-      <div ref={ref} className={cn("relative", fullWidth && "w-full", className)} {...props}>
-        {/* Input */}
-        <div className="relative">
-          <input
-            ref={inputRef}
-            type="text"
-            value={formatDate(selectedDate)}
-            placeholder={placeholder}
-            disabled={disabled}
-            readOnly
-            onClick={() => !disabled && setIsOpen(true)}
-            className={cn(
-              "w-full border rounded-md transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent",
-              sizeClasses[size],
-              disabled && "opacity-50 cursor-not-allowed",
-              shadowClasses[shadow]
-            )}
-            style={customStyles}
-          />
-          {showIcon && (
-            <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400">
-              {mode === "time" ? <Clock size={20} /> : <Calendar size={20} />}
-            </div>
-          )}
-        </div>
-
-        {/* Picker */}
-        {isOpen && (
-          portal ? createPortal(<PickerContent />, portalTarget || document.body) : <PickerContent />
-        )}
-      </div>
-    )
-  }
-)
+      )}
+    </div>
+  );
+};
 
 DateTimePicker.displayName = "DateTimePicker"
 

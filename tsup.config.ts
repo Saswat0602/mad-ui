@@ -133,8 +133,6 @@ export default defineConfig([
       'src/individual/input-otp.ts',
       'src/individual/radio-group.ts',
       'src/individual/calendar.ts',
-      'src/individual/date-picker.ts',
-      'src/individual/timepicker.ts',
       'src/individual/datetime-picker.ts'
     ],
     format: ['esm'],
