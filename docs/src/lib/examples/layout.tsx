@@ -37,10 +37,13 @@ function InteractiveDrawerDemo() {
   const [isOpen, setIsOpen] = useState(false)
   const [position, setPosition] = useState<'left' | 'right' | 'top' | 'bottom'>('right')
   const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'full'>('md')
+  const [useCustomDimensions, setUseCustomDimensions] = useState(false)
+  const [customWidth, setCustomWidth] = useState('400px')
+  const [customHeight, setCustomHeight] = useState('300px')
   
   return (
     <div className="space-y-4">
-      {/* Controls */}
+      {/* Position Controls */}
       <div className="flex flex-wrap gap-2">
         {(['left', 'right', 'top', 'bottom'] as const).map((pos) => (
           <button
@@ -55,6 +58,7 @@ function InteractiveDrawerDemo() {
         ))}
       </div>
       
+      {/* Size Controls */}
       <div className="flex flex-wrap gap-2">
         {(['sm', 'md', 'lg', 'full'] as const).map((s) => (
           <button
@@ -68,13 +72,57 @@ function InteractiveDrawerDemo() {
           </button>
         ))}
       </div>
+
+      {/* Custom Dimensions Toggle */}
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="customDimensions"
+          checked={useCustomDimensions}
+          onChange={(e) => setUseCustomDimensions(e.target.checked)}
+          className="rounded"
+        />
+        <label htmlFor="customDimensions" className="text-sm text-gray-700">
+          Use custom dimensions
+        </label>
+      </div>
+
+      {/* Custom Dimension Inputs */}
+      {useCustomDimensions && (
+        <div className="grid grid-cols-2 gap-2">
+          {(position === 'left' || position === 'right') && (
+            <div>
+              <label className="block text-xs text-gray-600 mb-1">Width</label>
+              <input
+                type="text"
+                value={customWidth}
+                onChange={(e) => setCustomWidth(e.target.value)}
+                placeholder="400px"
+                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+              />
+            </div>
+          )}
+          {(position === 'top' || position === 'bottom') && (
+            <div>
+              <label className="block text-xs text-gray-600 mb-1">Height</label>
+              <input
+                type="text"
+                value={customHeight}
+                onChange={(e) => setCustomHeight(e.target.value)}
+                placeholder="300px"
+                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+              />
+            </div>
+          )}
+        </div>
+      )}
       
       {/* Open Button */}
       <button 
         onClick={() => setIsOpen(true)}
         className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
       >
-        Open {position} Drawer ({size})
+        Open {position} Drawer ({useCustomDimensions ? 'custom' : size})
       </button>
       
       {/* Drawer */}
@@ -82,17 +130,28 @@ function InteractiveDrawerDemo() {
         isOpen={isOpen} 
         onClose={() => setIsOpen(false)}
         position={position}
-        size={size}
+        size={useCustomDimensions ? undefined : size}
+        width={useCustomDimensions && (position === 'left' || position === 'right') ? customWidth : undefined}
+        height={useCustomDimensions && (position === 'top' || position === 'bottom') ? customHeight : undefined}
         className="bg-gradient-to-br from-blue-50 to-white"
       >
         <h3 className="text-xl font-bold mb-4 text-blue-800">Custom Drawer</h3>
         <p className="text-gray-700 mb-4">
-          This drawer is positioned from the <strong>{position}</strong> with <strong>{size}</strong> size.
+          This drawer is positioned from the <strong>{position}</strong> with{' '}
+          {useCustomDimensions ? (
+            <>
+              <strong>custom {position === 'left' || position === 'right' ? 'width' : 'height'}</strong> of{' '}
+              <strong>{position === 'left' || position === 'right' ? customWidth : customHeight}</strong>
+            </>
+          ) : (
+            <strong>{size}</strong>
+          )} size.
         </p>
         <div className="space-y-2 text-sm text-gray-600">
           <p>✅ Smooth animations</p>
           <p>✅ Flexible positioning</p>
           <p>✅ Multiple sizes</p>
+          <p>✅ Custom dimensions</p>
           <p>✅ Custom styling</p>
         </div>
         <button 
@@ -125,6 +184,9 @@ export function InteractiveDrawerDemo() {
   const [isOpen, setIsOpen] = useState(false)
   const [position, setPosition] = useState<'left' | 'right' | 'top' | 'bottom'>('right')
   const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'full'>('md')
+  const [useCustomDimensions, setUseCustomDimensions] = useState(false)
+  const [customWidth, setCustomWidth] = useState('400px')
+  const [customHeight, setCustomHeight] = useState('300px')
   
   return (
     <div className="space-y-4">
@@ -157,32 +219,79 @@ export function InteractiveDrawerDemo() {
           </button>
         ))}
       </div>
+
+      {/* Custom Dimensions Toggle */}
+      <div className="flex items-center gap-2">
+        <input
+          type="checkbox"
+          id="customDimensions"
+          checked={useCustomDimensions}
+          onChange={(e) => setUseCustomDimensions(e.target.checked)}
+          className="rounded"
+        />
+        <label htmlFor="customDimensions" className="text-sm text-gray-700">
+          Use custom dimensions
+        </label>
+      </div>
+
+      {/* Custom Dimension Inputs */}
+      {useCustomDimensions && (
+        <div className="grid grid-cols-2 gap-2">
+          {(position === 'left' || position === 'right') && (
+            <div>
+              <label className="block text-xs text-gray-600 mb-1">Width</label>
+              <input
+                type="text"
+                value={customWidth}
+                onChange={(e) => setCustomWidth(e.target.value)}
+                placeholder="400px"
+                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+              />
+            </div>
+          )}
+          {(position === 'top' || position === 'bottom') && (
+            <div>
+              <label className="block text-xs text-gray-600 mb-1">Height</label>
+              <input
+                type="text"
+                value={customHeight}
+                onChange={(e) => setCustomHeight(e.target.value)}
+                placeholder="300px"
+                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
+              />
+            </div>
+          )}
+        </div>
+      )}
       
       {/* Open Button */}
       <button 
         onClick={() => setIsOpen(true)}
         className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
       >
-        Open {position} Drawer ({size})
+        Open {position} Drawer ({useCustomDimensions ? 'custom' : size})
       </button>
       
-      {/* Drawer */}
+      {/* Drawer with Custom Dimensions */}
       <Drawer 
         isOpen={isOpen} 
         onClose={() => setIsOpen(false)}
         position={position}
-        size={size}
+        size={useCustomDimensions ? undefined : size}
+        width={useCustomDimensions && (position === 'left' || position === 'right') ? customWidth : undefined}
+        height={useCustomDimensions && (position === 'top' || position === 'bottom') ? customHeight : undefined}
         className="bg-gradient-to-br from-blue-50 to-white"
       >
         <h3 className="text-xl font-bold mb-4 text-blue-800">Custom Drawer</h3>
         <p className="text-gray-700 mb-4">
-          This drawer is positioned from the <strong>{position}</strong> with <strong>{size}</strong> size.
+          This drawer supports custom dimensions! You can specify:
         </p>
         <div className="space-y-2 text-sm text-gray-600">
+          <p>✅ Custom width for left/right drawers</p>
+          <p>✅ Custom height for top/bottom drawers</p>
           <p>✅ Smooth animations</p>
           <p>✅ Flexible positioning</p>
           <p>✅ Multiple sizes</p>
-          <p>✅ Custom styling</p>
         </div>
         <button 
           onClick={() => setIsOpen(false)}

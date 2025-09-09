@@ -19,6 +19,10 @@ export interface DrawerProps {
   position?: 'right' | 'left' | 'top' | 'bottom';
   /** Size of the drawer */
   size?: 'sm' | 'md' | 'lg' | 'full';
+  /** Custom width for left/right drawers */
+  width?: string | number;
+  /** Custom height for top/bottom drawers */
+  height?: string | number;
   /** Whether to show overlay */
   overlay?: boolean;
   /** Whether to close on overlay click */
@@ -40,6 +44,8 @@ export const Drawer: React.FC<DrawerProps> = ({
   onClose,
   position = 'right',
   size = 'md',
+  width,
+  height,
   overlay = true,
   closeOnOverlayClick = true,
   showCloseButton = true,
@@ -50,12 +56,25 @@ export const Drawer: React.FC<DrawerProps> = ({
 }) => {
   const drawerRef = useRef<HTMLDivElement>(null);
 
-  const sizes = {
-    sm: position === 'left' || position === 'right' ? 'w-80' : 'h-80',
-    md: position === 'left' || position === 'right' ? 'w-96' : 'h-96',
-    lg: position === 'left' || position === 'right' ? 'w-[32rem]' : 'h-[32rem]',
-    full: position === 'left' || position === 'right' ? 'w-full' : 'h-full',
+  // Get size classes or custom dimensions
+  const getSizeClasses = () => {
+    if (width && (position === 'left' || position === 'right')) {
+      return { width: typeof width === 'number' ? `${width}px` : width };
+    }
+    if (height && (position === 'top' || position === 'bottom')) {
+      return { height: typeof height === 'number' ? `${height}px` : height };
+    }
+    
+    const sizeClasses = {
+      sm: position === 'left' || position === 'right' ? 'w-80' : 'h-80',
+      md: position === 'left' || position === 'right' ? 'w-96' : 'h-96',
+      lg: position === 'left' || position === 'right' ? 'w-[32rem]' : 'h-[32rem]',
+      full: position === 'left' || position === 'right' ? 'w-full' : 'h-full',
+    };
+    return { className: sizeClasses[size] };
   };
+
+  const sizeProps = getSizeClasses();
 
   const positions = {
     right: `fixed top-0 right-0 h-full transform ${isOpen ? 'translate-x-0' : 'translate-x-full'}`,
@@ -97,11 +116,15 @@ export const Drawer: React.FC<DrawerProps> = ({
         ref={drawerRef}
         className={cn(
           positions[position],
-          sizes[size],
+          sizeProps.className,
           'bg-white shadow-xl z-50',
           baseClasses.transition,
           className
         )}
+        style={{
+          ...sizeProps,
+          ...props.style
+        }}
         {...props}
       >
         {showCloseButton && (
