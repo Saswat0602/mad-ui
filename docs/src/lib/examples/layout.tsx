@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { 
   Drawer,
   Layout, 
@@ -32,6 +32,80 @@ import {
   Palette
 } from 'lucide-react'
 
+// Interactive Drawer Demo Component
+function InteractiveDrawerDemo() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [position, setPosition] = useState<'left' | 'right' | 'top' | 'bottom'>('right')
+  const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'full'>('md')
+  
+  return (
+    <div className="space-y-4">
+      {/* Controls */}
+      <div className="flex flex-wrap gap-2">
+        {(['left', 'right', 'top', 'bottom'] as const).map((pos) => (
+          <button
+            key={pos}
+            onClick={() => setPosition(pos)}
+            className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              position === pos ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            {pos}
+          </button>
+        ))}
+      </div>
+      
+      <div className="flex flex-wrap gap-2">
+        {(['sm', 'md', 'lg', 'full'] as const).map((s) => (
+          <button
+            key={s}
+            onClick={() => setSize(s)}
+            className={`px-3 py-1 text-sm rounded-md transition-colors ${
+              size === s ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }`}
+          >
+            {s}
+          </button>
+        ))}
+      </div>
+      
+      {/* Open Button */}
+      <button 
+        onClick={() => setIsOpen(true)}
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+      >
+        Open {position} Drawer ({size})
+      </button>
+      
+      {/* Drawer */}
+      <Drawer 
+        isOpen={isOpen} 
+        onClose={() => setIsOpen(false)}
+        position={position}
+        size={size}
+        className="bg-gradient-to-br from-blue-50 to-white"
+      >
+        <h3 className="text-xl font-bold mb-4 text-blue-800">Custom Drawer</h3>
+        <p className="text-gray-700 mb-4">
+          This drawer is positioned from the <strong>{position}</strong> with <strong>{size}</strong> size.
+        </p>
+        <div className="space-y-2 text-sm text-gray-600">
+          <p>✅ Smooth animations</p>
+          <p>✅ Flexible positioning</p>
+          <p>✅ Multiple sizes</p>
+          <p>✅ Custom styling</p>
+        </div>
+        <button 
+          onClick={() => setIsOpen(false)}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+        >
+          Close Drawer
+        </button>
+      </Drawer>
+    </div>
+  )
+}
+
 export interface ComponentExample {
   title: string
   description?: string
@@ -42,229 +116,86 @@ export interface ComponentExample {
 export const layoutExamples: Record<string, ComponentExample[]> = {
   drawer: [
     {
-      title: 'Basic Drawer',
-      description: 'A simple drawer component with smooth animations',
+      title: 'Interactive Drawer Demo',
+      description: 'A fully functional drawer with position and size controls - try all combinations!',
       code: `import { Drawer } from 'mad-ui-components'
 import { useState } from 'react'
 
-export function DrawerExample() {
-  const [isOpen, setIsOpen] = useState(false)
-  
-  return (
-    <>
-      <button 
-        onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-      >
-        Open Drawer
-      </button>
-      
-      <Drawer 
-        isOpen={isOpen} 
-        onClose={() => setIsOpen(false)}
-        position="right"
-        size="md"
-      >
-        <h3 className="text-xl font-bold mb-4">Drawer Title</h3>
-        <p className="text-gray-700 mb-4">
-          This is a simple drawer component with smooth animations and flexible positioning.
-        </p>
-        <button 
-          onClick={() => setIsOpen(false)}
-          className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
-        >
-          Close Drawer
-        </button>
-      </Drawer>
-    </>
-  )
-}`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <Drawer 
-            isOpen={false} 
-            onClose={() => {}}
-            position="right"
-            size="md"
-          >
-            <h3 className="text-xl font-bold mb-4">Drawer Title</h3>
-            <p className="text-gray-700 mb-4">
-              This is a simple drawer component with smooth animations and flexible positioning.
-            </p>
-            <button className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700">
-              Close Drawer
-            </button>
-          </Drawer>
-        </div>
-      )
-    },
-    {
-      title: 'Different Positions',
-      description: 'Drawer component with different positioning options',
-      code: `import { Drawer } from 'mad-ui-components'
-import { useState } from 'react'
-
-export function PositionDrawer() {
+export function InteractiveDrawerDemo() {
   const [isOpen, setIsOpen] = useState(false)
   const [position, setPosition] = useState<'left' | 'right' | 'top' | 'bottom'>('right')
+  const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'full'>('md')
   
   return (
-    <>
-      <div className="space-x-2 mb-4">
+    <div className="space-y-4">
+      {/* Position Controls */}
+      <div className="flex flex-wrap gap-2">
         {(['left', 'right', 'top', 'bottom'] as const).map((pos) => (
           <button
             key={pos}
             onClick={() => setPosition(pos)}
-            className={\`px-3 py-1 text-sm rounded \${position === pos ? 'bg-blue-600 text-white' : 'bg-gray-200'}\`}
+            className={\`px-3 py-1 text-sm rounded-md transition-colors \${
+              position === pos ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }\`}
           >
             {pos}
           </button>
         ))}
       </div>
       
-      <button 
-        onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-      >
-        Open {position} Drawer
-      </button>
-      
-      <Drawer 
-        isOpen={isOpen} 
-        onClose={() => setIsOpen(false)}
-        position={position}
-        size="md"
-      >
-        <h3 className="text-xl font-bold mb-4">Drawer from {position}</h3>
-        <p className="text-gray-700">
-          This drawer slides in from the {position} side.
-        </p>
-      </Drawer>
-    </>
-  )
-}`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <div className="space-x-2 mb-4">
-            <button className="px-3 py-1 text-sm rounded bg-blue-600 text-white">right</button>
-            <button className="px-3 py-1 text-sm rounded bg-gray-200">left</button>
-            <button className="px-3 py-1 text-sm rounded bg-gray-200">top</button>
-            <button className="px-3 py-1 text-sm rounded bg-gray-200">bottom</button>
-          </div>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-            Open right Drawer
-          </button>
-        </div>
-      )
-    },
-    {
-      title: 'Different Sizes',
-      description: 'Drawer component with different size options',
-      code: `import { Drawer } from 'mad-ui-components'
-import { useState } from 'react'
-
-export function SizeDrawer() {
-  const [isOpen, setIsOpen] = useState(false)
-  const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'full'>('md')
-  
-  return (
-    <>
-      <div className="space-x-2 mb-4">
+      {/* Size Controls */}
+      <div className="flex flex-wrap gap-2">
         {(['sm', 'md', 'lg', 'full'] as const).map((s) => (
           <button
             key={s}
             onClick={() => setSize(s)}
-            className={\`px-3 py-1 text-sm rounded \${size === s ? 'bg-blue-600 text-white' : 'bg-gray-200'}\`}
+            className={\`px-3 py-1 text-sm rounded-md transition-colors \${
+              size === s ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            }\`}
           >
             {s}
           </button>
         ))}
       </div>
       
+      {/* Open Button */}
       <button 
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
       >
-        Open {size} Drawer
+        Open {position} Drawer ({size})
       </button>
       
+      {/* Drawer */}
       <Drawer 
         isOpen={isOpen} 
         onClose={() => setIsOpen(false)}
-        position="right"
+        position={position}
         size={size}
-      >
-        <h3 className="text-xl font-bold mb-4">Drawer Size: {size}</h3>
-        <p className="text-gray-700">
-          This drawer has a {size} size.
-        </p>
-      </Drawer>
-    </>
-  )
-}`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <div className="space-x-2 mb-4">
-            <button className="px-3 py-1 text-sm rounded bg-gray-200">sm</button>
-            <button className="px-3 py-1 text-sm rounded bg-blue-600 text-white">md</button>
-            <button className="px-3 py-1 text-sm rounded bg-gray-200">lg</button>
-            <button className="px-3 py-1 text-sm rounded bg-gray-200">full</button>
-          </div>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
-            Open md Drawer
-          </button>
-        </div>
-      )
-    },
-    {
-      title: 'Custom Styling',
-      description: 'Drawer with custom styling and no close button',
-      code: `import { Drawer } from 'mad-ui-components'
-import { useState } from 'react'
-
-export function CustomDrawer() {
-  const [isOpen, setIsOpen] = useState(false)
-  
-  return (
-    <>
-      <button 
-        onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
-      >
-        Open Custom Drawer
-      </button>
-      
-      <Drawer 
-        isOpen={isOpen} 
-        onClose={() => setIsOpen(false)}
-        position="right"
-        size="lg"
-        showCloseButton={false}
         className="bg-gradient-to-br from-blue-50 to-white"
-        overlayClassName="bg-black/30"
       >
-        <div className="text-center">
-          <h3 className="text-2xl font-bold mb-4 text-blue-800">Custom Styled Drawer</h3>
-          <p className="text-gray-700 mb-6">
-            This drawer has custom styling with a gradient background and no close button.
-          </p>
-          <button 
-            onClick={() => setIsOpen(false)}
-            className="px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 font-semibold"
-          >
-            Close Drawer
-          </button>
+        <h3 className="text-xl font-bold mb-4 text-blue-800">Custom Drawer</h3>
+        <p className="text-gray-700 mb-4">
+          This drawer is positioned from the <strong>{position}</strong> with <strong>{size}</strong> size.
+        </p>
+        <div className="space-y-2 text-sm text-gray-600">
+          <p>✅ Smooth animations</p>
+          <p>✅ Flexible positioning</p>
+          <p>✅ Multiple sizes</p>
+          <p>✅ Custom styling</p>
         </div>
+        <button 
+          onClick={() => setIsOpen(false)}
+          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
+        >
+          Close Drawer
+        </button>
       </Drawer>
-    </>
+    </div>
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm">
-          <button className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700">
-            Open Custom Drawer
-          </button>
-        </div>
+        <InteractiveDrawerDemo />
       )
     }
   ],
