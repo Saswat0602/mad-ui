@@ -125,29 +125,13 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['navigation', 'breadcrumbs', 'path']
   },
-  'calendar': {
+  'datetime-picker': {
     category: 'Form' as ComponentCategory,
-    title: 'Calendar',
-    description: 'A calendar component for date selection',
-    version: '1.0.0',
-    status: 'alpha' as const,
-    tags: ['form', 'calendar', 'date']
-  },
-  'datepicker': {
-    category: 'Form' as ComponentCategory,
-    title: 'Date Picker',
-    description: 'A date picker component with calendar integration',
-    version: '1.0.0',
-    status: 'alpha' as const,
-    tags: ['form', 'datepicker', 'date']
-  },
-  'timepicker': {
-    category: 'Form' as ComponentCategory,
-    title: 'Time Picker',
-    description: 'A time picker component for time selection',
-    version: '1.0.0',
-    status: 'alpha' as const,
-    tags: ['form', 'timepicker', 'time']
+    title: 'DateTime Picker',
+    description: 'Beautiful, modern date and time picker with horizontal time selection and custom Select components - choose date, time, or both together',
+    version: '2.15.0',
+    status: 'stable' as const,
+    tags: ['form', 'datetime', 'date', 'time', 'picker', 'calendar']
   },
   'inputotp': {
     category: 'Form' as ComponentCategory,

@@ -83,33 +83,39 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
           }
         case "outlined":
           return {
-            backgroundColor: backgroundColor || color || "var(--bg-card)",
-            border: `1px solid ${color || "var(--border-primary)"}`,
-            padding: "12px 16px"
+            backgroundColor: backgroundColor || "hsl(var(--color-card))",
+            border: `1px solid hsl(var(--color-border))`,
+            padding: "12px 16px",
+            borderRadius: "8px"
           }
         case "modern":
           return {
-            backgroundColor: backgroundColor || "rgba(255, 255, 255, 0.05)",
+            backgroundColor: backgroundColor || "hsl(var(--color-card) / 0.8)",
             backdropFilter: "blur(10px)",
-            border: "1px solid rgba(255, 255, 255, 0.1)",
-            padding: "16px 20px"
+            border: `1px solid hsl(var(--color-border) / 0.5)`,
+            padding: "16px 20px",
+            borderRadius: "12px"
           }
         case "card":
           return {
-            backgroundColor: backgroundColor || "white",
+            backgroundColor: backgroundColor || "hsl(var(--color-card))",
             boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-            padding: "16px 20px"
+            padding: "16px 20px",
+            borderRadius: "12px"
           }
         case "pill":
           return {
-            backgroundColor: backgroundColor || "rgba(59, 130, 246, 0.1)",
+            backgroundColor: backgroundColor || "hsl(var(--color-primary) / 0.1)",
             borderRadius: "9999px",
-            padding: "8px 16px"
+            padding: "8px 16px",
+            border: `1px solid hsl(var(--color-primary) / 0.2)`
           }
         case "gradient":
           return {
-            background: backgroundColor || "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-            padding: "16px 20px"
+            background: backgroundColor || "linear-gradient(135deg, hsl(var(--color-primary)) 0%, hsl(var(--color-accent)) 100%)",
+            padding: "16px 20px",
+            borderRadius: "12px",
+            color: "white"
           }
         case "steps":
           return {
@@ -118,15 +124,16 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
           }
         default:
           return {
-            backgroundColor: backgroundColor || color || "var(--bg-card)",
-            padding: "12px 16px"
+            backgroundColor: backgroundColor || "hsl(var(--color-card))",
+            padding: "12px 16px",
+            borderRadius: "8px"
           }
       }
     }
     
     // Custom styles
     const customStyles: React.CSSProperties = {
-      color: textColor || "var(--text-primary)",
+      color: textColor || "hsl(var(--color-foreground))",
       borderRadius: borderRadius,
       ...getVariantStyles(),
       ...style
@@ -148,8 +155,8 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
       
       const itemStyles: React.CSSProperties = {
         color: isActive 
-          ? (activeColor || "var(--accent-primary)")
-          : (textColor || "var(--text-primary)")
+          ? (activeColor || "hsl(var(--color-primary))")
+          : (textColor || "hsl(var(--color-foreground))")
       }
       
       const ItemContent = () => (
@@ -166,15 +173,15 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
             <div className={cn(
               "flex items-center justify-center w-8 h-8 rounded-full border-2 transition-colors duration-200",
               isActive 
-                ? "bg-blue-600 border-blue-600 text-white" 
-                : "bg-white border-gray-300 text-gray-600"
+                ? "bg-primary border-primary text-primary-foreground" 
+                : "bg-card border-border text-muted-foreground"
             )}>
               {item.icon || (index + 1)}
             </div>
             <span className={cn(
               "ml-2",
               sizeClasses[size],
-              isActive ? "font-semibold text-blue-600" : "font-medium text-gray-600"
+              isActive ? "font-semibold text-primary" : "font-medium text-muted-foreground"
             )}>
               {item.label}
             </span>
@@ -188,7 +195,7 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
             <a
               href={item.href}
               className={cn(
-                "hover:text-blue-600 transition-colors duration-200",
+                "hover:text-primary transition-colors duration-200",
                 sizeClasses[size],
                 "font-medium"
               )}
@@ -202,7 +209,7 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
             <button
               onClick={item.onClick}
               className={cn(
-                "hover:text-blue-600 transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
+                "hover:text-primary transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
                 sizeClasses[size],
                 "font-medium"
               )}
@@ -219,7 +226,7 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
           className={cn(
             sizeClasses[size],
             isActive ? "font-semibold" : "font-medium",
-            item.disabled && "text-gray-400 cursor-not-allowed"
+            item.disabled && "text-muted-foreground cursor-not-allowed"
           )}
           style={itemStyles}
         >
@@ -245,7 +252,7 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
           <>
             <span
               className={cn(
-                "text-gray-500 hover:text-gray-700 transition-colors duration-200",
+                "text-muted-foreground hover:text-foreground transition-colors duration-200",
                 sizeClasses[size]
               )}
             >
@@ -253,10 +260,10 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
             </span>
             <span
               className={cn(
-                "text-gray-300",
+                "text-muted-foreground",
                 separatorSizeClasses[size]
               )}
-              style={{ color: separatorColor || "var(--text-muted)" }}
+              style={{ color: separatorColor || "hsl(var(--color-muted-foreground))" }}
             >
               {separator}
             </span>
@@ -270,16 +277,16 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
             {index < processedItems.length - 1 && variant !== "steps" && (
               <span
                 className={cn(
-                  "text-gray-300",
+                  "text-muted-foreground",
                   separatorSizeClasses[size]
                 )}
-                style={{ color: separatorColor || "var(--text-muted)" }}
+                style={{ color: separatorColor || "hsl(var(--color-muted-foreground))" }}
               >
                 {separator}
               </span>
             )}
             {index < processedItems.length - 1 && variant === "steps" && (
-              <div className="flex-1 h-0.5 bg-gray-200 mx-4" />
+              <div className="flex-1 h-0.5 bg-border mx-4" />
             )}
           </React.Fragment>
         ))}

@@ -1649,7 +1649,7 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
     },
     {
       name: 'variant',
-      type: "'default' | 'minimal' | 'bordered' | 'pills'",
+      type: "'default' | 'minimal' | 'outlined' | 'modern' | 'card' | 'pill' | 'gradient' | 'steps'",
       required: false,
       default: 'default',
       description: 'Visual style variant'
@@ -1660,6 +1660,90 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       required: false,
       default: 'md',
       description: 'Size of the breadcrumb'
+    },
+    {
+      name: 'color',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Custom color for the breadcrumb'
+    },
+    {
+      name: 'backgroundColor',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Custom background color'
+    },
+    {
+      name: 'textColor',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Custom text color'
+    },
+    {
+      name: 'activeColor',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Color for the active breadcrumb item'
+    },
+    {
+      name: 'separatorColor',
+      type: 'string',
+      required: false,
+      default: 'undefined',
+      description: 'Color for the separator between items'
+    },
+    {
+      name: 'borderRadius',
+      type: 'string | number',
+      required: false,
+      default: 'undefined',
+      description: 'Custom border radius'
+    },
+    {
+      name: 'shadow',
+      type: "'none' | 'sm' | 'md' | 'lg'",
+      required: false,
+      default: 'none',
+      description: 'Shadow level for the breadcrumb'
+    },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the breadcrumb should take full width'
+    },
+    {
+      name: 'showHomeIcon',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether to show a home icon at the beginning'
+    },
+    {
+      name: 'homeIcon',
+      type: 'React.ReactNode',
+      required: false,
+      default: 'undefined',
+      description: 'Custom home icon'
+    },
+    {
+      name: 'maxItems',
+      type: 'number',
+      required: false,
+      default: 'undefined',
+      description: 'Maximum number of items to show (with ellipsis)'
+    },
+    {
+      name: 'collapseOnMobile',
+      type: 'boolean',
+      required: false,
+      default: 'true',
+      description: 'Whether to collapse breadcrumb on mobile devices'
     },
     {
       name: 'analyticsId',

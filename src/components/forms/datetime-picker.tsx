@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, Clock, Calendar, X } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../core/select';
 
@@ -27,6 +28,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
   const [showYearModal, setShowYearModal] = useState(false);
   const [showMonthModal, setShowMonthModal] = useState(false);
   const [activeTab, setActiveTab] = useState(mode === 'both' ? 'date' : mode);
+  const [portalPosition, setPortalPosition] = useState({ top: 0, left: 0, width: 0 });
   
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -36,6 +38,18 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
   ];
 
   const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
+
+  // Calculate portal position when opening
+  const calculatePortalPosition = () => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      setPortalPosition({
+        top: rect.bottom + window.scrollY + 4,
+        left: rect.left + window.scrollX,
+        width: rect.width
+      });
+    }
+  };
 
   // Close picker when clicking outside
   useEffect(() => {
@@ -449,7 +463,14 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     <div ref={containerRef} className={`relative ${className}`}>
       {/* Input Trigger */}
       <button
-        onClick={() => !disabled && setIsOpen(!isOpen)}
+        onClick={() => {
+          if (!disabled) {
+            if (!isOpen) {
+              calculatePortalPosition();
+            }
+            setIsOpen(!isOpen);
+          }
+        }}
         disabled={disabled}
         className={`
           w-full p-3 text-left border border-gray-300 rounded-lg bg-white
@@ -471,8 +492,15 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
       </button>
 
       {/* Dropdown Panel */}
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-200 z-40 min-w-[320px]">
+      {isOpen && createPortal(
+        <div 
+          className="fixed bg-white rounded-lg shadow-xl border border-gray-200 z-50 min-w-[400px] max-w-[500px]"
+          style={{
+            top: portalPosition.top,
+            left: portalPosition.left,
+            width: Math.max(portalPosition.width, 400)
+          }}
+        >
           {/* Tab Navigation for both mode */}
           {mode === 'both' && (
             <div className="flex border-b border-gray-200">
@@ -538,7 +566,8 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
               Done
             </button>
           </div>
-        </div>
+        </div>,
+        document.body
       )}
     </div>
   );

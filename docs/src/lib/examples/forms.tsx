@@ -376,7 +376,7 @@ export function BreadcrumbDesignsDemo() {
     }
   ],
 
-  calendar: [
+  'datetime-picker': [
     {
       title: 'Modern Date & Time Picker',
       description: 'Beautiful, modern date and time picker with horizontal time selection and custom Select components - choose date, time, or both together',
