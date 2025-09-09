@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { X } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
@@ -83,7 +84,8 @@ export const Drawer: React.FC<DrawerProps> = ({
 
   if (!isOpen) return null;
 
-  return (
+  // Render drawer using portal to ensure it's at document level
+  return createPortal(
     <>
       {overlay && (
         <div
@@ -118,7 +120,8 @@ export const Drawer: React.FC<DrawerProps> = ({
           {children}
         </div>
       </div>
-    </>
+    </>,
+    document.body
   );
 };
 
