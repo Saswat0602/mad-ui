@@ -99,7 +99,13 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
   const generateCalendarDays = () => {
     const daysInMonth = getDaysInMonth(viewDate);
     const firstDay = getFirstDayOfMonth(viewDate);
-    const days = [];
+    const days: Array<{
+      day: number;
+      isCurrentMonth: boolean;
+      isPrevMonth?: boolean;
+      isNextMonth?: boolean;
+      date: Date;
+    }> = [];
 
     // Previous month's trailing days
     const prevMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 0);
@@ -311,23 +317,22 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
         </div>
       </div>
 
-      {/* Horizontal Time Selection */}
-      <div className="flex items-center justify-center space-x-4">
+      <div className="flex space-x-2">
         {/* Hour Selection */}
-        <div className="flex flex-col items-center">
+        <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700 mb-2">Hour</label>
           <Select
-            value={getHourDisplay().toString()}
-            onValueChange={(value) => handleTimeChange('hour', value)}
+            value={String(getHourDisplay())}
+            onValueChange={(val) => handleTimeChange('hour', val)}
           >
-            <SelectTrigger className="w-20 h-10">
-              <SelectValue />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Hour" />
             </SelectTrigger>
-            <SelectContent className="max-h-32">
+            <SelectContent>
               {Array.from({ length: timeFormat === '12' ? 12 : 24 }, (_, i) => {
                 const hour = timeFormat === '12' ? (i === 0 ? 12 : i) : i;
                 return (
-                  <SelectItem key={i} value={hour.toString()}>
+                  <SelectItem key={i} value={String(hour)}>
                     {String(hour).padStart(2, '0')}
                   </SelectItem>
                 );
@@ -336,21 +341,19 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
           </Select>
         </div>
 
-        <div className="text-2xl font-bold text-gray-400 mt-6">:</div>
-
         {/* Minute Selection */}
-        <div className="flex flex-col items-center">
+        <div className="flex-1">
           <label className="block text-sm font-medium text-gray-700 mb-2">Minute</label>
           <Select
-            value={selectedDate.getMinutes().toString()}
-            onValueChange={(value) => handleTimeChange('minute', value)}
+            value={String(selectedDate.getMinutes())}
+            onValueChange={(val) => handleTimeChange('minute', val)}
           >
-            <SelectTrigger className="w-20 h-10">
-              <SelectValue />
+            <SelectTrigger className="w-full">
+              <SelectValue placeholder="Minute" />
             </SelectTrigger>
-            <SelectContent className="max-h-32">
+            <SelectContent>
               {Array.from({ length: 60 }, (_, i) => (
-                <SelectItem key={i} value={i.toString()}>
+                <SelectItem key={i} value={String(i)}>
                   {String(i).padStart(2, '0')}
                 </SelectItem>
               ))}
@@ -360,24 +363,21 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
 
         {/* AM/PM Selection for 12-hour format */}
         {timeFormat === '12' && (
-          <>
-            <div className="w-2"></div>
-            <div className="flex flex-col items-center">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Period</label>
-              <Select
-                value={getAMPM()}
-                onValueChange={(value) => handleTimeChange('ampm', value)}
-              >
-                <SelectTrigger className="w-16 h-10">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent className="max-h-20">
-                  <SelectItem value="AM">AM</SelectItem>
-                  <SelectItem value="PM">PM</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </>
+          <div className="flex-1">
+            <label className="block text-sm font-medium text-gray-700 mb-2">Period</label>
+            <Select
+              value={getAMPM()}
+              onValueChange={(val) => handleTimeChange('ampm', val)}
+            >
+              <SelectTrigger className="w-full">
+                <SelectValue placeholder="AM/PM" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="AM">AM</SelectItem>
+                <SelectItem value="PM">PM</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
         )}
       </div>
     </div>
@@ -573,6 +573,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
   );
 };
 
-DateTimePicker.displayName = "DateTimePicker"
+DateTimePicker.displayName = "DateTimePicker";
 
-export { DateTimePicker }
+export { DateTimePicker };
+export default DateTimePicker;
