@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import { Accordion, Breadcrumbs, DateTimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
+import { Calendar, Clock } from 'lucide-react'
 
 // Breadcrumb Designs Demo Component
 function BreadcrumbDesignsDemo() {
@@ -47,46 +48,138 @@ function BreadcrumbDesignsDemo() {
 
 // DateTime Picker Demo Component
 function DateTimePickerDemo() {
-  const [selectedMode, setSelectedMode] = useState<'date' | 'time' | 'both'>('both')
-  const [selectedDate, setSelectedDate] = useState<Date | null>(new Date())
+  const [dateValue, setDateValue] = useState<Date | null>(null)
+  const [timeValue, setTimeValue] = useState<Date | null>(null)
+  const [bothValue, setBothValue] = useState<Date | null>(new Date())
 
   return (
-    <div className="space-y-6">
-      {/* Mode Selector */}
-      <div className="flex gap-2">
-        {(['date', 'time', 'both'] as const).map((mode) => (
-          <button
-            key={mode}
-            onClick={() => setSelectedMode(mode)}
-            className={`px-4 py-2 text-sm rounded-md transition-colors ${
-              selectedMode === mode 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
-            }`}
-          >
-            {mode.charAt(0).toUpperCase() + mode.slice(1)}
-          </button>
-        ))}
-      </div>
-
-      {/* DateTime Picker */}
-      <div className="max-w-sm">
-        <DateTimePicker 
-          mode={selectedMode}
-          value={selectedDate}
-          onChange={setSelectedDate}
-          placeholder={`Select ${selectedMode}`}
-        />
-      </div>
-
-      {/* Selected Value Display */}
-      {selectedDate && (
-        <div className="p-3 bg-blue-50 rounded-md">
-          <p className="text-sm text-blue-800">
-            <strong>Selected:</strong> {selectedDate.toLocaleString()}
+    <div className="min-h-[600px] bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl">
+      <div className="max-w-5xl mx-auto">
+        <div className="text-center mb-10">
+          <h1 className="text-3xl font-bold text-gray-900 mb-3">Modern DateTime Picker</h1>
+          <p className="text-base text-gray-600 max-w-2xl mx-auto">
+            A highly reusable, modern DateTime picker component with excellent UI/UX, multiple modes, and full user control.
           </p>
         </div>
-      )}
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="bg-white p-6 rounded-xl shadow-lg">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+              <Calendar className="mr-2 text-blue-600" size={20} />
+              Date Only
+            </h3>
+            <div className="max-w-sm">
+              <DateTimePicker
+                mode="date"
+                value={dateValue}
+                onChange={(d) => setDateValue(d)}
+                placeholder="Select a date"
+              />
+            </div>
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Selected:</p>
+              <p className="font-mono text-sm">
+                {dateValue ? dateValue.toLocaleDateString() : 'None'}
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-lg">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+              <Clock className="mr-2 text-green-600" size={20} />
+              Time Only (12hr)
+            </h3>
+            <div className="max-w-sm">
+              <DateTimePicker
+                mode="time"
+                timeFormat="12"
+                value={timeValue}
+                onChange={(d) => setTimeValue(d)}
+                placeholder="Select time"
+              />
+            </div>
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Selected:</p>
+              <p className="font-mono text-sm">
+                {timeValue
+                  ? timeValue.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit' })
+                  : 'None'}
+              </p>
+            </div>
+          </div>
+
+          <div className="bg-white p-6 rounded-xl shadow-lg md:col-span-2 lg:col-span-1">
+            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
+              <Calendar className="mr-1 text-purple-600" size={20} />
+              <Clock className="mr-2 text-purple-600" size={20} />
+              Date & Time
+            </h3>
+            <div className="max-w-sm">
+              <DateTimePicker
+                mode="both"
+                timeFormat="12"
+                value={bothValue}
+                onChange={(d) => setBothValue(d)}
+                placeholder="Select date & time"
+              />
+            </div>
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Selected:</p>
+              <p className="font-mono text-sm">
+                {bothValue
+                  ? `${bothValue.toLocaleDateString()} ${bothValue.toLocaleTimeString([], { hour12: true, hour: 'numeric', minute: '2-digit' })}`
+                  : 'None'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-12 bg-white rounded-xl shadow-lg p-8">
+          <h2 className="text-xl font-bold text-gray-900 mb-6">Component Features</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-3">🎛️ Highly Configurable</h3>
+              <ul className="text-gray-600 space-y-1 text-sm">
+                <li>• Three modes: date, time, or both</li>
+                <li>• 12/24 hour time format support</li>
+                <li>• Customizable placeholders</li>
+                <li>• Disabled state support</li>
+                <li>• Custom CSS classes</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-3">🎨 Modern Design</h3>
+              <ul className="text-gray-600 space-y-1 text-sm">
+                <li>• Clean, minimal interface</li>
+                <li>• Smooth animations & transitions</li>
+                <li>• Responsive design</li>
+                <li>• Focus states & accessibility</li>
+                <li>• Modern color scheme</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-3">📅 Smart Calendar</h3>
+              <ul className="text-gray-600 space-y-1 text-sm">
+                <li>• Clickable month/year headers</li>
+                <li>• Modal selectors for quick navigation</li>
+                <li>• Today highlighting</li>
+                <li>• Previous/next month navigation</li>
+                <li>• Weekend styling</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-3">⚡ User Experience</h3>
+              <ul className="text-gray-600 space-y-1 text-sm">
+                <li>• Click outside to close</li>
+                <li>• Tab navigation between date/time</li>
+                <li>• Intuitive time selection</li>
+                <li>• Real-time value updates</li>
+                <li>• Keyboard accessible</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
