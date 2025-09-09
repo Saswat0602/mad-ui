@@ -1,21 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { createPortal } from 'react-dom';
 import { ChevronLeft, ChevronRight, Clock, Calendar, X } from 'lucide-react';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../core/select';
 
-export interface DateTimePickerProps {
-  mode?: 'date' | 'time' | 'both';
-  timeFormat?: '12' | '24';
-  value?: Date | null;
-  onChange?: (date: Date | null) => void;
-  placeholder?: string;
-  disabled?: boolean;
-  className?: string;
-}
-
-const DateTimePicker: React.FC<DateTimePickerProps> = ({
-  mode = 'both',
-  timeFormat = '12',
+const DateTimePicker = ({
+  mode = 'both', // 'date', 'time', 'both'
+  timeFormat = '12', // '12' or '24'
   value = null,
   onChange = () => {},
   placeholder = 'Select date & time',
@@ -28,9 +16,8 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
   const [showYearModal, setShowYearModal] = useState(false);
   const [showMonthModal, setShowMonthModal] = useState(false);
   const [activeTab, setActiveTab] = useState(mode === 'both' ? 'date' : mode);
-  const [portalPosition, setPortalPosition] = useState({ top: 0, left: 0, width: 0 });
   
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef(null);
 
   const months = [
     'January', 'February', 'March', 'April', 'May', 'June',
@@ -39,22 +26,10 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
 
   const weekDays = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
-  // Calculate portal position when opening
-  const calculatePortalPosition = () => {
-    if (containerRef.current) {
-      const rect = containerRef.current.getBoundingClientRect();
-      setPortalPosition({
-        top: rect.bottom + window.scrollY + 4,
-        left: rect.left + window.scrollX,
-        width: rect.width
-      });
-    }
-  };
-
   // Close picker when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
         setIsOpen(false);
         setShowYearModal(false);
         setShowMonthModal(false);
@@ -79,8 +54,8 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
       if (result) result += ' ';
       const timeOptions = { 
         hour12: timeFormat === '12',
-        hour: 'numeric' as const,
-        minute: '2-digit' as const
+        hour: 'numeric',
+        minute: '2-digit'
       };
       result += date.toLocaleTimeString([], timeOptions);
     }
@@ -88,24 +63,18 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     return result;
   };
 
-  const getDaysInMonth = (date: Date) => {
+  const getDaysInMonth = (date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   };
 
-  const getFirstDayOfMonth = (date: Date) => {
+  const getFirstDayOfMonth = (date) => {
     return new Date(date.getFullYear(), date.getMonth(), 1).getDay();
   };
 
   const generateCalendarDays = () => {
     const daysInMonth = getDaysInMonth(viewDate);
     const firstDay = getFirstDayOfMonth(viewDate);
-    const days: Array<{
-      day: number;
-      isCurrentMonth: boolean;
-      isPrevMonth?: boolean;
-      isNextMonth?: boolean;
-      date: Date;
-    }> = [];
+    const days = [];
 
     // Previous month's trailing days
     const prevMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 0);
@@ -143,7 +112,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     return days;
   };
 
-  const handleDateSelect = (date: Date) => {
+  const handleDateSelect = (date) => {
     const newDate = new Date(selectedDate);
     newDate.setFullYear(date.getFullYear());
     newDate.setMonth(date.getMonth());
@@ -159,7 +128,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     }
   };
 
-  const handleTimeChange = (type: string, value: string) => {
+  const handleTimeChange = (type, value) => {
     const newDate = new Date(selectedDate);
     
     if (type === 'hour') {
@@ -193,13 +162,13 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     onChange(newDate);
   };
 
-  const navigateMonth = (direction: number) => {
+  const navigateMonth = (direction) => {
     const newDate = new Date(viewDate);
     newDate.setMonth(newDate.getMonth() + direction);
     setViewDate(newDate);
   };
 
-  const navigateYear = (direction: number) => {
+  const navigateYear = (direction) => {
     const newDate = new Date(viewDate);
     newDate.setFullYear(newDate.getFullYear() + direction);
     setViewDate(newDate);
@@ -214,12 +183,12 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     return years;
   };
 
-  const isToday = (date: Date) => {
+  const isToday = (date) => {
     const today = new Date();
     return date.toDateString() === today.toDateString();
   };
 
-  const isSelected = (date: Date) => {
+  const isSelected = (date) => {
     return selectedDate && date.toDateString() === selectedDate.toDateString();
   };
 
@@ -317,67 +286,54 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
         </div>
       </div>
 
-      {/* HORIZONTAL TIME SELECTION - This is the key change! */}
-      <div className="flex space-x-2">
+      <div className="space-y-4">
         {/* Hour Selection */}
-        <div className="flex-1">
+        <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Hour</label>
-          <Select
-            value={String(getHourDisplay())}
-            onValueChange={(val) => handleTimeChange('hour', val)}
+          <select
+            value={getHourDisplay()}
+            onChange={(e) => handleTimeChange('hour', e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Hour" />
-            </SelectTrigger>
-            <SelectContent>
-              {Array.from({ length: timeFormat === '12' ? 12 : 24 }, (_, i) => {
-                const hour = timeFormat === '12' ? (i === 0 ? 12 : i) : i;
-                return (
-                  <SelectItem key={i} value={String(hour)}>
-                    {String(hour).padStart(2, '0')}
-                  </SelectItem>
-                );
-              })}
-            </SelectContent>
-          </Select>
+            {Array.from({ length: timeFormat === '12' ? 12 : 24 }, (_, i) => {
+              const hour = timeFormat === '12' ? (i === 0 ? 12 : i) : i;
+              return (
+                <option key={i} value={hour}>
+                  {String(hour).padStart(2, '0')}
+                </option>
+              );
+            })}
+          </select>
         </div>
 
         {/* Minute Selection */}
-        <div className="flex-1">
+        <div>
           <label className="block text-sm font-medium text-gray-700 mb-2">Minute</label>
-          <Select
-            value={String(selectedDate.getMinutes())}
-            onValueChange={(val) => handleTimeChange('minute', val)}
+          <select
+            value={selectedDate.getMinutes()}
+            onChange={(e) => handleTimeChange('minute', e.target.value)}
+            className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <SelectTrigger className="w-full">
-              <SelectValue placeholder="Minute" />
-            </SelectTrigger>
-            <SelectContent>
-              {Array.from({ length: 60 }, (_, i) => (
-                <SelectItem key={i} value={String(i)}>
-                  {String(i).padStart(2, '0')}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+            {Array.from({ length: 60 }, (_, i) => (
+              <option key={i} value={i}>
+                {String(i).padStart(2, '0')}
+              </option>
+            ))}
+          </select>
         </div>
 
         {/* AM/PM Selection for 12-hour format */}
         {timeFormat === '12' && (
-          <div className="flex-1">
+          <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">Period</label>
-            <Select
+            <select
               value={getAMPM()}
-              onValueChange={(val) => handleTimeChange('ampm', val)}
+              onChange={(e) => handleTimeChange('ampm', e.target.value)}
+              className="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
             >
-              <SelectTrigger className="w-full">
-                <SelectValue placeholder="AM/PM" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="AM">AM</SelectItem>
-                <SelectItem value="PM">PM</SelectItem>
-              </SelectContent>
-            </Select>
+              <option value="AM">AM</option>
+              <option value="PM">PM</option>
+            </select>
           </div>
         )}
       </div>
@@ -464,14 +420,7 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
     <div ref={containerRef} className={`relative ${className}`}>
       {/* Input Trigger */}
       <button
-        onClick={() => {
-          if (!disabled) {
-            if (!isOpen) {
-              calculatePortalPosition();
-            }
-            setIsOpen(!isOpen);
-          }
-        }}
+        onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         className={`
           w-full p-3 text-left border border-gray-300 rounded-lg bg-white
@@ -492,94 +441,221 @@ const DateTimePicker: React.FC<DateTimePickerProps> = ({
         </div>
       </button>
 
-      {/* FULL SCREEN PORTAL - This is the key change! */}
-      {isOpen && createPortal(
-        <div 
-          className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4"
-          onClick={() => {
-            setIsOpen(false);
-            setShowYearModal(false);
-            setShowMonthModal(false);
-          }}
-        >
-          <div 
-            className="bg-white rounded-lg shadow-xl border border-gray-200 w-full max-w-md max-h-[90vh] overflow-hidden"
-            onClick={(e) => e.stopPropagation()}
-          >
-            {/* Tab Navigation for both mode */}
-            {mode === 'both' && (
-              <div className="flex border-b border-gray-200">
-                <button
-                  onClick={() => setActiveTab('date')}
-                  className={`
-                    flex-1 p-3 text-sm font-medium transition-colors flex items-center justify-center space-x-2
-                    ${activeTab === 'date'
-                      ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                    }
-                  `}
-                >
-                  <Calendar size={16} />
-                  <span>Date</span>
-                </button>
-                <button
-                  onClick={() => setActiveTab('time')}
-                  className={`
-                    flex-1 p-3 text-sm font-medium transition-colors flex items-center justify-center space-x-2
-                    ${activeTab === 'time'
-                      ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                    }
-                  `}
-                >
-                  <Clock size={16} />
-                  <span>Time</span>
-                </button>
-              </div>
-            )}
-
-            {/* Content */}
-            <div className="relative overflow-y-auto max-h-[60vh]">
-              {(mode === 'date' || (mode === 'both' && activeTab === 'date')) && renderDatePicker()}
-              {(mode === 'time' || (mode === 'both' && activeTab === 'time')) && renderTimePicker()}
-
-              {/* Modals */}
-              {showYearModal && renderYearModal()}
-              {showMonthModal && renderMonthModal()}
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex justify-end space-x-2 p-3 border-t border-gray-200">
+      {/* Dropdown Panel */}
+      {isOpen && (
+        <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-xl border border-gray-200 z-40 min-w-[320px]">
+          {/* Tab Navigation for both mode */}
+          {mode === 'both' && (
+            <div className="flex border-b border-gray-200">
               <button
-                onClick={() => {
-                  setIsOpen(false);
-                  setShowYearModal(false);
-                  setShowMonthModal(false);
-                }}
-                className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
+                onClick={() => setActiveTab('date')}
+                className={`
+                  flex-1 p-3 text-sm font-medium transition-colors flex items-center justify-center space-x-2
+                  ${activeTab === 'date'
+                    ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                  }
+                `}
               >
-                Cancel
+                <Calendar size={16} />
+                <span>Date</span>
               </button>
               <button
-                onClick={() => {
-                  setIsOpen(false);
-                  setShowYearModal(false);
-                  setShowMonthModal(false);
-                }}
-                className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+                onClick={() => setActiveTab('time')}
+                className={`
+                  flex-1 p-3 text-sm font-medium transition-colors flex items-center justify-center space-x-2
+                  ${activeTab === 'time'
+                    ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
+                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                  }
+                `}
               >
-                Done
+                <Clock size={16} />
+                <span>Time</span>
               </button>
             </div>
+          )}
+
+          {/* Content */}
+          <div className="relative">
+            {(mode === 'date' || (mode === 'both' && activeTab === 'date')) && renderDatePicker()}
+            {(mode === 'time' || (mode === 'both' && activeTab === 'time')) && renderTimePicker()}
+
+            {/* Modals */}
+            {showYearModal && renderYearModal()}
+            {showMonthModal && renderMonthModal()}
           </div>
-        </div>,
-        document.body
+
+          {/* Action Buttons */}
+          <div className="flex justify-end space-x-2 p-3 border-t border-gray-200">
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                setShowYearModal(false);
+                setShowMonthModal(false);
+              }}
+              className="px-4 py-2 text-sm font-medium text-gray-600 hover:text-gray-800 transition-colors"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={() => {
+                setIsOpen(false);
+                setShowYearModal(false);
+                setShowMonthModal(false);
+              }}
+              className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              Done
+            </button>
+          </div>
+        </div>
       )}
     </div>
   );
 };
 
-DateTimePicker.displayName = "DateTimePicker";
+// Demo Component
+const App = () => {
+  const [dateValue, setDateValue] = useState(null);
+  const [timeValue, setTimeValue] = useState(null);
+  const [bothValue, setBothValue] = useState(new Date());
 
-export { DateTimePicker };
-export default DateTimePicker;
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="text-center mb-12">
+          <h1 className="text-4xl font-bold text-gray-900 mb-4">
+            Modern DateTime Picker
+          </h1>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            A highly reusable, modern DateTime picker component with excellent UI/UX, 
+            multiple modes, and full user control.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {/* Date Only */}
+          <div className="bg-white p-6 rounded-xl shadow-lg">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+              <Calendar className="mr-2 text-blue-600" size={20} />
+              Date Only
+            </h3>
+            <DateTimePicker
+              mode="date"
+              value={dateValue}
+              onChange={setDateValue}
+              placeholder="Select a date"
+            />
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Selected:</p>
+              <p className="font-mono text-sm">
+                {dateValue ? dateValue.toLocaleDateString() : 'None'}
+              </p>
+            </div>
+          </div>
+
+          {/* Time Only - 12 Hour */}
+          <div className="bg-white p-6 rounded-xl shadow-lg">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+              <Clock className="mr-2 text-green-600" size={20} />
+              Time Only (12hr)
+            </h3>
+            <DateTimePicker
+              mode="time"
+              timeFormat="12"
+              value={timeValue}
+              onChange={setTimeValue}
+              placeholder="Select time"
+            />
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Selected:</p>
+              <p className="font-mono text-sm">
+                {timeValue ? timeValue.toLocaleTimeString([], {
+                  hour12: true,
+                  hour: 'numeric',
+                  minute: '2-digit'
+                }) : 'None'}
+              </p>
+            </div>
+          </div>
+
+          {/* Date & Time Combined */}
+          <div className="bg-white p-6 rounded-xl shadow-lg md:col-span-2 lg:col-span-1">
+            <h3 className="text-xl font-semibold text-gray-800 mb-4 flex items-center">
+              <Calendar className="mr-1 text-purple-600" size={20} />
+              <Clock className="mr-2 text-purple-600" size={20} />
+              Date & Time
+            </h3>
+            <DateTimePicker
+              mode="both"
+              timeFormat="12"
+              value={bothValue}
+              onChange={setBothValue}
+              placeholder="Select date & time"
+            />
+            <div className="mt-4 p-3 bg-gray-50 rounded-lg">
+              <p className="text-sm text-gray-600">Selected:</p>
+              <p className="font-mono text-sm">
+                {bothValue ? `${bothValue.toLocaleDateString()} ${bothValue.toLocaleTimeString([], {
+                  hour12: true,
+                  hour: 'numeric',
+                  minute: '2-digit'
+                })}` : 'None'}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Features List */}
+        <div className="mt-16 bg-white rounded-xl shadow-lg p-8">
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Component Features</h2>
+          <div className="grid md:grid-cols-2 gap-6">
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-3">🎛️ Highly Configurable</h3>
+              <ul className="text-gray-600 space-y-1 text-sm">
+                <li>• Three modes: date, time, or both</li>
+                <li>• 12/24 hour time format support</li>
+                <li>• Customizable placeholders</li>
+                <li>• Disabled state support</li>
+                <li>• Custom CSS classes</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-3">🎨 Modern Design</h3>
+              <ul className="text-gray-600 space-y-1 text-sm">
+                <li>• Clean, minimal interface</li>
+                <li>• Smooth animations & transitions</li>
+                <li>• Responsive design</li>
+                <li>• Focus states & accessibility</li>
+                <li>• Modern color scheme</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-3">📅 Smart Calendar</h3>
+              <ul className="text-gray-600 space-y-1 text-sm">
+                <li>• Clickable month/year headers</li>
+                <li>• Modal selectors for quick navigation</li>
+                <li>• Today highlighting</li>
+                <li>• Previous/next month navigation</li>
+                <li>• Weekend styling</li>
+              </ul>
+            </div>
+            <div>
+              <h3 className="font-semibold text-gray-800 mb-3">⚡ User Experience</h3>
+              <ul className="text-gray-600 space-y-1 text-sm">
+                <li>• Click outside to close</li>
+                <li>• Tab navigation between date/time</li>
+                <li>• Intuitive time selection</li>
+                <li>• Real-time value updates</li>
+                <li>• Keyboard accessible</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default App;
