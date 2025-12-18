@@ -4,14 +4,14 @@ import React, { useState, useEffect } from 'react'
 import { Button } from 'mad-ui-components/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'mad-ui-components/card'
 import { Badge } from 'mad-ui-components/badge'
-import { 
-  Code, 
-  Package, 
-  Copy, 
-  Zap, 
-  ArrowRight, 
-  Download, 
-  Rocket, 
+import {
+  Code,
+  Package,
+  Copy,
+  Zap,
+  ArrowRight,
+  Download,
+  Rocket,
   CheckCircle,
   Sparkles,
   Terminal,
@@ -36,17 +36,17 @@ interface CopyCodeBlockProps {
 
 const CopyCodeBlock: React.FC<CopyCodeBlockProps> = ({ code, filename, language = "bash" }) => {
   const [copied, setCopied] = useState(false)
-  
+
   useEffect(() => {
     Prism.highlightAll()
   }, [code])
-  
+
   const handleCopy = () => {
     navigator.clipboard.writeText(code)
     setCopied(true)
     setTimeout(() => setCopied(false), 2000)
   }
-  
+
   return (
     <div className="relative group">
       <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden shadow-2xl">
@@ -60,9 +60,9 @@ const CopyCodeBlock: React.FC<CopyCodeBlockProps> = ({ code, filename, language 
             <div className="h-4 w-px bg-slate-700 mx-2"></div>
             <span className="text-sm text-slate-400 font-medium">{filename}</span>
           </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
+          <Button
+            variant="ghost"
+            size="sm"
             onClick={handleCopy}
             className="h-8 w-8 p-0 hover:bg-slate-800 text-slate-400 hover:text-slate-200"
           >
@@ -126,11 +126,10 @@ interface PackageManagerTabProps {
 const PackageManagerTab: React.FC<PackageManagerTabProps> = ({ manager, isActive, onClick }) => (
   <button
     onClick={onClick}
-    className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${
-      isActive 
-        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25' 
+    className={`px-4 py-2 text-sm font-medium rounded-lg transition-all duration-200 ${isActive
+        ? 'bg-primary text-primary-foreground shadow-lg shadow-primary/25'
         : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700'
-    }`}
+      }`}
   >
     {manager}
   </button>
@@ -138,7 +137,7 @@ const PackageManagerTab: React.FC<PackageManagerTabProps> = ({ manager, isActive
 
 export default function GettingStartedPage() {
   const [activeTab, setActiveTab] = useState('npm')
-  
+
   const packageCommands: Record<string, string> = {
     npm: 'npm install mad-ui-components',
     yarn: 'yarn add mad-ui-components',
@@ -149,7 +148,7 @@ export default function GettingStartedPage() {
   return (
     <div className="min-h-screen">
       <GettingStartedHero />
-      
+
       <div className="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
         <div className="space-y-16">
           {/* Installation Section */}
@@ -172,13 +171,13 @@ export default function GettingStartedPage() {
                     />
                   ))}
                 </div>
-                
-                <CopyCodeBlock 
+
+                <CopyCodeBlock
                   code={packageCommands[activeTab]}
                   filename="Terminal"
                   language="bash"
                 />
-                
+
                 <div className="flex items-center gap-3 p-4 bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800 rounded-lg">
                   <CheckCircle className="h-5 w-5 text-green-600 dark:text-green-400 flex-shrink-0" />
                   <span className="text-sm text-green-800 dark:text-green-300 font-medium">
@@ -201,7 +200,7 @@ export default function GettingStartedPage() {
                 Choose the approach that best fits your project architecture and development workflow.
               </p>
             </div>
-            
+
             <div className="grid lg:grid-cols-2 gap-8">
               <Card className="group hover:shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 border-slate-200/50 dark:border-slate-800/50 bg-gradient-to-br from-white to-purple-50/20 dark:from-slate-900/50 dark:to-purple-950/10">
                 <CardHeader className="pb-6">
@@ -216,7 +215,7 @@ export default function GettingStartedPage() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <CopyCodeBlock 
+                  <CopyCodeBlock
                     code={`import { Button } from 'mad-ui-components/button'
 import { Input } from 'mad-ui-components/input'
 import { Card } from 'mad-ui-components/card'
@@ -258,7 +257,7 @@ export function MyComponent() {
                   </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                  <CopyCodeBlock 
+                  <CopyCodeBlock
                     code={`npx mad-ui-components copy button input card
 
 # Components will be created at:
@@ -302,7 +301,7 @@ import { Button } from '@/components/ui/mad-ui/button'`}
                       <Terminal className="h-5 w-5 text-primary" />
                       Complete Example
                     </h4>
-                    <CopyCodeBlock 
+                    <CopyCodeBlock
                       code={`import { Button } from 'mad-ui-components/button'
 import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components/card'
 import { Input } from 'mad-ui-components/input'
@@ -316,7 +315,7 @@ export default function App() {
         </CardHeader>
         <CardContent className="space-y-4">
           <Input placeholder="Enter your name..." />
-          <Button className="w-full" variant="default">
+          <Button className="w-full">
             Get Started
           </Button>
         </CardContent>
@@ -328,7 +327,7 @@ export default function App() {
                     />
                   </div>
                 </div>
-                
+
                 <div className="space-y-6">
                   <h4 className="font-semibold text-lg flex items-center gap-2">
                     <Sparkles className="h-5 w-5 text-primary" />
@@ -340,8 +339,8 @@ export default function App() {
                         <CardTitle>Welcome to Mad UI</CardTitle>
                       </CardHeader>
                       <CardContent className="space-y-4">
-                        <input 
-                          placeholder="Enter your name..." 
+                        <input
+                          placeholder="Enter your name..."
                           className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100"
                         />
                         <Button className="w-full bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg">
@@ -375,7 +374,7 @@ export default function App() {
                 Explore our comprehensive component library and master advanced techniques to build exceptional user interfaces.
               </p>
             </div>
-            
+
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
               {([
                 {
@@ -384,7 +383,7 @@ export default function App() {
                   description: "Browse our complete collection of 50+ production-ready components with live examples and comprehensive documentation.",
                   gradient: "bg-gradient-to-br from-blue-500 to-purple-500",
                   buttonText: "View All Components",
-                  buttonVariant: "primary" as const
+                  buttonVariant: undefined as const
                 },
                 {
                   icon: Download,
@@ -416,15 +415,9 @@ export default function App() {
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <Button 
-                      variant={item.buttonVariant} 
-                      className={`w-full group/btn transition-all duration-300 ${
-                        item.buttonVariant === 'primary' 
-                          ? 'bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary/70 shadow-lg' 
-                          : item.buttonVariant === 'outline'
-                          ? 'border-2 hover:bg-primary hover:text-primary-foreground'
-                          : 'hover:bg-slate-100 dark:hover:bg-slate-800'
-                      }`}
+                    <Button
+                      variant={item.buttonVariant}
+                      className="w-full group/btn transition-all duration-300"
                     >
                       <span className="flex items-center">
                         {item.buttonText}
