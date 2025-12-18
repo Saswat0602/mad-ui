@@ -1,171 +1,107 @@
+"use client"
+
 import * as React from "react"
+import { Star } from "lucide-react"
 import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
 
 export interface RatingProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: number
   max?: number
   onChange?: (value: number) => void
   readOnly?: boolean
-  size?: "sm" | "md" | "lg" | "xl"
-  variant?: "default" | "filled" | "outlined"
-  color?: string
-  activeColor?: string
-  inactiveColor?: string
-  textColor?: string
+  size?: "sm" | "md" | "lg"
   showValue?: boolean
-  showLabel?: boolean
   label?: string
-  fullWidth?: boolean
-  spacing?: "tight" | "normal" | "loose"
-  icon?: React.ReactNode
-  emptyIcon?: React.ReactNode
-  halfIcon?: React.ReactNode
+  precision?: number
 }
 
 const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
-  ({ 
-    className, 
+  ({
+    className,
     value = 0,
     max = 5,
     onChange,
     readOnly = false,
     size = "md",
-    variant = "default",
-    color,
-    activeColor,
-    inactiveColor,
-    textColor,
     showValue = false,
-    showLabel = false,
     label,
-    fullWidth = false,
-    spacing = "normal",
-    icon,
-    emptyIcon,
-    halfIcon,
-    style,
-    ...props 
+    precision = 1,
+    ...props
   }, ref) => {
-    
-    // Size classes
+    const [hoverValue, setHoverValue] = React.useState(0)
+
     const sizeClasses = {
       sm: "w-4 h-4",
       md: "w-5 h-5",
-      lg: "w-6 h-6",
-      xl: "w-8 h-8"
+      lg: "w-6 h-6"
     }
-    
-    const textSizeClasses = {
-      sm: "text-xs",
-      md: "text-sm",
-      lg: "text-base",
-      xl: "text-lg"
-    }
-    
-    // Spacing classes
-    const spacingClasses = {
-      tight: "gap-1",
-      normal: "gap-2",
-      loose: "gap-3"
-    }
-    
-    // Default colors with proper visibility
-    const defaultActiveColor = activeColor || color || "rgb(234 179 8)" // yellow-500
-    const defaultInactiveColor = inactiveColor || "rgb(203 213 225)" // slate-300
-    
-    // Custom styles with proper visibility
-    const customStyles: React.CSSProperties = {
-      color: textColor || "rgb(15 23 42)", // slate-900
-      ...style
-    }
-    
-    // Handle star click
+
     const handleStarClick = (starValue: number) => {
       if (!readOnly && onChange) {
         onChange(starValue)
       }
     }
-    
-    // Handle star hover
-    const [hoverValue, setHoverValue] = React.useState(0)
-    
+
     const handleStarHover = (starValue: number) => {
       if (!readOnly) {
         setHoverValue(starValue)
       }
     }
-    
+
     const handleStarLeave = () => {
       if (!readOnly) {
         setHoverValue(0)
       }
     }
-    
-    // Render star icon
+
     const renderStar = (starValue: number) => {
-      const isActive = hoverValue > 0 ? starValue <= hoverValue : starValue <= value
-      const isHalf = !isActive && starValue - 0.5 <= value
-      
-      const starColor = isActive ? defaultActiveColor : defaultInactiveColor
-      const starIcon = isHalf && halfIcon ? halfIcon : (isActive ? icon : emptyIcon)
-      
+      const displayValue = hoverValue > 0 ? hoverValue : value
+      const isFilled = starValue <= displayValue
+      const isHalf = !isFilled && starValue - 0.5 <= displayValue && precision === 0.5
+
       return (
         <button
           key={starValue}
           type="button"
           className={cn(
-            "transition-colors duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2",
-            !readOnly && "cursor-pointer hover:scale-110",
+            "transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2",
+            !readOnly && "cursor-pointer hover:scale-110 active:scale-95",
             readOnly && "cursor-default"
           )}
-          style={{ color: starColor }}
           onClick={() => handleStarClick(starValue)}
           onMouseEnter={() => handleStarHover(starValue)}
           onMouseLeave={handleStarLeave}
           disabled={readOnly}
+          aria-label={`Rate ${starValue} out of ${max}`}
         >
-          {starIcon || (
-            <span className={cn("block", sizeClasses[size])}>
-              {isHalf ? "☆" : (isActive ? "★" : "☆")}
-            </span>
-          )}
+          <Star
+            className={cn(
+              sizeClasses[size],
+              isFilled && "fill-yellow-400 text-yellow-400",
+              isHalf && "fill-yellow-400/50 text-yellow-400",
+              !isFilled && !isHalf && "fill-muted text-muted-foreground"
+            )}
+          />
         </button>
       )
     }
-    
+
     return (
-      <div className={cn("w-full", fullWidth && "w-full")}>
-        {/* Label and Value */}
-        {(showLabel || label || showValue) && (
-          <div className="flex items-center justify-between mb-2">
-            {(showLabel || label) && (
-              <span 
-                className={cn("font-medium", textSizeClasses[size])}
-                style={customStyles}
-              >
-                {label || "Rating"}
-              </span>
-            )}
+      <div className="space-y-2">
+        {(label || showValue) && (
+          <div className="flex items-center justify-between text-sm">
+            {label && <span className="font-medium">{label}</span>}
             {showValue && (
-              <span 
-                className={cn("text-slate-600 dark:text-slate-400", textSizeClasses[size])}
-                style={{ color: textColor || "rgb(71 85 105)" }}
-              >
-                {value.toFixed(1)} / {max}
+              <span className="text-muted-foreground">
+                {value.toFixed(precision === 0.5 ? 1 : 0)} / {max}
               </span>
             )}
           </div>
         )}
-        
-        {/* Rating Stars */}
+
         <div
           ref={ref}
-          className={cn(
-            "flex items-center",
-            spacingClasses[spacing],
-            className
-          )}
+          className={cn("flex items-center gap-1", className)}
           role="radiogroup"
           aria-label={label || "Rating"}
           {...props}

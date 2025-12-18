@@ -1,154 +1,67 @@
+"use client"
+
 import * as React from "react"
 import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
 
 export interface SkeletonProps extends React.HTMLAttributes<HTMLDivElement> {
   variant?: "text" | "circular" | "rectangular" | "rounded"
-  size?: "xs" | "sm" | "md" | "lg" | "xl"
-  width?: string | number
-  height?: string | number
   animation?: "pulse" | "wave" | "none"
-  color?: string
-  backgroundColor?: string
-  borderRadius?: string | number
-  shadow?: "none" | "sm" | "md" | "lg"
   lines?: number
-  spacing?: "tight" | "normal" | "loose"
-  fullWidth?: boolean
 }
 
 const Skeleton = React.forwardRef<HTMLDivElement, SkeletonProps>(
-  ({ 
-    className, 
+  ({
+    className,
     variant = "rounded",
-    size = "md",
-    width,
-    height,
     animation = "pulse",
-    color,
-    backgroundColor,
-    borderRadius,
-    shadow = "none",
     lines = 1,
-    spacing = "normal",
-    fullWidth = false,
-    style,
-    ...props 
+    ...props
   }, ref) => {
-    
-    // Size classes
-    const sizeClasses = {
-      xs: "h-2",
-      sm: "h-3",
-      md: "h-4",
-      lg: "h-6",
-      xl: "h-8"
+    const variantClasses = {
+      text: "h-4 w-full rounded",
+      circular: "rounded-full",
+      rectangular: "w-full",
+      rounded: "rounded-md w-full"
     }
-    
-    // Animation classes
+
     const animationClasses = {
       pulse: "animate-pulse",
-      wave: "animate-pulse bg-gradient-to-r from-slate-200 via-slate-300 to-slate-200 dark:from-slate-600 dark:via-slate-500 dark:to-slate-600 bg-[length:200%_100%] animate-[shimmer_2s_infinite]",
+      wave: "animate-pulse bg-gradient-to-r from-muted via-muted/50 to-muted bg-[length:200%_100%]",
       none: ""
     }
-    
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg"
-    }
-    
-    // Spacing classes
-    const spacingClasses = {
-      tight: "space-y-1",
-      normal: "space-y-2",
-      loose: "space-y-3"
-    }
-    
-    // Variant styles
-    const getVariantStyles = () => {
-      switch (variant) {
-        case "text":
-          return {
-            width: fullWidth ? "100%" : width || "100%",
-            height: height || sizeClasses[size],
-            borderRadius: borderRadius || "4px"
-          }
-        case "circular":
-          return {
-            width: width || height || sizeClasses[size],
-            height: height || width || sizeClasses[size],
-            borderRadius: borderRadius || "50%"
-          }
-        case "rectangular":
-          return {
-            width: fullWidth ? "100%" : width || "100%",
-            height: height || sizeClasses[size],
-            borderRadius: borderRadius || "0"
-          }
-        case "rounded":
-          return {
-            width: fullWidth ? "100%" : width || "100%",
-            height: height || sizeClasses[size],
-            borderRadius: borderRadius || "8px"
-          }
-        default:
-          return {
-            width: fullWidth ? "100%" : width || "100%",
-            height: height || sizeClasses[size],
-            borderRadius: borderRadius || "8px"
-          }
-      }
-    }
-    
-    // Custom styles with proper visibility
-    const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || "rgb(226 232 240)", // slate-200
-      ...getVariantStyles(),
-      ...style
-    }
-    
-    // Render single skeleton
-    const renderSkeleton = () => (
-      <div
-        ref={ref}
-        className={cn(
-          "bg-slate-200 dark:bg-slate-600",
-          animationClasses[animation],
-          shadowClasses[shadow],
-          className
-        )}
-        style={customStyles}
-        {...props}
-      />
-    )
-    
-    // Render multiple lines
+
     if (lines > 1) {
       return (
-        <div className={cn("w-full", spacingClasses[spacing])}>
+        <div className="space-y-2 w-full">
           {Array.from({ length: lines }, (_, index) => (
             <div
               key={index}
               className={cn(
-                "bg-slate-200 dark:bg-slate-600",
+                "bg-muted",
+                variantClasses[variant],
                 animationClasses[animation],
-                shadowClasses[shadow],
+                index === lines - 1 && "w-3/4",
                 className
               )}
-              style={{
-                ...customStyles,
-                width: index === lines - 1 ? "60%" : "100%"
-              }}
+              style={{ height: variant === "text" ? "1rem" : undefined }}
             />
           ))}
         </div>
       )
     }
-    
-    return renderSkeleton()
+
+    return (
+      <div
+        ref={ref}
+        className={cn(
+          "bg-muted",
+          variantClasses[variant],
+          animationClasses[animation],
+          className
+        )}
+        {...props}
+      />
+    )
   }
 )
 

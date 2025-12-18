@@ -1,144 +1,80 @@
+"use client"
+
 import * as React from "react"
-import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
+import { cn, createVariants } from "../../lib/utils"
 
 export interface RadioProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string
-  error?: string
-  helperText?: string
-  success?: boolean
-  variant?: "default" | "error" | "success"
+  description?: string
+  error?: boolean
   size?: "sm" | "md" | "lg"
-  fullWidth?: boolean
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  focusColor?: string
-  borderRadius?: string | number
-  shadow?: "none" | "sm" | "md" | "lg"
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
 }
 
+const radioVariants = createVariants({
+  base: "aspect-square h-4 w-4 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+  variants: {
+    size: {
+      sm: "h-3.5 w-3.5",
+      md: "h-4 w-4",
+      lg: "h-5 w-5",
+    },
+  },
+  defaultVariants: {
+    size: "md",
+  },
+})
+
 const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
-  ({ 
-    className, 
-    label, 
-    error, 
-    helperText, 
-    success,
-    variant = "default",
-    size = "md",
-    fullWidth = false,
-    color,
-    backgroundColor,
-    borderColor,
-    textColor,
-    focusColor,
-    borderRadius,
-    shadow = "sm",
-    leftIcon,
-    rightIcon,
-    style,
-    ...props 
-  }, ref) => {
-    
-    // Determine variant
-    const radioVariant = error ? "error" : success ? "success" : variant
-    
-    // Size classes
-    const sizeClasses = {
-      sm: "w-4 h-4",
-      md: "w-5 h-5",
-      lg: "w-6 h-6"
-    }
-    
-    const labelSizeClasses = {
-      sm: "text-sm",
-      md: "text-base",
-      lg: "text-lg"
-    }
-    
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg"
-    }
-    
-    // Get default colors
-    const defaultColors = componentColors.input[radioVariant as keyof typeof componentColors.input] || componentColors.input.default
-    
-    // Custom styles
-    const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || defaultColors.bg,
-      borderColor: borderColor || defaultColors.border,
-      borderRadius: borderRadius,
-      ...style
-    }
-    
+  ({ className, label, description, error, size = "md", id, ...props }, ref) => {
+    const generatedId = React.useId()
+    const radioId = id || generatedId
+
     return (
-      <div className={cn("flex items-start", fullWidth && "w-full")}>
-        {leftIcon && (
-          <span className="mr-2 text-slate-400 dark:text-slate-500">
-            {leftIcon}
-          </span>
-        )}
-        
-        <div className="flex items-center h-5">
+      <div className="flex items-start space-x-3">
+        <div className="relative flex items-center h-5">
           <input
             type="radio"
+            ref={ref}
+            id={radioId}
             className={cn(
-              "rounded-full border-2 border-slate-300 dark:border-slate-600 text-blue-600 dark:text-blue-400 focus:ring-blue-500 dark:focus:ring-blue-400 focus:ring-2 bg-white dark:bg-slate-800",
-              sizeClasses[size],
-              shadowClasses[shadow],
+              radioVariants({ size }),
+              error && "border-destructive",
               className
             )}
-            style={customStyles}
-            ref={ref}
             {...props}
           />
-        </div>
-        
-        <div className="ml-3 text-sm">
-          {label && (
-            <label 
-              className={cn(
-                "font-medium cursor-pointer select-none",
-                labelSizeClasses[size],
-                "text-slate-700 dark:text-slate-300"
-              )}
-              style={{ color: textColor || "rgb(15 23 42)" }}
-            >
-              {label}
-            </label>
-          )}
-          
-          {(error || helperText) && (
-            <p 
-              className={cn(
-                "mt-1",
-                labelSizeClasses[size]
-              )}
-              style={{ 
-                color: error 
-                  ? "var(--accent-error)" 
-                  : helperText 
-                    ? "var(--text-muted)" 
-                    : "var(--text-secondary)" 
-              }}
-            >
-              {error || helperText}
-            </p>
+          {/* Selected indicator */}
+          {props.checked && (
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div className={cn(
+                "rounded-full bg-primary",
+                size === "sm" && "h-1.5 w-1.5",
+                size === "md" && "h-2 w-2",
+                size === "lg" && "h-2.5 w-2.5"
+              )} />
+            </div>
           )}
         </div>
-        
-        {rightIcon && (
-          <span className="ml-2 text-slate-400 dark:text-slate-500">
-            {rightIcon}
-          </span>
+
+        {(label || description) && (
+          <div className="grid gap-1.5 leading-none">
+            {label && (
+              <label
+                htmlFor={radioId}
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+              >
+                {label}
+              </label>
+            )}
+            {description && (
+              <p className={cn(
+                "text-sm text-muted-foreground",
+                error && "text-destructive"
+              )}>
+                {description}
+              </p>
+            )}
+          </div>
         )}
       </div>
     )
