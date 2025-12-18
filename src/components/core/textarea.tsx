@@ -1,210 +1,34 @@
 import * as React from "react"
 import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
 
-export interface TextareaProps extends Omit<React.TextareaHTMLAttributes<HTMLTextAreaElement>, 'size'> {
-  label?: string
-  error?: string
-  helperText?: string
+export interface TextareaProps extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
+  error?: boolean
   success?: boolean
-  variant?: "default" | "error" | "success"
-  size?: "sm" | "md" | "lg"
+  resize?: "none" | "vertical" | "horizontal" | "both"
   fullWidth?: boolean
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  focusColor?: string
-  borderRadius?: string | number
-  shadow?: "none" | "sm" | "md" | "lg"
-  rows?: number
-  maxRows?: number
-  minRows?: number
-  resize?: "none" | "both" | "horizontal" | "vertical"
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  validation?: {
-    required?: boolean
-    minLength?: number
-    maxLength?: number
-    pattern?: RegExp
-    custom?: (value: string) => boolean | string
-  }
-  characterCount?: boolean
-  maxCharacters?: number
-  showCharacterCount?: boolean
-  autoResize?: boolean
-  onValueChange?: (value: string) => void
-  onValueHover?: (value: string) => void
-  onValueFocus?: (value: string) => void
-  keyboardNavigation?: boolean
-  autoFocus?: boolean
-  interactive?: boolean
-  clickable?: boolean
-  onValueClick?: (value: string) => void
-  onValueDoubleClick?: (value: string) => void
-  onRightClick?: (value: string, event: React.MouseEvent) => void
-  contextMenuItems?: Array<{
-    label: string
-    onClick: (value: string) => void
-    icon?: React.ReactNode
-    disabled?: boolean
-  }>
-  draggable?: boolean
-  onDragMove?: (position: { x: number; y: number }) => void
-  onDragComplete?: (position: { x: number; y: number }) => void
-  swipeable?: boolean
-  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
-  resizable?: boolean
-  onResize?: (size: { width: number; height: number }) => void
-  scrollable?: boolean
-  onScrollChange?: (scrollY: number) => void
-  focusable?: boolean
-  onFocus?: () => void
-  onBlur?: () => void
-  tabIndex?: number
-  animation?: 'slide' | 'fade' | 'scale' | 'bounce' | 'none'
-  animationDuration?: number
-  onAnimationStart?: () => void
-  onAnimationEnd?: () => void
-  theme?: 'light' | 'dark' | 'auto'
-  locale?: string
-  rtl?: boolean
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
 }
 
 const Textarea = React.forwardRef<HTMLTextAreaElement, TextareaProps>(
-  ({ 
-    className, 
-    label, 
-    error, 
-    helperText, 
-    success,
-    variant = "default",
-    size = "md",
-    fullWidth = true,
-    color,
-    backgroundColor,
-    borderColor,
-    textColor,
-    focusColor,
-    borderRadius,
-    shadow = "sm",
-    rows = 3,
-    maxRows,
-    minRows,
-    resize = "vertical",
-    style,
-    ...props 
-  }, ref) => {
-    
-    // Determine variant
-    const textareaVariant = error ? "error" : success ? "success" : variant
-    
-    // Size classes
-    const sizeClasses = {
-      sm: "px-2 py-1.5 text-sm",
-      md: "px-3 py-2 text-sm",
-      lg: "px-4 py-3 text-base"
-    }
-    
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg"
-    }
-    
-    // Resize classes
-    const resizeClasses = {
-      none: "resize-none",
-      both: "resize",
-      horizontal: "resize-x",
-      vertical: "resize-y"
-    }
-    
-    // Get default colors
-    const defaultColors = componentColors.input[textareaVariant as keyof typeof componentColors.input] || componentColors.input.default
-    
-    // Custom styles
-    const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || defaultColors.bg,
-      color: textColor || defaultColors.text,
-      borderColor: borderColor || defaultColors.border,
-      borderRadius: borderRadius,
-      resize: resize,
-      ...style
-    }
-    
-    // Focus and blur handlers
-    const handleFocus = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-      const focusBorderColor = focusColor || defaultColors.focus
-      e.target.style.borderColor = focusBorderColor
-      e.target.style.boxShadow = `0 0 0 3px ${focusBorderColor}20`
-    }
-    
-    const handleBlur = (e: React.FocusEvent<HTMLTextAreaElement>) => {
-      e.target.style.borderColor = borderColor || defaultColors.border
-      e.target.style.boxShadow = "none"
-    }
-    
+  ({ className, error, success, resize = "vertical", fullWidth = true, ...props }, ref) => {
+    const state = error ? "error" : success ? "success" : "default"
+
     return (
-      <div className={cn("w-full", fullWidth && "w-full")}>
-        {label && (
-          <label 
-            className="text-sm font-medium text-slate-700 dark:text-slate-300 mb-2"
-          >
-            {label}
-          </label>
+      <textarea
+        className={cn(
+          "flex min-h-[80px] w-full rounded-md border bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 transition-colors",
+          state === "error" && "border-destructive focus-visible:ring-destructive",
+          state === "success" && "border-green-500 focus-visible:ring-green-500",
+          state === "default" && "border-input",
+          resize === "none" && "resize-none",
+          resize === "vertical" && "resize-y",
+          resize === "horizontal" && "resize-x",
+          resize === "both" && "resize",
+          !fullWidth && "w-auto",
+          className
         )}
-        
-        <textarea
-          className={cn(
-            "w-full rounded-lg border-2 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100 border-slate-300 dark:border-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:focus:ring-blue-400 focus:border-blue-500 dark:focus:border-blue-400 transition-all duration-200 placeholder:text-slate-500 dark:placeholder:text-slate-400",
-            sizeClasses[size],
-            shadowClasses[shadow],
-            resizeClasses[resize],
-            "min-h-[80px]",
-            className
-          )}
-          style={customStyles}
-          ref={ref}
-          rows={rows}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          {...props}
-        />
-        
-        {(error || helperText) && (
-          <p 
-            className="text-sm mt-1"
-            style={{ 
-              color: error 
-                ? "var(--accent-error)" 
-                : helperText 
-                  ? "var(--text-muted)" 
-                  : "var(--text-secondary)" 
-            }}
-          >
-            {error || helperText}
-          </p>
-        )}
-      </div>
+        ref={ref}
+        {...props}
+      />
     )
   }
 )

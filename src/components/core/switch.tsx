@@ -1,163 +1,103 @@
+"use client"
+
 import * as React from "react"
-import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
+import { cn, createVariants } from "../../lib/utils"
 
 export interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
   label?: string
-  error?: string
-  helperText?: string
-  success?: boolean
-  variant?: "default" | "error" | "success"
+  description?: string
   size?: "sm" | "md" | "lg"
-  fullWidth?: boolean
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  focusColor?: string
-  borderRadius?: string | number
-  shadow?: "none" | "sm" | "md" | "lg"
-  leftIcon?: React.ReactNode
-  rightIcon?: React.ReactNode
 }
 
+const switchVariants = createVariants({
+  base: "peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
+  variants: {
+    size: {
+      sm: "h-5 w-9",
+      md: "h-6 w-11",
+      lg: "h-7 w-14",
+    },
+  },
+  defaultVariants: {
+    size: "md",
+  },
+})
+
+const thumbVariants = createVariants({
+  base: "pointer-events-none block rounded-full bg-background shadow-lg ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0",
+  variants: {
+    size: {
+      sm: "h-4 w-4 data-[state=checked]:translate-x-4",
+      md: "h-5 w-5 data-[state=checked]:translate-x-5",
+      lg: "h-6 w-6 data-[state=checked]:translate-x-7",
+    },
+  },
+  defaultVariants: {
+    size: "md",
+  },
+})
+
 const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ 
-    className, 
-    label, 
-    error, 
-    helperText, 
-    success,
-    variant = "default",
-    size = "md",
-    fullWidth = false,
-    color,
-    backgroundColor,
-    borderColor,
-    textColor,
-    focusColor,
-    borderRadius,
-    shadow = "sm",
-    leftIcon,
-    rightIcon,
-    style,
-    ...props 
-  }, ref) => {
-    
-    // Determine variant
-    const switchVariant = error ? "error" : success ? "success" : variant
-    
-    // Size classes
-    const sizeClasses = {
-      sm: "w-9 h-5",
-      md: "w-11 h-6",
-      lg: "w-14 h-7"
+  ({ className, label, description, size = "md", id, checked, ...props }, ref) => {
+    const [isChecked, setIsChecked] = React.useState(checked || false)
+    const generatedId = React.useId()
+    const switchId = id || generatedId
+
+    React.useEffect(() => {
+      if (checked !== undefined) {
+        setIsChecked(checked)
+      }
+    }, [checked])
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      setIsChecked(e.target.checked)
+      props.onChange?.(e)
     }
-    
-    const thumbSizeClasses = {
-      sm: "w-4 h-4",
-      md: "w-5 h-5",
-      lg: "w-6 h-6"
-    }
-    
-    const labelSizeClasses = {
-      sm: "text-sm",
-      md: "text-base",
-      lg: "text-lg"
-    }
-    
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg"
-    }
-    
-    // Get default colors
-    const defaultColors = componentColors.input[switchVariant as keyof typeof componentColors.input] || componentColors.input.default
-    
-    // Custom styles
-    const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || defaultColors.bg,
-      borderColor: borderColor || defaultColors.border,
-      borderRadius: borderRadius,
-      ...style
-    }
-    
+
     return (
-      <div className={cn("flex items-center", fullWidth && "w-full")}>
-        {leftIcon && (
-          <span className="mr-2 text-gray-400">
-            {leftIcon}
-          </span>
-        )}
-        
-        <label className="relative inline-flex items-center cursor-pointer">
-          <input
-            type="checkbox"
-            className="sr-only"
-            ref={ref}
-            {...props}
+      <div className="flex items-center space-x-3">
+        <button
+          type="button"
+          role="switch"
+          aria-checked={isChecked}
+          data-state={isChecked ? "checked" : "unchecked"}
+          className={cn(switchVariants({ size }), className)}
+          onClick={() => {
+            const input = document.getElementById(switchId) as HTMLInputElement
+            input?.click()
+          }}
+        >
+          <span
+            data-state={isChecked ? "checked" : "unchecked"}
+            className={thumbVariants({ size })}
           />
-          
-          <div
-            className={cn(
-              "relative inline-flex items-center rounded-full transition-colors duration-200 ease-in-out",
-              sizeClasses[size],
-              shadowClasses[shadow],
-              "bg-slate-300 dark:bg-slate-600 peer-checked:bg-blue-600 dark:peer-checked:bg-blue-500 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400",
-              className
+        </button>
+        <input
+          type="checkbox"
+          id={switchId}
+          ref={ref}
+          className="sr-only"
+          checked={isChecked}
+          onChange={handleChange}
+          {...props}
+        />
+
+        {(label || description) && (
+          <div className="grid gap-1.5 leading-none">
+            {label && (
+              <label
+                htmlFor={switchId}
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+              >
+                {label}
+              </label>
             )}
-            style={customStyles}
-          >
-            <div
-              className={cn(
-                "absolute left-0.5 bg-white dark:bg-slate-200 rounded-full transition-all duration-300 ease-in-out shadow-sm hover:shadow-md transform hover:scale-110 active:scale-95",
-                thumbSizeClasses[size],
-                "peer-checked:translate-x-full peer-checked:shadow-lg"
-              )}
-            />
+            {description && (
+              <p className="text-sm text-muted-foreground">
+                {description}
+              </p>
+            )}
           </div>
-        </label>
-        
-        <div className="ml-3">
-          {label && (
-            <label 
-              className={cn(
-                "font-medium cursor-pointer select-none",
-                labelSizeClasses[size],
-                "text-slate-700 dark:text-slate-300"
-              )}
-              style={{ color: textColor || "var(--text-primary)" }}
-            >
-              {label}
-            </label>
-          )}
-          
-          {(error || helperText) && (
-            <p 
-              className={cn(
-                "mt-1",
-                labelSizeClasses[size]
-              )}
-              style={{ 
-                color: error 
-                  ? "var(--accent-error)" 
-                  : helperText 
-                    ? "var(--text-muted)" 
-                    : "var(--text-secondary)" 
-              }}
-            >
-              {error || helperText}
-            </p>
-          )}
-        </div>
-        
-        {rightIcon && (
-          <span className="ml-2 text-gray-400">
-            {rightIcon}
-          </span>
         )}
       </div>
     )
