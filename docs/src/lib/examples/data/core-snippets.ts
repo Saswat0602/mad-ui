@@ -1,7 +1,7 @@
 // Static code snippets for Core components documentation
 // Extracted to keep example TSX components clean, scannable, and maintainable.
 
-export const buttonSnippets = {
+export const button = {
   variants: `import { Button } from 'mad-ui-components'
 
 export function ButtonVariants() {
@@ -70,7 +70,7 @@ export function ButtonFullWidth() {
 }`
 }
 
-export const inputSnippets = {
+export const input = {
   basic: `import { Input } from 'mad-ui-components'
 
 export function InputBasic() {
@@ -143,7 +143,7 @@ export function InputStates() {
 }`
 }
 
-export const cardSnippets = {
+export const card = {
   variants: `import { Card, CardHeader, CardTitle, CardDescription, CardContent } from 'mad-ui-components'
 
 export function CardVariants() {
@@ -219,7 +219,7 @@ export function InteractiveCards() {
 }`
 }
 
-export const checkboxSnippets = {
+export const checkbox = {
   basic: `import { Checkbox } from 'mad-ui-components'
 
 export function CheckboxBasic() {
@@ -255,7 +255,7 @@ export function CheckboxIndeterminate() {
 }`
 }
 
-export const radioSnippets = {
+export const radio = {
   group: `import { Radio } from 'mad-ui-components'
 
 export function RadioGroup() {
@@ -281,7 +281,7 @@ export function RadioSizes() {
 }`
 }
 
-export const switchSnippets = {
+export const switches = {
   basic: `import { Switch } from 'mad-ui-components'
 
 export function SwitchBasic() {
@@ -309,7 +309,7 @@ export function SwitchSizes() {
 }`
 }
 
-export const progressSnippets = {
+export const progress = {
   variants: `import { Progress } from 'mad-ui-components'
 
 export function ProgressVariants() {
@@ -336,7 +336,7 @@ export function ProgressSizes() {
 }`
 }
 
-export const ratingSnippets = {
+export const rating = {
   basic: `import { Rating } from 'mad-ui-components'
 
 export function RatingBasic() {
@@ -361,7 +361,7 @@ export function RatingSizes() {
 }`
 }
 
-export const skeletonSnippets = {
+export const skeleton = {
   variants: `import { Skeleton } from 'mad-ui-components'
 
 export function SkeletonVariants() {
@@ -382,7 +382,7 @@ export function SkeletonMultiLine() {
 }`
 }
 
-export const textareaSnippets = {
+export const textarea = {
   basic: `import { Textarea } from 'mad-ui-components'
 
 export function TextareaBasic() {
@@ -402,7 +402,7 @@ export function TextareaWithLabel() {
 }`
 }
 
-export const labelSnippets = {
+export const label = {
   basic: `import { Label, Input } from 'mad-ui-components'
 
 export function LabelBasic() {
@@ -426,7 +426,7 @@ export function LabelRequired() {
 }`
 }
 
-export const selectSnippets = {
+export const select = {
   basic: `import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from 'mad-ui-components'
 
 export function SelectBasic() {

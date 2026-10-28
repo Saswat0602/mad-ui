@@ -22,20 +22,7 @@ import {
   Label
 } from 'mad-ui-components'
 import { Mail, Search, Download, Upload, Check, User, ArrowRight, Heart, ShoppingCart } from 'lucide-react'
-import {
-  buttonSnippets,
-  inputSnippets,
-  cardSnippets,
-  checkboxSnippets,
-  radioSnippets,
-  switchSnippets,
-  progressSnippets,
-  ratingSnippets,
-  skeletonSnippets,
-  textareaSnippets,
-  labelSnippets,
-  selectSnippets
-} from './data/core-snippets'
+import * as snippets from './data/core-snippets'
 
 export interface ComponentExample {
   title: string
@@ -49,7 +36,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Button Variants',
       description: 'All available button variants with distinct visual styles and semantic colors.',
-      code: buttonSnippets.variants,
+      code: snippets.button.variants,
       preview: (
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button variant="default">Default</Button>
@@ -64,7 +51,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Button Sizes',
       description: 'Different button sizes for various use cases, including icon-only variant.',
-      code: buttonSnippets.sizes,
+      code: snippets.button.sizes,
       preview: (
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button size="sm">Small</Button>
@@ -77,7 +64,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Buttons with Icons',
       description: 'Enhance buttons with left and right icons for better visual communication.',
-      code: buttonSnippets.withIcons,
+      code: snippets.button.withIcons,
       preview: (
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button leftIcon={<Download className="h-4 w-4" />}>Download</Button>
@@ -91,7 +78,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Loading States',
       description: 'Show loading feedback with animated spinner for async operations.',
-      code: buttonSnippets.loading,
+      code: snippets.button.loading,
       preview: (
         <div className="flex flex-wrap items-center justify-center gap-3">
           <Button loading>Processing</Button>
@@ -103,7 +90,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Full Width Button',
       description: 'Button that spans the full width of its container, perfect for forms.',
-      code: buttonSnippets.fullWidth,
+      code: snippets.button.fullWidth,
       preview: (
         <div className="w-full max-w-sm mx-auto space-y-2">
           <Button fullWidth leftIcon={<Check className="h-4 w-4" />}>
@@ -118,7 +105,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Basic Inputs',
       description: 'Simple input fields with different types.',
-      code: inputSnippets.basic,
+      code: snippets.input.basic,
       preview: (
         <div className="w-full max-w-md mx-auto space-y-4">
           <Input placeholder="Enter text..." />
@@ -130,7 +117,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Inputs with Icons',
       description: 'Input fields with left and right icons for better UX.',
-      code: inputSnippets.withIcons,
+      code: snippets.input.withIcons,
       preview: (
         <div className="w-full max-w-md mx-auto space-y-4">
           <div className="space-y-2">
@@ -160,7 +147,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Input States',
       description: 'Error and success states with visual feedback.',
-      code: inputSnippets.states,
+      code: snippets.input.states,
       preview: (
         <div className="w-full max-w-md mx-auto space-y-6">
           <div className="space-y-2">
@@ -196,7 +183,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Card Variants',
       description: 'Four distinct visual styles for different use cases.',
-      code: cardSnippets.variants,
+      code: snippets.card.variants,
       preview: (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
           <Card variant="default">
@@ -244,7 +231,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Interactive Cards',
       description: 'Cards with hover and click effects for enhanced user experience.',
-      code: cardSnippets.interactive,
+      code: snippets.card.interactive,
       preview: (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
           <Card hoverable>
@@ -275,7 +262,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Checkbox with Label',
       description: 'Basic checkbox with label and description.',
-      code: checkboxSnippets.basic,
+      code: snippets.checkbox.basic,
       preview: (
         <div className="space-y-4">
           <Checkbox label="Accept terms and conditions" />
@@ -289,7 +276,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Checkbox Sizes',
       description: 'Different checkbox sizes for various contexts.',
-      code: checkboxSnippets.sizes,
+      code: snippets.checkbox.sizes,
       preview: (
         <div className="space-y-4">
           <Checkbox size="sm" label="Small checkbox" />
@@ -301,7 +288,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Indeterminate State',
       description: 'Checkbox in indeterminate state for partial selection.',
-      code: checkboxSnippets.indeterminate,
+      code: snippets.checkbox.indeterminate,
       preview: (
         <div className="space-y-2">
           <Checkbox label="Select all items" indeterminate />
@@ -315,7 +302,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Radio Group',
       description: 'Group of radio buttons with labels and descriptions.',
-      code: radioSnippets.group,
+      code: snippets.radio.group,
       preview: (
         <div className="space-y-3">
           <Radio name="plan" label="Free" description="Perfect for getting started" />
@@ -327,7 +314,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Radio Sizes',
       description: 'Different radio button sizes.',
-      code: radioSnippets.sizes,
+      code: snippets.radio.sizes,
       preview: (
         <div className="space-y-3">
           <Radio size="sm" label="Small radio" />
@@ -342,7 +329,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Switch with Label',
       description: 'Toggle switch with label and description.',
-      code: switchSnippets.basic,
+      code: snippets.switches.basic,
       preview: (
         <div className="space-y-4">
           <Switch label="Enable notifications" />
@@ -356,7 +343,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Switch Sizes',
       description: 'Different switch sizes.',
-      code: switchSnippets.sizes,
+      code: snippets.switches.sizes,
       preview: (
         <div className="space-y-4">
           <Switch size="sm" label="Small switch" />
@@ -371,7 +358,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Progress Variants',
       description: 'Different progress bar variants with semantic colors.',
-      code: progressSnippets.variants,
+      code: snippets.progress.variants,
       preview: (
         <div className="space-y-6 w-full">
           <div className="space-y-2">
@@ -396,7 +383,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Progress Sizes',
       description: 'Different progress bar heights.',
-      code: progressSnippets.sizes,
+      code: snippets.progress.sizes,
       preview: (
         <div className="space-y-6 w-full">
           <div className="space-y-2">
@@ -420,7 +407,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Basic Rating',
       description: 'Star rating component with value display.',
-      code: ratingSnippets.basic,
+      code: snippets.rating.basic,
       preview: (
         <div className="space-y-6">
           <div className="space-y-2">
@@ -437,7 +424,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Rating Sizes',
       description: 'Different star sizes.',
-      code: ratingSnippets.sizes,
+      code: snippets.rating.sizes,
       preview: (
         <div className="space-y-6">
           <div className="space-y-2">
@@ -461,7 +448,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Skeleton Variants',
       description: 'Different skeleton shapes for various content types.',
-      code: skeletonSnippets.variants,
+      code: snippets.skeleton.variants,
       preview: (
         <div className="space-y-6 w-full">
           <div className="space-y-2">
@@ -486,7 +473,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Multi-line Skeleton',
       description: 'Multiple skeleton lines for text content.',
-      code: skeletonSnippets.multiLine,
+      code: snippets.skeleton.multiLine,
       preview: (
         <div className="space-y-2 w-full">
           <Skeleton lines={3} />
@@ -500,7 +487,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Basic Textarea',
       description: 'Simple textarea input.',
-      code: textareaSnippets.basic,
+      code: snippets.textarea.basic,
       preview: (
         <div className="w-full max-w-md mx-auto">
           <Textarea placeholder="Enter your message..." />
@@ -510,7 +497,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Textarea with Label',
       description: 'Textarea with label and helper text.',
-      code: textareaSnippets.withLabel,
+      code: snippets.textarea.withLabel,
       preview: (
         <div className="w-full max-w-md mx-auto space-y-2">
           <Label htmlFor="message">Message</Label>
@@ -525,7 +512,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Basic Label',
       description: 'Simple form label.',
-      code: labelSnippets.basic,
+      code: snippets.label.basic,
       preview: (
         <div className="w-full max-w-sm space-y-2">
           <Label htmlFor="email">Email</Label>
@@ -536,7 +523,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Required Field',
       description: 'Label with required indicator.',
-      code: labelSnippets.required,
+      code: snippets.label.required,
       preview: (
         <div className="w-full max-w-sm space-y-2">
           <Label htmlFor="name" required>Full Name</Label>
@@ -550,7 +537,7 @@ export const coreExamples: Record<string, ComponentExample[]> = {
     {
       title: 'Basic Select',
       description: 'Simple select dropdown.',
-      code: selectSnippets.basic,
+      code: snippets.select.basic,
       preview: (
         <div className="w-full max-w-sm">
           <Select>
