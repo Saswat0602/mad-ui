@@ -119,7 +119,7 @@ export default function HomePage() {
         {/* Release Pill using authentic Mad UI Badge */}
         <Badge variant="outline" className="inline-flex items-center gap-2 px-3 py-1 text-xs font-medium border-border/60 bg-muted/30 text-muted-foreground hover:border-primary/40 transition-colors cursor-default">
           <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="font-semibold text-foreground">Mad UI v2.15.14</span>
+          <span className="font-semibold text-foreground">Mad UI v2.15.15</span>
           <span className="text-muted-foreground/60">•</span>
           <span>57+ Production Components</span>
           <ArrowRight className="h-3 w-3 text-primary ml-0.5" />

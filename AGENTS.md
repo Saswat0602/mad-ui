@@ -198,7 +198,7 @@ When adding a new component to the library, follow this strict checklist:
 ## 10. NPM Release & 2FA Publishing Protocol
 
 1. **Strict Version Bumping**:
-   - Before publishing, always bump the `version` field in root `package.json` (e.g. `2.15.14` -> `2.15.15`). NPM rejects attempts to republish or overwrite existing versions (`npm error 409 Conflict`).
+   - Before publishing, always bump the `version` field in root `package.json` (e.g. `2.15.15` -> `2.15.16`). NPM rejects attempts to republish or overwrite existing versions (`npm error 409 Conflict`).
 2. **Auth Token Security (`~/.npmrc`)**:
    - NPM CLI deliberately ignores authentication tokens (`_authToken`) in project-level `.npmrc` files for security reasons. Auth tokens must reside in the user's home directory (`~/.npmrc`).
 3. **Interactive 2FA Web Authorization**:

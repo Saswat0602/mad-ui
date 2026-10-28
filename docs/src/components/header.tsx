@@ -71,7 +71,7 @@ export function Header() {
               title="View on npm (mad-ui-components)"
             >
               <span className="font-bold text-red-500 text-xs tracking-tighter">npm</span>
-              <span className="hidden xl:inline text-[11px] text-muted-foreground/80">v2.15</span>
+              <span className="hidden xl:inline text-[11px] text-muted-foreground/80">v2.15.15</span>
             </a>
 
             {/* GitHub Link */}
