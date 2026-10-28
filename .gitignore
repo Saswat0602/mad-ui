@@ -2,6 +2,7 @@
 /dist
 /build
 .env
+.npmrc
 /ui copy
 
 
