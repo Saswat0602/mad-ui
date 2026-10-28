@@ -10,6 +10,7 @@ import {
   ShieldCheck, 
   Sparkles 
 } from 'lucide-react'
+import * as snippets from './data/getting-started-snippets'
 
 export default function GettingStartedPage() {
   const [activeTab, setActiveTab] = useState<'npm' | 'pnpm' | 'yarn' | 'bun'>('npm')
@@ -21,12 +22,6 @@ export default function GettingStartedPage() {
     setTimeout(() => setCopiedKey(null), 2000)
   }
 
-  const installCommands = {
-    npm: 'npm install mad-ui-components',
-    pnpm: 'pnpm add mad-ui-components',
-    yarn: 'yarn add mad-ui-components',
-    bun: 'bun add mad-ui-components',
-  }
 
   return (
     <div className="space-y-12 w-full">
@@ -92,7 +87,7 @@ export default function GettingStartedPage() {
               ))}
             </div>
             <button
-              onClick={() => copyCode(installCommands[activeTab], 'install')}
+              onClick={() => copyCode(snippets.installCommands[activeTab], 'install')}
               className="flex items-center gap-1 text-[11px] hover:text-zinc-200 transition-colors"
             >
               {copiedKey === 'install' ? (
@@ -109,7 +104,7 @@ export default function GettingStartedPage() {
             </button>
           </div>
           <div className="p-4 font-mono text-zinc-100">
-            <code>{installCommands[activeTab]}</code>
+            <code>{snippets.installCommands[activeTab]}</code>
           </div>
         </div>
       </section>
@@ -131,18 +126,7 @@ export default function GettingStartedPage() {
           <div className="flex items-center justify-between px-3.5 py-2 border-b border-border/40 bg-zinc-900/60 text-zinc-400">
             <span className="font-mono text-[11px]">tailwind.config.js</span>
             <button
-              onClick={() => copyCode(`/** @type {import('tailwindcss').Config} */
-module.exports = {
-  darkMode: ["class"],
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/mad-ui-components/dist/**/*.{mjs,js}"
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}`, 'tailwind')}
+              onClick={() => copyCode(snippets.tailwindConfig, 'tailwind')}
               className="flex items-center gap-1 text-[11px] hover:text-zinc-200 transition-colors"
             >
               {copiedKey === 'tailwind' ? (
@@ -159,18 +143,7 @@ module.exports = {
             </button>
           </div>
           <pre className="p-4 font-mono text-zinc-100 overflow-x-auto leading-relaxed">
-            <code>{`/** @type {import('tailwindcss').Config} */
-module.exports = {
-  darkMode: ["class"],
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/mad-ui-components/dist/**/*.{mjs,js}"
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}`}</code>
+            <code>{snippets.tailwindConfig}</code>
           </pre>
         </div>
       </section>
@@ -192,17 +165,7 @@ module.exports = {
           <div className="flex items-center justify-between px-3.5 py-2 border-b border-border/40 bg-zinc-900/60 text-zinc-400">
             <span className="font-mono text-[11px]">MyComponent.tsx</span>
             <button
-              onClick={() => copyCode(`import { Button, Card, Input } from 'mad-ui-components'
-
-export function LoginCard() {
-  return (
-    <Card className="p-6 max-w-sm space-y-4">
-      <h2 className="text-xl font-bold">Sign In</h2>
-      <Input placeholder="name@example.com" type="email" />
-      <Button className="w-full">Continue</Button>
-    </Card>
-  )
-}`, 'usage')}
+              onClick={() => copyCode(snippets.usage, 'usage')}
               className="flex items-center gap-1 text-[11px] hover:text-zinc-200 transition-colors"
             >
               {copiedKey === 'usage' ? (
@@ -219,17 +182,7 @@ export function LoginCard() {
             </button>
           </div>
           <pre className="p-4 font-mono text-zinc-100 overflow-x-auto leading-relaxed">
-            <code>{`import { Button, Card, Input } from 'mad-ui-components'
-
-export function LoginCard() {
-  return (
-    <Card className="p-6 max-w-sm space-y-4">
-      <h2 className="text-xl font-bold">Sign In</h2>
-      <Input placeholder="name@example.com" type="email" />
-      <Button className="w-full">Continue</Button>
-    </Card>
-  )
-}`}</code>
+            <code>{snippets.usage}</code>
           </pre>
         </div>
       </section>

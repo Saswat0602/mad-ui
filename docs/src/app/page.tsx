@@ -37,6 +37,7 @@ import {
   Sparkles,
   MousePointerClick
 } from 'lucide-react'
+import * as snippets from './data/landing-snippets'
 
 export default function HomePage() {
   const [activePm, setActivePm] = useState<'npm' | 'pnpm' | 'yarn' | 'bun'>('npm')
@@ -51,65 +52,6 @@ export default function HomePage() {
     setTimeout(() => setCopiedKey(null), 2000)
   }
 
-  const installCommands = {
-    npm: 'npm install mad-ui-components',
-    pnpm: 'pnpm add mad-ui-components',
-    yarn: 'yarn add mad-ui-components',
-    bun: 'bun add mad-ui-components',
-  }
-
-  const frameworkSnippets = {
-    nextjs: [
-      { line: 1, text: "'use client'", type: 'directive' },
-      { line: 2, text: '', type: 'empty' },
-      { line: 3, text: "import { Button, Card, Input } from 'mad-ui-components'", type: 'import' },
-      { line: 4, text: '', type: 'empty' },
-      { line: 5, text: 'export default function Dashboard() {', type: 'fn' },
-      { line: 6, text: '  return (', type: 'plain' },
-      { line: 7, text: '    <Card className="p-6 max-w-md w-full space-y-4">', type: 'jsx' },
-      { line: 8, text: '      <h1 className="text-xl font-bold">Mad UI Workspace</h1>', type: 'jsx' },
-      { line: 9, text: '      <Input placeholder="Enter project name..." />', type: 'jsx' },
-      { line: 10, text: '      <Button className="w-full">Deploy Application</Button>', type: 'jsx' },
-      { line: 11, text: '    </Card>', type: 'jsx' },
-      { line: 12, text: '  )', type: 'plain' },
-      { line: 13, text: '}', type: 'close-brace' }
-    ],
-    vite: [
-      { line: 1, text: "import React, { useState } from 'react'", type: 'import' },
-      { line: 2, text: "import { Button, Card, Badge, Slider } from 'mad-ui-components'", type: 'import' },
-      { line: 3, text: '', type: 'empty' },
-      { line: 4, text: 'export default function App() {', type: 'fn' },
-      { line: 5, text: '  const [value, setValue] = useState(50)', type: 'plain' },
-      { line: 6, text: '', type: 'empty' },
-      { line: 7, text: '  return (', type: 'plain' },
-      { line: 8, text: '    <Card className="p-6 max-w-md w-full space-y-4">', type: 'jsx' },
-      { line: 9, text: '      <Badge variant="secondary">Vite + React 19</Badge>', type: 'jsx' },
-      { line: 10, text: '      <Slider value={value} onChange={setValue} />', type: 'jsx' },
-      { line: 11, text: '      <Button variant="default">Save Configuration</Button>', type: 'jsx' },
-      { line: 12, text: '    </Card>', type: 'jsx' },
-      { line: 13, text: '  )', type: 'plain' },
-      { line: 14, text: '}', type: 'close-brace' }
-    ],
-    manual: [
-      { line: 1, text: "import React from 'react'", type: 'import' },
-      { line: 2, text: "import { Button, Card, Switch } from 'mad-ui-components'", type: 'import' },
-      { line: 3, text: '', type: 'empty' },
-      { line: 4, text: 'export function Application() {', type: 'fn' },
-      { line: 5, text: '  return (', type: 'plain' },
-      { line: 6, text: '    <Card className="p-6">', type: 'jsx' },
-      { line: 7, text: '      <Switch label="Dark Mode" defaultChecked />', type: 'jsx' },
-      { line: 8, text: '      <Button variant="default">Mad UI Ready</Button>', type: 'jsx' },
-      { line: 9, text: '    </Card>', type: 'jsx' },
-      { line: 10, text: '  )', type: 'plain' },
-      { line: 11, text: '}', type: 'close-brace' }
-    ]
-  }
-
-  const rawCodeString = {
-    nextjs: `'use client'\n\nimport { Button, Card, Input } from 'mad-ui-components'\n\nexport default function Dashboard() {\n  return (\n    <Card className="p-6 max-w-md w-full space-y-4">\n      <h1 className="text-xl font-bold">Mad UI Workspace</h1>\n      <Input placeholder="Enter project name..." />\n      <Button className="w-full">Deploy Application</Button>\n    </Card>\n  )\n}`,
-    vite: `import React, { useState } from 'react'\nimport { Button, Card, Badge, Slider } from 'mad-ui-components'\n\nexport default function App() {\n  const [value, setValue] = useState(50)\n\n  return (\n    <Card className="p-6 max-w-md w-full space-y-4">\n      <Badge variant="secondary">Vite + React 19</Badge>\n      <Slider value={value} onChange={setValue} />\n      <Button variant="default">Save Configuration</Button>\n    </Card>\n  )\n}`,
-    manual: `import React from 'react'\nimport { Button, Card, Switch } from 'mad-ui-components'\n\nexport function Application() {\n  return (\n    <Card className="p-6">\n      <Switch label="Dark Mode" defaultChecked />\n      <Button variant="default">Mad UI Ready</Button>\n    </Card>\n  )\n}`
-  }
 
   const categories = [
     {
@@ -236,9 +178,9 @@ export default function HomePage() {
               ))}
             </div>
             <div className="flex items-center gap-2 pr-1">
-              <span className="text-zinc-300 hidden sm:inline">{installCommands[activePm]}</span>
+              <span className="text-zinc-300 hidden sm:inline">{snippets.installCommands[activePm]}</span>
               <button
-                onClick={() => copyToClipboard(installCommands[activePm], 'hero-install')}
+                onClick={() => copyToClipboard(snippets.installCommands[activePm], 'hero-install')}
                 className="p-1.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors cursor-pointer"
                 title="Copy install command"
               >
@@ -497,7 +439,7 @@ export default function HomePage() {
             <div className="flex items-center gap-3">
               <span className="text-[10px] text-zinc-500 uppercase font-mono tracking-wider">React 18 &amp; 19</span>
               <button
-                onClick={() => copyToClipboard(rawCodeString[activeFw], 'framework-code')}
+                onClick={() => copyToClipboard(snippets.rawCodeString[activeFw], 'framework-code')}
                 className="inline-flex items-center gap-1 px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[11px] transition-colors cursor-pointer"
                 title="Copy snippet"
               >
@@ -519,7 +461,7 @@ export default function HomePage() {
           {/* Code Window with Monaco Syntax Highlights and Line Numbers */}
           <div className="p-4 font-mono text-[13px] leading-relaxed overflow-x-auto select-text">
             <div className="table w-full">
-              {frameworkSnippets[activeFw].map((lineObj) => (
+              {snippets.frameworkSnippets[activeFw].map((lineObj) => (
                 <div key={lineObj.line} className="table-row hover:bg-zinc-900/40">
                   <span className="table-cell select-none pr-4 text-right text-zinc-600 font-mono text-[11px] w-8">
                     {lineObj.line}

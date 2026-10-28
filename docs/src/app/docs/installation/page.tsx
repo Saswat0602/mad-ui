@@ -13,6 +13,7 @@ import {
   Cpu
 } from "lucide-react"
 import { CodeBlock } from "@/components/CodeBlock"
+import * as snippets from "./data/installation-snippets"
 
 interface CodeSnippetProps {
   code: string
@@ -47,13 +48,6 @@ export default function InstallationPage() {
     navigator.clipboard.writeText(text)
     setCopiedKey(key)
     setTimeout(() => setCopiedKey(null), 2000)
-  }
-
-  const pkgCommands = {
-    npm: "npm install mad-ui-components",
-    pnpm: "pnpm add mad-ui-components",
-    yarn: "yarn add mad-ui-components",
-    bun: "bun add mad-ui-components"
   }
 
   return (
@@ -131,7 +125,7 @@ export default function InstallationPage() {
         </div>
 
         <CodeSnippet 
-          code={pkgCommands[activePkgManager]} 
+          code={snippets.pkgCommands[activePkgManager]} 
           language="bash" 
           copyKey={`pkg-${activePkgManager}`} 
           copiedKey={copiedKey}
@@ -190,7 +184,7 @@ export default function InstallationPage() {
                 </h3>
               </div>
               <CodeSnippet 
-                code="npx create-next-app@latest my-app --typescript --tailwind --eslint --app"
+                code={snippets.nextjs.createApp}
                 language="bash"
                 copiedKey={copiedKey}
                 onCopy={copyText}
@@ -205,7 +199,7 @@ export default function InstallationPage() {
                 </h3>
               </div>
               <CodeSnippet 
-                code="npm install mad-ui-components"
+                code={snippets.nextjs.install}
                 language="bash"
                 copiedKey={copiedKey}
                 onCopy={copyText}
@@ -225,20 +219,7 @@ export default function InstallationPage() {
               <CodeSnippet 
                 filename="tailwind.config.js"
                 language="javascript"
-                code={`/** @type {import('tailwindcss').Config} */
-module.exports = {
-  darkMode: ["class"],
-  content: [
-    "./src/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/mad-ui-components/dist/**/*.{mjs,js}"
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}`}
+                code={snippets.nextjs.tailwindConfig}
                 copiedKey={copiedKey}
                 onCopy={copyText}
               />
@@ -257,21 +238,7 @@ module.exports = {
               <CodeSnippet 
                 filename="app/page.tsx"
                 language="tsx"
-                code={`'use client'
-
-import { Button, Card, Input } from 'mad-ui-components'
-
-export default function Home() {
-  return (
-    <main className="p-8 max-w-md mx-auto space-y-4">
-      <Card className="p-6 space-y-4">
-        <h1 className="text-xl font-bold">Welcome to Mad UI</h1>
-        <Input placeholder="Enter your email" />
-        <Button className="w-full">Get Started</Button>
-      </Card>
-    </main>
-  )
-}`}
+                code={snippets.nextjs.pageUsage}
                 copiedKey={copiedKey}
                 onCopy={copyText}
               />
@@ -290,7 +257,7 @@ export default function Home() {
                 </h3>
               </div>
               <CodeSnippet 
-                code="npm create vite@latest my-app -- --template react-ts"
+                code={snippets.vite.createApp}
                 language="bash"
                 copiedKey={copiedKey}
                 onCopy={copyText}
@@ -305,7 +272,7 @@ export default function Home() {
                 </h3>
               </div>
               <CodeSnippet 
-                code="npm install -D tailwindcss postcss autoprefixer\nnpx tailwindcss init -p\nnpm install mad-ui-components"
+                code={snippets.vite.install}
                 language="bash"
                 copiedKey={copiedKey}
                 onCopy={copyText}
@@ -322,19 +289,7 @@ export default function Home() {
               <CodeSnippet 
                 filename="tailwind.config.js"
                 language="javascript"
-                code={`/** @type {import('tailwindcss').Config} */
-export default {
-  darkMode: ["class"],
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/mad-ui-components/dist/**/*.{mjs,js}"
-  ],
-  theme: {
-    extend: {},
-  },
-  plugins: [],
-}`}
+                code={snippets.vite.tailwindConfig}
                 copiedKey={copiedKey}
                 onCopy={copyText}
               />
@@ -350,21 +305,7 @@ export default {
               <CodeSnippet 
                 filename="src/App.tsx"
                 language="tsx"
-                code={`import { Button, Card, Badge } from 'mad-ui-components'
-
-function App() {
-  return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="p-6 space-y-4 max-w-sm">
-        <Badge variant="secondary">Vite + React</Badge>
-        <h2 className="text-lg font-bold">Fast &amp; Modern UI</h2>
-        <Button variant="default">Click Me</Button>
-      </Card>
-    </div>
-  )
-}
-
-export default App`}
+                code={snippets.vite.appUsage}
                 copiedKey={copiedKey}
                 onCopy={copyText}
               />
@@ -384,7 +325,7 @@ export default App`}
                 Mad UI requires React &gt;= 18.0.0 and Tailwind CSS 3 or 4.
               </p>
               <CodeSnippet 
-                code="npm install react react-dom mad-ui-components"
+                code={snippets.manual.install}
                 language="bash"
                 copiedKey={copiedKey}
                 onCopy={copyText}
@@ -402,9 +343,7 @@ export default App`}
               <CodeSnippet 
                 filename="src/index.css"
                 language="css"
-                code={`@tailwind base;
-@tailwind components;
-@tailwind utilities;`}
+                code={snippets.manual.css}
                 copiedKey={copiedKey}
                 onCopy={copyText}
               />
@@ -424,7 +363,7 @@ export default App`}
                 You can copy individual component source files into your project directory using the CLI:
               </p>
               <CodeSnippet 
-                code="npx mad-ui-components copy button card input"
+                code={snippets.cli.copyCommand}
                 language="bash"
                 copiedKey={copiedKey}
                 onCopy={copyText}
