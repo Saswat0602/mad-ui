@@ -208,19 +208,19 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
     const themes = {
       light: {
         bg: blur ? "bg-white/80 backdrop-blur-xl" : "bg-white",
-        text: "text-gray-900",
-        textSecondary: "text-gray-600",
-        hover: "hover:text-blue-600 hover:bg-gray-100",
-        border: "border-gray-200",
-        dropdown: "bg-white border-gray-200 shadow-xl"
+        text: "text-zinc-900",
+        textSecondary: "text-zinc-600",
+        hover: "hover:text-blue-600 hover:bg-zinc-100",
+        border: "border-zinc-200",
+        dropdown: "bg-white border-zinc-200 shadow-xl"
       },
       dark: {
-        bg: blur ? "bg-gray-900/80 backdrop-blur-xl" : "bg-gray-900",
+        bg: blur ? "bg-zinc-900/80 backdrop-blur-xl" : "bg-zinc-900",
         text: "text-white",
-        textSecondary: "text-gray-300",
-        hover: "hover:text-blue-400 hover:bg-gray-800",
-        border: "border-gray-700",
-        dropdown: "bg-gray-800 border-gray-700 shadow-xl"
+        textSecondary: "text-zinc-400",
+        hover: "hover:text-blue-400 hover:bg-zinc-800",
+        border: "border-zinc-800",
+        dropdown: "bg-zinc-800 border-zinc-700 shadow-xl"
       },
       gradient: {
         bg: `bg-gradient-to-r ${gradient} ${blur ? 'backdrop-blur-xl' : ''}`,
@@ -228,7 +228,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
         textSecondary: "text-white/80",
         hover: "hover:text-white hover:bg-white/10",
         border: "border-white/20",
-        dropdown: "bg-gray-900 border-gray-700 shadow-xl"
+        dropdown: "bg-zinc-900 border-zinc-800 shadow-xl"
       },
       glass: {
         bg: "bg-white/10 backdrop-blur-2xl border-white/20",
@@ -244,7 +244,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
         textSecondary: "text-white/90",
         hover: "hover:text-white hover:bg-black/10",
         border: "border-white/30",
-        dropdown: "bg-gray-900 border-gray-700 shadow-xl"
+        dropdown: "bg-zinc-900 border-zinc-800 shadow-xl"
       }
     };
 
@@ -416,7 +416,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                           "w-full pl-10 pr-4 py-2 rounded-xl border",
                           themeConfig.border,
                           themeConfig.hover,
-                          "bg-transparent placeholder-gray-400",
+                          "bg-transparent placeholder-zinc-400",
                           "focus:outline-none focus:ring-2",
                           colors.ring,
                           `transition-all ${animationDuration}`,
@@ -509,7 +509,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                           "max-h-96 overflow-y-auto",
                           "animate-in slide-in-from-top-2 duration-200"
                         )}>
-                          <div className="p-4 border-b border-gray-200">
+                          <div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
                             <h3 className="font-semibold">Notifications</h3>
                           </div>
                           <div className="max-h-64 overflow-y-auto">
@@ -518,7 +518,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                                 <div
                                   key={index}
                                   className={cn(
-                                    "p-4 border-b border-gray-100 last:border-b-0",
+                                    "p-4 border-b border-zinc-100 dark:border-zinc-800/60 last:border-b-0",
                                     themeConfig.hover,
                                     `transition-all ${animationDuration}`
                                   )}
@@ -526,7 +526,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                                   <div className="flex items-start space-x-3">
                                     <div className={cn(
                                       "w-2 h-2 rounded-full mt-2",
-                                      notification.unread ? 'bg-blue-500' : 'bg-gray-300'
+                                      notification.unread ? 'bg-blue-500' : 'bg-zinc-300 dark:bg-zinc-600'
                                     )}></div>
                                     <div className="flex-1">
                                       <p className="font-medium text-sm">{notification.title}</p>
@@ -672,7 +672,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                     "w-full pl-10 pr-4 py-3 rounded-xl border",
                     themeConfig.border,
                     themeConfig.hover,
-                    "bg-transparent placeholder-gray-400",
+                    "bg-transparent placeholder-zinc-400",
                     "focus:outline-none focus:ring-2",
                     colors.ring,
                     `transition-all ${animationDuration}`

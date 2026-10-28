@@ -16,6 +16,9 @@
   "engines": {
     "node": ">=18"
   },
+  "workspaces": [
+    "docs"
+  ],
   "exports": {
     ".": {
       "types": "./dist/index.d.mts",

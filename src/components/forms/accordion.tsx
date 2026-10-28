@@ -5,7 +5,7 @@ import { cn } from '../../lib/utils';
 // Base utility classes for consistent styling
 const baseClasses = {
   transition: 'transition-all duration-300 ease-in-out',
-  focusRing: 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2',
+  focusRing: 'focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 dark:focus:ring-offset-zinc-950',
 };
 
 export interface AccordionItem {
@@ -81,12 +81,12 @@ const AccordionItem: React.FC<{
   const IconComponent = CustomIcon || ChevronDown;
 
   return (
-    <div className={cn(itemClassName, !isLast ? 'border-b border-gray-200' : '')}>
+    <div className={cn(itemClassName, !isLast ? 'border-b border-zinc-200 dark:border-zinc-800' : '')}>
       <button
         onClick={onToggle}
         disabled={item.disabled}
         className={cn(
-          'w-full px-6 py-4 text-left flex items-center justify-between hover:bg-gray-50',
+          'w-full px-6 py-4 text-left flex items-center justify-between hover:bg-zinc-50 dark:hover:bg-zinc-800/50 text-zinc-900 dark:text-zinc-100',
           baseClasses.focusRing,
           item.disabled && 'opacity-50 cursor-not-allowed',
           headerClassName
@@ -111,7 +111,7 @@ const AccordionItem: React.FC<{
         className={cn('overflow-hidden', animated ? baseClasses.transition : '')}
         style={{ height: isOpen ? `${contentHeight}px` : '0px' }}
       >
-        <div ref={contentRef} className={cn('px-6 py-4 text-gray-700', contentClassName)}>
+        <div ref={contentRef} className={cn('px-6 py-4 text-zinc-600 dark:text-zinc-400', contentClassName)}>
           {typeof item.content === 'string' ? (
             <p>{item.content}</p>
           ) : (
@@ -157,7 +157,7 @@ export const Accordion: React.FC<AccordionProps> = ({
   };
 
   return (
-    <div className={cn('border border-gray-200 rounded-lg overflow-hidden', className)} {...props}>
+    <div className={cn('border border-zinc-200 dark:border-zinc-800 rounded-lg overflow-hidden bg-background', className)} {...props}>
       {items.map((item, index) => (
         <AccordionItem
           key={item.id || index}

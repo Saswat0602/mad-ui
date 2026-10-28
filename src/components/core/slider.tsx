@@ -286,7 +286,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
     return marks.map((mark, index) => (
       <div
         key={index}
-        className="absolute text-xs text-slate-500 dark:text-slate-400"
+        className="absolute text-xs text-zinc-500 dark:text-zinc-400"
         style={{
           [orientation === 'horizontal' ? 'left' : 'bottom']: `${getPercentage(mark.value)}%`,
           transform: orientation === 'horizontal' ? 'translateX(-50%)' : 'translateY(50%)'

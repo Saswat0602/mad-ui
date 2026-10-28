@@ -1,4 +1,5 @@
 import * as React from "react"
+import { Calendar as CalendarIcon } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { componentColors } from "../../lib/colors"
 
@@ -304,13 +305,13 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             dayClasses += " rounded-lg hover:scale-105"
             break
           case "minimal":
-            dayClasses += " rounded-none border-b border-gray-100 dark:border-gray-800"
+            dayClasses += " rounded-none border-b border-zinc-200 dark:border-zinc-800"
             break
           case "card":
             dayClasses += " rounded-md shadow-sm hover:shadow-md"
             break
           case "grid":
-            dayClasses += " rounded-none border border-gray-100 dark:border-gray-800"
+            dayClasses += " rounded-none border border-zinc-200 dark:border-zinc-800"
             break
           default:
             dayClasses += " rounded-full"
@@ -324,11 +325,11 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
         } else if (weekend) {
           dayClasses += " text-red-600 dark:text-red-400 font-medium"
         } else if (!disabled) {
-          dayClasses += " hover:bg-gray-100 dark:hover:bg-gray-700"
+          dayClasses += " hover:bg-zinc-100 dark:hover:bg-zinc-800"
         }
         
         if (disabled) {
-          dayClasses += " text-gray-400 cursor-not-allowed opacity-50"
+          dayClasses += " text-zinc-400 cursor-not-allowed opacity-50"
         } else {
           dayClasses += " cursor-pointer"
         }
@@ -382,10 +383,9 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
           />
           {showIcon && (
             <span 
-              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              style={{ fontSize: "16px" }}
+              className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400"
             >
-              📅
+              <CalendarIcon size={16} />
             </span>
           )}
         </div>
@@ -418,8 +418,8 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                     onClick={() => navigateMonth("prev")}
                     className={cn(
                       "p-1 rounded transition-all duration-200",
-                      design === "modern" ? "hover:bg-blue-100 hover:text-blue-600" : "hover:bg-gray-100 dark:hover:bg-gray-700",
-                      design === "minimal" ? "text-gray-500" : "text-gray-600 dark:text-gray-300"
+                      design === "modern" ? "hover:bg-blue-100 hover:text-blue-600" : "hover:bg-zinc-100 dark:hover:bg-zinc-800",
+                      design === "minimal" ? "text-zinc-500" : "text-zinc-600 dark:text-zinc-300"
                     )}
                   >
                     ←
@@ -428,7 +428,7 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 
                 <div className="text-center">
                   <h3 className={cn(
-                    "font-semibold text-gray-900 dark:text-white",
+                    "font-semibold text-zinc-900 dark:text-white",
                     design === "modern" ? "text-lg" : "text-sm",
                     design === "card" ? "text-xl" : ""
                   )}>
@@ -443,11 +443,11 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                           newDate.setFullYear(newDate.getFullYear() - 1)
                           setCurrentDate(newDate)
                         }}
-                        className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-300"
+                        className="text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                       >
                         ←
                       </button>
-                      <span className="text-xs text-gray-500">
+                      <span className="text-xs text-zinc-500">
                         {currentDate.getFullYear()}
                       </span>
                       <button
@@ -456,7 +456,7 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                           newDate.setFullYear(newDate.getFullYear() + 1)
                           setCurrentDate(newDate)
                         }}
-                        className="text-xs text-gray-500 hover:text-gray-700 dark:hover:text-gray-700"
+                        className="text-xs text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300"
                       >
                         →
                       </button>
@@ -469,8 +469,8 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                     onClick={() => navigateMonth("next")}
                     className={cn(
                       "p-1 rounded transition-all duration-200",
-                      design === "modern" ? "hover:bg-blue-100 hover:text-blue-600" : "hover:bg-gray-100 dark:hover:bg-gray-700",
-                      design === "minimal" ? "text-gray-500" : "text-gray-600 dark:text-gray-300"
+                      design === "modern" ? "hover:bg-blue-100 hover:text-blue-600" : "hover:bg-zinc-100 dark:hover:bg-zinc-800",
+                      design === "minimal" ? "text-zinc-500" : "text-zinc-600 dark:text-zinc-300"
                     )}
                   >
                     →
@@ -484,7 +484,7 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
               {dayNames.map((day) => (
                 <div
                   key={day}
-                  className="h-8 flex items-center justify-center text-xs font-medium text-gray-500 dark:text-gray-400"
+                  className="h-8 flex items-center justify-center text-xs font-medium text-zinc-500 dark:text-zinc-400"
                 >
                   {day}
                 </div>
@@ -498,9 +498,9 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             
             {/* Footer */}
             {showFooter && (
-              <div className="mt-4 pt-3 border-t border-gray-200 dark:border-gray-700">
+              <div className="mt-4 pt-3 border-t border-zinc-200 dark:border-zinc-800">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-gray-500 dark:text-gray-400">
+                  <span className="text-zinc-500 dark:text-zinc-400">
                     {selectedDate ? formatDate(selectedDate) : "No date selected"}
                   </span>
                   {showToday && (

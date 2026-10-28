@@ -3,7 +3,7 @@
 > **Current Version**: `2.16.0`  
 > **Repository**: [mad-ui](https://github.com/Saswat0602/mad-ui) (`mad-ui-components`)  
 > **Last Updated**: October 2026  
-> **Status**: **Phase 0 (100% Completed)** · **Phase 1 (Primary Foundations Completed)**  
+> **Status**: **Phase 0 (100% Completed)** · **Phase 1 (100% Completed)**  
 
 ---
 
@@ -12,7 +12,7 @@
 | Phase | Title | Target Scope | Status | Completion |
 | :---: | :--- | :--- | :---: | :---: |
 | **Phase 0** | **Stop the Bleeding** | P0 bug fixes, `"use client"`, packaging exports, docs preview, hygiene | 🟢 **COMPLETED** | **100%** |
-| **Phase 1** | **Foundation Infrastructure** | Vitest testing, axe a11y, Changesets, tokens, manifest, root ESLint, CI | 🟡 **IN PROGRESS** | **85%** |
+| **Phase 1** | **Foundation Infrastructure** | Vitest testing, axe a11y, Changesets, tokens, manifest, root ESLint, CI, zinc migration | 🟢 **COMPLETED** | **100%** |
 | **Phase 2** | **Primitives & Headless Rewrite** | Radix headless foundation, unified motion system, keyboard a11y maps | ⚪ **UPCOMING** | 0% |
 | **Phase 3** | **Advanced Components & Forms** | Composable forms (zod + react-hook-form), virtualized DataTable | ⚪ **UPCOMING** | 0% |
 | **Phase 4** | **Showcase Platform & DX** | Interactive theme builder, CLI component adder, props documentation | ⚪ **UPCOMING** | 0% |
@@ -55,9 +55,9 @@
 
 ---
 
-## 🟡 Phase 1 — Foundation Infrastructure (Weeks 2–4) — [IN PROGRESS]
+## 🟢 Phase 1 — Foundation Infrastructure (Weeks 2–4) — [COMPLETED]
 
-**Goal**: Establish the testing, token design system, and multi-environment packaging verification that makes every future change safe.
+**Goal**: Establish the testing, token design system, neutral scale standardization, and multi-environment packaging verification that makes every future change safe.
 
 ### Completed Milestones
 - [x] **Automated Testing Suite (Vitest)**:
@@ -78,17 +78,19 @@
   - Initialized `.changeset/config.json` and added scripts (`npm run changeset`, `npm run version-packages`).
 - [x] **Extended Design Tokens**:
   - Expanded `src/styles.css` with semantic tokens for status (`success`, `warning`, `info`), charts (`chart-1`–`5`), sidebar variables, radius scale, and z-indexes.
-  - Quoted path escaping in `scripts/build-css.js` for space-safe Tailwind CLI compilation (69.35 KB).
+  - Quoted path escaping in `scripts/build-css.js` for space-safe Tailwind CLI compilation (65.64 KB).
 - [x] **Opt-in Base Styles**:
   - Scoped global body restyling in `src/styles.css` to `.mad-ui-base, body[data-mad-ui-theme]`.
+- [x] **Neutral Scale (`zinc`) Standardization & Palette Migration**:
+  - Standardized all 55 components on the `zinc` neutral palette.
+  - Completely eliminated inconsistent `gray-` and `slate-` color classes in `accordion.tsx`, `typography.tsx`, `tabs.tsx`, `slider.tsx`, `layout.tsx`, `navbar.tsx`, `sidebar.tsx`, `calendar.tsx`, and `datetime-picker.tsx`.
+  - Replaced remaining raw emojis with clean Lucide icons (`CalendarIcon`).
+- [x] **Monorepo Workspace Configuration**:
+  - Added `"workspaces": ["docs"]` to root `package.json` for native monorepo workspace resolution.
 - [x] **Community Files**:
   - Added `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md`, `SECURITY.md`, `.nvmrc` (Node 20), `.editorconfig`.
 - [x] **CI Pipeline**:
   - Configured `.github/workflows/ci.yml` running `typecheck`, `build`, `test`, `check:pkg`, `check:manifest`, and `docs` build/lint across Node 18 & 20.
-
-### Remaining in Phase 1
-- [ ] **Monorepo Structure Alignment**: Convert directory structure to `apps/docs` and `packages/react` with pnpm workspaces & Turborepo (`workspace:*`).
-- [ ] **Token Standardization**: Migrate remaining hardcoded palette classes in components to semantic tokens (`bg-primary`).
 
 ---
 

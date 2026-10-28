@@ -72,7 +72,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
           'rounded-full',
           isActive
             ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
-            : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+            : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
         )
       case 'underline':
         return cn(
@@ -80,7 +80,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
           'border-b-2 px-4 py-2',
           isActive
             ? 'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
-            : 'border-transparent text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100'
+            : 'border-transparent text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100'
         )
       case 'cards':
         return cn(
@@ -88,7 +88,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
           'rounded-lg border',
           isActive
             ? 'border-blue-600 bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400 shadow-sm dark:border-blue-400'
-            : 'border-slate-200 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700'
+            : 'border-zinc-200 dark:border-zinc-800 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800'
         )
       case 'minimal':
         return cn(
@@ -96,7 +96,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
           'px-4 py-2',
           isActive
             ? 'text-blue-600 dark:text-blue-400 font-semibold'
-            : 'text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100'
+            : 'text-zinc-700 dark:text-zinc-300 hover:text-zinc-900 dark:hover:text-zinc-100'
         )
       default:
         return cn(
@@ -104,7 +104,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
           'rounded-lg',
           isActive
             ? 'bg-blue-600 text-white shadow-md dark:bg-blue-500'
-            : 'text-slate-700 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-700'
+            : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
         )
     }
   }
@@ -155,8 +155,8 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
       <div className={cn(
         'flex',
         orientation === 'vertical' ? 'flex-col space-y-2' : 'flex-row space-x-2',
-        variant === 'underline' && orientation === 'horizontal' && 'border-b border-slate-200 dark:border-slate-600',
-        variant === 'cards' && 'p-1 bg-slate-100 dark:bg-slate-700 rounded-lg',
+        variant === 'underline' && orientation === 'horizontal' && 'border-b border-zinc-200 dark:border-zinc-800',
+        variant === 'cards' && 'p-1 bg-zinc-100 dark:bg-zinc-800 rounded-lg',
         shadowClasses[shadow]
       )}>
         {items.map((item) => (
@@ -173,7 +173,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
                 'ml-2 px-2 py-0.5 text-xs font-medium rounded-full',
                 activeTab === item.id
                   ? 'bg-white/20 text-white'
-                  : 'bg-slate-200 dark:bg-slate-600 text-slate-700 dark:text-slate-300'
+                  : 'bg-zinc-200 dark:bg-zinc-700 text-zinc-700 dark:text-zinc-300'
               )}>
                 {item.badge}
               </span>

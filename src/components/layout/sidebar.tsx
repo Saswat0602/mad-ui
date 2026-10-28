@@ -127,7 +127,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     width = "w-72",
     collapsedWidth = "w-20",
     backgroundColor = "",
-    gradient = "from-slate-900 via-slate-800 to-slate-900",
+    gradient = "from-zinc-900 via-zinc-800 to-zinc-900",
     textColor = "",
     primaryColor = "blue",
     borderRadius = "rounded-xl",
@@ -178,21 +178,21 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     // Theme configurations
     const themes = {
       dark: {
-        bg: "bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900",
-        text: "text-slate-100",
-        textSecondary: "text-slate-400",
-        hover: "hover:bg-slate-700/50",
+        bg: "bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-900",
+        text: "text-zinc-100",
+        textSecondary: "text-zinc-400",
+        hover: "hover:bg-zinc-800/60",
         active: colors.activeDark,
-        border: "border-slate-700",
-        glass: "backdrop-blur-xl bg-slate-900/80"
+        border: "border-zinc-800",
+        glass: "backdrop-blur-xl bg-zinc-900/80"
       },
       light: {
-        bg: "bg-gradient-to-b from-white via-gray-50 to-white",
-        text: "text-gray-900",
-        textSecondary: "text-gray-500",
-        hover: "hover:bg-gray-100",
+        bg: "bg-gradient-to-b from-white via-zinc-50 to-white",
+        text: "text-zinc-900",
+        textSecondary: "text-zinc-500",
+        hover: "hover:bg-zinc-100",
         active: colors.activeLight,
-        border: "border-gray-200",
+        border: "border-zinc-200",
         glass: "backdrop-blur-xl bg-white/80"
       },
       gradient: {
@@ -342,7 +342,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
                   "top-1/2",
                   "transform",
                   "-translate-y-1/2",
-                  "bg-gray-900",
+                  "bg-zinc-900",
                   "text-white",
                   "px-3",
                   "py-2",
@@ -370,7 +370,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
                   <div className={cn(
                     "absolute top-1/2 transform -translate-y-1/2",
                     position === 'right' ? 'left-0 translate-x-[-4px]' : 'right-0 translate-x-[4px]',
-                    "w-2 h-2 bg-gray-900 rotate-45"
+                    "w-2 h-2 bg-zinc-900 rotate-45"
                   )}></div>
                 </div>
               )}
@@ -461,7 +461,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
                   "w-full pl-10 pr-4 py-2 rounded-lg border",
                   currentTheme.border,
                   currentTheme.hover,
-                  "bg-transparent placeholder-gray-400",
+                  "bg-transparent placeholder-zinc-400",
                   "focus:outline-none focus:ring-2",
                   colors.ring,
                   `transition-all ${animationDuration}`
