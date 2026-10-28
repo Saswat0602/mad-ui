@@ -444,3 +444,51 @@ export function SelectBasic() {
   )
 }`
 }
+
+export const slider = {
+  basic: `import { Slider } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function SliderExample() {
+  const [value, setValue] = useState(50)
+
+  return (
+    <div className="w-full max-w-sm space-y-4">
+      <div className="flex justify-between text-sm">
+        <span className="text-muted-foreground">Volume Level</span>
+        <span className="font-mono font-semibold">{value}%</span>
+      </div>
+      <Slider 
+        value={value} 
+        onChange={setValue} 
+        min={0} 
+        max={100} 
+        step={1} 
+      />
+    </div>
+  )
+}`,
+
+  range: `import { Slider } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function RangeSliderExample() {
+  const [range, setRange] = useState<[number, number]>([20, 80])
+
+  return (
+    <div className="w-full max-w-sm space-y-4">
+      <div className="flex justify-between text-sm">
+        <span className="text-muted-foreground">Price Filter</span>
+        <span className="font-mono font-semibold">\${range[0]} - \${range[1]}</span>
+      </div>
+      <Slider 
+        value={range} 
+        onChange={setRange} 
+        range 
+        min={0} 
+        max={100} 
+      />
+    </div>
+  )
+}`
+}

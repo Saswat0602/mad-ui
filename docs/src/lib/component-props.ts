@@ -576,9 +576,69 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       required: true,
       description: 'SelectTrigger, SelectContent, and SelectItem components'
     }
+  ],
+  slider: [
+    {
+      name: 'value',
+      type: 'number | [number, number]',
+      required: false,
+      description: 'Controlled slider value or range tuple'
+    },
+    {
+      name: 'defaultValue',
+      type: 'number | [number, number]',
+      required: false,
+      default: '0',
+      description: 'Default value for uncontrolled usage'
+    },
+    {
+      name: 'min',
+      type: 'number',
+      required: false,
+      default: '0',
+      description: 'Minimum permitted value'
+    },
+    {
+      name: 'max',
+      type: 'number',
+      required: false,
+      default: '100',
+      description: 'Maximum permitted value'
+    },
+    {
+      name: 'step',
+      type: 'number',
+      required: false,
+      default: '1',
+      description: 'Granular step interval between values'
+    },
+    {
+      name: 'range',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Whether the slider operates in dual-thumb range mode'
+    },
+    {
+      name: 'disabled',
+      type: 'boolean',
+      required: false,
+      default: 'false',
+      description: 'Disables slider interaction'
+    },
+    {
+      name: 'onChange',
+      type: '(value: number | [number, number]) => void',
+      required: false,
+      description: 'Callback fired when the slider value changes'
+    }
   ]
 }
 
 export function getComponentProps(slug: string): ComponentProp[] {
-  return COMPONENT_PROPS[slug] || []
+  const normalized = slug.replace(/-/g, '').toLowerCase()
+  return COMPONENT_PROPS[slug] || 
+    COMPONENT_PROPS[normalized] || 
+    Object.entries(COMPONENT_PROPS).find(([k]) => k.replace(/-/g, '').toLowerCase() === normalized)?.[1] || 
+    []
 }

@@ -1,5 +1,28 @@
 import React from 'react'
-import { Combobox, Command, Menubar, NavigationMenu, Pagination } from 'mad-ui-components'
+import { 
+  Combobox, 
+  Command, 
+  CommandInput,
+  CommandList,
+  CommandEmpty,
+  CommandGroup,
+  CommandItem,
+  CommandSeparator,
+  Menubar, 
+  MenubarMenu,
+  MenubarTrigger,
+  MenubarContent,
+  MenubarItem,
+  MenubarSeparator,
+  NavigationMenu, 
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+  NavigationMenuLink,
+  Pagination 
+} from 'mad-ui-components'
+import { Search, Settings, User, CreditCard, HelpCircle, FileText, Layout } from 'lucide-react'
 
 export interface ComponentExample {
   title: string
@@ -12,27 +35,33 @@ export const navigationExamples: Record<string, ComponentExample[]> = {
   combobox: [
     {
       title: 'Basic Combobox',
-      description: 'A simple combobox component',
+      description: 'A searchable dropdown select component with keyboard navigation',
       code: `import { Combobox } from 'mad-ui-components'
 
 export function ComboboxExample() {
   const options = [
-    { value: 'apple', label: 'Apple' },
-    { value: 'banana', label: 'Banana' },
-    { value: 'orange', label: 'Orange' }
+    { value: 'nextjs', label: 'Next.js App Router' },
+    { value: 'react', label: 'React 19' },
+    { value: 'tailwind', label: 'Tailwind CSS' },
+    { value: 'typescript', label: 'TypeScript' }
   ]
 
-  return <Combobox options={options} placeholder="Search fruits..." />
+  return (
+    <div className="w-full max-w-sm">
+      <Combobox options={options} placeholder="Select framework..." />
+    </div>
+  )
 }`,
       preview: (
         <div className="w-full max-w-sm">
           <Combobox 
             options={[
-              { value: 'apple', label: 'Apple' },
-              { value: 'banana', label: 'Banana' },
-              { value: 'orange', label: 'Orange' }
+              { value: 'nextjs', label: 'Next.js App Router' },
+              { value: 'react', label: 'React 19' },
+              { value: 'tailwind', label: 'Tailwind CSS' },
+              { value: 'typescript', label: 'TypeScript' }
             ]} 
-            placeholder="Search fruits..." 
+            placeholder="Select framework..." 
           />
         </div>
       )
@@ -41,25 +70,78 @@ export function ComboboxExample() {
 
   command: [
     {
-      title: 'Basic Command',
-      description: 'A simple command component',
-      code: `import { Command } from 'mad-ui-components'
+      title: 'Command Palette',
+      description: 'Fast, composable command menu with filtering and keyboard accessibility',
+      code: `import { 
+  Command, 
+  CommandInput, 
+  CommandList, 
+  CommandEmpty, 
+  CommandGroup, 
+  CommandItem, 
+  CommandSeparator 
+} from 'mad-ui-components'
+import { Search, Settings, User, CreditCard, HelpCircle } from 'lucide-react'
 
 export function CommandExample() {
   return (
-    <Command>
-      <div>🔍 Search</div>
-      <div>⚙️ Settings</div>
-      <div>❓ Help</div>
+    <Command className="rounded-xl border shadow-md">
+      <CommandInput placeholder="Type a command or search..." />
+      <CommandList>
+        <CommandEmpty>No results found.</CommandEmpty>
+        <CommandGroup heading="Suggestions">
+          <CommandItem className="flex items-center gap-2">
+            <User className="h-4 w-4 text-muted-foreground" />
+            <span>Profile Settings</span>
+          </CommandItem>
+          <CommandItem className="flex items-center gap-2">
+            <CreditCard className="h-4 w-4 text-muted-foreground" />
+            <span>Billing & Invoices</span>
+          </CommandItem>
+        </CommandGroup>
+        <CommandSeparator />
+        <CommandGroup heading="Settings">
+          <CommandItem className="flex items-center gap-2">
+            <Settings className="h-4 w-4 text-muted-foreground" />
+            <span>Workspace Preferences</span>
+          </CommandItem>
+          <CommandItem className="flex items-center gap-2">
+            <HelpCircle className="h-4 w-4 text-muted-foreground" />
+            <span>Support & Documentation</span>
+          </CommandItem>
+        </CommandGroup>
+      </CommandList>
     </Command>
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm">
-          <Command>
-            <div>🔍 Search</div>
-            <div>⚙️ Settings</div>
-            <div>❓ Help</div>
+        <div className="w-full max-w-md">
+          <Command className="rounded-xl border shadow-sm">
+            <CommandInput placeholder="Type a command or search..." />
+            <CommandList>
+              <CommandEmpty>No results found.</CommandEmpty>
+              <CommandGroup heading="Suggestions">
+                <CommandItem className="flex items-center gap-2">
+                  <User className="h-4 w-4 text-muted-foreground" />
+                  <span>Profile Settings</span>
+                </CommandItem>
+                <CommandItem className="flex items-center gap-2">
+                  <CreditCard className="h-4 w-4 text-muted-foreground" />
+                  <span>Billing & Invoices</span>
+                </CommandItem>
+              </CommandGroup>
+              <CommandSeparator />
+              <CommandGroup heading="Settings">
+                <CommandItem className="flex items-center gap-2">
+                  <Settings className="h-4 w-4 text-muted-foreground" />
+                  <span>Workspace Preferences</span>
+                </CommandItem>
+                <CommandItem className="flex items-center gap-2">
+                  <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                  <span>Support & Documentation</span>
+                </CommandItem>
+              </CommandGroup>
+            </CommandList>
           </Command>
         </div>
       )
@@ -68,23 +150,82 @@ export function CommandExample() {
 
   menubar: [
     {
-      title: 'Basic Menubar',
-      description: 'A simple menubar component',
-      code: `import { Menubar } from 'mad-ui-components'
+      title: 'Desktop Menubar',
+      description: 'Application menubar with dropdown menus and nested items',
+      code: `import { 
+  Menubar, 
+  MenubarMenu, 
+  MenubarTrigger, 
+  MenubarContent, 
+  MenubarItem, 
+  MenubarSeparator 
+} from 'mad-ui-components'
 
 export function MenubarExample() {
   return (
     <Menubar>
-      <div>File</div>
-      <div>Edit</div>
+      <MenubarMenu>
+        <MenubarTrigger>File</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>New Tab</MenubarItem>
+          <MenubarItem>New Window</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>Share</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>Print...</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>Edit</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>Undo</MenubarItem>
+          <MenubarItem>Redo</MenubarItem>
+          <MenubarSeparator />
+          <MenubarItem>Cut</MenubarItem>
+          <MenubarItem>Copy</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
+      <MenubarMenu>
+        <MenubarTrigger>View</MenubarTrigger>
+        <MenubarContent>
+          <MenubarItem>Always Show Bookmarks Bar</MenubarItem>
+          <MenubarItem>Reload Page</MenubarItem>
+        </MenubarContent>
+      </MenubarMenu>
     </Menubar>
   )
 }`,
       preview: (
-        <div className="w-full max-w-md">
+        <div className="w-full max-w-lg flex items-center justify-center p-4">
           <Menubar>
-            <div>File</div>
-            <div>Edit</div>
+            <MenubarMenu>
+              <MenubarTrigger>File</MenubarTrigger>
+              <MenubarContent>
+                <MenubarItem>New Tab</MenubarItem>
+                <MenubarItem>New Window</MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>Share</MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>Print...</MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger>Edit</MenubarTrigger>
+              <MenubarContent>
+                <MenubarItem>Undo</MenubarItem>
+                <MenubarItem>Redo</MenubarItem>
+                <MenubarSeparator />
+                <MenubarItem>Cut</MenubarItem>
+                <MenubarItem>Copy</MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
+            <MenubarMenu>
+              <MenubarTrigger>View</MenubarTrigger>
+              <MenubarContent>
+                <MenubarItem>Always Show Bookmarks Bar</MenubarItem>
+                <MenubarItem>Reload Page</MenubarItem>
+              </MenubarContent>
+            </MenubarMenu>
           </Menubar>
         </div>
       )
@@ -93,27 +234,78 @@ export function MenubarExample() {
 
   'navigation-menu': [
     {
-      title: 'Basic Navigation Menu',
-      description: 'A simple navigation menu component',
-      code: `import { NavigationMenu } from 'mad-ui-components'
+      title: 'Navigation Menu',
+      description: 'A collection of navigation links with animated flyout content',
+      code: `import { 
+  NavigationMenu, 
+  NavigationMenuList, 
+  NavigationMenuItem, 
+  NavigationMenuTrigger, 
+  NavigationMenuContent, 
+  NavigationMenuLink 
+} from 'mad-ui-components'
 
 export function NavigationMenuExample() {
   return (
     <NavigationMenu>
-      <div>Home</div>
-      <div>About</div>
-      <div>Services</div>
-      <div>Contact</div>
+      <NavigationMenuList>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
+          <NavigationMenuContent className="p-4 w-72 space-y-2">
+            <NavigationMenuLink href="/docs/getting-started" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
+              Overview &amp; Quickstart
+            </NavigationMenuLink>
+            <NavigationMenuLink href="/docs/installation" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
+              Installation Guides
+            </NavigationMenuLink>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+          <NavigationMenuContent className="p-4 w-72 space-y-2">
+            <NavigationMenuLink href="/docs/components" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
+              All 57+ Primitives
+            </NavigationMenuLink>
+          </NavigationMenuContent>
+        </NavigationMenuItem>
+        <NavigationMenuItem>
+          <NavigationMenuLink href="/docs/examples" className="px-4 py-2 font-medium text-sm text-muted-foreground hover:text-foreground">
+            Examples
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      </NavigationMenuList>
     </NavigationMenu>
   )
 }`,
       preview: (
-        <div className="w-full max-w-md">
+        <div className="w-full flex items-center justify-center p-4">
           <NavigationMenu>
-            <div>Home</div>
-            <div>About</div>
-            <div>Services</div>
-            <div>Contact</div>
+            <NavigationMenuList>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
+                <NavigationMenuContent className="p-4 w-72 space-y-2">
+                  <NavigationMenuLink href="/docs/getting-started" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
+                    Overview &amp; Quickstart
+                  </NavigationMenuLink>
+                  <NavigationMenuLink href="/docs/installation" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
+                    Installation Guides
+                  </NavigationMenuLink>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuTrigger>Components</NavigationMenuTrigger>
+                <NavigationMenuContent className="p-4 w-72 space-y-2">
+                  <NavigationMenuLink href="/docs/components" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
+                    All 57+ Primitives
+                  </NavigationMenuLink>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              <NavigationMenuItem>
+                <NavigationMenuLink href="/docs/examples" className="px-4 py-2 font-medium text-sm text-muted-foreground hover:text-foreground">
+                  Examples
+                </NavigationMenuLink>
+              </NavigationMenuItem>
+            </NavigationMenuList>
           </NavigationMenu>
         </div>
       )
@@ -122,24 +314,27 @@ export function NavigationMenuExample() {
 
   pagination: [
     {
-      title: 'Basic Pagination',
-      description: 'A simple pagination component',
+      title: 'Pagination Control',
+      description: 'Page pagination component with active state and button navigation',
       code: `import { Pagination } from 'mad-ui-components'
+import { useState } from 'react'
 
 export function PaginationExample() {
+  const [page, setPage] = useState(1)
+
   return (
     <Pagination 
-      currentPage={1} 
-      totalPages={10} 
-      onPageChange={(page) => console.log('Page:', page)} 
+      currentPage={page} 
+      totalPages={8} 
+      onPageChange={setPage} 
     />
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm">
+        <div className="w-full flex justify-center py-2">
           <Pagination 
             currentPage={1} 
-            totalPages={10} 
+            totalPages={8} 
             onPageChange={(page) => console.log('Page:', page)} 
           />
         </div>

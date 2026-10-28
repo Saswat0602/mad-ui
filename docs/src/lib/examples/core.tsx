@@ -14,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
   Switch,
+  Slider,
   Progress,
   Rating,
   Skeleton,
@@ -553,5 +554,58 @@ export const coreExamples: Record<string, ComponentExample[]> = {
         </div>
       )
     }
+  ],
+
+  slider: [
+    {
+      title: 'Basic Slider',
+      description: 'Single-value track slider with live feedback and smooth drag interaction.',
+      code: snippets.slider.basic,
+      preview: <InteractiveSliderDemo />
+    },
+    {
+      title: 'Range Slider',
+      description: 'Dual-thumb slider for selecting lower and upper bound ranges.',
+      code: snippets.slider.range,
+      preview: <InteractiveRangeSliderDemo />
+    }
   ]
+}
+
+function InteractiveSliderDemo() {
+  const [val, setVal] = React.useState(60)
+  return (
+    <div className="w-full max-w-sm space-y-4">
+      <div className="flex justify-between text-sm">
+        <span className="text-muted-foreground">Volume Level</span>
+        <span className="font-mono font-semibold">{val}%</span>
+      </div>
+      <Slider 
+        value={val} 
+        onChange={(v) => typeof v === 'number' && setVal(v)} 
+        min={0} 
+        max={100} 
+        step={1} 
+      />
+    </div>
+  )
+}
+
+function InteractiveRangeSliderDemo() {
+  const [range, setRange] = React.useState<[number, number]>([25, 75])
+  return (
+    <div className="w-full max-w-sm space-y-4">
+      <div className="flex justify-between text-sm">
+        <span className="text-muted-foreground">Price Filter</span>
+        <span className="font-mono font-semibold">${range[0]} - ${range[1]}</span>
+      </div>
+      <Slider 
+        value={range} 
+        onChange={(v) => Array.isArray(v) && setRange(v)} 
+        range 
+        min={0} 
+        max={100} 
+      />
+    </div>
+  )
 }

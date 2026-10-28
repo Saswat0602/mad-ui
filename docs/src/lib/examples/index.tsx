@@ -26,8 +26,28 @@ export const COMPONENT_EXAMPLES: Record<string, ComponentExample[]> = {
   ...feedbackExamples
 }
 
+const SLUG_ALIASES: Record<string, string> = {
+  inputotp: 'input-otp',
+  radiogroup: 'radio-group',
+  scrollarea: 'scroll-area',
+  datatable: 'data-table',
+  navigationmenu: 'navigation-menu',
+  alertdialog: 'alert-dialog',
+  dropdownmenu: 'dropdown-menu',
+  contextmenu: 'context-menu',
+  hovercard: 'hover-card',
+  aspectratio: 'aspect-ratio',
+  breadcrumb: 'breadcrumbs',
+}
+
 export function getComponentExamples(slug: string): ComponentExample[] {
-  return COMPONENT_EXAMPLES[slug] || [
+  const resolvedKey = COMPONENT_EXAMPLES[slug] 
+    ? slug 
+    : (SLUG_ALIASES[slug] && COMPONENT_EXAMPLES[SLUG_ALIASES[slug]]) 
+      ? SLUG_ALIASES[slug] 
+      : Object.keys(COMPONENT_EXAMPLES).find(k => k.replace(/-/g, '') === slug.replace(/-/g, '')) || slug
+
+  return COMPONENT_EXAMPLES[resolvedKey] || [
     {
       title: 'Basic Example',
       description: 'A basic example of the component',
