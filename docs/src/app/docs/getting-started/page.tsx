@@ -383,7 +383,7 @@ export default function App() {
                   description: "Browse our complete collection of 50+ production-ready components with live examples and comprehensive documentation.",
                   gradient: "bg-gradient-to-br from-blue-500 to-purple-500",
                   buttonText: "View All Components",
-                  buttonVariant: undefined as const
+                  buttonVariant: "default" as const
                 },
                 {
                   icon: Download,

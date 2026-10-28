@@ -14,7 +14,7 @@ export interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
   items?: Array<{
     id?: string;
     label: string;
-    icon?: React.ComponentType<{ size?: number; className?: string }>;
+    icon?: any;
     active?: boolean;
     badge?: string | number;
     badgeColor?: string;
@@ -28,7 +28,7 @@ export interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
     items: Array<{
       id?: string;
       label: string;
-      icon?: React.ComponentType<{ size?: number; className?: string }>;
+      icon?: any;
       active?: boolean;
       badge?: string | number;
       badgeColor?: string;

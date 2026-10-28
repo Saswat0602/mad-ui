@@ -1,6 +1,6 @@
 import React from 'react'
-import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter, Checkbox, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Slider, Switch, Progress, Rating, Skeleton, Textarea, Radio, Label } from 'mad-ui-components'
-import { Mail, Lock, Search, Download, Upload, Check, Star, User, ArrowRight, Heart, ShoppingCart, Settings, Bell } from 'lucide-react'
+import { Button, Input, Card, CardContent, CardHeader, CardTitle, CardDescription, Checkbox, Select, SelectContent, SelectItem, SelectTrigger, SelectValue, Switch, Progress, Rating, Skeleton, Textarea, Radio, Label } from 'mad-ui-components'
+import { Mail, Search, Download, Upload, Check, User, ArrowRight, Heart, ShoppingCart } from 'lucide-react'
 
 export interface ComponentExample {
   title: string
@@ -566,7 +566,7 @@ export function CheckboxIndeterminate() {
       preview: (
         <div className="space-y-2">
           <Checkbox label="Select all items" indeterminate />
-          <p className="text-xs text-muted-foreground ml-7">Used for "select all" functionality</p>
+          <p className="text-xs text-muted-foreground ml-7">Used for &quot;select all&quot; functionality</p>
         </div>
       )
     }

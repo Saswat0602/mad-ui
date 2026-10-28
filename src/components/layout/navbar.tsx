@@ -14,13 +14,13 @@ export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   navItems?: Array<{
     id: string;
     label: string;
-    icon?: React.ComponentType<{ size?: number; className?: string }>;
+    icon?: any;
     active?: boolean;
     badge?: string;
     badgeColor?: string;
     dropdown?: Array<{
       label: string;
-      icon?: React.ComponentType<{ size?: number; className?: string }>;
+      icon?: any;
       action?: () => void;
       danger?: boolean;
     }>;
@@ -33,7 +33,7 @@ export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   profileRole?: string;
   profileMenuItems?: Array<{
     label: string;
-    icon?: React.ComponentType<{ size?: number; className?: string }>;
+    icon?: any;
     action?: () => void;
     danger?: boolean;
   }>;
