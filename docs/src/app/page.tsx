@@ -37,7 +37,7 @@ import {
   Sparkles,
   MousePointerClick
 } from 'lucide-react'
-import * as snippets from './data/landing-snippets'
+import * as snippets from '@/data/landing-snippets'
 
 export default function HomePage() {
   const [activePm, setActivePm] = useState<'npm' | 'pnpm' | 'yarn' | 'bun'>('npm')

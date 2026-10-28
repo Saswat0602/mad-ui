@@ -44,7 +44,8 @@ import {
   CheckCircle2,
   AlertCircle
 } from 'lucide-react'
-import * as snippets from './data/example-snippets'
+import * as snippets from '@/data/example-snippets'
+import { CodeBlock } from '@/components/CodeBlock'
 
 
 interface ExamplePattern {
@@ -515,19 +516,15 @@ export default function ExamplesPage() {
                     {ex.component}
                   </div>
                 ) : (
-                  <div className="rounded-xl border border-zinc-800 bg-[#0d0e12] overflow-hidden text-xs">
-                    <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800/80 bg-[#14151b] text-zinc-400">
-                      <span className="font-mono text-[11px] text-zinc-300">
-                        {ex.id}.tsx
-                      </span>
-                      <span className="text-[10px] text-zinc-500 font-mono uppercase">TypeScript / TSX</span>
-                    </div>
-                    <pre className="p-4 font-mono text-[12px] leading-relaxed text-zinc-200 overflow-x-auto whitespace-pre-wrap max-h-[500px]">
-                      <code>{ex.code}</code>
-                    </pre>
-                  </div>
+                  <CodeBlock
+                    code={ex.code}
+                    language="tsx"
+                    filename={`${ex.id}.tsx`}
+                    showLineNumbers={true}
+                  />
                 )}
               </div>
+
             </div>
           )
         })}

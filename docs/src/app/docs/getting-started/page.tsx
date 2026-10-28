@@ -4,25 +4,16 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { 
   Check, 
-  Copy, 
   ArrowRight, 
   Zap, 
   ShieldCheck, 
   Sparkles 
 } from 'lucide-react'
-import * as snippets from './data/getting-started-snippets'
+import * as snippets from '@/data/getting-started-snippets'
+import { CodeBlock } from '@/components/CodeBlock'
 
 export default function GettingStartedPage() {
   const [activeTab, setActiveTab] = useState<'npm' | 'pnpm' | 'yarn' | 'bun'>('npm')
-  const [copiedKey, setCopiedKey] = useState<string | null>(null)
-
-  const copyCode = (text: string, key: string) => {
-    navigator.clipboard.writeText(text)
-    setCopiedKey(key)
-    setTimeout(() => setCopiedKey(null), 2000)
-  }
-
-
   return (
     <div className="space-y-12 w-full">
       {/* Header */}
@@ -69,43 +60,29 @@ export default function GettingStartedPage() {
           Install <code className="text-foreground font-mono">mad-ui-components</code> into your project (dependencies like <code className="font-mono text-foreground">clsx</code>, <code className="font-mono text-foreground">tailwind-merge</code>, and <code className="font-mono text-foreground">lucide-react</code> are bundled automatically):
         </p>
 
-        <div className="rounded-lg border border-border/60 bg-zinc-950 overflow-hidden text-xs">
-          <div className="flex items-center justify-between px-3.5 py-2 border-b border-border/40 bg-zinc-900/60 text-zinc-400">
-            <div className="flex items-center space-x-1">
-              {(['npm', 'pnpm', 'yarn', 'bun'] as const).map((pm) => (
-                <button
-                  key={pm}
-                  onClick={() => setActiveTab(pm)}
-                  className={`px-2 py-0.5 rounded text-[11px] font-mono transition-colors ${
-                    activeTab === pm
-                      ? 'bg-zinc-800 text-zinc-100 font-semibold'
-                      : 'hover:text-zinc-200'
-                  }`}
-                >
-                  {pm}
-                </button>
-              ))}
-            </div>
-            <button
-              onClick={() => copyCode(snippets.installCommands[activeTab], 'install')}
-              className="flex items-center gap-1 text-[11px] hover:text-zinc-200 transition-colors"
-            >
-              {copiedKey === 'install' ? (
-                <>
-                  <Check className="h-3 w-3 text-emerald-400" />
-                  <span className="text-emerald-400">Copied</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3 w-3" />
-                  <span>Copy</span>
-                </>
-              )}
-            </button>
+        <div className="space-y-2">
+          {/* Segmented Package Manager Switcher */}
+          <div className="flex items-center gap-1.5 p-1 rounded-lg bg-muted/50 border border-border/40 w-fit">
+            {(['npm', 'pnpm', 'yarn', 'bun'] as const).map((pm) => (
+              <button
+                key={pm}
+                onClick={() => setActiveTab(pm)}
+                className={`px-3 py-1 rounded-md text-xs font-mono transition-colors ${
+                  activeTab === pm
+                    ? 'bg-background text-foreground shadow-xs font-semibold'
+                    : 'text-muted-foreground hover:text-foreground'
+                }`}
+              >
+                {pm}
+              </button>
+            ))}
           </div>
-          <div className="p-4 font-mono text-zinc-100">
-            <code>{snippets.installCommands[activeTab]}</code>
-          </div>
+
+          <CodeBlock
+            code={snippets.installCommands[activeTab]}
+            language="bash"
+            filename={`terminal (${activeTab})`}
+          />
         </div>
       </section>
 
@@ -122,30 +99,12 @@ export default function GettingStartedPage() {
           Add the Mad UI build path to your <code className="text-foreground font-mono">tailwind.config.js</code> so Tailwind compiles component styles:
         </p>
 
-        <div className="rounded-lg border border-border/60 bg-zinc-950 overflow-hidden text-xs">
-          <div className="flex items-center justify-between px-3.5 py-2 border-b border-border/40 bg-zinc-900/60 text-zinc-400">
-            <span className="font-mono text-[11px]">tailwind.config.js</span>
-            <button
-              onClick={() => copyCode(snippets.tailwindConfig, 'tailwind')}
-              className="flex items-center gap-1 text-[11px] hover:text-zinc-200 transition-colors"
-            >
-              {copiedKey === 'tailwind' ? (
-                <>
-                  <Check className="h-3 w-3 text-emerald-400" />
-                  <span className="text-emerald-400">Copied</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3 w-3" />
-                  <span>Copy</span>
-                </>
-              )}
-            </button>
-          </div>
-          <pre className="p-4 font-mono text-zinc-100 overflow-x-auto leading-relaxed">
-            <code>{snippets.tailwindConfig}</code>
-          </pre>
-        </div>
+        <CodeBlock
+          code={snippets.tailwindConfig}
+          language="javascript"
+          filename="tailwind.config.js"
+          showLineNumbers={true}
+        />
       </section>
 
       {/* Step 3: Usage */}
@@ -161,30 +120,12 @@ export default function GettingStartedPage() {
           Import components anywhere in your application:
         </p>
 
-        <div className="rounded-lg border border-border/60 bg-zinc-950 overflow-hidden text-xs">
-          <div className="flex items-center justify-between px-3.5 py-2 border-b border-border/40 bg-zinc-900/60 text-zinc-400">
-            <span className="font-mono text-[11px]">MyComponent.tsx</span>
-            <button
-              onClick={() => copyCode(snippets.usage, 'usage')}
-              className="flex items-center gap-1 text-[11px] hover:text-zinc-200 transition-colors"
-            >
-              {copiedKey === 'usage' ? (
-                <>
-                  <Check className="h-3 w-3 text-emerald-400" />
-                  <span className="text-emerald-400">Copied</span>
-                </>
-              ) : (
-                <>
-                  <Copy className="h-3 w-3" />
-                  <span>Copy</span>
-                </>
-              )}
-            </button>
-          </div>
-          <pre className="p-4 font-mono text-zinc-100 overflow-x-auto leading-relaxed">
-            <code>{snippets.usage}</code>
-          </pre>
-        </div>
+        <CodeBlock
+          code={snippets.usage}
+          language="tsx"
+          filename="MyComponent.tsx"
+          showLineNumbers={true}
+        />
       </section>
 
       {/* Feature Highlights Grid */}

@@ -22,7 +22,7 @@ import {
   Label
 } from 'mad-ui-components'
 import { Mail, Search, Download, Upload, Check, User, ArrowRight, Heart, ShoppingCart } from 'lucide-react'
-import * as snippets from './data/core-snippets'
+import * as snippets from '@/data/core-snippets'
 
 export interface ComponentExample {
   title: string

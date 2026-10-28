@@ -13,7 +13,7 @@ import {
   Cpu
 } from "lucide-react"
 import { CodeBlock } from "@/components/CodeBlock"
-import * as snippets from "./data/installation-snippets"
+import * as snippets from "@/data/installation-snippets"
 
 interface CodeSnippetProps {
   code: string

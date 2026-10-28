@@ -1,8 +1,10 @@
 'use client'
 
 import React, { useState } from 'react'
-import { Drawer, Accordion } from 'mad-ui-components'
-import { Menu } from 'lucide-react'
+import { Drawer, Accordion, Card, Badge, Button } from 'mad-ui-components'
+import { Menu, Layers, ChevronRight, Check } from 'lucide-react'
+import { CodeBlock } from '@/components/CodeBlock'
+import { drawerUsageCode, accordionUsageCode } from '@/data/components-demo-snippets'
 
 export default function ComponentsDemo() {
   const [drawerOpen, setDrawerOpen] = useState(false)
@@ -13,7 +15,7 @@ export default function ComponentsDemo() {
     {
       id: 'item1',
       title: 'What is React?',
-      content: 'React is a JavaScript library for building user interfaces. It lets you compose complex UIs from small and isolated pieces of code called &quot;components&quot;.'
+      content: 'React is a JavaScript library for building user interfaces. It lets you compose complex UIs from small and isolated pieces of code called "components".'
     },
     {
       id: 'item2',
@@ -21,7 +23,7 @@ export default function ComponentsDemo() {
       content: (
         <div>
           <p>Components are like JavaScript functions. They accept arbitrary inputs (called &quot;props&quot;) and return React elements describing what should appear on the screen.</p>
-          <ul className="mt-2 list-disc list-inside">
+          <ul className="mt-2 list-disc list-inside space-y-1">
             <li>Reusable pieces of UI</li>
             <li>Can have their own state</li>
             <li>Can receive data via props</li>
@@ -37,38 +39,49 @@ export default function ComponentsDemo() {
   ]
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
-      <div className="max-w-6xl mx-auto px-6">
+    <div className="min-h-screen bg-background text-foreground py-12 transition-colors">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 space-y-12">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-4xl font-bold text-gray-900 mb-4">
-            New Drawer & Accordion Components
+        <div className="text-center space-y-3">
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-primary/20 bg-primary/10 text-primary text-xs font-semibold">
+            <Layers className="h-3.5 w-3.5" />
+            <span>Interactive Playground</span>
+          </div>
+          <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-foreground">
+            Drawer & Accordion Primitives
           </h1>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Clean, simple, and powerful components with smooth animations and flexible APIs
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
+            Experience smooth transitions, accessible keyboard interactions, and responsive layouts built with Mad UI.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        {/* Live Interactive Demos */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           {/* Drawer Demo */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">Drawer Component</h2>
-            
-            <div className="space-y-6">
-              {/* Position Controls */}
+          <Card className="p-6 sm:p-8 space-y-6 bg-card border-border/60">
+            <div className="flex items-center justify-between border-b border-border/40 pb-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <h2 className="text-xl font-bold text-foreground">Drawer Playground</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">Slide-over overlay sheet</p>
+              </div>
+              <Badge variant="outline" className="text-xs">Layout</Badge>
+            </div>
+            
+            <div className="space-y-5">
+              {/* Position Controls */}
+              <div className="space-y-2">
+                <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   Position
                 </label>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {(['right', 'left', 'top', 'bottom'] as const).map((pos) => (
                     <button
                       key={pos}
                       onClick={() => setDrawerPosition(pos)}
-                      className={`px-3 py-2 text-sm rounded-md transition-colors ${
+                      className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors capitalize ${
                         drawerPosition === pos
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          ? 'bg-primary text-primary-foreground shadow-xs'
+                          : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                       }`}
                     >
                       {pos}
@@ -78,19 +91,19 @@ export default function ComponentsDemo() {
               </div>
 
               {/* Size Controls */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+              <div className="space-y-2">
+                <label className="block text-xs font-semibold text-muted-foreground uppercase tracking-wider">
                   Size
                 </label>
-                <div className="flex gap-2">
+                <div className="flex flex-wrap gap-2">
                   {(['sm', 'md', 'lg', 'full'] as const).map((size) => (
                     <button
                       key={size}
                       onClick={() => setDrawerSize(size)}
-                      className={`px-3 py-2 text-sm rounded-md transition-colors ${
+                      className={`px-3 py-1.5 text-xs font-medium rounded-lg transition-colors uppercase ${
                         drawerSize === size
-                          ? 'bg-blue-600 text-white'
-                          : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                          ? 'bg-primary text-primary-foreground shadow-xs'
+                          : 'bg-muted text-muted-foreground hover:bg-muted/80 hover:text-foreground'
                       }`}
                     >
                       {size}
@@ -100,13 +113,13 @@ export default function ComponentsDemo() {
               </div>
 
               {/* Open Drawer Button */}
-              <button
+              <Button
                 onClick={() => setDrawerOpen(true)}
-                className="w-full bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
+                className="w-full flex items-center justify-center gap-2 mt-4"
               >
-                <Menu size={20} />
+                <Menu size={18} />
                 Open {drawerPosition} Drawer ({drawerSize})
-              </button>
+              </Button>
             </div>
 
             {/* Drawer Component */}
@@ -115,38 +128,64 @@ export default function ComponentsDemo() {
               onClose={() => setDrawerOpen(false)}
               position={drawerPosition}
               size={drawerSize}
-              className="bg-gradient-to-br from-blue-50 to-white"
+              className="bg-card text-card-foreground border-border"
             >
-              <h3 className="text-2xl font-bold mb-4 text-blue-800">Custom Drawer</h3>
-              <p className="text-gray-700 mb-6">
-                This drawer is completely customizable! You can control:
-              </p>
-              <ul className="list-disc list-inside space-y-2 text-gray-700 mb-6">
-                <li>Position (left, right, top, bottom)</li>
-                <li>Size (sm, md, lg, full)</li>
-                <li>Overlay behavior</li>
-                <li>Close button visibility</li>
-                <li>Custom styling and animations</li>
-              </ul>
-              <div className="pt-4 border-t border-gray-200">
-                <button
-                  onClick={() => setDrawerOpen(false)}
-                  className="w-full bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors"
-                >
-                  Close Drawer
-                </button>
+              <div className="p-6 space-y-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-foreground">Interactive Drawer</h3>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    Customizable slide-over panel primitive with focus management.
+                  </p>
+                </div>
+                
+                <ul className="space-y-2 text-sm text-muted-foreground">
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-primary" />
+                    <span>Position: left, right, top, bottom</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-primary" />
+                    <span>Size presets: sm, md, lg, full</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-primary" />
+                    <span>ESC key & backdrop click dismissal</span>
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <Check className="h-4 w-4 text-primary" />
+                    <span>Body scroll lock on open</span>
+                  </li>
+                </ul>
+
+                <div className="pt-4 border-t border-border">
+                  <Button
+                    variant="outline"
+                    onClick={() => setDrawerOpen(false)}
+                    className="w-full"
+                  >
+                    Close Drawer
+                  </Button>
+                </div>
               </div>
             </Drawer>
-          </div>
+          </Card>
 
           {/* Accordion Demo */}
-          <div className="bg-white rounded-lg shadow-lg p-8">
-            <h2 className="text-2xl font-bold mb-6 text-gray-900">Accordion Component</h2>
+          <Card className="p-6 sm:p-8 space-y-6 bg-card border-border/60">
+            <div className="flex items-center justify-between border-b border-border/40 pb-4">
+              <div>
+                <h2 className="text-xl font-bold text-foreground">Accordion Playground</h2>
+                <p className="text-xs text-muted-foreground mt-0.5">Collapsible disclosure panels</p>
+              </div>
+              <Badge variant="outline" className="text-xs">Forms</Badge>
+            </div>
             
             <div className="space-y-6">
-              {/* Basic Accordion */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Basic Accordion</h3>
+              {/* Single Open Accordion */}
+              <div className="space-y-2">
+                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Single Active Panel
+                </h3>
                 <Accordion 
                   items={accordionItems}
                   allowMultiple={false}
@@ -155,128 +194,116 @@ export default function ComponentsDemo() {
               </div>
 
               {/* Multiple Open Accordion */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Multiple Open</h3>
+              <div className="space-y-2">
+                <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                  Multi-Expand Panel
+                </h3>
                 <Accordion 
                   items={accordionItems}
                   allowMultiple={true}
                   defaultOpen={[0, 1]}
                 />
               </div>
-
-              {/* Custom Icon Position */}
-              <div>
-                <h3 className="text-lg font-semibold mb-3 text-gray-800">Left Icon Position</h3>
-                <Accordion 
-                  items={accordionItems.slice(0, 2)}
-                  iconPosition="left"
-                  allowMultiple={true}
-                />
-              </div>
             </div>
-          </div>
+          </Card>
         </div>
 
-        {/* Code Examples */}
-        <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold mb-6 text-gray-900">Usage Examples</h2>
+        {/* Monaco Code Examples Section */}
+        <section className="space-y-6">
+          <div className="border-b border-border/40 pb-3">
+            <h2 className="text-2xl font-bold tracking-tight text-foreground">Usage Code Snippets</h2>
+            <p className="text-xs text-muted-foreground mt-1">
+              Production-ready snippets styled with Monaco VS Code highlighting.
+            </p>
+          </div>
           
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
             {/* Drawer Code */}
-            <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Drawer Usage</h3>
-              <pre className="bg-gray-100 p-4 rounded-md text-sm overflow-x-auto">
-                <code>{`import { Drawer } from 'mad-ui-components'
-
-function MyComponent() {
-  const [isOpen, setIsOpen] = useState(false)
-  
-  return (
-    <>
-      <button onClick={() => setIsOpen(true)}>
-        Open Drawer
-      </button>
-      
-      <Drawer 
-        isOpen={isOpen} 
-        onClose={() => setIsOpen(false)}
-        position="right"
-        size="md"
-      >
-        <h3>Drawer Content</h3>
-        <p>Your content here...</p>
-      </Drawer>
-    </>
-  )
-}`}</code>
-              </pre>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <ChevronRight className="h-4 w-4 text-primary" />
+                <h3 className="text-sm font-semibold text-foreground">Drawer Usage</h3>
+              </div>
+              <CodeBlock
+                code={drawerUsageCode}
+                language="tsx"
+                filename="drawer-demo.tsx"
+                showLineNumbers={true}
+              />
             </div>
 
             {/* Accordion Code */}
-            <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Accordion Usage</h3>
-              <pre className="bg-gray-100 p-4 rounded-md text-sm overflow-x-auto">
-                <code>{`import { Accordion } from 'mad-ui-components'
-
-function MyComponent() {
-  const items = [
-    {
-      id: 'item1',
-      title: 'What is React?',
-      content: 'React is a JavaScript library...'
-    },
-    {
-      id: 'item2', 
-      title: 'How do components work?',
-      content: 'Components are like functions...'
-    }
-  ]
-  
-  return (
-    <Accordion 
-      items={items}
-      allowMultiple={true}
-      defaultOpen={[0]}
-    />
-  )
-}`}</code>
-              </pre>
+            <div className="space-y-2">
+              <div className="flex items-center gap-2">
+                <ChevronRight className="h-4 w-4 text-primary" />
+                <h3 className="text-sm font-semibold text-foreground">Accordion Usage</h3>
+              </div>
+              <CodeBlock
+                code={accordionUsageCode}
+                language="tsx"
+                filename="accordion-demo.tsx"
+                showLineNumbers={true}
+              />
             </div>
           </div>
-        </div>
+        </section>
 
-        {/* Features */}
-        <div className="mt-12 bg-white rounded-lg shadow-lg p-8">
-          <h2 className="text-2xl font-bold mb-6 text-gray-900">Key Features</h2>
+        {/* Key Features Overview */}
+        <Card className="p-6 sm:p-8 bg-card border-border/60">
+          <h2 className="text-xl font-bold text-foreground mb-6">Component Architecture Features</h2>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Drawer Features</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Multiple positions (left, right, top, bottom)</li>
-                <li>• Flexible sizing (sm, md, lg, full)</li>
-                <li>• Smooth animations</li>
-                <li>• Keyboard navigation (ESC to close)</li>
-                <li>• Overlay click to close</li>
-                <li>• Customizable styling</li>
-                <li>• TypeScript support</li>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 text-sm">
+            <div className="space-y-3">
+              <h3 className="font-semibold text-foreground flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-primary" />
+                Drawer Features
+              </h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-primary" />
+                  <span>Directional slide-in animations (left, right, top, bottom)</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-primary" />
+                  <span>Modular width/height presets: sm, md, lg, full</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-primary" />
+                  <span>Accessible backdrop with click-to-dismiss</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-primary" />
+                  <span>SSR-safe React portal mounting</span>
+                </li>
               </ul>
             </div>
             
-            <div>
-              <h3 className="text-lg font-semibold mb-3 text-gray-800">Accordion Features</h3>
-              <ul className="space-y-2 text-gray-700">
-                <li>• Single or multiple open items</li>
-                <li>• Smooth expand/collapse animations</li>
-                <li>• Custom icon positioning</li>
-                <li>• Rich content support</li>
-                <li>• Default open items</li>
-                <li>• Customizable styling</li>
-                <li>• TypeScript support</li>
+            <div className="space-y-3">
+              <h3 className="font-semibold text-foreground flex items-center gap-2">
+                <div className="h-2 w-2 rounded-full bg-primary" />
+                Accordion Features
+              </h3>
+              <ul className="space-y-2 text-muted-foreground">
+                <li className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-primary" />
+                  <span>Exclusive single-select or simultaneous multi-panel expansion</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-primary" />
+                  <span>Keyboard navigation with ARIA expanded state attributes</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-primary" />
+                  <span>Custom icon positioning and fluid CSS height animations</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <Check className="h-3.5 w-3.5 text-primary" />
+                  <span>Configurable default active panels via index array</span>
+                </li>
               </ul>
             </div>
           </div>
-        </div>
+        </Card>
       </div>
     </div>
   )
