@@ -1,80 +1,81 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* Smooth scrolling behavior */
 html {
   scroll-behavior: smooth;
 }
 
-/* Modern Material Design Theme */
-:root {
-  --color-background: 0 0% 100%;
-  --color-foreground: 240 10% 3.9%;
-  --color-card: 0 0% 100%;
-  --color-card-foreground: 240 10% 3.9%;
-  --color-popover: 0 0% 100%;
-  --color-popover-foreground: 240 10% 3.9%;
-  --color-primary: 221 83% 53%;
-  --color-primary-foreground: 210 40% 98%;
-  --color-secondary: 220 14.3% 95.9%;
-  --color-secondary-foreground: 220.9 39.3% 11%;
-  --color-muted: 220 14.3% 95.9%;
-  --color-muted-foreground: 220 8.9% 46.1%;
-  --color-accent: 220 14.3% 95.9%;
-  --color-accent-foreground: 220.9 39.3% 11%;
-  --color-destructive: 0 84.2% 60.2%;
-  --color-destructive-foreground: 210 40% 98%;
-  --color-border: 220 13% 91%;
-  --color-input: 220 13% 91%;
-  --color-ring: 221 83% 53%;
-  --color-radius: 0.75rem;
-  
-  /* Material Design Semantic Colors */
-  --color-success: 142 76% 36%;
-  --color-success-foreground: 355 100% 97%;
-  --color-warning: 32 95% 44%;
-  --color-warning-foreground: 210 40% 98%;
-  --color-error: 0 84% 60%;
-  --color-error-foreground: 210 40% 98%;
-  --color-info: 221 83% 53%;
-  --color-info-foreground: 210 40% 98%;
+@theme {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
 }
 
-/* Modern Dark Theme */
+:root {
+  --background: #ffffff;
+  --foreground: #09090b;
+  --card: #ffffff;
+  --card-foreground: #09090b;
+  --popover: #ffffff;
+  --popover-foreground: #09090b;
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --secondary: #f4f4f5;
+  --secondary-foreground: #18181b;
+  --muted: #f4f4f5;
+  --muted-foreground: #71717a;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #2563eb;
+}
+
 .dark {
-  --color-background: 224 71.4% 4.1%;
-  --color-foreground: 210 40% 98%;
-  --color-card: 224 71.4% 4.1%;
-  --color-card-foreground: 210 40% 98%;
-  --color-popover: 224 71.4% 4.1%;
-  --color-popover-foreground: 210 40% 98%;
-  --color-primary: 221 83% 53%;
-  --color-primary-foreground: 210 40% 98%;
-  --color-secondary: 215 27.9% 16.9%;
-  --color-secondary-foreground: 210 40% 98%;
-  --color-muted: 215 27.9% 16.9%;
-  --color-muted-foreground: 217.9 10.6% 64.9%;
-  --color-accent: 215 27.9% 16.9%;
-  --color-accent-foreground: 210 40% 98%;
-  --color-destructive: 0 62.8% 30.6%;
-  --color-destructive-foreground: 210 40% 98%;
-  --color-border: 215 27.9% 16.9%;
-  --color-input: 215 27.9% 16.9%;
-  --color-ring: 221 83% 53%;
-  
-  /* Material Dark Semantic Colors */
-  --color-success: 142 70% 45%;
-  --color-success-foreground: 210 40% 98%;
-  --color-warning: 32 81% 29%;
-  --color-warning-foreground: 210 40% 98%;
-  --color-error: 0 62.8% 30.6%;
-  --color-error-foreground: 210 40% 98%;
-  --color-info: 217 91% 60%;
-  --color-info-foreground: 210 40% 98%;
+  --background: #09090b;
+  --foreground: #fafafa;
+  --card: #09090b;
+  --card-foreground: #fafafa;
+  --popover: #09090b;
+  --popover-foreground: #fafafa;
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --secondary: #18181b;
+  --secondary-foreground: #fafafa;
+  --muted: #18181b;
+  --muted-foreground: #a1a1aa;
+  --accent: #18181b;
+  --accent-foreground: #fafafa;
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #3b82f6;
 }
 
 @layer base {
   * {
-    border-color: hsl(var(--color-border));
+    border-color: var(--border);
   }
   
   html {
@@ -82,8 +83,8 @@ html {
   }
   
   body {
-    background-color: hsl(var(--color-background));
-    color: hsl(var(--color-foreground));
+    background-color: var(--background);
+    color: var(--foreground);
     font-feature-settings: "rlig" 1, "calt" 1;
     overflow-x: hidden;
   }

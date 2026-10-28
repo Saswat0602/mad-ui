@@ -10,7 +10,7 @@ export interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputEle
 }
 
 const switchVariants = createVariants({
-  base: "peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-primary data-[state=unchecked]:bg-input",
+  base: "peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-2xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-zinc-200 dark:data-[state=unchecked]:bg-zinc-700",
   variants: {
     size: {
       sm: "h-5 w-9",

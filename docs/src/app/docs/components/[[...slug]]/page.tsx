@@ -95,11 +95,6 @@ function ComponentCategoryPage() {
                         {component.title}
                         <ArrowUpRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
                       </h3>
-                      {component.status === 'beta' && (
-                        <span className="text-[10px] uppercase font-medium tracking-tight px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
-                          Beta
-                        </span>
-                      )}
                     </div>
                     
                     <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">

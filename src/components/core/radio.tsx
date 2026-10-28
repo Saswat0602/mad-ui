@@ -11,7 +11,7 @@ export interface RadioProps extends Omit<React.InputHTMLAttributes<HTMLInputElem
 }
 
 const radioVariants = createVariants({
-  base: "aspect-square h-4 w-4 rounded-full border border-primary text-primary shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+  base: "aspect-square h-4 w-4 rounded-full border border-zinc-300 dark:border-zinc-700 text-blue-600 shadow-2xs focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 accent-blue-600 cursor-pointer transition-all",
   variants: {
     size: {
       sm: "h-3.5 w-3.5",
@@ -38,7 +38,7 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
             id={radioId}
             className={cn(
               radioVariants({ size }),
-              error && "border-destructive",
+              error && "border-red-500",
               className
             )}
             {...props}
@@ -47,7 +47,7 @@ const Radio = React.forwardRef<HTMLInputElement, RadioProps>(
           {props.checked && (
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
               <div className={cn(
-                "rounded-full bg-primary",
+                "rounded-full bg-blue-600",
                 size === "sm" && "h-1.5 w-1.5",
                 size === "md" && "h-2 w-2",
                 size === "lg" && "h-2.5 w-2.5"

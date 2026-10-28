@@ -136,11 +136,6 @@ export function DocsSidebar({ onItemClick }: DocsSidebarProps) {
                       )}
                     >
                       <span className="truncate">{component.title}</span>
-                      {component.status === 'beta' && (
-                        <span className="text-[9px] font-medium uppercase tracking-tight px-1 py-0.2 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
-                          Beta
-                        </span>
-                      )}
                     </Link>
                   )
                 })}

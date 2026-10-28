@@ -8,13 +8,13 @@ export interface CardProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const cardVariants = createVariants({
-  base: "rounded-lg bg-card text-card-foreground transition-all duration-200",
+  base: "rounded-xl bg-card text-card-foreground transition-all duration-200",
   variants: {
     variant: {
-      default: "border shadow-sm",
-      elevated: "border-0 shadow-md hover:shadow-lg",
-      outlined: "border-2 shadow-none",
-      ghost: "border-0 shadow-none",
+      default: "border border-border/80 bg-card shadow-xs",
+      elevated: "border border-border/50 bg-card shadow-md hover:shadow-lg",
+      outlined: "border-2 border-border bg-transparent shadow-none",
+      ghost: "border-0 shadow-none bg-transparent",
     },
   },
   defaultVariants: {
@@ -54,7 +54,7 @@ const CardTitle = React.forwardRef<HTMLParagraphElement, React.HTMLAttributes<HT
     <h3
       ref={ref}
       className={cn(
-        "text-2xl font-semibold leading-none tracking-tight",
+        "text-xl font-semibold leading-none tracking-tight text-foreground",
         className
       )}
       {...props}

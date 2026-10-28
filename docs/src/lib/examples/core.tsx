@@ -18,60 +18,24 @@ export const coreExamples: Record<string, ComponentExample[]> = {
 
 export function ButtonVariants() {
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-      <div className="flex flex-col items-center gap-2">
-        <Button className="w-full">Default</Button>
-        <span className="text-xs text-muted-foreground">Default</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Button variant="destructive" className="w-full">Destructive</Button>
-        <span className="text-xs text-muted-foreground">Destructive</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Button variant="outline" className="w-full">Outline</Button>
-        <span className="text-xs text-muted-foreground">Outline</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Button variant="secondary" className="w-full">Secondary</Button>
-        <span className="text-xs text-muted-foreground">Secondary</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Button variant="ghost" className="w-full">Ghost</Button>
-        <span className="text-xs text-muted-foreground">Ghost</span>
-      </div>
-      <div className="flex flex-col items-center gap-2">
-        <Button variant="link" className="w-full">Link</Button>
-        <span className="text-xs text-muted-foreground">Link</span>
-      </div>
+    <div className="flex flex-wrap items-center gap-3">
+      <Button variant="default">Default</Button>
+      <Button variant="secondary">Secondary</Button>
+      <Button variant="destructive">Destructive</Button>
+      <Button variant="outline">Outline</Button>
+      <Button variant="ghost">Ghost</Button>
+      <Button variant="link">Link</Button>
     </div>
   )
 }`,
       preview: (
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-6 w-full">
-          <div className="flex flex-col items-center gap-3">
-            <Button className="w-full shadow-md hover:shadow-lg transition-shadow">Default</Button>
-            <span className="text-xs font-medium text-muted-foreground">Default</span>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <Button variant="destructive" className="w-full shadow-md hover:shadow-lg transition-shadow">Destructive</Button>
-            <span className="text-xs font-medium text-muted-foreground">Destructive</span>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <Button variant="outline" className="w-full shadow-sm hover:shadow-md transition-shadow">Outline</Button>
-            <span className="text-xs font-medium text-muted-foreground">Outline</span>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <Button variant="secondary" className="w-full shadow-sm hover:shadow-md transition-shadow">Secondary</Button>
-            <span className="text-xs font-medium text-muted-foreground">Secondary</span>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <Button variant="ghost" className="w-full">Ghost</Button>
-            <span className="text-xs font-medium text-muted-foreground">Ghost (hover me)</span>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <Button variant="link" className="w-full">Link</Button>
-            <span className="text-xs font-medium text-muted-foreground">Link (underline)</span>
-          </div>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button variant="default">Default</Button>
+          <Button variant="secondary">Secondary</Button>
+          <Button variant="destructive">Destructive</Button>
+          <Button variant="outline">Outline</Button>
+          <Button variant="ghost">Ghost</Button>
+          <Button variant="link">Link</Button>
         </div>
       )
     },
@@ -83,32 +47,20 @@ import { Search } from 'lucide-react'
 
 export function ButtonSizes() {
   return (
-    <div className="flex items-end gap-4">
+    <div className="flex flex-wrap items-center gap-3">
       <Button size="sm">Small</Button>
       <Button size="default">Default</Button>
       <Button size="lg">Large</Button>
-      <Button size="icon"><Search className="h-4 w-4" /></Button>
+      <Button size="icon" aria-label="Search"><Search className="h-4 w-4" /></Button>
     </div>
   )
 }`,
       preview: (
-        <div className="flex flex-wrap items-end gap-6 justify-center">
-          <div className="flex flex-col items-center gap-3">
-            <Button size="sm" className="shadow-md">Small Button</Button>
-            <span className="text-xs font-medium text-muted-foreground">Small (sm)</span>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <Button size="default" className="shadow-md">Default Button</Button>
-            <span className="text-xs font-medium text-muted-foreground">Default</span>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <Button size="lg" className="shadow-md">Large Button</Button>
-            <span className="text-xs font-medium text-muted-foreground">Large (lg)</span>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <Button size="icon" className="shadow-md"><Search className="h-4 w-4" /></Button>
-            <span className="text-xs font-medium text-muted-foreground">Icon Only</span>
-          </div>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button size="sm">Small</Button>
+          <Button size="default">Default</Button>
+          <Button size="lg">Large</Button>
+          <Button size="icon" aria-label="Search"><Search className="h-4 w-4" /></Button>
         </div>
       )
     },
@@ -121,41 +73,21 @@ import { Download, Upload, ArrowRight, Heart, ShoppingCart } from 'lucide-react'
 export function ButtonWithIcons() {
   return (
     <div className="flex flex-wrap gap-3">
-      <Button leftIcon={<Download className="h-4 w-4" />}>
-        Download
-      </Button>
-      <Button leftIcon={<Upload className="h-4 w-4" />} variant="secondary">
-        Upload
-      </Button>
-      <Button rightIcon={<ArrowRight className="h-4 w-4" />} variant="outline">
-        Next
-      </Button>
-      <Button leftIcon={<Heart className="h-4 w-4" />} variant="destructive">
-        Like
-      </Button>
-      <Button leftIcon={<ShoppingCart className="h-4 w-4" />}>
-        Add to Cart
-      </Button>
+      <Button leftIcon={<Download className="h-4 w-4" />}>Download</Button>
+      <Button leftIcon={<Upload className="h-4 w-4" />} variant="secondary">Upload</Button>
+      <Button rightIcon={<ArrowRight className="h-4 w-4" />} variant="outline">Next</Button>
+      <Button leftIcon={<Heart className="h-4 w-4" />} variant="destructive">Like</Button>
+      <Button leftIcon={<ShoppingCart className="h-4 w-4" />}>Add to Cart</Button>
     </div>
   )
 }`,
       preview: (
-        <div className="flex flex-wrap gap-4 justify-center">
-          <Button leftIcon={<Download className="h-4 w-4" />} className="shadow-md">
-            Download
-          </Button>
-          <Button leftIcon={<Upload className="h-4 w-4" />} variant="secondary" className="shadow-md">
-            Upload
-          </Button>
-          <Button rightIcon={<ArrowRight className="h-4 w-4" />} variant="outline" className="shadow-sm">
-            Next
-          </Button>
-          <Button leftIcon={<Heart className="h-4 w-4" />} variant="destructive" className="shadow-md">
-            Like
-          </Button>
-          <Button leftIcon={<ShoppingCart className="h-4 w-4" />} className="shadow-md">
-            Add to Cart
-          </Button>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button leftIcon={<Download className="h-4 w-4" />}>Download</Button>
+          <Button leftIcon={<Upload className="h-4 w-4" />} variant="secondary">Upload</Button>
+          <Button rightIcon={<ArrowRight className="h-4 w-4" />} variant="outline">Next</Button>
+          <Button leftIcon={<Heart className="h-4 w-4" />} variant="destructive">Like</Button>
+          <Button leftIcon={<ShoppingCart className="h-4 w-4" />}>Add to Cart</Button>
         </div>
       )
     },
@@ -166,27 +98,18 @@ export function ButtonWithIcons() {
 
 export function ButtonLoading() {
   return (
-    <div className="flex gap-3">
-      <Button loading>Processing...</Button>
+    <div className="flex flex-wrap gap-3">
+      <Button loading>Processing</Button>
+      <Button variant="secondary" loading>Saving...</Button>
       <Button variant="outline" loading>Loading</Button>
-      <Button variant="secondary" loading>Please wait</Button>
     </div>
   )
 }`,
       preview: (
-        <div className="flex flex-wrap gap-4 justify-center">
-          <div className="flex flex-col items-center gap-3">
-            <Button loading className="shadow-md">Processing...</Button>
-            <span className="text-xs font-medium text-muted-foreground">Default + Loading</span>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <Button variant="outline" loading className="shadow-sm">Loading</Button>
-            <span className="text-xs font-medium text-muted-foreground">Outline + Loading</span>
-          </div>
-          <div className="flex flex-col items-center gap-3">
-            <Button variant="secondary" loading className="shadow-md">Please wait</Button>
-            <span className="text-xs font-medium text-muted-foreground">Secondary + Loading</span>
-          </div>
+        <div className="flex flex-wrap items-center justify-center gap-3">
+          <Button loading>Processing</Button>
+          <Button variant="secondary" loading>Saving...</Button>
+          <Button variant="outline" loading>Loading</Button>
         </div>
       )
     },
@@ -204,11 +127,10 @@ export function ButtonFullWidth() {
   )
 }`,
       preview: (
-        <div className="w-full max-w-md mx-auto space-y-3">
-          <Button fullWidth leftIcon={<Check className="h-4 w-4" />} className="shadow-md">
+        <div className="w-full max-w-sm mx-auto space-y-2">
+          <Button fullWidth leftIcon={<Check className="h-4 w-4" />}>
             Submit Form
           </Button>
-          <p className="text-xs text-center text-muted-foreground">Full width button with icon</p>
         </div>
       )
     }

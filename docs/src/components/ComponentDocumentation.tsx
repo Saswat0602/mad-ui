@@ -6,7 +6,6 @@ import { ComponentCategory } from '@/types/component'
 import { ComponentPreview } from './ComponentPreview'
 import { PropsTable } from './PropsTable'
 import { CodeBlock } from './CodeBlock'
-import { StatusBadge } from './StatusBadge'
 import Link from 'next/link'
 import { Copy, Check, Eye, Code2, Terminal, BookOpen, ExternalLink, Github } from 'lucide-react'
 import { getComponentExamples } from '@/lib/component-examples'
@@ -65,11 +64,10 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
       {/* Component Title & Header */}
       <div className="space-y-4 border-b border-border/40 pb-6">
         <div className="flex flex-wrap items-center justify-between gap-4">
-          <div className="flex items-center gap-3">
+          <div>
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
               {component.title}
             </h1>
-            <StatusBadge status={component.status} />
           </div>
 
           {/* Quick links to npm & GitHub */}
@@ -173,15 +171,12 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
               {examples.length > 0 ? (
                 examples.map((example, index) => (
                   <section key={index} className="space-y-4 pt-4 first:pt-0">
-                    <div className="flex flex-col gap-1 border-b border-border/30 pb-3">
-                      <div className="flex items-center gap-2.5">
-                        <div className="w-2 h-2 rounded-full bg-primary ring-4 ring-primary/20 shrink-0" />
-                        <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
-                          {example.title}
-                        </h2>
-                      </div>
+                    <div className="flex flex-col gap-1 pb-1">
+                      <h2 className="text-base sm:text-lg font-semibold tracking-tight text-foreground">
+                        {example.title}
+                      </h2>
                       {example.description && (
-                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed pl-5">
+                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
                           {example.description}
                         </p>
                       )}
