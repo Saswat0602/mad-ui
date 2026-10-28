@@ -9,7 +9,13 @@ const indexMjs = path.join(distDir, 'index.mjs');
 
 console.log('[build-package] Checking mad-ui-components dist status...');
 
-if (!fs.existsSync(indexMjs)) {
+const isInstalledPackage = fs.existsSync(path.join(docsDir, 'node_modules', 'mad-ui-components', 'package.json'));
+
+if (fs.existsSync(indexMjs)) {
+  console.log('[build-package] Local dist/ is up to date.');
+} else if (isInstalledPackage) {
+  console.log('[build-package] Using installed mad-ui-components package from npm.');
+} else {
   console.log('[build-package] dist/ not found. Building mad-ui-components from source...');
   
   // Ensure root node_modules exists (link to docs/node_modules if absent)
@@ -39,6 +45,4 @@ if (!fs.existsSync(indexMjs)) {
     console.error('[build-package] Failed to build mad-ui-components:', err.message);
     process.exit(1);
   }
-} else {
-  console.log('[build-package] dist/ is up to date.');
 }
