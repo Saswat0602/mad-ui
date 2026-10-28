@@ -10,7 +10,7 @@ export default defineConfig([
     dts: true,
     splitting: false,
     sourcemap: false,
-    clean: true,
+    clean: false,
     external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
     esbuildOptions(options) {
       options.jsx = 'automatic'
