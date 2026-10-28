@@ -3,7 +3,6 @@ import { Inter, JetBrains_Mono } from "next/font/google"
 import "./globals.css"
 import { ThemeProvider } from "@/components/ThemeProvider"
 import { Header } from "@/components/header"
-import { Sparkles } from "lucide-react"
 import Link from "next/link"
 
 const inter = Inter({ 
@@ -66,31 +65,17 @@ export default function RootLayout({
     <html lang="en" suppressHydrationWarning className={`${inter.variable} ${jetbrainsMono.variable}`}>
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider defaultTheme="dark">
-          <div className="relative flex min-h-screen flex-col overflow-hidden">
-            {/* Enhanced Background with multiple layers */}
-            <div className="fixed inset-0 -z-10">
-              {/* Base gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-background via-background to-muted/10" />
-              
-              {/* Animated orbs with better positioning */}
-              <div className="absolute top-20 left-20 w-80 h-80 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-3xl animate-float opacity-30"></div>
-              <div className="absolute top-40 right-20 w-80 h-80 bg-gradient-to-r from-pink-500/20 to-orange-500/20 rounded-full blur-3xl animate-float-delayed opacity-30"></div>
-              <div className="absolute bottom-20 left-1/3 w-80 h-80 bg-gradient-to-r from-green-500/20 to-cyan-500/20 rounded-full blur-3xl animate-float-delayed-4s opacity-30"></div>
-              
-              {/* Subtle grid pattern */}
-              <div className="absolute inset-0 bg-grid-pattern opacity-3 dark:opacity-5" />
-              
-              {/* Noise texture for depth */}
-              <div className="absolute inset-0 opacity-5">
-                <div className="w-full h-full bg-noise-pattern"></div>
-              </div>
+          <div className="relative flex min-h-screen flex-col bg-background text-foreground antialiased selection:bg-primary/20 selection:text-primary">
+            {/* Subtle clean ambient lighting */}
+            <div className="fixed inset-0 -z-10 pointer-events-none">
+              <div className="absolute inset-0 bg-background" />
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-gradient-to-b from-primary/10 via-primary/5 to-transparent blur-3xl opacity-60 dark:opacity-40" />
+              <div className="absolute inset-0 bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] dark:bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:24px_24px] opacity-40 dark:opacity-25" />
             </div>
             
             <Header />
-            <main className="flex-1 relative pt-20">
-              <div className="animate-fade-in">
-                {children}
-              </div>
+            <main className="flex-1 relative pt-16">
+              {children}
             </main>
             
             {/* Modern Footer */}
@@ -98,54 +83,51 @@ export default function RootLayout({
               <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
                   {/* Brand Section */}
-                  <div className="md:col-span-1">
-                    <div className="flex items-center space-x-3 mb-6">
-                      <div className="w-12 h-12 rounded-xl bg-primary flex items-center justify-center shadow-lg">
-                        <Sparkles className="h-6 w-6 text-primary-foreground" />
+                  <div className="md:col-span-1 space-y-4">
+                    <div className="flex items-center space-x-2.5">
+                      <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700/60 flex items-center justify-center">
+                        <span className="font-bold text-sm bg-gradient-to-br from-blue-400 to-indigo-400 bg-clip-text text-transparent">M</span>
                       </div>
-                      <div>
-                        <span className="font-bold text-2xl text-primary">
-                          Mad UI
-                        </span>
-                        <p className="text-sm text-muted-foreground">v2.0</p>
-                      </div>
+                      <span className="font-semibold text-lg tracking-tight text-foreground">
+                        Mad UI
+                      </span>
                     </div>
-                    <p className="text-muted-foreground leading-relaxed">
-                      Beautiful, accessible, and customizable React components for modern web applications.
+                    <p className="text-sm text-muted-foreground leading-relaxed max-w-sm">
+                      An enterprise-grade, accessible React UI component library built with TypeScript and Tailwind CSS.
                     </p>
                   </div>
                   
                   {/* Documentation Links */}
                   <div>
-                    <h3 className="font-semibold text-lg mb-6 text-foreground">Documentation</h3>
-                    <ul className="space-y-3">
-                      <li><a href="/docs/getting-started" className="text-muted-foreground hover:text-primary transition-colors duration-200">Getting Started</a></li>
-                      <li><Link href="/docs/components" className="text-muted-foreground hover:text-primary transition-colors duration-200">Components</Link></li>
-                      <li><a href="/docs/examples" className="text-muted-foreground hover:text-primary transition-colors duration-200">Examples</a></li>
-                      <li><a href="/docs/installation" className="text-muted-foreground hover:text-primary transition-colors duration-200">Installation</a></li>
+                    <h3 className="font-medium text-sm mb-4 text-foreground">Documentation</h3>
+                    <ul className="space-y-2.5 text-sm">
+                      <li><Link href="/docs/getting-started" className="text-muted-foreground hover:text-foreground transition-colors">Getting Started</Link></li>
+                      <li><Link href="/docs/components" className="text-muted-foreground hover:text-foreground transition-colors">Components</Link></li>
+                      <li><Link href="/docs/installation" className="text-muted-foreground hover:text-foreground transition-colors">Installation Guide</Link></li>
+                      <li><Link href="/docs/examples" className="text-muted-foreground hover:text-foreground transition-colors">Examples</Link></li>
                     </ul>
                   </div>
                   
-                  {/* Community Links */}
+                  {/* Ecosystem Links */}
                   <div>
-                    <h3 className="font-semibold text-lg mb-6 text-foreground">Community</h3>
-                    <ul className="space-y-3">
-                      <li><a href="https://github.com" className="text-muted-foreground hover:text-primary transition-colors duration-200">GitHub</a></li>
-                      <li><a href="/docs" className="text-muted-foreground hover:text-primary transition-colors duration-200">Documentation</a></li>
-                      <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200">Discord</a></li>
-                      <li><a href="#" className="text-muted-foreground hover:text-primary transition-colors duration-200">Twitter</a></li>
+                    <h3 className="font-medium text-sm mb-4 text-foreground">Ecosystem</h3>
+                    <ul className="space-y-2.5 text-sm">
+                      <li><a href="https://github.com/Saswat0602/mad-ui" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">GitHub Repository</a></li>
+                      <li><a href="https://www.npmjs.com/package/mad-ui-components" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">npm Package</a></li>
+                      <li><a href="https://github.com/Saswat0602/mad-ui/issues" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">Issues & Feedback</a></li>
+                      <li><a href="https://github.com/Saswat0602/mad-ui/releases" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground transition-colors">Releases</a></li>
                     </ul>
                   </div>
                 </div>
                 
-                <div className="mt-16 pt-8 border-t border-border/20">
-                  <div className="flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-sm text-muted-foreground">
-                      &copy; 2025 Mad UI. Built with ❤️ for developers worldwide.
+                <div className="mt-12 pt-6 border-t border-border/40">
+                  <div className="flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-muted-foreground">
+                    <p>
+                      Built with React, TypeScript &amp; Tailwind CSS. Released under the MIT License.
                     </p>
-                    <div className="flex items-center gap-6 text-sm text-muted-foreground">
-                      <a href="#" className="hover:text-primary transition-colors duration-200">Privacy Policy</a>
-                      <a href="#" className="hover:text-primary transition-colors duration-200">Terms of Service</a>
+                    <div className="flex items-center gap-6">
+                      <a href="https://github.com/Saswat0602/mad-ui" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">GitHub</a>
+                      <a href="https://www.npmjs.com/package/mad-ui-components" target="_blank" rel="noopener noreferrer" className="hover:text-foreground transition-colors">npm</a>
                     </div>
                   </div>
                 </div>

@@ -3,7 +3,7 @@
 import Link from "next/link"
 import { MainNav } from "./main-nav"
 import { ThemeToggle } from "./ThemeToggle"
-import { Github, Sparkles, Menu, X, BookOpen, Search } from "lucide-react"
+import { Github, Menu, X, Search, ExternalLink } from "lucide-react"
 import { useState, useEffect } from "react"
 import { ComponentSearch } from "./ComponentSearch"
 
@@ -28,98 +28,145 @@ export function Header() {
   }, [])
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-background/95 backdrop-blur-xl border-b border-border/20 shadow-lg shadow-black/5">
+    <header className="fixed top-0 left-0 right-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border/40">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-20">
+        <div className="flex items-center justify-between h-14">
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 group">
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center group-hover:from-primary/90 group-hover:to-primary/70 transition-all duration-300 shadow-lg shadow-primary/25">
-              <Sparkles className="h-5 w-5 text-primary-foreground" />
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-2xl text-foreground">
+          <div className="flex items-center space-x-6">
+            <Link href="/" className="flex items-center space-x-2.5 group">
+              <div className="w-7 h-7 rounded-md bg-zinc-900 border border-zinc-700/60 dark:border-zinc-800 flex items-center justify-center transition-transform group-hover:scale-105">
+                <span className="font-bold text-xs bg-gradient-to-br from-blue-400 to-indigo-400 bg-clip-text text-transparent">M</span>
+              </div>
+              <span className="font-bold text-base tracking-tight text-foreground">
                 Mad UI
               </span>
-              <span className="text-xs text-muted-foreground -mt-1">v2.0</span>
-            </div>
-          </Link>
+            </Link>
 
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-2">
-            <MainNav />
+            {/* Desktop Navigation */}
+            <div className="hidden md:flex items-center">
+              <MainNav />
+            </div>
           </div>
 
           {/* Right Side Actions */}
-          <div className="hidden lg:flex items-center space-x-3">
+          <div className="hidden md:flex items-center space-x-2">
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-muted/50 hover:bg-muted/80 transition-all duration-200 text-sm font-medium border border-border/50 hover:border-border/80"
+              className="flex items-center space-x-2 px-3 py-1.5 rounded-md bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-xs font-medium border border-border/40"
+              title="Search components (⌘K)"
             >
-              <Search className="h-4 w-4" />
-              <span>Search</span>
-              <kbd className="pointer-events-none hidden h-5 select-none items-center gap-1 rounded border bg-muted px-1.5 font-mono text-[10px] font-medium opacity-100 sm:flex">
-                <span className="text-xs">⌘</span>K
+              <Search className="h-3.5 w-3.5" />
+              <span>Search docs...</span>
+              <kbd className="pointer-events-none hidden h-4 select-none items-center gap-0.5 rounded border border-border/60 bg-muted px-1 font-mono text-[9px] font-medium sm:flex">
+                <span>⌘</span>K
               </kbd>
             </button>
-            
-            <Link 
-              href="/docs"
-              className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-muted/50 hover:bg-muted/80 transition-all duration-200 text-sm font-medium border border-border/50 hover:border-border/80"
-            >
-              <BookOpen className="h-4 w-4" />
-              <span>Documentation</span>
-            </Link>
-            
-            <Link 
-              href="https://github.com" 
+
+            {/* npm Link */}
+            <a 
+              href="https://www.npmjs.com/package/mad-ui-components" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center space-x-2 px-4 py-2.5 rounded-xl bg-muted/50 hover:bg-muted/80 transition-all duration-200 text-sm font-medium border border-border/50 hover:border-border/80"
+              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-xs font-medium"
+              title="View on npm (mad-ui-components)"
+            >
+              <span className="font-bold text-red-500 text-xs tracking-tighter">npm</span>
+              <span className="hidden xl:inline text-[11px] text-muted-foreground/80">v2.15</span>
+            </a>
+
+            {/* GitHub Link */}
+            <a 
+              href="https://github.com/Saswat0602/mad-ui" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+              title="View source on GitHub"
             >
               <Github className="h-4 w-4" />
-              <span>GitHub</span>
-            </Link>
+            </a>
             
-            <div className="w-px h-8 bg-border/50"></div>
+            <div className="w-px h-4 bg-border/60 mx-1"></div>
             <ThemeToggle />
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="lg:hidden p-2.5 rounded-xl bg-muted/50 hover:bg-muted/80 transition-all duration-200 border border-border/50"
-          >
-            {isMobileMenuOpen ? (
-              <X className="h-5 w-5" />
-            ) : (
-              <Menu className="h-5 w-5" />
-            )}
-          </button>
+          {/* Mobile Menu & Search Button */}
+          <div className="flex md:hidden items-center space-x-1">
+            <button
+              onClick={() => setIsSearchOpen(true)}
+              className="p-2 rounded-md hover:bg-muted text-muted-foreground"
+              aria-label="Search"
+            >
+              <Search className="h-4 w-4" />
+            </button>
+            <ThemeToggle />
+            <button
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="p-2 rounded-md hover:bg-muted text-muted-foreground"
+              aria-label="Toggle Menu"
+            >
+              {isMobileMenuOpen ? (
+                <X className="h-4 w-4" />
+              ) : (
+                <Menu className="h-4 w-4" />
+              )}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden py-6 border-t border-border/20">
-            <div className="space-y-4">
-              <MainNav />
-              <div className="pt-4 border-t border-border/20 space-y-3">
-                <Link 
-                  href="/docs"
-                  className="flex items-center space-x-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted/80 transition-all duration-200 text-sm font-medium border border-border/50"
-                >
-                  <BookOpen className="h-4 w-4" />
-                  <span>Documentation</span>
-                </Link>
-                <Link 
-                  href="https://github.com" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="flex items-center space-x-3 px-4 py-3 rounded-xl bg-muted/50 hover:bg-muted/80 transition-all duration-200 text-sm font-medium border border-border/50"
-                >
-                  <Github className="h-4 w-4" />
-                  <span>GitHub</span>
-                </Link>
-              </div>
+          <div className="md:hidden py-4 border-t border-border/40 space-y-3 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="flex flex-col space-y-1">
+              <Link 
+                href="/docs/components" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-muted text-foreground"
+              >
+                Components
+              </Link>
+              <Link 
+                href="/docs/installation" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-muted text-foreground"
+              >
+                Installation
+              </Link>
+              <Link 
+                href="/docs/getting-started" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-muted text-foreground"
+              >
+                Getting Started
+              </Link>
+              <Link 
+                href="/docs/examples" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-muted text-foreground"
+              >
+                Examples
+              </Link>
+            </div>
+            <div className="pt-3 border-t border-border/40 flex items-center justify-between px-3">
+              <a 
+                href="https://github.com/Saswat0602/mad-ui" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-1.5 text-xs text-muted-foreground hover:text-foreground"
+              >
+                <Github className="h-4 w-4" />
+                <span>GitHub</span>
+                <ExternalLink className="h-3 w-3 opacity-60" />
+              </a>
+              <a 
+                href="https://www.npmjs.com/package/mad-ui-components" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-1.5 text-xs text-muted-foreground hover:text-foreground"
+              >
+                <span className="font-bold text-red-500 text-xs">npm</span>
+                <span>mad-ui-components</span>
+                <ExternalLink className="h-3 w-3 opacity-60" />
+              </a>
             </div>
           </div>
         )}
@@ -132,4 +179,3 @@ export function Header() {
     </header>
   )
 }
-
