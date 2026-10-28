@@ -4,7 +4,7 @@ import Link from 'next/link'
 import { ComponentDocumentation } from '@/components/ComponentDocumentation'
 import { getComponentBySlug, getAllComponents } from '@/lib/component-registry'
 import { ComponentCategory } from '@/types/component'
-import { Search } from 'lucide-react'
+import { ArrowUpRight } from 'lucide-react'
 
 interface ComponentPageProps {
   params: Promise<{
@@ -12,12 +12,23 @@ interface ComponentPageProps {
   }>
 }
 
+const CATEGORY_ORDER: ComponentCategory[] = [
+  'Core',
+  'Form',
+  'Layout',
+  'Navigation',
+  'Overlay',
+  'Data Display',
+  'Feedback',
+  'Media'
+]
+
 export default async function ComponentPage({ params }: ComponentPageProps) {
   const resolvedParams = await params
   const slug = resolvedParams.slug?.[0]
   
   if (!slug) {
-    // Show all components
+    // Show clean categorized list
     return <ComponentCategoryPage />
   }
 
@@ -32,124 +43,81 @@ export default async function ComponentPage({ params }: ComponentPageProps) {
 
 function ComponentCategoryPage() {
   const allComponents = getAllComponents()
-  const categories = allComponents.reduce((acc, component) => {
-    if (!acc[component.category]) {
-      acc[component.category] = []
+
+  const categories = CATEGORY_ORDER.reduce((acc, cat) => {
+    const items = allComponents.filter(c => c.category === cat)
+    if (items.length > 0) {
+      acc[cat] = items
     }
-    acc[component.category].push(component)
     return acc
-  }, {} as Record<ComponentCategory, typeof allComponents>)
+  }, {} as Record<string, typeof allComponents>)
 
   return (
-    <div className="min-h-screen bg-background">
-      <div className="container mx-auto px-6 py-10 max-w-7xl">
-        {/* Header Section */}
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold tracking-tight mb-6 bg-gradient-to-r from-foreground via-foreground to-muted-foreground bg-clip-text text-transparent">
-            Components
-          </h1>
-          <p className="text-xl text-muted-foreground max-w-3xl mx-auto mb-8 leading-relaxed">
-            Discover our comprehensive collection of enterprise-ready components. Each component is designed with accessibility, 
-            performance, and developer experience in mind.
-          </p>
-          
-          {/* Search Bar */}
-          <div className="relative max-w-md mx-auto">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground w-5 h-5" />
-            <input
-              type="text"
-              placeholder="Search components..."
-              className="w-full pl-12 pr-4 py-4 border border-border rounded-xl bg-background/50 backdrop-blur-sm focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all duration-200 text-base shadow-sm"
-            />
-          </div>
+    <div className="space-y-12">
+      {/* Clean Header */}
+      <div className="border-b border-border/40 pb-8">
+        <div className="flex items-center gap-2 mb-2">
+          <span className="text-xs font-semibold uppercase tracking-wider text-primary">Library Catalog</span>
+          <span className="text-xs text-muted-foreground">•</span>
+          <span className="text-xs text-muted-foreground">{allComponents.length} Production Components</span>
         </div>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+          Components
+        </h1>
+        <p className="mt-2 text-base text-muted-foreground max-w-3xl leading-relaxed">
+          Production-ready, accessible, and themeable React UI components crafted with TypeScript and Tailwind CSS.
+        </p>
+      </div>
 
-        {/* Categories */}
-        <div className="space-y-16">
-          {Object.entries(categories).map(([category, components]) => (
-            <div key={category} className="space-y-6">
-              {/* Category Header */}
-              <div className="flex items-center gap-4">
-                <div className="h-1 w-12 bg-gradient-to-r from-primary to-primary/50 rounded-full"></div>
-                <h2 className="text-3xl font-semibold capitalize tracking-tight">
-                  {category}
-                </h2>
-                <div className="flex items-center gap-2 px-3 py-1 bg-muted/50 rounded-full">
-                  <span className="text-sm font-medium text-muted-foreground">
-                    {components.length}
-                  </span>
-                  <span className="text-xs text-muted-foreground">
-                    {components.length === 1 ? 'component' : 'components'}
-                  </span>
-                </div>
-              </div>
-              
-              {/* Component Grid */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                {components.map((component) => (
-                  <Link
-                    key={component.slug}
-                    href={`/docs/components/${component.slug}`}
-                    className="group relative block"
-                  >
-                    <div className="h-full p-6 border border-border rounded-xl bg-card/50 backdrop-blur-sm hover:bg-card transition-all duration-300 hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 hover:-translate-y-1">
-                      {/* Status Badge */}
-                      <div className="flex justify-between items-start mb-4">
-                        <span className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium shadow-sm ${
-                          component.status === 'stable' 
-                            ? 'bg-emerald-50 text-emerald-700 border border-emerald-200 dark:bg-emerald-950/30 dark:text-emerald-400 dark:border-emerald-800/30'
-                            : component.status === 'beta'
-                            ? 'bg-amber-50 text-amber-700 border border-amber-200 dark:bg-amber-950/30 dark:text-amber-400 dark:border-amber-800/30'
-                            : 'bg-orange-50 text-orange-700 border border-orange-200 dark:bg-orange-950/30 dark:text-orange-400 dark:border-orange-800/30'
-                        }`}>
-                          {component.status}
-                        </span>
-                        <div className="w-3 h-3 rounded-full bg-primary/20 group-hover:bg-primary/40 transition-colors"></div>
-                      </div>
-                      
-                      {/* Component Title */}
-                      <h3 className="text-lg font-semibold mb-3 group-hover:text-primary transition-colors">
-                        {component.title}
-                      </h3>
-                      
-                      {/* Description */}
-                      <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
-                        {component.description}
-                      </p>
-                      
-                      {/* Tags */}
-                      <div className="flex flex-wrap gap-1.5 mb-4">
-                        {component.tags.slice(0, 2).map((tag) => (
-                          <span
-                            key={tag}
-                            className="px-2 py-1 text-xs bg-muted/60 text-muted-foreground rounded-md font-medium"
-                          >
-                            {tag}
-                          </span>
-                        ))}
-                        {component.tags.length > 2 && (
-                          <span className="px-2 py-1 text-xs bg-muted/60 text-muted-foreground rounded-md font-medium">
-                            +{component.tags.length - 2}
-                          </span>
-                        )}
-                      </div>
-                      
-                      {/* Version */}
-                      <div className="text-xs text-muted-foreground font-mono">
-                        v{component.version}
-                      </div>
-                      
-                      {/* Hover Arrow */}
-                      <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                        <div className="w-2 h-2 border-t-2 border-r-2 border-primary rotate-45"></div>
-                      </div>
-                    </div>
-                  </Link>
-                ))}
-              </div>
+      {/* Categorized Component Grid */}
+      <div className="space-y-10">
+        {Object.entries(categories).map(([category, components]) => (
+          <section key={category} className="space-y-4">
+            <div className="flex items-baseline justify-between border-b border-border/30 pb-2">
+              <h2 className="text-lg font-semibold tracking-tight text-foreground">
+                {category}
+              </h2>
+              <span className="text-xs text-muted-foreground font-mono">
+                {components.length} {components.length === 1 ? 'component' : 'components'}
+              </span>
             </div>
-          ))}
-        </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+              {components.map((component) => (
+                <Link
+                  key={component.slug}
+                  href={`/docs/components/${component.slug}`}
+                  className="group relative flex flex-col justify-between p-4 rounded-lg border border-border/50 bg-card/40 hover:bg-card hover:border-primary/40 hover:shadow-sm transition-all duration-150"
+                >
+                  <div>
+                    <div className="flex items-center justify-between gap-2 mb-1.5">
+                      <h3 className="text-sm font-semibold text-foreground group-hover:text-primary transition-colors flex items-center gap-1.5">
+                        {component.title}
+                        <ArrowUpRight className="h-3.5 w-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-primary" />
+                      </h3>
+                      {component.status === 'beta' && (
+                        <span className="text-[10px] uppercase font-medium tracking-tight px-1.5 py-0.5 rounded bg-amber-500/10 text-amber-500 border border-amber-500/20">
+                          Beta
+                        </span>
+                      )}
+                    </div>
+                    
+                    <p className="text-xs text-muted-foreground line-clamp-2 leading-relaxed">
+                      {component.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-3 pt-2.5 border-t border-border/30 flex items-center justify-between text-[11px] text-muted-foreground">
+                    <span className="text-muted-foreground/70">{component.category}</span>
+                    <span className="text-primary opacity-0 group-hover:opacity-100 transition-opacity font-medium">
+                      View component &rarr;
+                    </span>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     </div>
   )
@@ -171,8 +139,8 @@ export async function generateMetadata({
   
   if (!slug) {
     return {
-      title: 'Components - MAD UI',
-      description: 'Explore all available components in the MAD UI library',
+      title: 'Components - Mad UI',
+      description: 'Explore all 57+ production-ready React components in the Mad UI library.',
     }
   }
 
@@ -180,16 +148,16 @@ export async function generateMetadata({
   
   if (!component) {
     return {
-      title: 'Component Not Found'
+      title: 'Component Not Found - Mad UI'
     }
   }
 
   return {
-    title: `${component.title} - MAD UI`,
+    title: `${component.title} - Mad UI Component Library`,
     description: component.description,
     keywords: [...component.tags],
     openGraph: {
-      title: component.title,
+      title: `${component.title} - Mad UI`,
       description: component.description,
       type: 'article',
     },

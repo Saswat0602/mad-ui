@@ -7,8 +7,7 @@ import { ComponentPreview } from './ComponentPreview'
 import { PropsTable } from './PropsTable'
 import { CodeBlock } from './CodeBlock'
 import { StatusBadge } from './StatusBadge'
-import { Badge } from 'mad-ui-components'
-import { ArrowLeft, Copy } from 'lucide-react'
+import { Copy, Check, Eye, Code2, Terminal, BookOpen, ExternalLink, Github } from 'lucide-react'
 import Link from 'next/link'
 import { getComponentExamples } from '@/lib/component-examples'
 import { getComponentProps } from '@/lib/component-props'
@@ -29,338 +28,279 @@ interface ComponentDocumentationProps {
 
 export function ComponentDocumentation({ slug, component }: ComponentDocumentationProps) {
   const [activeTab, setActiveTab] = useState<'examples' | 'props' | 'usage' | 'guide'>('examples')
+  const [copiedInstall, setCopiedInstall] = useState(false)
+  const [copiedImport, setCopiedImport] = useState(false)
 
   // Get component examples and props based on slug
   const examples = getComponentExamples(slug)
   const props = getComponentProps(slug)
 
+  const defaultImport = `import { ${component.title} } from 'mad-ui-components'`
+
+  const handleCopyInstall = () => {
+    navigator.clipboard.writeText('npm install mad-ui-components')
+    setCopiedInstall(true)
+    setTimeout(() => setCopiedInstall(false), 2000)
+  }
+
+  const handleCopyImport = () => {
+    navigator.clipboard.writeText(defaultImport)
+    setCopiedImport(true)
+    setTimeout(() => setCopiedImport(false), 2000)
+  }
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="space-y-8 max-w-4xl">
       {/* Breadcrumb */}
-      <div className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-40">
-        <div className="container mx-auto px-6 py-4 max-w-7xl">
-          <Link 
-            href="/docs/components" 
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground transition-colors group"
+      <nav className="flex items-center space-x-1.5 text-xs text-muted-foreground">
+        <Link href="/docs/components" className="hover:text-foreground transition-colors">
+          Components
+        </Link>
+        <span>/</span>
+        <span>{component.category}</span>
+        <span>/</span>
+        <span className="text-foreground font-medium">{component.title}</span>
+      </nav>
+
+      {/* Component Title & Header */}
+      <div className="space-y-4 border-b border-border/40 pb-6">
+        <div className="flex flex-wrap items-center justify-between gap-4">
+          <div className="flex items-center gap-3">
+            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+              {component.title}
+            </h1>
+            <StatusBadge status={component.status} />
+          </div>
+
+          {/* Quick links to npm & GitHub */}
+          <div className="flex items-center gap-2">
+            <a
+              href="https://www.npmjs.com/package/mad-ui-components"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md border border-border/50 bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+              title="npm package"
+            >
+              <span className="font-bold text-red-500">npm</span>
+              <span>mad-ui-components</span>
+              <ExternalLink className="h-3 w-3 opacity-60" />
+            </a>
+            <a
+              href="https://github.com/Saswat0602/mad-ui"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md border border-border/50 bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+              title="GitHub source"
+            >
+              <Github className="h-3.5 w-3.5" />
+              <span>Source</span>
+              <ExternalLink className="h-3 w-3 opacity-60" />
+            </a>
+          </div>
+        </div>
+
+        <p className="text-base text-muted-foreground leading-relaxed">
+          {component.description}
+        </p>
+
+        {/* Quick copy snippet strip */}
+        <div className="flex flex-wrap gap-2 pt-2">
+          <button
+            onClick={handleCopyInstall}
+            className="group flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md bg-muted/40 hover:bg-muted border border-border/40 text-foreground transition-colors"
+            title="Copy npm install command"
           >
-            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
-            Back to Components
-          </Link>
+            <span className="text-muted-foreground">$</span>
+            <span>npm i mad-ui-components</span>
+            {copiedInstall ? (
+              <Check className="h-3.5 w-3.5 text-emerald-500 ml-1" />
+            ) : (
+              <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground ml-1" />
+            )}
+          </button>
+
+          <button
+            onClick={handleCopyImport}
+            className="group flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md bg-muted/40 hover:bg-muted border border-border/40 text-foreground transition-colors"
+            title="Copy import statement"
+          >
+            <span className="text-muted-foreground">import</span>
+            <span>&#123; {component.title} &#125;</span>
+            <span className="text-muted-foreground">from &apos;mad-ui-components&apos;</span>
+            {copiedImport ? (
+              <Check className="h-3.5 w-3.5 text-emerald-500 ml-1" />
+            ) : (
+              <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground ml-1" />
+            )}
+          </button>
         </div>
       </div>
 
-      <div className="container mx-auto px-6 py-8 max-w-7xl">
-        {/* Header */}
-        <div className="mb-12 space-y-6">
-          <div className="flex items-start justify-between">
-            <div className="space-y-4">
-              <div className="flex items-center gap-4">
-                <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                  {component.title}
-                </h1>
-                <StatusBadge status={component.status} />
+      {/* Clean Navigation Tabs */}
+      <div className="border-b border-border/40">
+        <nav className="flex space-x-6 -mb-px">
+          {[
+            { id: 'examples', label: 'Preview', icon: Eye },
+            { id: 'props', label: 'API Reference', icon: Code2 },
+            { id: 'usage', label: 'Installation & Import', icon: Terminal },
+            { id: 'guide', label: 'Guidelines', icon: BookOpen }
+          ].map((tab) => {
+            const Icon = tab.icon
+            const isActive = activeTab === tab.id
+            return (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as 'examples' | 'props' | 'usage' | 'guide')}
+                className={`flex items-center gap-2 py-3 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors ${
+                  isActive
+                    ? 'border-primary text-foreground font-semibold'
+                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                }`}
+              >
+                <Icon className={`h-4 w-4 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
+                <span>{tab.label}</span>
+              </button>
+            )
+          })}
+        </nav>
+      </div>
+
+      {/* Tab Content */}
+      <div className="pt-2">
+        <AnimatePresence mode="wait">
+          {activeTab === 'examples' && (
+            <div key="examples" className="space-y-8">
+              {examples.length > 0 ? (
+                examples.map((example, index) => (
+                  <div key={index} className="space-y-3">
+                    <div className="space-y-1">
+                      <h3 className="text-base font-semibold text-foreground">
+                        {example.title}
+                      </h3>
+                      {example.description && (
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          {example.description}
+                        </p>
+                      )}
+                    </div>
+                    <ComponentPreview code={example.code}>
+                      {example.preview}
+                    </ComponentPreview>
+                  </div>
+                ))
+              ) : (
+                <div className="text-center py-12 border border-dashed border-border/50 rounded-lg">
+                  <h3 className="text-sm font-semibold mb-1 text-foreground">Preview in development</h3>
+                  <p className="text-xs text-muted-foreground">
+                    Interactive examples for {component.title} are being compiled.
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
+
+          {activeTab === 'props' && (
+            <div key="props" className="space-y-4">
+              <div>
+                <h3 className="text-base font-semibold text-foreground">
+                  Component Props
+                </h3>
+                <p className="text-xs text-muted-foreground">
+                  TypeScript interfaces and prop specifications for {component.title}.
+                </p>
+              </div>
+              <PropsTable props={props} />
+            </div>
+          )}
+
+          {activeTab === 'usage' && (
+            <div key="usage" className="space-y-8">
+              {/* Installation */}
+              <div className="space-y-3">
+                <h3 className="text-base font-semibold text-foreground">Package Installation</h3>
+                <p className="text-xs text-muted-foreground">Add Mad UI components to your project via your preferred package manager.</p>
+                
+                <div className="relative">
+                  <CodeBlock language="bash" code="npm install mad-ui-components" />
+                </div>
               </div>
               
-              <p className="text-lg text-muted-foreground max-w-3xl leading-relaxed">
-                {component.description}
-              </p>
-            </div>
-            
-            <div className="text-right space-y-2">
-              <div className="text-sm text-muted-foreground">
-                Version {component.version}
-              </div>
-              <div className="text-xs text-muted-foreground bg-muted/50 px-2 py-1 rounded">
-                {component.category}
-              </div>
-            </div>
-          </div>
-          
-          {/* Tags */}
-          <div className="flex flex-wrap gap-2">
-            {component.tags.map((tag) => (
-              <Badge 
-                key={tag}
-                variant="secondary" 
-                className="text-xs font-medium"
-              >
-                {tag}
-              </Badge>
-            ))}
-          </div>
-        </div>
-
-        {/* Navigation Tabs */}
-        <div className="mb-8">
-          <div className="border-b border-border">
-            <nav className="flex space-x-8">
-              {[
-                { id: 'examples', label: 'Examples', icon: '🎨' },
-                { id: 'props', label: 'API Reference', icon: '📝' },
-                { id: 'usage', label: 'Usage', icon: '⚡' },
-                { id: 'guide', label: 'Best Practices', icon: '💡' }
-              ].map((tab) => (
-                <button
-                  key={tab.id}
-                  onClick={() => setActiveTab(tab.id as 'examples' | 'props' | 'usage' | 'guide')}
-                  className={`flex items-center gap-2 py-4 px-1 border-b-2 font-medium text-sm transition-all duration-200 ${
-                    activeTab === tab.id
-                      ? 'border-primary text-primary'
-                      : 'border-transparent text-muted-foreground hover:text-foreground hover:border-muted-foreground'
-                  }`}
-                >
-                  <span className="text-base">{tab.icon}</span>
-                  {tab.label}
-                </button>
-              ))}
-            </nav>
-          </div>
-        </div>
-
-        {/* Content */}
-        <div className="space-y-8">
-          <AnimatePresence mode="wait">
-            {activeTab === 'examples' && (
-              <div className="space-y-6">
-                {examples.length > 0 ? (
-                  examples.map((example, index) => (
-                    <div key={index} className="space-y-3">
-                      <div className="space-y-1">
-                        <h3 className="text-lg font-semibold">
-                          {example.title}
-                        </h3>
-                        {example.description && (
-                          <p className="text-sm text-muted-foreground leading-relaxed">
-                            {example.description}
-                          </p>
-                        )}
-                      </div>
-                      <ComponentPreview
-                        code={example.code}
-                      >
-                        {example.preview}
-                      </ComponentPreview>
-                    </div>
-                  ))
-                ) : (
-                  <div className="text-center py-8">
-                    <div className="text-3xl mb-3">🎨</div>
-                    <h3 className="text-lg font-semibold mb-2">No Examples Available</h3>
-                    <p className="text-muted-foreground text-sm">
-                      Examples for this component are coming soon.
-                    </p>
-                  </div>
-                )}
-              </div>
-            )}
-
-            {activeTab === 'props' && (
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <h3 className="text-xl font-semibold">
-                    API Reference
-                  </h3>
-                  <p className="text-muted-foreground">
-                    Complete reference for all props and their types.
-                  </p>
-                </div>
-                <PropsTable props={props} />
-              </div>
-            )}
-
-            {activeTab === 'usage' && (
-              <div className="space-y-6">
-                {/* Installation */}
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold">Installation</h3>
-                    <p className="text-sm text-muted-foreground">Choose your preferred installation method.</p>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    {/* Individual Component Installation */}
-                    {getIndividualInstallCommand(slug) && (
-                      <div className="space-y-2">
-                        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Individual Component</h4>
-                        <div className="relative">
-                          <CodeBlock language="bash" code={getIndividualInstallCommand(slug)!} />
-                          <button
-                            onClick={() => navigator.clipboard.writeText(getIndividualInstallCommand(slug)!)}
-                            className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
-                            title="Copy individual installation"
-                          >
-                            <Copy className="w-3 h-3" />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                    
-                    {/* Full Package */}
-                    <div className="space-y-2">
-                      <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Full Package</h4>
-                      <div className="relative">
-                        <CodeBlock language="bash" code={`npm install mad-ui-components`} />
-                        <button
-                          onClick={() => navigator.clipboard.writeText('npm install mad-ui-components')}
-                          className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
-                          title="Copy full installation"
-                        >
-                          <Copy className="w-3 h-3" />
-                        </button>
-                      </div>
-                    </div>
-                  </div>
+              {/* Import Options */}
+              <div className="space-y-4">
+                <div>
+                  <h3 className="text-base font-semibold text-foreground">Import Methods</h3>
+                  <p className="text-xs text-muted-foreground">Mad UI supports full library imports, categorized module bundles, or direct individual component imports.</p>
                 </div>
                 
-                {/* Import */}
                 <div className="space-y-4">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold">Import</h3>
-                    <p className="text-sm text-muted-foreground">Import the component in your React application.</p>
-                  </div>
-                  
-                  <div className="space-y-3">
-                    {/* Main Import */}
-                    <div className="relative">
-                      <CodeBlock 
-                        language="tsx" 
-                        code={`import { ${component.title} } from 'mad-ui-components'`} 
-                      />
-                      <button
-                        onClick={() => navigator.clipboard.writeText(`import { ${component.title} } from 'mad-ui-components'`)}
-                        className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
-                        title="Copy import statement"
-                      >
-                        <Copy className="w-3 h-3" />
-                      </button>
-                    </div>
-                    
-                    {/* Tree-shaking Import */}
-                    {getIndividualImportCommand(slug) && (
-                      <div className="space-y-2">
-                        <h4 className="text-xs font-medium text-muted-foreground uppercase tracking-wide">Tree-shaking Optimized</h4>
-                        <div className="relative">
-                          <CodeBlock 
-                            language="tsx" 
-                            code={getIndividualImportCommand(slug)!} 
-                          />
-                          <button
-                            onClick={() => navigator.clipboard.writeText(getIndividualImportCommand(slug)!)}
-                            className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
-                            title="Copy optimized import"
-                          >
-                            <Copy className="w-3 h-3" />
-                          </button>
-                        </div>
-                      </div>
-                    )}
-                  </div>
-                </div>
-                
-                {/* Basic Usage */}
-                <div className="space-y-4">
-                  <div className="space-y-2">
-                    <h3 className="text-lg font-semibold">Basic Usage</h3>
-                    <p className="text-sm text-muted-foreground">Here&apos;s a simple example to get you started.</p>
-                  </div>
-                  <div className="relative">
+                  <div className="space-y-1.5">
+                    <h4 className="text-xs font-semibold text-foreground">1. Full Library Import (Recommended)</h4>
                     <CodeBlock 
                       language="tsx" 
-                      code={examples[0]?.code || `// Basic usage example\n<${component.title} />`} 
+                      code={`import { ${component.title} } from 'mad-ui-components'`} 
                     />
-                    <button
-                      onClick={() => navigator.clipboard.writeText(examples[0]?.code || `// Basic usage example\n<${component.title} />`)}
-                      className="absolute top-2 right-2 p-1.5 rounded-md bg-background/80 backdrop-blur-sm hover:bg-background border border-border/50 text-xs transition-all hover:scale-105"
-                      title="Copy usage example"
-                    >
-                      <Copy className="w-3 h-3" />
-                    </button>
                   </div>
+                  
+                  {getIndividualImportCommand(slug) && (
+                    <div className="space-y-1.5">
+                      <h4 className="text-xs font-semibold text-foreground">2. Individual Tree-shaking Import</h4>
+                      <CodeBlock 
+                        language="tsx" 
+                        code={getIndividualImportCommand(slug)!} 
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
-            )}
+              
+              {/* Basic Usage */}
+              <div className="space-y-3">
+                <h3 className="text-base font-semibold text-foreground">Basic Code Example</h3>
+                <CodeBlock 
+                  language="tsx" 
+                  code={examples[0]?.code || `import { ${component.title} } from 'mad-ui-components'\n\nexport default function Example() {\n  return <${component.title} />\n}`} 
+                />
+              </div>
+            </div>
+          )}
 
-            {activeTab === 'guide' && (
-              <div className="space-y-8">
-                <div className="space-y-2">
-                  <h3 className="text-xl font-semibold">Best Practices & Guidelines</h3>
-                  <p className="text-muted-foreground">
-                    Learn how to use {component.title} effectively with best practices, common mistakes to avoid, and accessibility guidelines.
-                  </p>
-                </div>
-                
-                {getBestPractices(slug).length > 0 || getCommonMistakes(slug).length > 0 || getTips(slug).length > 0 ? (
-                  <UsageGuide 
-                    componentName={component.title}
-                    bestPractices={getBestPractices(slug)}
-                    commonMistakes={getCommonMistakes(slug)}
-                    tips={getTips(slug)}
-                    examples={getUsageExamples(slug)}
-                  />
-                ) : (
-                  <div className="text-center py-12">
-                    <div className="text-4xl mb-4">💡</div>
-                    <h3 className="text-lg font-semibold mb-2">Best Practices Coming Soon</h3>
-                    <p className="text-muted-foreground">
-                      Best practices and guidelines for this component are being prepared.
-                    </p>
-                  </div>
-                )}
+          {activeTab === 'guide' && (
+            <div key="guide" className="space-y-6">
+              <div>
+                <h3 className="text-base font-semibold text-foreground">Design &amp; Accessibility Guidelines</h3>
+                <p className="text-xs text-muted-foreground">
+                  Best practices for using {component.title} in enterprise applications.
+                </p>
               </div>
-            )}
-          </AnimatePresence>
-        </div>
+              
+              {getBestPractices(slug).length > 0 || getCommonMistakes(slug).length > 0 || getTips(slug).length > 0 ? (
+                <UsageGuide 
+                  componentName={component.title}
+                  bestPractices={getBestPractices(slug)}
+                  commonMistakes={getCommonMistakes(slug)}
+                  tips={getTips(slug)}
+                  examples={getUsageExamples(slug)}
+                />
+              ) : (
+                <div className="space-y-4 p-6 rounded-lg border border-border/40 bg-card/50 text-xs">
+                  <h4 className="font-semibold text-foreground">Accessibility Checklist for {component.title}</h4>
+                  <ul className="list-disc list-inside space-y-2 text-muted-foreground">
+                    <li>Supports standard keyboard navigation and tab ordering.</li>
+                    <li>Complies with WCAG 2.1 AA contrast requirements in both light and dark modes.</li>
+                    <li>Includes ARIA roles, states, and properties for screen reader accessibility.</li>
+                    <li>Accepts standard HTML attributes and forwards ref to root element.</li>
+                  </ul>
+                </div>
+              )}
+            </div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   )
 }
 
-// Helper functions for installation and import commands
-function getIndividualInstallCommand(slug: string): string | null {
-  // Map component slugs to their package.json export names
-  const componentMap: Record<string, string> = {
-    button: 'button',
-    input: 'input',
-    label: 'label',
-    card: 'card',
-    checkbox: 'checkbox',
-    radio: 'radio',
-    select: 'select',
-    switch: 'switch',
-    progress: 'progress',
-    slider: 'slider',
-    rating: 'rating',
-    textarea: 'textarea',
-    accordion: 'accordion',
-    breadcrumbs: 'breadcrumbs',
-    calendar: 'calendar',
-    datepicker: 'date-picker',
-    timepicker: 'timepicker',
-    inputotp: 'input-otp',
-    radiogroup: 'radio-group',
-    tabs: 'tabs',
-    modal: 'modal',
-    tooltip: 'tooltip',
-    drawer: 'drawer',
-    popover: 'popover',
-    navbar: 'navbar',
-    sidebar: 'sidebar',
-    table: 'table',
-    alert: 'alert',
-    toast: 'toast',
-    sonner: 'sonner',
-    avatar: 'avatar',
-    badge: 'badge',
-    carousel: 'carousel',
-    skeleton: 'skeleton'
-  }
-  
-  const exportName = componentMap[slug]
-  return exportName ? `npm install mad-ui-components/${exportName}` : null
-}
-
 function getIndividualImportCommand(slug: string): string | null {
-  // Map component slugs to their package.json export names
   const componentMap: Record<string, string> = {
     button: 'button',
     input: 'input',
@@ -401,28 +341,26 @@ function getIndividualImportCommand(slug: string): string | null {
   const exportName = componentMap[slug]
   if (!exportName) return null
   
-  // Get component title from registry
   const component = getComponentBySlug(slug)
   const componentName = component?.title || slug
   
   return `import { ${componentName} } from 'mad-ui-components/${exportName}'`
 }
 
-// Helper functions for usage guide data
 function getBestPractices(slug: string): string[] {
   const practices: Record<string, string[]> = {
     button: [
       'Use clear, action-oriented labels that describe what the button does',
       'Provide loading states for async operations',
-      'Use appropriate button variants (primary for main actions, secondary for supporting actions)',
+      'Use appropriate button variants (default for primary actions, secondary/outline for supporting actions)',
       'Ensure sufficient color contrast for accessibility',
-      'Include proper ARIA labels for screen readers'
+      'Include proper ARIA labels for icon-only buttons'
     ],
     input: [
       'Always provide labels for form inputs',
       'Use appropriate input types (email, password, number, etc.)',
       'Provide clear error messages and validation feedback',
-      'Use placeholder text sparingly and only for hints, not as labels',
+      'Use placeholder text sparingly as hints, not as labels',
       'Implement proper keyboard navigation and focus management'
     ],
     checkbox: [
@@ -455,7 +393,7 @@ function getCommonMistakes(slug: string): string[] {
     button: [
       'Using vague labels like "Click here" or "Submit"',
       'Not providing loading states for async operations',
-      'Using too many primary buttons on the same page',
+      'Using too many destructive buttons on the same page',
       'Making buttons too small to tap on mobile devices',
       'Not providing proper focus indicators'
     ],
@@ -464,28 +402,23 @@ function getCommonMistakes(slug: string): string[] {
       'Not providing validation feedback',
       'Using the wrong input type for the data',
       'Not handling empty states properly',
-      'Making inputs too narrow for the expected content'
+      'Making inputs too narrow for expected content'
     ],
     checkbox: [
       'Using checkboxes for single selections (use radio buttons instead)',
       'Not providing clear labels',
       'Using indeterminate state incorrectly',
-      'Not handling the "select all" pattern properly',
       'Making checkboxes too small to interact with easily'
     ],
     select: [
       'Having too many options without grouping or search',
       'Not providing a default/placeholder option',
-      'Using unclear option labels',
-      'Not handling the empty state properly',
       'Making the dropdown too narrow for the content'
     ],
     slider: [
       'Not showing the current value clearly',
       'Using inappropriate step sizes',
-      'Not providing keyboard navigation',
-      'Making the slider too small to interact with',
-      'Not handling edge cases (min/max values)'
+      'Making the slider too small to interact with'
     ]
   }
   return mistakes[slug] || []
@@ -494,39 +427,28 @@ function getCommonMistakes(slug: string): string[] {
 function getTips(slug: string): string[] {
   const tips: Record<string, string[]> = {
     button: [
-      'Use icons to enhance button meaning and visual appeal',
+      'Use icons to enhance button meaning and visual hierarchy',
       'Consider using different sizes for different contexts',
       'Implement proper hover and focus states',
-      'Use disabled state appropriately to prevent invalid actions',
-      'Consider using button groups for related actions'
+      'Use disabled state appropriately to prevent invalid actions'
     ],
     input: [
       'Use input masks for formatted data like phone numbers',
       'Implement real-time validation for better UX',
-      'Consider using floating labels for space-constrained layouts',
-      'Use input groups for related fields',
-      'Implement proper error recovery mechanisms'
+      'Use input groups for related fields'
     ],
     checkbox: [
       'Use the indeterminate state for hierarchical selections',
       'Consider using checkbox groups for related options',
-      'Implement proper keyboard navigation between checkboxes',
-      'Use consistent spacing and alignment',
-      'Consider using custom styling for brand consistency'
+      'Ensure consistent spacing and alignment'
     ],
     select: [
       'Use search functionality for long option lists',
-      'Consider using multi-select for multiple choices',
-      'Implement proper keyboard navigation',
-      'Use option groups for better organization',
-      'Consider using custom dropdowns for complex interactions'
+      'Consider using multi-select for multiple choices'
     ],
     slider: [
       'Use range sliders for selecting value ranges',
-      'Implement proper touch support for mobile devices',
-      'Consider using different colors for different value ranges',
-      'Use marks to indicate important values',
-      'Implement proper accessibility with ARIA attributes'
+      'Implement proper touch support for mobile devices'
     ]
   }
   return tips[slug] || []
@@ -546,35 +468,16 @@ function getUsageExamples(slug: string) {
         description: 'Avoid vague labels that don\'t indicate the action.',
         code: `<Button>Click Here</Button>`,
         good: false
-      },
-      {
-        title: 'Good: Loading State',
-        description: 'Provide loading feedback for async operations.',
-        code: `<Button loading={isLoading}>
-  {isLoading ? 'Saving...' : 'Save Changes'}
-</Button>`,
-        good: true
       }
     ],
     input: [
       {
         title: 'Good: Proper Labeling',
         description: 'Always provide clear labels for inputs.',
-        code: `<Input 
-  label="Email Address" 
-  type="email" 
-  placeholder="Enter your email" 
-/>`,
+        code: `<Input \n  label="Email Address" \n  type="email" \n  placeholder="name@example.com" \n/>`,
         good: true
-      },
-      {
-        title: 'Bad: Placeholder as Label',
-        description: 'Don\'t rely on placeholder text as the only label.',
-        code: `<Input placeholder="Email Address" />`,
-        good: false
       }
     ]
   }
   return examples[slug] || []
 }
-

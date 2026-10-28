@@ -25,27 +25,27 @@ export function ComponentPreview({
   }
 
   return (
-    <div className="border border-border rounded-xl overflow-hidden bg-card/50 backdrop-blur-sm hover:bg-card transition-all duration-200 hover:shadow-lg hover:shadow-primary/5">
+    <div className="border border-border/60 rounded-lg overflow-hidden bg-card/40">
       <div className="relative">
         {/* Action Buttons */}
-        <div className="absolute top-3 right-3 z-10 flex gap-2">
+        <div className="absolute top-2.5 right-2.5 z-10 flex gap-1.5">
           <Button
             variant={showCode ? "secondary" : "outline"}
             size="sm"
             onClick={() => setShowCode(!showCode)}
-            className="h-8 px-3 text-xs bg-background/95 backdrop-blur-sm border-border/60 hover:bg-background shadow-sm hover:shadow-md transition-all duration-200"
+            className="h-7 px-2.5 text-xs bg-background/80 backdrop-blur-sm border-border/60 hover:bg-background"
           >
-            {showCode ? <Eye className="w-3.5 h-3.5" /> : <Code className="w-3.5 h-3.5" />}
-            <span className="ml-1.5 hidden sm:inline font-medium">{showCode ? 'Preview' : 'Code'}</span>
+            {showCode ? <Eye className="w-3 h-3" /> : <Code className="w-3 h-3" />}
+            <span className="ml-1 hidden sm:inline font-medium text-[11px]">{showCode ? 'Preview' : 'Code'}</span>
           </Button>
           <Button
             variant="outline"
             size="sm"
             onClick={handleCopy}
-            className="h-8 px-3 text-xs bg-background/95 backdrop-blur-sm border-border/60 hover:bg-background shadow-sm hover:shadow-md transition-all duration-200"
+            className="h-7 px-2.5 text-xs bg-background/80 backdrop-blur-sm border-border/60 hover:bg-background"
           >
-            <Copy className="w-3.5 h-3.5" />
-            <span className="ml-1.5 hidden sm:inline font-medium">{copied ? 'Copied!' : 'Copy'}</span>
+            <Copy className="w-3 h-3" />
+            <span className="ml-1 hidden sm:inline font-medium text-[11px]">{copied ? 'Copied' : 'Copy'}</span>
           </Button>
         </div>
         
@@ -53,7 +53,7 @@ export function ComponentPreview({
           {!showCode ? (
             <div 
               key="preview"
-              className="p-6 sm:p-8 bg-gradient-to-br from-background via-background/95 to-muted/10 min-h-[120px] flex items-center justify-center"
+              className="p-6 sm:p-8 bg-muted/10 min-h-[140px] flex items-center justify-center"
             >
               <div className="w-full max-w-full">
                 {children}
