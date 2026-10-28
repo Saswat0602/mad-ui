@@ -3,7 +3,8 @@
 import Link from "next/link"
 import { MainNav } from "./main-nav"
 import { ThemeToggle } from "./ThemeToggle"
-import { Github, Menu, X, Search, ExternalLink } from "lucide-react"
+import { Menu, X, Search, ExternalLink } from "lucide-react"
+import { GithubIcon } from "./GithubIcon"
 import { useState, useEffect } from "react"
 import { ComponentSearch } from "./ComponentSearch"
 
@@ -82,7 +83,7 @@ export function Header() {
               className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
               title="View source on GitHub"
             >
-              <Github className="h-4 w-4" />
+              <GithubIcon className="h-4 w-4" />
             </a>
             
             <div className="w-px h-4 bg-border/60 mx-1"></div>
@@ -153,7 +154,7 @@ export function Header() {
                 rel="noopener noreferrer"
                 className="flex items-center space-x-1.5 text-xs text-muted-foreground hover:text-foreground"
               >
-                <Github className="h-4 w-4" />
+                <GithubIcon className="h-4 w-4" />
                 <span>GitHub</span>
                 <ExternalLink className="h-3 w-3 opacity-60" />
               </a>

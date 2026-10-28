@@ -7,8 +7,9 @@ import { ComponentPreview } from './ComponentPreview'
 import { PropsTable } from './PropsTable'
 import { CodeBlock } from './CodeBlock'
 import { StatusBadge } from './StatusBadge'
-import { Copy, Check, Eye, Code2, Terminal, BookOpen, ExternalLink, Github } from 'lucide-react'
 import Link from 'next/link'
+import { Copy, Check, Eye, Code2, Terminal, BookOpen, ExternalLink } from 'lucide-react'
+import { GithubIcon } from './GithubIcon'
 import { getComponentExamples } from '@/lib/component-examples'
 import { getComponentProps } from '@/lib/component-props'
 import { getComponentBySlug } from '@/lib/component-registry'
@@ -92,7 +93,7 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
               className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md border border-border/50 bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
               title="GitHub source"
             >
-              <Github className="h-3.5 w-3.5" />
+              <GithubIcon className="h-3.5 w-3.5" />
               <span>Source</span>
               <ExternalLink className="h-3 w-3 opacity-60" />
             </a>

@@ -1,0 +1,52 @@
+import * as React from 'react';
+
+interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
+    type?: "success" | "error" | "warning" | "info" | "primary" | "neutral";
+    title?: string;
+    message?: string;
+    onClose?: () => void;
+    closable?: boolean;
+    variant?: "default" | "filled" | "outlined";
+    size?: "sm" | "md" | "lg";
+    fullWidth?: boolean;
+    color?: string;
+    backgroundColor?: string;
+    borderColor?: string;
+    textColor?: string;
+    iconColor?: string;
+    borderRadius?: string | number;
+    shadow?: "none" | "sm" | "md" | "lg";
+    icon?: React.ReactNode;
+    actions?: React.ReactNode;
+    analyticsId?: string;
+    analyticsEvent?: string;
+    analyticsData?: Record<string, any>;
+    ariaLabel?: string;
+    ariaDescribedBy?: string;
+    role?: string;
+    dataTestId?: string;
+    onAnalytics?: (event: string, data?: Record<string, any>) => void;
+    tooltip?: string;
+    loading?: boolean;
+    dismissible?: boolean;
+    autoDismiss?: boolean;
+    dismissTimeout?: number;
+    onDismiss?: () => void;
+    onShow?: () => void;
+    persistent?: boolean;
+    priority?: "low" | "medium" | "high" | "critical";
+    category?: string;
+    tags?: string[];
+    metadata?: Record<string, any>;
+    sound?: boolean;
+    vibration?: boolean;
+    position?: "top" | "bottom" | "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right";
+    animation?: "fade" | "slide" | "scale" | "bounce" | "none";
+    progress?: boolean;
+    progressValue?: number;
+    onProgressComplete?: () => void;
+}
+declare const Alert: React.ForwardRefExoticComponent<AlertProps & React.RefAttributes<HTMLDivElement>>;
+
+export { Alert };
+export type { AlertProps };
