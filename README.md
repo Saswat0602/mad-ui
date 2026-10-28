@@ -23,7 +23,6 @@ An enterprise-grade, accessible, and themeable React UI component library built 
 - 🌙 **First-Class Dark Mode** — Clean CSS variables and semantic color tokens with smooth theme switching.
 - ♿ **Accessible by Design** — Built according to WAI-ARIA authoring practices with keyboard navigation and focus management.
 - 📦 **Universal React Support** — Engineered to work smoothly across both React 18 consumers and React 19 / Next.js 15+ applications.
-- 🛠️ **CLI Copy Utility** — Copy component source code directly into your repository (shadcn-style) whenever you want zero runtime dependencies.
 
 ---
 
@@ -119,24 +118,7 @@ import { Input } from 'mad-ui-components/input'
 import { Card } from 'mad-ui-components/card'
 ```
 
----
 
-## 🛠️ CLI Tool: Direct Source Code Copy
-
-If you prefer to own the component code directly in your codebase (similar to shadcn/ui), use the CLI to copy source files:
-
-```bash
-# Copy individual components
-npx mad-ui-components copy button card input
-
-# Copy by category
-npx mad-ui-components copy --category core
-
-# Copy all components
-npx mad-ui-components copy --all
-```
-
----
 
 ## 📋 Component Catalog
 

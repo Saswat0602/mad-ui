@@ -41,7 +41,7 @@ function CodeSnippet({
 
 export default function InstallationPage() {
   const [activePkgManager, setActivePkgManager] = useState<"npm" | "pnpm" | "yarn" | "bun">("npm")
-  const [activeFramework, setActiveFramework] = useState<"nextjs" | "vite" | "manual" | "cli">("nextjs")
+  const [activeFramework, setActiveFramework] = useState<"nextjs" | "vite" | "manual">("nextjs")
   const [copiedKey, setCopiedKey] = useState<string | null>(null)
 
   const copyText = (text: string, key: string) => {
@@ -156,7 +156,6 @@ export default function InstallationPage() {
               { id: "nextjs", label: "Next.js (App Router)" },
               { id: "vite", label: "Vite (React + TS)" },
               { id: "manual", label: "React Manual / CRA" },
-              { id: "cli", label: "CLI Copy Tool" },
             ].map((fw) => (
               <button
                 key={fw.id}
@@ -347,30 +346,6 @@ export default function InstallationPage() {
                 copiedKey={copiedKey}
                 onCopy={copyText}
               />
-            </div>
-          </div>
-        )}
-
-        {/* CLI Tool Setup */}
-        {activeFramework === "cli" && (
-          <div className="space-y-8 animate-in fade-in duration-200">
-            <div className="space-y-3">
-              <div className="flex items-center gap-2.5">
-                <span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[11px] font-bold">1</span>
-                <h3 className="text-sm font-semibold text-foreground">Copy Component Code Directly (Zero Runtime Dependency)</h3>
-              </div>
-              <p className="text-xs text-muted-foreground pl-7.5">
-                You can copy individual component source files into your project directory using the CLI:
-              </p>
-              <CodeSnippet 
-                code={snippets.cli.copyCommand}
-                language="bash"
-                copiedKey={copiedKey}
-                onCopy={copyText}
-              />
-              <p className="text-xs text-muted-foreground pl-7.5">
-                This places the component files directly into your project under <code className="text-foreground font-mono">components/ui/</code> so you have 100% control over the source.
-              </p>
             </div>
           </div>
         )}

@@ -91,6 +91,7 @@ export function AspectRatioExample() {
       preview: (
         <div className="w-full max-w-md">
           <AspectRatio ratio={16/9}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img 
               src="https://images.unsplash.com/photo-1588345921523-c2dcdb7f1dcd?w=800&h=600&fit=crop" 
               alt="Landscape" 

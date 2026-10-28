@@ -29,7 +29,8 @@ import {
   Image,
   Award,
   Zap,
-  Palette
+  Palette,
+  Check
 } from 'lucide-react'
 
 // Interactive Drawer Demo Component
@@ -148,11 +149,11 @@ function InteractiveDrawerDemo() {
           )} size.
         </p>
         <div className="space-y-2 text-sm text-gray-600">
-          <p>✅ Smooth animations</p>
-          <p>✅ Flexible positioning</p>
-          <p>✅ Multiple sizes</p>
-          <p>✅ Custom dimensions</p>
-          <p>✅ Custom styling</p>
+          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Smooth animations</p>
+          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Flexible positioning</p>
+          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Multiple sizes</p>
+          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Custom dimensions</p>
+          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Custom styling</p>
         </div>
         <button 
           onClick={() => setIsOpen(false)}
@@ -287,11 +288,11 @@ export function InteractiveDrawerDemo() {
           This drawer supports custom dimensions! You can specify:
         </p>
         <div className="space-y-2 text-sm text-gray-600">
-          <p>✅ Custom width for left/right drawers</p>
-          <p>✅ Custom height for top/bottom drawers</p>
-          <p>✅ Smooth animations</p>
-          <p>✅ Flexible positioning</p>
-          <p>✅ Multiple sizes</p>
+          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Custom width for left/right drawers</p>
+          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Custom height for top/bottom drawers</p>
+          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Smooth animations</p>
+          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Flexible positioning</p>
+          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Multiple sizes</p>
         </div>
         <button 
           onClick={() => setIsOpen(false)}

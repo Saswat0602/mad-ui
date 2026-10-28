@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
-import { Accordion, Breadcrumbs, DateTimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
-import { Calendar, Clock } from 'lucide-react'
+import { Accordion, Breadcrumbs, DateTimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage, Calendar as MadCalendar } from 'mad-ui-components'
+import { Calendar as CalendarIcon, Clock, Sliders, Palette, CalendarDays, Zap } from 'lucide-react'
 
 // Breadcrumb Designs Demo Component
 function BreadcrumbDesignsDemo() {
@@ -65,7 +65,7 @@ function DateTimePickerDemo() {
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-xl shadow-lg">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <Calendar className="mr-2 text-blue-600" size={20} />
+              <CalendarIcon className="mr-2 text-blue-600" size={20} />
               Date Only
             </h3>
             <div className="max-w-sm">
@@ -110,7 +110,7 @@ function DateTimePickerDemo() {
 
           <div className="bg-white p-6 rounded-xl shadow-lg md:col-span-2 lg:col-span-1">
             <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <Calendar className="mr-1 text-purple-600" size={20} />
+              <CalendarIcon className="mr-1 text-purple-600" size={20} />
               <Clock className="mr-2 text-purple-600" size={20} />
               Date & Time
             </h3>
@@ -138,7 +138,7 @@ function DateTimePickerDemo() {
           <h2 className="text-xl font-bold text-gray-900 mb-6">Component Features</h2>
           <div className="grid md:grid-cols-2 gap-6">
             <div>
-              <h3 className="font-semibold text-gray-800 mb-3">🎛️ Highly Configurable</h3>
+              <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2"><Sliders size={16} className="text-primary" /> Highly Configurable</h3>
               <ul className="text-gray-600 space-y-1 text-sm">
                 <li>• Three modes: date, time, or both</li>
                 <li>• 12/24 hour time format support</li>
@@ -148,7 +148,7 @@ function DateTimePickerDemo() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-800 mb-3">🎨 Modern Design</h3>
+              <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2"><Palette size={16} className="text-primary" /> Modern Design</h3>
               <ul className="text-gray-600 space-y-1 text-sm">
                 <li>• Clean, minimal interface</li>
                 <li>• Smooth animations & transitions</li>
@@ -158,7 +158,7 @@ function DateTimePickerDemo() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-800 mb-3">📅 Smart Calendar</h3>
+              <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2"><CalendarDays size={16} className="text-primary" /> Smart Calendar</h3>
               <ul className="text-gray-600 space-y-1 text-sm">
                 <li>• Clickable month/year headers</li>
                 <li>• Modal selectors for quick navigation</li>
@@ -168,7 +168,7 @@ function DateTimePickerDemo() {
               </ul>
             </div>
             <div>
-              <h3 className="font-semibold text-gray-800 mb-3">⚡ User Experience</h3>
+              <h3 className="font-semibold text-gray-800 mb-3 flex items-center gap-2"><Zap size={16} className="text-primary" /> User Experience</h3>
               <ul className="text-gray-600 space-y-1 text-sm">
                 <li>• Click outside to close</li>
                 <li>• Tab navigation between date/time</li>
@@ -662,5 +662,37 @@ export function FormExample() {
         </div>
       )
     }
+  ],
+
+  calendar: [
+    {
+      title: 'Interactive Calendar',
+      description: 'A responsive calendar with month navigation and date selection',
+      code: `import { Calendar } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function CalendarExample() {
+  const [date, setDate] = useState<Date | undefined>(new Date())
+
+  return (
+    <div className="flex justify-center p-4">
+      <Calendar 
+        value={date} 
+        onChange={setDate} 
+      />
+    </div>
+  )
+}`,
+      preview: <CalendarDemo />
+    }
   ]
+}
+
+function CalendarDemo() {
+  const [date, setDate] = useState<Date | undefined>(new Date())
+  return (
+    <div className="flex justify-center p-4">
+      <MadCalendar value={date} onChange={setDate} />
+    </div>
+  )
 }

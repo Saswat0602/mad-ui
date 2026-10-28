@@ -164,6 +164,21 @@ export default function GettingStartedPage() {
         </div>
       </section>
 
+      {/* Theming Section */}
+      <section className="space-y-4 border-t border-border/40 pt-8">
+        <h2 className="text-xl font-bold text-foreground">Theming &amp; CSS Variables</h2>
+        <p className="text-xs text-muted-foreground leading-relaxed max-w-3xl">
+          Mad UI components are styled using semantic CSS custom properties. You can import the pre-built stylesheet directly or customize the color tokens in your global stylesheet:
+        </p>
+
+        <CodeBlock
+          code={`/* Import pre-built theme */\n@import "mad-ui-components/theme.css";\n\n/* Or customize design tokens directly */\n:root {\n  --background: #ffffff;\n  --foreground: #09090b;\n  --primary: #2563eb;\n  --primary-foreground: #ffffff;\n  --muted: #f4f4f5;\n  --muted-foreground: #71717a;\n  --border: #e4e4e7;\n  --ring: #2563eb;\n  --radius: 0.5rem;\n}\n\n.dark {\n  --background: #09090b;\n  --foreground: #fafafa;\n  --primary: #3b82f6;\n  --primary-foreground: #ffffff;\n  --muted: #27272a;\n  --muted-foreground: #a1a1aa;\n  --border: #27272a;\n  --ring: #3b82f6;\n}`}
+          language="css"
+          filename="globals.css"
+          showLineNumbers={true}
+        />
+      </section>
+
       {/* Next links */}
       <div className="border-t border-border/40 pt-6 flex items-center justify-between">
         <Link 

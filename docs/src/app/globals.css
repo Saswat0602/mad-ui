@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+@source "../../../dist";
+@source "../../../node_modules/mad-ui-components/dist";
+
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* Smooth scrolling behavior */
@@ -95,16 +98,16 @@ html {
   }
   
   ::-webkit-scrollbar-track {
-    background: hsl(var(--color-muted));
+    background: var(--muted);
   }
   
   ::-webkit-scrollbar-thumb {
-    background: hsl(var(--color-muted-foreground));
+    background: var(--muted-foreground);
     border-radius: 3px;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: hsl(var(--color-foreground));
+    background: var(--foreground);
   }
 }
 

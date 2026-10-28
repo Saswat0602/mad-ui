@@ -6,18 +6,18 @@ export const COMPONENT_REGISTRY = {
   'button': {
     category: 'Core' as ComponentCategory,
     title: 'Button',
-    description: 'Enterprise-level button component with analytics, accessibility, ripple effects, and advanced theming',
+    description: 'Accessible, customizable button component with multiple variants, sizes, and states',
     version: '2.12.0',
     status: 'stable' as const,
-    tags: ['form', 'action', 'interactive', 'enterprise', 'analytics', 'accessibility']
+    tags: ['form', 'action', 'interactive', 'enterprise', 'accessibility']
   },
   'input': {
     category: 'Core' as ComponentCategory,
     title: 'Input',
-    description: 'Enterprise-level input component with validation, analytics, accessibility, and character counting',
+    description: 'Versatile text input component with support for custom prefixes, suffixes, and states',
     version: '2.12.0',
     status: 'stable' as const,
-    tags: ['form', 'input', 'text', 'enterprise', 'validation', 'analytics']
+    tags: ['form', 'input', 'text', 'enterprise', 'validation']
   },
   'label': {
     category: 'Core' as ComponentCategory,
@@ -30,10 +30,10 @@ export const COMPONENT_REGISTRY = {
   'card': {
     category: 'Core' as ComponentCategory,
     title: 'Card',
-    description: 'Enterprise-level card component with analytics, badges, loading states, and drag-and-drop support',
+    description: 'Flexible card container for organizing content with header, content, and footer sections',
     version: '2.12.0',
     status: 'stable' as const,
-    tags: ['layout', 'content', 'container', 'enterprise', 'analytics', 'interactive']
+    tags: ['layout', 'content', 'container', 'enterprise', 'interactive']
   },
   'checkbox': {
     category: 'Core' as ComponentCategory,
@@ -70,18 +70,18 @@ export const COMPONENT_REGISTRY = {
   'progress': {
     category: 'Core' as ComponentCategory,
     title: 'Progress',
-    description: 'Enterprise-level progress component with smooth animations, analytics, accessibility, and interactive features',
+    description: 'Linear progress indicator with custom color, size, and animation support',
     version: '2.12.3',
     status: 'stable' as const,
-    tags: ['feedback', 'progress', 'status', 'enterprise', 'analytics', 'accessibility']
+    tags: ['feedback', 'progress', 'status', 'enterprise', 'accessibility']
   },
   'slider': {
     category: 'Core' as ComponentCategory,
     title: 'Slider',
-    description: 'Enterprise-level slider component with smooth interactions, analytics, accessibility, and advanced functionality',
+    description: 'Range slider component supporting keyboard navigation, custom steps, and tooltips',
     version: '2.12.3',
     status: 'stable' as const,
-    tags: ['form', 'slider', 'range', 'enterprise', 'analytics', 'accessibility']
+    tags: ['form', 'slider', 'range', 'enterprise', 'accessibility']
   },
   'rating': {
     category: 'Core' as ComponentCategory,
@@ -105,7 +105,7 @@ export const COMPONENT_REGISTRY = {
     description: 'Enterprise-level textarea component with character counting, auto-resize, validation, and enterprise features',
     version: '2.12.3',
     status: 'stable' as const,
-    tags: ['form', 'textarea', 'multiline', 'enterprise', 'analytics', 'accessibility']
+    tags: ['form', 'textarea', 'multiline', 'enterprise', 'accessibility']
   },
 
   // Form Components
@@ -157,6 +157,22 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['form', 'tabs', 'panels']
   },
+  'calendar': {
+    category: 'Form' as ComponentCategory,
+    title: 'Calendar',
+    description: 'A responsive calendar component supporting single and range date selection, month navigation, and custom date constraints.',
+    version: '2.16.0',
+    status: 'stable' as const,
+    tags: ['form', 'calendar', 'date', 'picker', 'schedule']
+  },
+  'form': {
+    category: 'Form' as ComponentCategory,
+    title: 'Form',
+    description: 'Composable form components with React Hook Form integration, validation messages, and accessible field labels.',
+    version: '2.16.0',
+    status: 'stable' as const,
+    tags: ['form', 'validation', 'input', 'field', 'react-hook-form']
+  },
 
   // Layout Components
   'layout': {
@@ -170,10 +186,10 @@ export const COMPONENT_REGISTRY = {
   'modal': {
     category: 'Layout' as ComponentCategory,
     title: 'Modal',
-    description: 'Enterprise-level modal component with analytics, accessibility, drag-and-drop, and advanced animations',
+    description: 'Modal dialog overlay for focused user tasks and notifications',
     version: '2.12.2',
     status: 'stable' as const,
-    tags: ['layout', 'modal', 'overlay', 'enterprise', 'analytics', 'accessibility']
+    tags: ['layout', 'modal', 'overlay', 'enterprise', 'accessibility']
   },
   'popover': {
     category: 'Layout' as ComponentCategory,
@@ -186,10 +202,10 @@ export const COMPONENT_REGISTRY = {
   'tooltip': {
     category: 'Layout' as ComponentCategory,
     title: 'Tooltip',
-    description: 'Enterprise-level tooltip component with analytics, accessibility, advanced positioning, and animations',
+    description: 'Informative tooltip popup on hover and focus with directional alignment',
     version: '2.12.2',
     status: 'stable' as const,
-    tags: ['layout', 'tooltip', 'help', 'enterprise', 'analytics', 'accessibility']
+    tags: ['layout', 'tooltip', 'help', 'enterprise', 'accessibility']
   },
   'drawer': {
     category: 'Layout' as ComponentCategory,
@@ -346,10 +362,10 @@ export const COMPONENT_REGISTRY = {
   'collapsible': {
     category: 'Overlay' as ComponentCategory,
     title: 'Collapsible',
-    description: 'Enterprise-level collapsible component with analytics, accessibility, and smooth animations',
+    description: 'Collapsible disclosure component with smooth expand and collapse transitions',
     version: '2.12.3',
     status: 'stable' as const,
-    tags: ['overlay', 'collapsible', 'expand', 'enterprise', 'analytics', 'accessibility']
+    tags: ['overlay', 'collapsible', 'expand', 'enterprise', 'accessibility']
   },
 
   // Media Components
@@ -380,10 +396,10 @@ export const COMPONENT_REGISTRY = {
   'carousel': {
     category: 'Media' as ComponentCategory,
     title: 'Carousel',
-    description: 'Enterprise-level carousel component with autoplay, analytics, accessibility, and advanced image gallery features',
+    description: 'Responsive carousel slider with autoplay, arrow navigation, and dot indicators',
     version: '2.12.3',
     status: 'stable' as const,
-    tags: ['media', 'carousel', 'gallery', 'enterprise', 'analytics', 'accessibility']
+    tags: ['media', 'carousel', 'gallery', 'enterprise', 'accessibility']
   },
   'typography': {
     category: 'Media' as ComponentCategory,
@@ -398,10 +414,10 @@ export const COMPONENT_REGISTRY = {
   'navbar': {
     category: 'Navigation' as ComponentCategory,
     title: 'Navbar',
-    description: 'A responsive navigation bar component with brand logo, navigation items, mobile menu support, and enterprise features like analytics tracking and accessibility.',
+    description: 'Responsive navigation bar with brand branding, links, search input, and mobile menu',
     version: '2.12.3',
     status: 'beta' as const,
-    tags: ['navbar', 'navigation', 'header', 'mobile', 'responsive', 'enterprise', 'analytics', 'accessibility']
+    tags: ['navbar', 'navigation', 'header', 'mobile', 'responsive', 'enterprise', 'accessibility']
   },
 
   'sidebar': {
@@ -410,17 +426,9 @@ export const COMPONENT_REGISTRY = {
     description: 'A collapsible sidebar navigation component with persistent state, multiple variants, and enterprise features for building modern web applications.',
     version: '2.12.3',
     status: 'beta' as const,
-    tags: ['sidebar', 'navigation', 'collapsible', 'persistent', 'enterprise', 'analytics', 'accessibility']
+    tags: ['sidebar', 'navigation', 'collapsible', 'persistent', 'enterprise', 'accessibility']
   },
 
-  'breadcrumb': {
-    category: 'Navigation' as ComponentCategory,
-    title: 'Breadcrumb',
-    description: 'A breadcrumb navigation component for showing the current page location within a site hierarchy with customizable separators and enterprise features.',
-    version: '2.12.3',
-    status: 'stable' as const,
-    tags: ['breadcrumb', 'navigation', 'hierarchy', 'enterprise', 'analytics', 'accessibility']
-  },
 
   // Data Components
   'table': {
@@ -429,7 +437,7 @@ export const COMPONENT_REGISTRY = {
     description: 'A powerful data table component with sorting, selection, pagination, and enterprise features for displaying and managing large datasets.',
     version: '2.12.3',
     status: 'beta' as const,
-    tags: ['table', 'data', 'sorting', 'pagination', 'selection', 'enterprise', 'analytics', 'accessibility']
+    tags: ['table', 'data', 'sorting', 'pagination', 'selection', 'enterprise', 'accessibility']
   },
 
   // Feedback Components
@@ -439,7 +447,7 @@ export const COMPONENT_REGISTRY = {
     description: 'A flexible alert component for displaying important messages with multiple variants, dismissible options, and enterprise features.',
     version: '2.12.3',
     status: 'stable' as const,
-    tags: ['alert', 'notification', 'message', 'dismissible', 'enterprise', 'analytics', 'accessibility']
+    tags: ['alert', 'notification', 'message', 'dismissible', 'enterprise', 'accessibility']
   },
 
   'toast': {
@@ -448,16 +456,16 @@ export const COMPONENT_REGISTRY = {
     description: 'A toast notification component for displaying temporary messages with customizable positioning, duration, and enterprise features.',
     version: '2.12.3',
     status: 'beta' as const,
-    tags: ['toast', 'notification', 'message', 'temporary', 'enterprise', 'analytics', 'accessibility']
+    tags: ['toast', 'notification', 'message', 'temporary', 'enterprise', 'accessibility']
   },
 
   'sonner': {
     category: 'Feedback' as ComponentCategory,
     title: 'Sonner',
-    description: 'A modern toast notification system with rich features, customizable themes, and enterprise-grade analytics and accessibility support.',
+    description: 'Modern toast notification system with support for promises, custom actions, and themes',
     version: '2.12.3',
     status: 'alpha' as const,
-    tags: ['sonner', 'toast', 'notification', 'modern', 'enterprise', 'analytics', 'accessibility']
+    tags: ['sonner', 'toast', 'notification', 'modern', 'enterprise', 'accessibility']
   }
 } as const
 

@@ -34,7 +34,8 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
   const examples = getComponentExamples(slug)
   const props = getComponentProps(slug)
 
-  const defaultImport = `import { ${component.title} } from 'mad-ui-components'`
+  const exportName = (component as any).exportName || component.title.replace(/\s+/g, '')
+  const defaultImport = `import { ${exportName} } from 'mad-ui-components'`
 
   const handleCopyInstall = () => {
     navigator.clipboard.writeText('npm install mad-ui-components')

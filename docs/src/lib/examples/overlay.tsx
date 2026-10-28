@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { 
-  AlertDialog, 
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
   Collapsible, 
   ContextMenu, 
-  Dialog, 
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
   DropdownMenu,
   DropdownMenuTrigger,
   DropdownMenuContent,
@@ -27,33 +39,41 @@ export interface ComponentExample {
 export const overlayExamples: Record<string, ComponentExample[]> = {
   'alert-dialog': [
     {
-      title: 'Basic Alert Dialog',
-      description: 'A simple alert dialog component',
-      code: `import { AlertDialog } from 'mad-ui-components'
+      title: 'Interactive Alert Dialog',
+      description: 'A modal dialog for confirming sensitive or destructive actions',
+      code: `import { AlertDialog, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from 'mad-ui-components'
+import { useState } from 'react'
 
 export function AlertDialogExample() {
   const [open, setOpen] = useState(false)
+
   return (
-    <AlertDialog open={open} onOpenChange={setOpen}>
-      <button onClick={() => setOpen(true)}>Open Alert</button>
-      <div className="p-4">
-        <h3>Alert Dialog</h3>
-        <p>This is an alert dialog content.</p>
-      </div>
-    </AlertDialog>
+    <>
+      <button 
+        type="button"
+        onClick={() => setOpen(true)}
+        className="px-4 py-2 bg-destructive text-destructive-foreground font-medium rounded-lg"
+      >
+        Delete Account
+      </button>
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogContent>
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your account.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setOpen(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => setOpen(false)}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </>
   )
 }`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <AlertDialog open={false} onOpenChange={() => {}}>
-            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Open Alert</button>
-            <div className="p-4">
-              <h3>Alert Dialog</h3>
-              <p>This is an alert dialog content.</p>
-            </div>
-          </AlertDialog>
-        </div>
-      )
+      preview: <AlertDialogDemo />
     }
   ],
 
@@ -107,33 +127,48 @@ export function ContextMenuExample() {
 
   dialog: [
     {
-      title: 'Basic Dialog',
-      description: 'A simple dialog component',
-      code: `import { Dialog } from 'mad-ui-components'
+      title: 'Interactive Dialog',
+      description: 'A modal window overlay for user interactions and forms',
+      code: `import { Dialog, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from 'mad-ui-components'
+import { useState } from 'react'
 
 export function DialogExample() {
   const [open, setOpen] = useState(false)
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
-      <button onClick={() => setOpen(true)}>Open Dialog</button>
-      <div className="p-4">
-        <h3>Dialog Title</h3>
-        <p>This is dialog content.</p>
-      </div>
-    </Dialog>
+    <>
+      <button 
+        type="button"
+        onClick={() => setOpen(true)}
+        className="px-4 py-2 bg-primary text-primary-foreground font-medium rounded-lg"
+      >
+        Open Dialog
+      </button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Profile</DialogTitle>
+            <DialogDescription>
+              Make changes to your profile settings here.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4">
+            <input type="text" defaultValue="Alex Rivera" className="w-full px-3 py-2 border rounded-md" />
+          </div>
+          <DialogFooter>
+            <button type="button" onClick={() => setOpen(false)} className="px-4 py-2 border rounded-md mr-2">
+              Cancel
+            </button>
+            <button type="button" onClick={() => setOpen(false)} className="px-4 py-2 bg-primary text-white rounded-md">
+              Save
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
   )
 }`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <Dialog open={false} onOpenChange={() => {}}>
-            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Open Dialog</button>
-            <div className="p-4">
-              <h3>Dialog Title</h3>
-              <p>This is dialog content.</p>
-            </div>
-          </Dialog>
-        </div>
-      )
+      preview: <DialogDemo />
     }
   ],
 
@@ -339,4 +374,84 @@ export function ToggleExample() {
       preview: <Toggle>Toggle</Toggle>
     }
   ]
+}
+
+function AlertDialogDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="flex justify-center p-4">
+      <button 
+        type="button"
+        onClick={() => setOpen(true)}
+        className="px-4 py-2 bg-destructive text-destructive-foreground font-medium rounded-lg hover:bg-destructive/90 transition-colors shadow-sm cursor-pointer"
+      >
+        Delete Account
+      </button>
+      <AlertDialog open={open} onOpenChange={setOpen}>
+        <AlertDialogContent className="max-w-md">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+            <AlertDialogDescription>
+              This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel onClick={() => setOpen(false)}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onClick={() => setOpen(false)}>Continue</AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+    </div>
+  )
+}
+
+function DialogDemo() {
+  const [open, setOpen] = useState(false)
+  return (
+    <div className="flex justify-center p-4">
+      <button 
+        type="button"
+        onClick={() => setOpen(true)}
+        className="px-4 py-2 bg-primary text-primary-foreground font-medium rounded-lg hover:bg-primary/90 transition-colors shadow-sm cursor-pointer"
+      >
+        Open Dialog
+      </button>
+      <Dialog open={open} onOpenChange={setOpen}>
+        <DialogContent className="max-w-md">
+          <DialogHeader>
+            <DialogTitle>Edit Profile</DialogTitle>
+            <DialogDescription>
+              Make changes to your profile settings here. Click save when you&apos;re done.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="py-4 space-y-3">
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">Display Name</label>
+              <input type="text" defaultValue="Alex Rivera" className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background" />
+            </div>
+            <div>
+              <label className="text-xs font-semibold text-muted-foreground uppercase tracking-wider block mb-1">Email</label>
+              <input type="email" defaultValue="alex@enterprise.io" className="w-full px-3 py-2 text-sm rounded-md border border-input bg-background" />
+            </div>
+          </div>
+          <DialogFooter>
+            <button 
+              type="button" 
+              onClick={() => setOpen(false)}
+              className="px-4 py-2 text-sm font-medium rounded-md border border-input hover:bg-muted transition-colors mr-2 cursor-pointer"
+            >
+              Cancel
+            </button>
+            <button 
+              type="button" 
+              onClick={() => setOpen(false)}
+              className="px-4 py-2 text-sm font-medium rounded-md bg-primary text-primary-foreground hover:bg-primary/90 transition-colors cursor-pointer"
+            >
+              Save Changes
+            </button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </div>
+  )
 }
