@@ -43,9 +43,9 @@ export const InputOTP: React.FC<InputOTPProps> = ({
   const handleChange = (index: number, char: string) => {
     if (disabled) return
 
-    const newValue = value.split('')
-    newValue[index] = char
-    const result = newValue.join('').slice(0, length)
+    const chars = Array.from({ length }, (_, i) => value[i] ?? "")
+    chars[index] = char
+    const result = chars.join('').slice(0, length)
     onChange(result)
 
     if (char && index < length - 1) {
@@ -60,9 +60,9 @@ export const InputOTP: React.FC<InputOTPProps> = ({
     if (e.key === 'Backspace') {
       e.preventDefault()
       if (value[index]) {
-        const newValue = value.split('')
-        newValue[index] = ''
-        onChange(newValue.join(''))
+        const chars = Array.from({ length }, (_, i) => value[i] ?? "")
+        chars[index] = ''
+        onChange(chars.join('').trimEnd())
       } else if (index > 0) {
         setActiveIndex(index - 1)
         inputRefs.current[index - 1]?.focus()
@@ -107,7 +107,7 @@ export const InputOTP: React.FC<InputOTPProps> = ({
           hasFakeCaret={activeIndex === index && !value[index]}
         >
           <input
-            ref={(el) => (inputRefs.current[index] = el)}
+            ref={(el) => { inputRefs.current[index] = el }}
             type={type === 'number' ? 'tel' : 'text'}
             inputMode={type === 'number' ? 'numeric' : 'text'}
             pattern={type === 'number' ? '[0-9]*' : undefined}

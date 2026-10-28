@@ -226,11 +226,12 @@ export const PopoverTrigger: React.FC<PopoverTriggerProps> = ({
   }
 
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      className: cn(children.props.className, className),
+    const child = children as React.ReactElement<any>
+    return React.cloneElement(child, {
+      className: cn(child.props.className, className),
       onClick: (e: React.MouseEvent) => {
         handleClick(e)
-        children.props.onClick?.(e)
+        child.props.onClick?.(e)
       }
     })
   }

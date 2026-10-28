@@ -88,13 +88,11 @@ export const Dialog: React.FC<DialogProps> = ({
     }
   }, [open, onOpenChange])
 
+  // Always render children so DialogTrigger is mounted and can open the dialog.
+  // Only the modal overlay is shown conditionally based on `open`.
   return (
     <DialogContext.Provider value={{ open, onOpenChange }}>
-      {open && (
-        <div className={cn('fixed inset-0 z-50 flex items-center justify-center p-4', className)}>
-          {children}
-        </div>
-      )}
+      {children}
     </DialogContext.Provider>
   )
 }
@@ -135,7 +133,9 @@ export const DialogContent: React.FC<DialogContentProps> = ({
   onEscapeKeyDown,
   onInteractOutside
 }) => {
-  const { onOpenChange } = useDialog()
+  const { open, onOpenChange } = useDialog()
+
+  if (!open) return null
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {

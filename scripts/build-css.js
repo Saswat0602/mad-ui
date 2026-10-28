@@ -33,11 +33,12 @@ if (tailwindExists) {
       .trim();
     
     fs.writeFileSync('dist/styles.css', css);
+    fs.writeFileSync('dist/theme.css', css);
     
-    const stats = fs.statSync('dist/styles.css');
+    const stats = fs.statSync('dist/theme.css');
     const sizeKB = (stats.size / 1024).toFixed(2);
     
-    console.log(`✅ CSS built and optimized: ${sizeKB} KB`);
+    console.log(`✅ CSS built and optimized (styles.css & theme.css): ${sizeKB} KB`);
   } catch (error) {
     console.error('❌ Tailwind build failed, falling back to copy method');
     fallbackCopy();
@@ -66,11 +67,12 @@ function fallbackCopy() {
       .trim();
     
     fs.writeFileSync('dist/styles.css', css);
+    fs.writeFileSync('dist/theme.css', css);
     
-    const stats = fs.statSync('dist/styles.css');
+    const stats = fs.statSync('dist/theme.css');
     const sizeKB = (stats.size / 1024).toFixed(2);
     
-    console.log(`✅ CSS copied and optimized: ${sizeKB} KB`);
+    console.log(`✅ CSS copied and optimized (styles.css & theme.css): ${sizeKB} KB`);
   } catch (error) {
     console.error('❌ CSS copy failed:', error.message);
     process.exit(1);

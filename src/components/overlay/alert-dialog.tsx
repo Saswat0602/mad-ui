@@ -92,13 +92,11 @@ export const AlertDialog: React.FC<AlertDialogProps> = ({
     }
   }, [open, onOpenChange])
 
+  // Always render children so AlertDialogTrigger mounts and can open the dialog.
+  // The modal overlay is shown conditionally based on `open`.
   return (
     <AlertDialogContext.Provider value={{ open, onOpenChange }}>
-      {open && (
-        <div className={cn('fixed inset-0 z-50 flex items-center justify-center p-4', className)}>
-          {children}
-        </div>
-      )}
+      {children}
     </AlertDialogContext.Provider>
   )
 }
@@ -138,7 +136,9 @@ export const AlertDialogContent: React.FC<AlertDialogContentProps> = ({
   onEscapeKeyDown,
   onInteractOutside
 }) => {
-  const { onOpenChange } = useAlertDialog()
+  const { open, onOpenChange } = useAlertDialog()
+
+  if (!open) return null
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget && onInteractOutside) {

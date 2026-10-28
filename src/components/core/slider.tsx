@@ -123,8 +123,9 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
   ...props
 }, ref) => {
   const [value, setValue] = useState<number | [number, number]>(controlledValue ?? defaultValue)
-  const [isDragging, setIsDragging] = useState(false)
+  const isDraggingRef = useRef(false)  // Use ref instead of state to avoid stale closures in document listeners
   const [activeThumb, setActiveThumb] = useState<'min' | 'max' | null>(null)
+  const activeThumbRef = useRef<'min' | 'max' | null>(null)
   const sliderRef = useRef<HTMLDivElement>(null)
   const thumbRef = useRef<HTMLDivElement>(null)
 
@@ -195,7 +196,8 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
   // Handle mouse/touch events
   const handleMouseDown = (e: React.MouseEvent | React.TouchEvent, thumb: 'min' | 'max' | null) => {
     if (disabled) return
-    setIsDragging(true)
+    isDraggingRef.current = true
+    activeThumbRef.current = thumb
     setActiveThumb(thumb)
     document.addEventListener('mousemove', handleMouseMove)
     document.addEventListener('mouseup', handleMouseUp)
@@ -204,12 +206,12 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
   }
 
   const handleMouseMove = (e: MouseEvent) => {
-    if (!isDragging || !sliderRef.current) return
+    if (!isDraggingRef.current || !sliderRef.current) return
     updateValue(e.clientX, e.clientY)
   }
 
   const handleTouchMove = (e: TouchEvent) => {
-    if (!isDragging || !sliderRef.current) return
+    if (!isDraggingRef.current || !sliderRef.current) return
     const touch = e.touches[0]
     updateValue(touch.clientX, touch.clientY)
   }
@@ -232,9 +234,9 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
     newValue = Math.round(newValue / step) * step
     newValue = Math.max(min, Math.min(max, newValue))
 
-    if (range && activeThumb) {
+    if (range && activeThumbRef.current) {
       const newRangeValue: [number, number] = [...(currentValue as [number, number])]
-      if (activeThumb === 'min') {
+      if (activeThumbRef.current === 'min') {
         newRangeValue[0] = Math.min(newValue, newRangeValue[1] - step)
       } else {
         newRangeValue[1] = Math.max(newValue, newRangeValue[0] + step)
@@ -250,13 +252,25 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
   }
 
   const handleMouseUp = () => {
-    setIsDragging(false)
+    isDraggingRef.current = false
+    activeThumbRef.current = null
     setActiveThumb(null)
     document.removeEventListener('mousemove', handleMouseMove)
     document.removeEventListener('mouseup', handleMouseUp)
     document.removeEventListener('touchmove', handleTouchMove)
     document.removeEventListener('touchend', handleTouchEnd)
   }
+
+  // Cleanup listeners on unmount
+  useEffect(() => {
+    return () => {
+      document.removeEventListener('mousemove', handleMouseMove)
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.removeEventListener('touchmove', handleTouchMove)
+      document.removeEventListener('touchend', handleTouchEnd)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const handleTouchEnd = handleMouseUp
 

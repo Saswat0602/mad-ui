@@ -71,8 +71,9 @@ export const BarChart: React.FC<BarChartProps> = ({
   height = 300,
   width = 400
 }) => {
-  const maxValue = Math.max(...data.map(d => d.value))
-  const barWidth = width / data.length - 10
+  const maxValue = data.length > 0 ? Math.max(...data.map(d => d.value), 1) : 1
+  const spacing = 10
+  const barWidth = data.length > 0 ? Math.max(0, (width - 70 - (data.length - 1) * spacing) / data.length) : 0
 
   return (
     <div className={cn('relative', className)}>
@@ -102,7 +103,7 @@ export const BarChart: React.FC<BarChartProps> = ({
         {/* Bars */}
         {data.map((item, index) => {
           const barHeight = (item.value / maxValue) * (height - 80)
-          const x = 50 + index * (barWidth + 10)
+          const x = 50 + index * (barWidth + spacing)
           const y = height - 40 - barHeight
 
           return (
@@ -145,8 +146,8 @@ export const LineChart: React.FC<LineChartProps> = ({
   height = 300,
   width = 400
 }) => {
-  const maxValue = Math.max(...data.map(d => d.value))
-  const pointSpacing = (width - 80) / (data.length - 1)
+  const maxValue = data.length > 0 ? Math.max(...data.map(d => d.value), 1) : 1
+  const pointSpacing = data.length > 1 ? (width - 80) / (data.length - 1) : 0
 
   const points = data.map((item, index) => ({
     x: 40 + index * pointSpacing,

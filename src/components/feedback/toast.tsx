@@ -54,6 +54,12 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
   const isVisible = controlledOpen !== undefined ? controlledOpen : internalVisible
 
   useEffect(() => {
+    if (isVisible) {
+      setIsExiting(false)
+    }
+  }, [isVisible])
+
+  useEffect(() => {
     if (persistent || duration <= 0 || !isVisible) return
 
     const timer = setTimeout(() => {
@@ -67,6 +73,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
     setIsExiting(true)
     setTimeout(() => {
       setInternalVisible(false)
+      setIsExiting(false)
       onOpenChange?.(false)
       onClose?.(id)
     }, 200)

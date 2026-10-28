@@ -37,10 +37,11 @@ export const RadioGroup: React.FC<RadioGroupProps> = ({
     >
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child) && child.type === RadioGroupItem) {
-          return React.cloneElement(child, {
-            checked: child.props.value === value,
+          const item = child as React.ReactElement<any>
+          return React.cloneElement(item, {
+            checked: item.props.value === value,
             onValueChange: handleValueChange,
-            disabled: disabled || child.props.disabled
+            disabled: disabled || item.props.disabled
           })
         }
         return child

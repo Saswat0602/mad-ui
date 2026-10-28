@@ -6,8 +6,22 @@ import {
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
+const primaryColorMap: Record<string, {
+  activeDark: string;
+  activeLight: string;
+  badge: string;
+  glow: string;
+  ring: string;
+}> = {
+  blue: { activeDark: "bg-blue-600", activeLight: "bg-blue-500 text-white", badge: "bg-blue-500 text-white", glow: "hover:shadow-blue-500/25", ring: "focus:ring-blue-500" },
+  indigo: { activeDark: "bg-indigo-600", activeLight: "bg-indigo-500 text-white", badge: "bg-indigo-500 text-white", glow: "hover:shadow-indigo-500/25", ring: "focus:ring-indigo-500" },
+  purple: { activeDark: "bg-purple-600", activeLight: "bg-purple-500 text-white", badge: "bg-purple-500 text-white", glow: "hover:shadow-purple-500/25", ring: "focus:ring-purple-500" },
+  green: { activeDark: "bg-green-600", activeLight: "bg-green-500 text-white", badge: "bg-green-500 text-white", glow: "hover:shadow-green-500/25", ring: "focus:ring-green-500" },
+  red: { activeDark: "bg-red-600", activeLight: "bg-red-500 text-white", badge: "bg-red-500 text-white", glow: "hover:shadow-red-500/25", ring: "focus:ring-red-500" },
+};
+
 // Enhanced Sidebar Component
-export interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface SidebarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onToggle'> {
   // Content props
   title?: string;
   subtitle?: string;
@@ -159,6 +173,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     const [searchQuery, setSearchQuery] = useState("");
     const [hoveredItem, setHoveredItem] = useState<string | null>(null);
 
+    const colors = primaryColorMap[primaryColor] || primaryColorMap.blue;
+
     // Theme configurations
     const themes = {
       dark: {
@@ -166,7 +182,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         text: "text-slate-100",
         textSecondary: "text-slate-400",
         hover: "hover:bg-slate-700/50",
-        active: `bg-${primaryColor}-600`,
+        active: colors.activeDark,
         border: "border-slate-700",
         glass: "backdrop-blur-xl bg-slate-900/80"
       },
@@ -175,7 +191,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         text: "text-gray-900",
         textSecondary: "text-gray-500",
         hover: "hover:bg-gray-100",
-        active: `bg-${primaryColor}-500 text-white`,
+        active: colors.activeLight,
         border: "border-gray-200",
         glass: "backdrop-blur-xl bg-white/80"
       },
@@ -211,7 +227,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     // Hover effects
     const hoverEffects = {
       lift: "hover:translate-y-[-2px] hover:shadow-lg transition-all duration-200",
-      glow: `hover:shadow-lg hover:shadow-${primaryColor}-500/25 transition-all duration-200`,
+      glow: cn("hover:shadow-lg transition-all duration-200", colors.glow),
       scale: "hover:scale-105 transition-transform duration-200",
       none: ""
     };
@@ -303,7 +319,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
                     {item.badge && (
                       <span className={cn(
                         "px-2 py-1 text-xs rounded-full", 
-                        item.badgeColor || `bg-${primaryColor}-500 text-white`,
+                        item.badgeColor || colors.badge,
                         "animate-pulse"
                       )}>
                         {item.badge}
@@ -446,7 +462,8 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
                   currentTheme.border,
                   currentTheme.hover,
                   "bg-transparent placeholder-gray-400",
-                  `focus:outline-none focus:ring-2 focus:ring-${primaryColor}-500`,
+                  "focus:outline-none focus:ring-2",
+                  colors.ring,
                   `transition-all ${animationDuration}`
                 )}
               />

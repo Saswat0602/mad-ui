@@ -104,7 +104,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
       date: Date
     }[] = []
 
-    const prevMonth = new Date(viewDate.getFullYear(), viewDate.getMonth() - 1, 0)
+    const prevMonth = new Date(viewDate.getFullYear(), viewDate.getMonth(), 0)
     const prevMonthDays = prevMonth.getDate()
 
     for (let i = firstDay - 1; i >= 0; i--) {
@@ -316,7 +316,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             className="w-14 h-10 text-sm border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center font-medium bg-white"
           >
             {Array.from({ length: timeFormat === '12' ? 12 : 24 }, (_, i) => {
-              const hour = timeFormat === '12' ? (i === 0 ? 12 : i + 1) : i
+              const hour = timeFormat === '12' ? i + 1 : i
               return (
                 <option key={i} value={hour}>
                   {String(hour).padStart(2, '0')}

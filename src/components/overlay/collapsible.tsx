@@ -58,13 +58,14 @@ export const Collapsible: React.FC<CollapsibleProps> = ({
     <div className={cn('w-full', className)}>
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child)) {
+          const c = child as React.ReactElement<any>
           if (child.type === CollapsibleTrigger) {
-            return React.cloneElement(child, {
+            return React.cloneElement(c, {
               onClick: () => setIsOpen(!isOpen)
             })
           }
           if (child.type === CollapsibleContent) {
-            return React.cloneElement(child, {
+            return React.cloneElement(c, {
               isOpen
             })
           }
@@ -82,8 +83,9 @@ export const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({
   onClick
 }) => {
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      className: cn(children.props.className, className),
+    const child = children as React.ReactElement<any>
+    return React.cloneElement(child, {
+      className: cn(child.props.className, className),
       onClick
     })
   }

@@ -56,7 +56,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     actions,
     children,
     style,
-    role = "alert",
+    role,
     ...props 
   }, ref) => {
     // Resolve effective semantic variant from type or variant

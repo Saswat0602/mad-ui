@@ -1,60 +1,44 @@
 import { defineConfig } from 'tsup'
 
-// Multi-entry build with strategic grouping to minimize unused imports
-// while maintaining tree-shaking benefits
+// Shared base options for all bundles
+const sharedOptions = {
+  format: ['esm'] as const,
+  dts: true,
+  splitting: false,
+  sourcemap: true,
+  clean: false, // MUST stay false — clean:true breaks Next.js Turbopack file-handle watches
+  external: ['react', 'react-dom', 'clsx', 'tailwind-merge', 'lucide-react'],
+  esbuildOptions(options: any) {
+    options.jsx = 'automatic'
+    options.keepNames = true    // Needed for React DevTools component names
+    options.treeShaking = true
+    // DO NOT set: minifyIdentifiers, drop, mangleProps, ignoreAnnotations
+    // Libraries ship readable code; consumers do their own minification
+  },
+  minify: false,   // Consumers minify; we ship readable code + sourcemaps
+  target: 'es2020' as const,
+  platform: 'browser' as const,
+  outDir: 'dist',
+  outExtension: () => ({ js: '.mjs' }),
+  // Inject "use client" at the top of every built file so components work
+  // in Next.js App Router Server Components
+  banner: { js: '"use client";' },
+}
+
 export default defineConfig([
   // Main entry point
   {
+    ...sharedOptions,
     entry: ['src/index.ts'],
-    format: ['esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-      options.treeShaking = true
-      options.ignoreAnnotations = true
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    outDir: 'dist',
-    outExtension: () => ({ js: '.mjs' })
   },
   // Core components (most commonly used)
   {
+    ...sharedOptions,
     entry: ['src/core.ts'],
-    format: ['esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-      options.treeShaking = true
-      options.ignoreAnnotations = true
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    outDir: 'dist',
-    outExtension: () => ({ js: '.mjs' })
   },
   // Module groups
   {
+    ...sharedOptions,
     entry: [
       'src/modules/forms.ts',
       'src/modules/overlay.ts',
@@ -62,32 +46,12 @@ export default defineConfig([
       'src/modules/data.ts',
       'src/modules/feedback.ts',
       'src/modules/navigation.ts',
-      'src/modules/media.ts'
+      'src/modules/media.ts',
     ],
-    format: ['esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-      options.treeShaking = true
-      options.ignoreAnnotations = true
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    outDir: 'dist',
-    outExtension: () => ({ js: '.mjs' })
   },
-  // Individual components (grouped by functionality)
+  // Individual components — batch 1: core inputs
   {
+    ...sharedOptions,
     entry: [
       'src/individual/button.ts',
       'src/individual/input.ts',
@@ -99,31 +63,12 @@ export default defineConfig([
       'src/individual/switch.ts',
       'src/individual/slider.ts',
       'src/individual/rating.ts',
-      'src/individual/progress.ts'
+      'src/individual/progress.ts',
     ],
-    format: ['esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-      options.treeShaking = true
-      options.ignoreAnnotations = true
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    outDir: 'dist',
-    outExtension: () => ({ js: '.mjs' })
   },
+  // Individual components — batch 2: forms
   {
+    ...sharedOptions,
     entry: [
       'src/individual/card.ts',
       'src/individual/form.ts',
@@ -133,31 +78,12 @@ export default defineConfig([
       'src/individual/input-otp.ts',
       'src/individual/radio-group.ts',
       'src/individual/calendar.ts',
-      'src/individual/datetime-picker.ts'
+      'src/individual/datetime-picker.ts',
     ],
-    format: ['esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-      options.treeShaking = true
-      options.ignoreAnnotations = true
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    outDir: 'dist',
-    outExtension: () => ({ js: '.mjs' })
   },
+  // Individual components — batch 3: overlays
   {
+    ...sharedOptions,
     entry: [
       'src/individual/context-menu.ts',
       'src/individual/dropdown-menu.ts',
@@ -168,64 +94,28 @@ export default defineConfig([
       'src/individual/dialog.ts',
       'src/individual/modal.ts',
       'src/individual/drawer.ts',
-      'src/individual/sheet.ts'
+      'src/individual/sheet.ts',
     ],
-    format: ['esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-      options.treeShaking = true
-      options.ignoreAnnotations = true
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    outDir: 'dist',
-    outExtension: () => ({ js: '.mjs' })
   },
+  // Individual components — batch 4: layout
   {
+    ...sharedOptions,
     entry: [
-      'src/individual/layout.ts',
+      // NOTE: src/individual/layout.ts renamed to layout-shell to avoid
+      // overwriting dist/layout.mjs produced by src/modules/layout.ts
+      'src/individual/layout-shell.ts',
       'src/individual/sidebar.ts',
       'src/individual/navbar.ts',
       'src/individual/resizable.ts',
       'src/individual/scroll-area.ts',
       'src/individual/separator.ts',
       'src/individual/collapsible.ts',
-      'src/individual/toggle.ts'
+      'src/individual/toggle.ts',
     ],
-    format: ['esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-      options.treeShaking = true
-      options.ignoreAnnotations = true
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    outDir: 'dist',
-    outExtension: () => ({ js: '.mjs' })
   },
+  // Individual components — batch 5: data/navigation
   {
+    ...sharedOptions,
     entry: [
       'src/individual/table.ts',
       'src/individual/data-table.ts',
@@ -234,31 +124,12 @@ export default defineConfig([
       'src/individual/command.ts',
       'src/individual/combobox.ts',
       'src/individual/navigation-menu.ts',
-      'src/individual/menubar.ts'
+      'src/individual/menubar.ts',
     ],
-    format: ['esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-      options.treeShaking = true
-      options.ignoreAnnotations = true
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    outDir: 'dist',
-    outExtension: () => ({ js: '.mjs' })
   },
+  // Individual components — batch 6: media/feedback
   {
+    ...sharedOptions,
     entry: [
       'src/individual/avatar.ts',
       'src/individual/badge.ts',
@@ -268,28 +139,7 @@ export default defineConfig([
       'src/individual/skeleton.ts',
       'src/individual/alert.ts',
       'src/individual/toast.ts',
-      'src/individual/sonner.ts'
+      'src/individual/sonner.ts',
     ],
-    format: ['esm'],
-    dts: true,
-    splitting: false,
-    sourcemap: false,
-    clean: false,
-    external: ['react', 'react-dom', 'clsx', 'tailwind-merge'],
-    esbuildOptions(options) {
-      options.jsx = 'automatic'
-      options.minifyIdentifiers = true
-      options.drop = ['console', 'debugger']
-      options.keepNames = false
-      options.mangleProps = /^_/
-      options.treeShaking = true
-      options.ignoreAnnotations = true
-    },
-    treeshake: true,
-    minify: true,
-    target: 'es2020',
-    platform: 'browser',
-    outDir: 'dist',
-    outExtension: () => ({ js: '.mjs' })
-  }
+  },
 ])

@@ -99,17 +99,6 @@ function Table<T extends Record<string, unknown>>({
   const [sortColumn, setSortColumn] = React.useState<keyof T | null>(null)
   const [sortDirection, setSortDirection] = React.useState<"asc" | "desc">("asc")
 
-  // If used as standard declarative table wrapper (children passed without columns/data)
-  if (!columns || !data) {
-    return (
-      <div className={cn("relative w-full overflow-auto rounded-xl border border-zinc-200 dark:border-zinc-800", className)}>
-        <table className="w-full caption-bottom text-sm" style={style} {...props}>
-          {children}
-        </table>
-      </div>
-    )
-  }
-
   const handleSort = (column: keyof T) => {
     if (sortColumn === column) {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc")
@@ -122,7 +111,7 @@ function Table<T extends Record<string, unknown>>({
   const handleSelectAll = (checked: boolean) => {
     if (!onSelectionChange) return
     if (checked) {
-      const allRowKeys = data.map((row, index) => getRowKey(row, index))
+      const allRowKeys = data ? data.map((row, index) => getRowKey(row, index)) : []
       onSelectionChange(allRowKeys)
     } else {
       onSelectionChange([])
@@ -144,6 +133,20 @@ function Table<T extends Record<string, unknown>>({
     }
     return String(row[rowKey] || index)
   }
+
+  // If used as standard declarative table wrapper (children passed without columns/data)
+  // This early return must come AFTER all hooks to satisfy Rules of Hooks
+  if (!columns || !data) {
+    return (
+      <div className={cn("relative w-full overflow-auto rounded-xl border border-zinc-200 dark:border-zinc-800", className)}>
+        <table className="w-full caption-bottom text-sm" style={style} {...props}>
+          {children}
+        </table>
+      </div>
+    )
+  }
+
+
 
   const sizeClasses = {
     sm: "py-2 px-3 text-xs",

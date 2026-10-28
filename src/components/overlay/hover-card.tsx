@@ -37,8 +37,9 @@ export const HoverCardTrigger: React.FC<HoverCardTriggerProps> = ({
   className
 }) => {
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      className: cn(children.props.className, className)
+    const child = children as React.ReactElement<any>
+    return React.cloneElement(child, {
+      className: cn(child.props.className, className)
     })
   }
   
@@ -60,7 +61,7 @@ export const HoverCardContent: React.FC<HoverCardContentProps> = ({
   const [position, setPosition] = useState({ x: 0, y: 0 })
   const triggerRef = useRef<HTMLDivElement>(null)
   const contentRef = useRef<HTMLDivElement>(null)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const alignClasses = {
     start: 'left-0',
@@ -111,17 +112,18 @@ export const HoverCardContent: React.FC<HoverCardContentProps> = ({
       >
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
-            return React.cloneElement(child, {
+            const c = child as React.ReactElement<any>
+            return React.cloneElement(c, {
               onMouseEnter: (e: React.MouseEvent) => {
                 showCard()
-                if (child.props.onMouseEnter) {
-                  child.props.onMouseEnter(e)
+                if (c.props.onMouseEnter) {
+                  c.props.onMouseEnter(e)
                 }
               },
               onMouseLeave: (e: React.MouseEvent) => {
                 hideCard()
-                if (child.props.onMouseLeave) {
-                  child.props.onMouseLeave(e)
+                if (c.props.onMouseLeave) {
+                  c.props.onMouseLeave(e)
                 }
               }
             })

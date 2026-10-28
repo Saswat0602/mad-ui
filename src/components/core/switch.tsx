@@ -78,8 +78,8 @@ const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
           ref={ref}
           className="sr-only"
           checked={isChecked}
-          onChange={handleChange}
           {...props}
+          onChange={handleChange}
         />
 
         {(label || description) && (

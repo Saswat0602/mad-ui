@@ -105,11 +105,12 @@ export const SheetTrigger: React.FC<SheetTriggerProps> = ({
   }
 
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      className: cn(children.props.className, className),
+    const child = children as React.ReactElement<any>
+    return React.cloneElement(child, {
+      className: cn(child.props.className, className),
       onClick: (e: React.MouseEvent) => {
         handleClick(e)
-        children.props.onClick?.(e)
+        child.props.onClick?.(e)
       }
     })
   }
@@ -231,7 +232,7 @@ export const SheetFooter: React.FC<SheetFooterProps> = ({
   className
 }) => {
   return (
-    <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-4 border-t border-zinc-100 dark:border-zinc-850 mt-4', className)}>
+    <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-4 border-t border-zinc-100 dark:border-zinc-800 mt-4', className)}>
       {children}
     </div>
   )

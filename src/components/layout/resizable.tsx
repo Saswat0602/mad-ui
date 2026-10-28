@@ -79,7 +79,7 @@ export const Resizable: React.FC<ResizableProps> = ({
     <div className={cn('flex', direction === 'vertical' ? 'flex-col' : 'flex-row', className)}>
       {React.Children.map(children, (child, index) => {
         if (React.isValidElement(child) && child.type === ResizablePanel) {
-          return React.cloneElement(child, {
+          return React.cloneElement(child as React.ReactElement<any>, {
             style: {
               [direction === 'horizontal' ? 'width' : 'height']: `${size}px`,
               flexShrink: 0

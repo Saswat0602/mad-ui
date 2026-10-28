@@ -53,7 +53,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
   const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen)
   const isControlled = controlledOpen !== undefined
   const open = isControlled ? controlledOpen : uncontrolledOpen
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const setOpen = (newOpen: boolean) => {
     if (!isControlled) {
@@ -141,15 +141,16 @@ export const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
   const handleMouseLeave = () => context?.setOpen(false)
 
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      className: cn(children.props.className, className),
+    const child = children as React.ReactElement<any>
+    return React.cloneElement(child, {
+      className: cn(child.props.className, className),
       onMouseEnter: (e: React.MouseEvent) => {
         handleMouseEnter()
-        children.props.onMouseEnter?.(e)
+        child.props.onMouseEnter?.(e)
       },
       onMouseLeave: (e: React.MouseEvent) => {
         handleMouseLeave()
-        children.props.onMouseLeave?.(e)
+        child.props.onMouseLeave?.(e)
       }
     })
   }

@@ -216,6 +216,7 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     const navigateMonth = (direction: "prev" | "next") => {
       setCurrentDate(prev => {
         const newDate = new Date(prev)
+        newDate.setDate(1)
         if (direction === "prev") {
           newDate.setMonth(newDate.getMonth() - 1)
         } else {

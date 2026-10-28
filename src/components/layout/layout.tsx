@@ -88,9 +88,9 @@ const Layout = React.forwardRef<HTMLDivElement, LayoutProps>(
           <Navbar
             {...navbar}
             position={fixedNavbar ? "fixed" : "static"}
-            height={`h-${navbarHeight}`}
             style={{
               ...navbar?.style,
+              height: navbarHeight,
               zIndex: 60
             }}
           />
@@ -102,10 +102,9 @@ const Layout = React.forwardRef<HTMLDivElement, LayoutProps>(
             {...sidebar}
             defaultCollapsed={isSidebarCollapsed}
             onToggle={handleSidebarCollapsedChange}
-            width={`w-${sidebarWidth}`}
-            collapsedWidth={`w-${sidebarCollapsedWidth}`}
             style={{
               ...sidebar?.style,
+              width: sidebarWidth,
               top: navbarOffset,
               height: `calc(100vh - ${navbarOffset}px)`,
               zIndex: 50

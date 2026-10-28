@@ -103,10 +103,11 @@ export const MenubarTrigger: React.FC<MenubarTriggerProps> = ({
   return (
     <>
       <button
+        type="button"
         ref={triggerRef}
         className={cn(
-          'flex cursor-default select-none items-center rounded-lg px-2.5 py-1 text-xs font-medium text-zinc-700 dark:text-zinc-200 outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer',
-          isOpen && 'bg-zinc-100 dark:bg-zinc-850 text-zinc-900 dark:text-zinc-100',
+          'flex cursor-default select-none items-center rounded-lg px-2.5 py-1 text-xs font-medium text-zinc-700 dark:text-zinc-200 outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer',
+          isOpen && 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100',
           className
         )}
         onClick={handleClick}
@@ -155,7 +156,7 @@ export const MenubarItem: React.FC<MenubarItemProps> = ({
         'relative flex cursor-default select-none items-center rounded-lg px-2.5 py-1.5 text-xs outline-none transition-colors text-zinc-800 dark:text-zinc-200',
         disabled
           ? 'pointer-events-none opacity-40'
-          : 'hover:bg-zinc-100 dark:hover:bg-zinc-850 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer',
+          : 'hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer',
         className
       )}
       onClick={disabled ? undefined : onClick}

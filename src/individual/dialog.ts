@@ -5,7 +5,9 @@ export {
   DialogHeader, 
   DialogFooter, 
   DialogTitle, 
-  DialogDescription 
+  DialogDescription,
+  DialogClose,
+  useDialog,
 } from '../components/overlay/dialog'
 export type { 
   DialogProps, 
@@ -14,5 +16,6 @@ export type {
   DialogHeaderProps, 
   DialogFooterProps, 
   DialogTitleProps, 
-  DialogDescriptionProps 
+  DialogDescriptionProps,
+  DialogCloseProps,
 } from '../components/overlay/dialog'

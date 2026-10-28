@@ -5,7 +5,7 @@ import { Check, ChevronRight } from 'lucide-react'
 interface DropdownMenuContextType {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
-  triggerRef: React.RefObject<HTMLDivElement>
+  triggerRef: React.RefObject<HTMLDivElement | null>
 }
 
 const DropdownMenuContext = createContext<DropdownMenuContextType | null>(null)
@@ -135,14 +135,15 @@ export const DropdownMenuTrigger: React.FC<DropdownMenuTriggerProps> = ({
   }
 
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
+    const child = children as React.ReactElement<any>
+    return React.cloneElement(child, {
       ref: triggerRef,
-      className: cn(children.props.className, className),
+      className: cn(child.props.className, className),
       onClick: (e: React.MouseEvent) => {
         e.stopPropagation()
         handleClick()
-        if (children.props.onClick) {
-          children.props.onClick(e)
+        if (child.props.onClick) {
+          child.props.onClick(e)
         }
       }
     })
@@ -336,10 +337,11 @@ export const DropdownMenuRadioGroup: React.FC<DropdownMenuRadioGroupProps> = ({
     <div className={cn('p-1', className)} data-value={value}>
       {React.Children.map(children, (child) => {
         if (React.isValidElement(child) && child.type === DropdownMenuRadioItem) {
-          return React.cloneElement(child, {
-            ...child.props,
-            checked: child.props.value === value,
-            onCheckedChange: () => onValueChange?.(child.props.value)
+          const c = child as React.ReactElement<any>
+          return React.cloneElement(c, {
+            ...c.props,
+            checked: c.props.value === value,
+            onCheckedChange: () => onValueChange?.(c.props.value)
           })
         }
         return child
@@ -422,7 +424,7 @@ export const DropdownMenuSubTrigger: React.FC<DropdownMenuSubTriggerProps> = ({
         <div className="absolute left-full top-0 ml-1 min-w-[8rem] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-1 text-zinc-900 dark:text-zinc-100 shadow-xl">
           {React.Children.map(children, (child) => {
             if (React.isValidElement(child) && child.type === DropdownMenuSubContent) {
-              return child.props.children
+              return (child as React.ReactElement<any>).props.children
             }
             return null
           })}

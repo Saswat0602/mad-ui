@@ -6,6 +6,21 @@ import {
 } from 'lucide-react';
 import { cn } from '../../lib/utils';
 
+const primaryColorMap: Record<string, {
+  bgLight: string;
+  text: string;
+  badge: string;
+  ring: string;
+  button: string;
+  buttonHover: string;
+}> = {
+  blue: { bgLight: "bg-blue-100", text: "text-blue-600", badge: "bg-blue-500 text-white", ring: "focus:ring-blue-500", button: "bg-blue-600", buttonHover: "hover:bg-blue-700" },
+  indigo: { bgLight: "bg-indigo-100", text: "text-indigo-600", badge: "bg-indigo-500 text-white", ring: "focus:ring-indigo-500", button: "bg-indigo-600", buttonHover: "hover:bg-indigo-700" },
+  purple: { bgLight: "bg-purple-100", text: "text-purple-600", badge: "bg-purple-500 text-white", ring: "focus:ring-purple-500", button: "bg-purple-600", buttonHover: "hover:bg-purple-700" },
+  green: { bgLight: "bg-green-100", text: "text-green-600", badge: "bg-green-500 text-white", ring: "focus:ring-green-500", button: "bg-green-600", buttonHover: "hover:bg-green-700" },
+  red: { bgLight: "bg-red-100", text: "text-red-600", badge: "bg-red-500 text-white", ring: "focus:ring-red-500", button: "bg-red-600", buttonHover: "hover:bg-red-700" },
+};
+
 // Enhanced Navbar Component
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   // Content props
@@ -261,11 +276,13 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
       onSearch(value);
     };
 
+    const colors = primaryColorMap[primaryColor] || primaryColorMap.blue;
+
     // Profile menu items default
     const defaultProfileItems = [
-      { icon: User, label: "Profile", action: () => console.log("Profile") },
-      { icon: Settings, label: "Settings", action: () => console.log("Settings") },
-      { icon: LogOut, label: "Sign Out", action: () => console.log("Sign Out"), danger: true }
+      { icon: User, label: "Profile", action: () => {} },
+      { icon: Settings, label: "Settings", action: () => {} },
+      { icon: LogOut, label: "Sign Out", action: () => {}, danger: true }
     ];
 
     const profileItems = profileMenuItems.length > 0 ? profileMenuItems : defaultProfileItems;
@@ -324,7 +341,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                               "flex items-center space-x-2 px-4 py-2 rounded-lg",
                               `transition-all ${animationDuration}`,
                               themeConfig.hover,
-                              item.active ? `bg-${primaryColor}-100 text-${primaryColor}-600` : '',
+                              item.active ? cn(colors.bgLight, colors.text) : '',
                               itemCustomClasses,
                               "group"
                             )}
@@ -335,7 +352,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                             {item.badge && (
                               <span className={cn(
                                 "ml-2 px-2 py-1 text-xs rounded-full",
-                                item.badgeColor || `bg-${primaryColor}-500 text-white`,
+                                item.badgeColor || colors.badge,
                                 "animate-pulse"
                               )}>
                                 {item.badge}
@@ -400,7 +417,8 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                           themeConfig.border,
                           themeConfig.hover,
                           "bg-transparent placeholder-gray-400",
-                          `focus:outline-none focus:ring-2 focus:ring-${primaryColor}-500`,
+                          "focus:outline-none focus:ring-2",
+                          colors.ring,
                           `transition-all ${animationDuration}`,
                           "backdrop-blur-sm"
                         )}
@@ -536,7 +554,8 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                       onClick={ctaAction}
                       className={cn(
                         "hidden md:block px-6 py-2",
-                        `bg-${primaryColor}-600 hover:bg-${primaryColor}-700`,
+                        colors.button,
+                        colors.buttonHover,
                         "text-white rounded-lg font-medium",
                         `transition-all ${animationDuration}`,
                         "transform hover:scale-105 hover:shadow-lg"
@@ -654,7 +673,8 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                     themeConfig.border,
                     themeConfig.hover,
                     "bg-transparent placeholder-gray-400",
-                    `focus:outline-none focus:ring-2 focus:ring-${primaryColor}-500`,
+                    "focus:outline-none focus:ring-2",
+                    colors.ring,
                     `transition-all ${animationDuration}`
                   )}
                 />
@@ -676,7 +696,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                       "w-full flex items-center space-x-3 p-3 rounded-lg",
                       themeConfig.hover,
                       `transition-all ${animationDuration}`,
-                      item.active ? `bg-${primaryColor}-100 text-${primaryColor}-600` : ''
+                      item.active ? cn(colors.bgLight, colors.text) : ''
                     )}
                   >
                     {Icon && <Icon size={20} />}
@@ -684,7 +704,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                     {item.badge && (
                       <span className={cn(
                         "ml-auto px-2 py-1 text-xs rounded-full",
-                        item.badgeColor || `bg-${primaryColor}-500 text-white`
+                        item.badgeColor || colors.badge
                       )}>
                         {item.badge}
                       </span>
@@ -700,7 +720,8 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                 onClick={ctaAction}
                 className={cn(
                   "w-full px-6 py-3",
-                  `bg-${primaryColor}-600 hover:bg-${primaryColor}-700`,
+                  colors.button,
+                  colors.buttonHover,
                   "text-white rounded-lg font-medium",
                   `transition-all ${animationDuration}`
                 )}

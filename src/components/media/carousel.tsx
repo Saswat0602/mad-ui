@@ -93,10 +93,26 @@ export const Carousel: React.FC<CarouselProps> = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(autoPlay)
-  const intervalRef = useRef<ReturnType<typeof setInterval>>()
-  const childrenArray = React.Children.toArray(children).filter(
-    child => React.isValidElement(child) && child.type === CarouselItem
-  )
+  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null)
+  
+  const rawChildren = React.Children.toArray(children)
+  const items: React.ReactNode[] = []
+
+  rawChildren.forEach((child) => {
+    if (React.isValidElement(child)) {
+      if (child.type === CarouselContent) {
+        React.Children.forEach((child.props as any).children, (nestedChild) => {
+          if (React.isValidElement(nestedChild)) {
+            items.push(nestedChild)
+          }
+        })
+      } else if (child.type === CarouselItem) {
+        items.push(child)
+      }
+    }
+  })
+
+  const childrenArray = items.length > 0 ? items : rawChildren
 
   const next = () => {
     setCurrentIndex((prev) => (prev + 1) % childrenArray.length)
@@ -202,6 +218,7 @@ export const CarouselPrevious: React.FC<CarouselPreviousProps> = ({
 }) => {
   return (
     <button
+      type="button"
       className={cn(
         'inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow-md transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer',
         className
@@ -220,6 +237,7 @@ export const CarouselNext: React.FC<CarouselNextProps> = ({
 }) => {
   return (
     <button
+      type="button"
       className={cn(
         'inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow-md transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer',
         className
@@ -240,6 +258,7 @@ export const CarouselIndicator: React.FC<CarouselIndicatorProps> = ({
 }) => {
   return (
     <button
+      type="button"
       className={cn(
         'h-2 w-2 rounded-full transition-colors',
         isActive ? 'bg-primary' : 'bg-muted hover:bg-muted-foreground',

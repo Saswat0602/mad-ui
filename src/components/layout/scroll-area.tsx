@@ -22,7 +22,7 @@ export const ScrollArea: React.FC<ScrollAreaProps> = ({
   const [showScrollbar, setShowScrollbar] = useState(false)
   const scrollAreaRef = useRef<HTMLDivElement>(null)
   const scrollbarRef = useRef<HTMLDivElement>(null)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   const handleScroll = () => {
     setShowScrollbar(true)

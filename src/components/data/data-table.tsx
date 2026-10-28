@@ -135,7 +135,7 @@ export const DataTable = <T extends Record<string, any>>({
           onSort={handleSort}
           sortable={sortable}
         />
-        <div className="divide-y divide-zinc-100 dark:divide-zinc-850">
+        <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
           {paginatedData.length > 0 ? (
             paginatedData.map((item, index) => (
               <DataTableRow

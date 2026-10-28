@@ -1,6 +1,6 @@
 {
   "name": "mad-ui-components",
-  "version": "2.15.15",
+  "version": "2.16.0",
   "description": "A comprehensive UI component library built with React and Tailwind CSS",
   "main": "./dist/index.mjs",
   "module": "./dist/index.mjs",
@@ -11,7 +11,10 @@
   },
   "homepage": "https://mad-ui.vercel.app/",
   "bugs": {
-    "url": "https://github.com/Saswat0602/my-ui/issues"
+    "url": "https://github.com/Saswat0602/mad-ui/issues"
+  },
+  "engines": {
+    "node": ">=18"
   },
   "exports": {
     ".": {
@@ -19,6 +22,9 @@
       "import": "./dist/index.mjs",
       "default": "./dist/index.mjs"
     },
+    "./package.json": "./package.json",
+    "./theme.css": "./dist/theme.css",
+    "./styles.css": "./dist/styles.css",
     "./core": {
       "types": "./dist/core.d.mts",
       "import": "./dist/core.mjs",
@@ -139,10 +145,10 @@
       "import": "./dist/calendar.mjs",
       "default": "./dist/calendar.mjs"
     },
-    "./date-picker": {
-      "types": "./dist/date-picker.d.mts",
-      "import": "./dist/date-picker.mjs",
-      "default": "./dist/date-picker.mjs"
+    "./datetime-picker": {
+      "types": "./dist/datetime-picker.d.mts",
+      "import": "./dist/datetime-picker.mjs",
+      "default": "./dist/datetime-picker.mjs"
     },
     "./input-otp": {
       "types": "./dist/input-otp.d.mts",
@@ -158,11 +164,6 @@
       "types": "./dist/tabs.d.mts",
       "import": "./dist/tabs.mjs",
       "default": "./dist/tabs.mjs"
-    },
-    "./timepicker": {
-      "types": "./dist/timepicker.d.mts",
-      "import": "./dist/timepicker.mjs",
-      "default": "./dist/timepicker.mjs"
     },
     "./form": {
       "types": "./dist/form.d.mts",
@@ -233,6 +234,11 @@
       "types": "./dist/sidebar.d.mts",
       "import": "./dist/sidebar.mjs",
       "default": "./dist/sidebar.mjs"
+    },
+    "./layout-shell": {
+      "types": "./dist/layout-shell.d.mts",
+      "import": "./dist/layout-shell.mjs",
+      "default": "./dist/layout-shell.mjs"
     },
     "./resizable": {
       "types": "./dist/resizable.d.mts",
@@ -333,21 +339,6 @@
       "types": "./dist/toast.d.mts",
       "import": "./dist/toast.mjs",
       "default": "./dist/toast.mjs"
-    },
-    "./icons": {
-      "types": "./src/icons/index.tsx",
-      "import": "./src/icons/index.tsx",
-      "default": "./src/icons/index.tsx"
-    },
-    "./utils": {
-      "types": "./src/lib/utils.ts",
-      "import": "./src/lib/utils.ts",
-      "default": "./src/lib/utils.ts"
-    },
-    "./colors": {
-      "types": "./src/lib/colors.ts",
-      "import": "./src/lib/colors.ts",
-      "default": "./src/lib/colors.ts"
     }
   },
   "files": [
@@ -363,11 +354,12 @@
     "typescript",
     "design-system"
   ],
-  "author": "Your Name",
+  "author": "Saswat Ranjan Mohanty",
   "license": "MIT",
   "peerDependencies": {
     "react": ">=18.0.0",
-    "react-dom": ">=18.0.0"
+    "react-dom": ">=18.0.0",
+    "tailwindcss": ">=3.0.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.0",
@@ -384,10 +376,12 @@
     "mad-ui-components": "scripts/copy-component.js"
   },
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && node scripts/build-css.js",
+    "build:css": "node scripts/build-css.js",
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
-    "prepublishOnly": "npm run clean && npm run build"
+    "typecheck": "tsc --noEmit",
+    "prepublishOnly": "npm run clean && npm run build && npm run typecheck"
   },
   "dependencies": {
     "clsx": "^2.1.1",

@@ -58,8 +58,9 @@ export const ContextMenuTrigger: React.FC<ContextMenuTriggerProps> = ({
   className
 }) => {
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      className: cn(children.props.className, className)
+    const child = children as React.ReactElement<any>
+    return React.cloneElement(child, {
+      className: cn(child.props.className, className)
     })
   }
   
@@ -127,12 +128,13 @@ export const ContextMenuContent: React.FC<ContextMenuContentProps> = ({
       <div ref={triggerRef} onContextMenu={handleContextMenu}>
         {React.Children.map(children, (child) => {
           if (React.isValidElement(child)) {
-            return React.cloneElement(child, {
+            const c = child as React.ReactElement<any>
+            return React.cloneElement(c, {
               onContextMenu: (e: React.MouseEvent) => {
                 e.preventDefault()
                 handleContextMenu(e)
-                if (child.props.onContextMenu) {
-                  child.props.onContextMenu(e)
+                if (c.props.onContextMenu) {
+                  c.props.onContextMenu(e)
                 }
               }
             })

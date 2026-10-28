@@ -1,12 +1,12 @@
 import React from 'react'
 import { cn } from '../../lib/utils'
 
-export interface BadgeProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface BadgeProps extends React.HTMLAttributes<HTMLSpanElement> {
   variant?: 'default' | 'secondary' | 'destructive' | 'outline' | 'success' | 'warning' | 'error' | 'info'
   size?: 'sm' | 'md' | 'lg'
 }
 
-const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
+const Badge = React.forwardRef<HTMLSpanElement, BadgeProps>(
   ({ className, variant = 'default', size = 'md', children, ...props }, ref) => {
     const baseClasses = 'inline-flex items-center rounded-full font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2'
     
@@ -28,7 +28,7 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
     }
     
     return (
-      <div
+      <span
         ref={ref}
         className={cn(
           baseClasses,
@@ -39,7 +39,7 @@ const Badge = React.forwardRef<HTMLDivElement, BadgeProps>(
         {...props}
       >
         {children}
-      </div>
+      </span>
     )
   }
 )

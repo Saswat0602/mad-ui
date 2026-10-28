@@ -21,7 +21,7 @@ export { RadioGroup, RadioGroupItem } from './components/forms/radio-group'
 export { Accordion } from './components/forms/accordion'
 export { Calendar } from './components/forms/calendar'
 export { DateTimePicker } from './components/forms/datetime-picker'
-export { InputOTP } from './components/forms/input-otp'
+export { InputOTP, InputOTPGroup, InputOTPSlot } from './components/forms/input-otp'
 export { Breadcrumbs } from './components/forms/breadcrumbs'
 export { Tabs } from './components/forms/tabs'
 export { 
@@ -35,11 +35,48 @@ export {
 } from './components/forms/react-hook-form'
 
 // Overlay Components
-export { Dialog } from './components/overlay/dialog'
-export { AlertDialog } from './components/overlay/alert-dialog'
-export { HoverCard } from './components/overlay/hover-card'
-export { Collapsible } from './components/overlay/collapsible'
-export { ContextMenu } from './components/overlay/context-menu'
+export { 
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogFooter,
+  DialogTitle,
+  DialogDescription,
+  DialogClose,
+  useDialog
+} from './components/overlay/dialog'
+export { 
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+  useAlertDialog
+} from './components/overlay/alert-dialog'
+export { 
+  HoverCard,
+  HoverCardTrigger,
+  HoverCardContent
+} from './components/overlay/hover-card'
+export { 
+  Collapsible,
+  CollapsibleTrigger,
+  CollapsibleContent
+} from './components/overlay/collapsible'
+export { 
+  ContextMenu,
+  ContextMenuTrigger,
+  ContextMenuContent,
+  ContextMenuItem,
+  ContextMenuSeparator,
+  ContextMenuLabel,
+  ContextMenuGroup
+} from './components/overlay/context-menu'
 export { 
   DropdownMenu,
   DropdownMenuTrigger,
@@ -167,10 +204,10 @@ export {
 export type { ButtonProps } from './components/core/button'
 export type { InputProps } from './components/core/input'
 export type { LabelProps } from './components/core/label'
-export type { CardProps } from './components/core/card'
+export type { CardProps, CardHeaderProps, CardTitleProps, CardDescriptionProps, CardContentProps, CardFooterProps } from './components/core/card'
 export type { CheckboxProps } from './components/core/checkbox'
 export type { RadioProps } from './components/core/radio'
-export type { SelectProps } from './components/core/select'
+export type { SelectProps, SelectContentProps, SelectItemProps, SelectTriggerProps, SelectValueProps, SelectGroupProps, SelectLabelProps } from './components/core/select'
 export type { SwitchProps } from './components/core/switch'
 export type { ProgressProps } from './components/core/progress'
 export type { SliderProps } from './components/core/slider'
@@ -182,7 +219,7 @@ export type { RadioGroupProps, RadioGroupItemProps } from './components/forms/ra
 export type { AccordionProps, AccordionItem } from './components/forms/accordion'
 export type { CalendarProps } from './components/forms/calendar'
 export type { DateTimePickerProps } from './components/forms/datetime-picker'
-export type { InputOTPProps } from './components/forms/input-otp'
+export type { InputOTPProps, InputOTPGroupProps, InputOTPSlotProps } from './components/forms/input-otp'
 export type { BreadcrumbsProps } from './components/forms/breadcrumbs'
 export type { TabsProps, TabItem } from './components/forms/tabs'
 export type { 
@@ -195,11 +232,46 @@ export type {
   FormMessageProps
 } from './components/forms/react-hook-form'
 
-export type { DialogProps } from './components/overlay/dialog'
-export type { AlertDialogProps } from './components/overlay/alert-dialog'
-export type { HoverCardProps } from './components/overlay/hover-card'
-export type { CollapsibleProps } from './components/overlay/collapsible'
-export type { ContextMenuProps } from './components/overlay/context-menu'
+export type { 
+  DialogProps,
+  DialogTriggerProps,
+  DialogContentProps,
+  DialogHeaderProps,
+  DialogFooterProps,
+  DialogTitleProps,
+  DialogDescriptionProps,
+  DialogCloseProps
+} from './components/overlay/dialog'
+export type { 
+  AlertDialogProps,
+  AlertDialogTriggerProps,
+  AlertDialogContentProps,
+  AlertDialogHeaderProps,
+  AlertDialogFooterProps,
+  AlertDialogTitleProps,
+  AlertDialogDescriptionProps,
+  AlertDialogActionProps,
+  AlertDialogCancelProps
+} from './components/overlay/alert-dialog'
+export type { 
+  HoverCardProps,
+  HoverCardTriggerProps,
+  HoverCardContentProps
+} from './components/overlay/hover-card'
+export type { 
+  CollapsibleProps,
+  CollapsibleTriggerProps,
+  CollapsibleContentProps
+} from './components/overlay/collapsible'
+export type { 
+  ContextMenuProps,
+  ContextMenuTriggerProps,
+  ContextMenuContentProps,
+  ContextMenuItemProps,
+  ContextMenuSeparatorProps,
+  ContextMenuLabelProps,
+  ContextMenuGroupProps
+} from './components/overlay/context-menu'
 export type { 
   DropdownMenuProps,
   DropdownMenuTriggerProps,
