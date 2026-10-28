@@ -7,7 +7,7 @@
   "types": "./dist/index.d.mts",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Saswat0602/mad-ui.git"
+    "url": "git+https://github.com/Saswat0602/mad-ui.git"
   },
   "homepage": "https://mad-ui.vercel.app/",
   "bugs": {
@@ -381,7 +381,7 @@
     "typescript": "^5.9.3"
   },
   "bin": {
-    "mad-ui-components": "./scripts/copy-component.js"
+    "mad-ui-components": "scripts/copy-component.js"
   },
   "scripts": {
     "build": "tsup",
