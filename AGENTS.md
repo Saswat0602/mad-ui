@@ -8,9 +8,9 @@ Welcome to the **Mad UI** repository. This document provides a comprehensive gui
 
 **Mad UI** (`mad-ui-components`) is an enterprise-grade React UI component library built with **TypeScript** and **Tailwind CSS**, featuring 57+ components and subpath modules with extensive customization, animations, accessibility, and theme support.
 
-### Dual-Workspace Monorepo Structure:
+### Monorepo Structure:
 1. **Root (`/`)**: The published npm package (`mad-ui-components`), bundled with `tsup` into ESM and `.d.mts` files in `dist/`.
-2. **Documentation (`/docs`)**: A Next.js 15+ showcase and documentation application built with App Router, React 19, and Tailwind CSS. It consumes the root package directly via `"mad-ui-components": "file:.."`.
+2. **Documentation (`/docs`)**: A Next.js 16.4.3+ showcase and documentation application built with App Router (Turbopack), React 19, and Tailwind CSS v4. It consumes the root package directly via `"mad-ui-components": "file:.."`.
 
 ---
 
@@ -18,19 +18,20 @@ Welcome to the **Mad UI** repository. This document provides a comprehensive gui
 
 ```
 mad-ui/
+├── .github/workflows/ci.yml   # GitHub Actions CI workflow (build, typecheck, lint)
 ├── AGENTS.md                  # This guide and engineering rules
-├── COMPONENTS_STATUS.md       # Audit and status matrix for all 55+ components
+├── CHANGELOG.md               # Version changelog
+├── LICENSE                    # MIT License
 ├── README.md                  # Root repository overview and npm instructions
 ├── package.json               # Root package.json (mad-ui-components)
 ├── tsup.config.ts             # Multi-entry build configuration for library
 ├── tsconfig.json              # Root TypeScript config
 ├── tailwind.config.js         # Library Tailwind configuration
-├── dist/                      # Compiled ESM and declaration files (.mjs, .d.mts)
+├── dist/                      # Compiled ESM, styles, and declaration files (.mjs, .d.mts)
 ├── scripts/
-│   ├── build-css.js           # CSS processing script
-│   └── copy-component.js      # CLI tool (`mad-ui-components copy <component>`)
+│   └── build-css.js           # CSS processing script (builds dist/styles.css & dist/theme.css)
 ├── src/
-│   ├── index.ts               # Primary bundle entry point
+│   ├── index.ts               # Primary bundle entry point (exports all components + compounds)
 │   ├── core.ts                # Core bundle entry point
 │   ├── components/            # Component source files categorized by domain
 │   │   ├── core/              # Button, Card, Input, Checkbox, Select, Slider, etc.
@@ -42,12 +43,12 @@ mad-ui/
 │   │   ├── media/             # Avatar, Badge, Carousel, AspectRatio, Typography
 │   │   └── feedback/          # Alert, Toast, Sonner
 │   ├── modules/               # Sub-bundle entry points (forms.ts, layout.ts, etc.)
-│   ├── individual/            # Individual entry points for optimal tree-shaking
+│   ├── individual/            # Individual entry points for tree-shaking
 │   ├── lib/
 │   │   ├── utils.ts           # clsx + tailwind-merge (cn helper)
 │   │   └── colors.ts          # Color utilities and token helpers
 │   └── icons/                 # Shared icon components
-└── docs/                      # Next.js 15 showcase & documentation site
+└── docs/                      # Next.js 16 showcase & documentation site
     ├── package.json           # Docs dependencies (Next.js, React 19, Lucide, Framer Motion)
     ├── next.config.ts         # Next.js configuration with MDX support
     ├── public/                # Static assets, SVG logos, and favicons

@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [master, main]
+  pull_request:
+    branches: [master, main]
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install root dependencies
+        run: npm ci || npm install
+
+      - name: Typecheck root library
+        run: npm run typecheck
+
+      - name: Build root library
+        run: npm run build
+
+      - name: Install docs dependencies
+        run: |
+          cd docs
+          npm ci || npm install
+          cd ..
+
+      - name: Lint docs
+        run: npm --prefix docs run lint
+
+      - name: Build docs site
+        run: npm --prefix docs run build
