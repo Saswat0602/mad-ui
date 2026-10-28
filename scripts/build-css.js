@@ -13,7 +13,7 @@ if (tailwindExists) {
   
   try {
     // Build with purging to remove unused styles
-    execSync(`${tailwindPath} src/styles.css -o dist/styles.css --minify`, {
+    execSync(`"${tailwindPath}" -i src/styles.css -o dist/styles.css --minify`, {
       stdio: 'inherit',
       cwd: path.join(__dirname, '..')
     });

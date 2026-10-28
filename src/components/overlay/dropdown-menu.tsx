@@ -5,7 +5,7 @@ import { Check, ChevronRight } from 'lucide-react'
 interface DropdownMenuContextType {
   isOpen: boolean
   setIsOpen: (open: boolean) => void
-  triggerRef: React.RefObject<HTMLDivElement | null>
+  triggerRef: React.RefObject<HTMLDivElement>
 }
 
 const DropdownMenuContext = createContext<DropdownMenuContextType | null>(null)

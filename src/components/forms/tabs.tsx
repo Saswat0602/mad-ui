@@ -46,7 +46,7 @@ const Tabs = forwardRef<HTMLDivElement, TabsProps>(({
   style,
   ...props
 }, ref) => {
-  const [activeTab, setActiveTab] = useState(defaultActiveTab || items[0]?.id || '')
+  const [activeTab, setActiveTab] = useState(defaultActiveTab || items?.[0]?.id || '')
 
   // Size classes
   const sizeClasses = {
