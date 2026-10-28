@@ -128,11 +128,8 @@
 }
 
 @layer base {
-  * {
-    @apply border-border;
-  }
-  
-  body {
+  .mad-ui-base,
+  body[data-mad-ui-theme] {
     @apply bg-background text-foreground;
   }
 }

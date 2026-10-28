@@ -2,6 +2,7 @@ import React, { StrictMode } from 'react'
 import { render } from '@testing-library/react'
 import { renderToString } from 'react-dom/server'
 import { describe, it, expect } from 'vitest'
+import { axe } from 'vitest-axe'
 
 // Core
 import { Button } from '../src/components/core/button'
@@ -240,6 +241,27 @@ describe('Smoke & SSR Component Suite', () => {
       )
       expect(html).toContain('Open')
       expect(html).not.toContain('Hidden content')
+    })
+  })
+
+  describe('Automated Accessibility (axe-core)', () => {
+    it('Button has no accessibility violations', async () => {
+      const { container } = render(<Button>Accessible Button</Button>)
+      const results = await axe(container)
+      expect(results).toHaveNoViolations()
+    })
+
+    it('Card has no accessibility violations', async () => {
+      const { container } = render(
+        <Card>
+          <CardHeader>
+            <CardTitle>Accessible Card</CardTitle>
+          </CardHeader>
+          <CardContent>Content body</CardContent>
+        </Card>
+      )
+      const results = await axe(container)
+      expect(results).toHaveNoViolations()
     })
   })
 })

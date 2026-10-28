@@ -39,6 +39,9 @@ jobs:
       - name: Check package exports and fields (publint)
         run: npm run check:pkg
 
+      - name: Check component manifest integrity
+        run: npm run check:manifest
+
       - name: Install docs dependencies
         run: |
           cd docs

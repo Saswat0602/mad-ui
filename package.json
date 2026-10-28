@@ -362,8 +362,10 @@
     "tailwindcss": ">=3.0.0"
   },
   "devDependencies": {
+    "@changesets/cli": "3.0.3",
     "@eslint/js": "10.0.1",
     "@testing-library/react": "16.3.3",
+    "@testing-library/user-event": "14.6.8",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
     "autoprefixer": "^10.6.2",
@@ -377,7 +379,8 @@
     "tsup": "^9.0.0",
     "typescript": "^5.9.3",
     "typescript-eslint": "8.72.1",
-    "vitest": "5.0.5"
+    "vitest": "5.0.5",
+    "vitest-axe": "0.1.0"
   },
   "bin": {
     "mad-ui-components": "scripts/copy-component.js"
@@ -391,7 +394,10 @@
     "lint": "eslint src tests",
     "test": "vitest run",
     "check:pkg": "publint",
-    "prepublishOnly": "npm run clean && npm run build && npm run typecheck && npm run test && npm run check:pkg"
+    "check:manifest": "node scripts/verify-manifest.js",
+    "changeset": "changeset",
+    "version-packages": "changeset version",
+    "prepublishOnly": "npm run clean && npm run build && npm run typecheck && npm run test && npm run check:pkg && npm run check:manifest"
   },
   "dependencies": {
     "clsx": "^2.1.1",
