@@ -1,11 +1,11 @@
-import React, { forwardRef, useState, useEffect } from 'react'
+import React, { forwardRef, useState, useEffect, createContext, useContext } from 'react'
 import { cn } from '../../lib/utils'
-import { XIcon, CheckCircleIcon, AlertCircleIcon, InfoIcon, XCircleIcon } from '../../icons'
+import { CheckCircle2, AlertCircle, AlertTriangle, Info, X } from 'lucide-react'
 
 export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClose'> {
   id?: string
   title?: string
-  message: string
+  message?: string
   type?: 'success' | 'error' | 'warning' | 'info' | 'default'
   variant?: 'default' | 'filled' | 'outlined' | 'minimal'
   size?: 'sm' | 'md' | 'lg'
@@ -20,93 +20,8 @@ export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   borderRadius?: string | number
   shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
   onClose?: (id?: string) => void
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  progress?: boolean
-  progressValue?: number
-  onProgressComplete?: () => void
-  priority?: 'low' | 'medium' | 'high' | 'critical'
-  category?: string
-  tags?: string[]
-  metadata?: Record<string, any>
-  sound?: boolean
-  vibration?: boolean
-  onShow?: () => void
-  onHide?: () => void
-  onAction?: (action: string) => void
-  actions?: Array<{
-    label: string
-    onClick: () => void
-    variant?: 'default' | 'primary' | 'secondary' | 'ghost'
-    icon?: React.ReactNode
-  }>
-  avatar?: string
-  timestamp?: Date
-  showTimestamp?: boolean
-  groupable?: boolean
-  groupId?: string
-  maxGroupSize?: number
-  onGroup?: (toasts: ToastProps[]) => void
-  stackable?: boolean
-  maxStackSize?: number
-  onStack?: (toasts: ToastProps[]) => void
-  draggable?: boolean
-  onDragMove?: (position: { x: number; y: number }) => void
-  onDragComplete?: (position: { x: number; y: number }) => void
-  swipeable?: boolean
-  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
-  keyboardDismissible?: boolean
-  onKeyboardDismiss?: (key: string) => void
-  clickable?: boolean
-  onClick?: () => void
-  onDoubleClick?: () => void
-  onRightClick?: (event: React.MouseEvent) => void
-  contextMenuItems?: Array<{
-    label: string
-    onClick: () => void
-    icon?: React.ReactNode
-    disabled?: boolean
-  }>
-  retryable?: boolean
-  onRetry?: () => void
-  retryCount?: number
-  maxRetries?: number
-  onRetryExhausted?: () => void
-  linkable?: boolean
-  link?: string
-  onLinkClick?: () => void
-  linkTarget?: '_blank' | '_self' | '_parent' | '_top'
-  expandable?: boolean
-  expandedContent?: React.ReactNode
-  onExpand?: () => void
-  onCollapse?: () => void
-  collapsible?: boolean
-  collapsed?: boolean
-  onToggle?: (collapsed: boolean) => void
-  animated?: boolean
-  animation?: 'fade' | 'slide' | 'scale' | 'bounce' | 'flip' | 'none'
-  animationDuration?: number
-  onAnimationStart?: () => void
-  onAnimationEnd?: () => void
-  theme?: 'light' | 'dark' | 'auto'
-  locale?: string
-  rtl?: boolean
-  onLocaleChange?: (locale: string) => void
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
 }
 
 const Toast = forwardRef<HTMLDivElement, ToastProps>(({
@@ -127,74 +42,82 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
   borderRadius,
   shadow = 'md',
   onClose,
+  open: controlledOpen,
+  onOpenChange,
   className,
+  children,
   style,
   ...props
 }, ref) => {
-  const [isVisible, setIsVisible] = useState(true)
+  const [internalVisible, setInternalVisible] = useState(true)
   const [isExiting, setIsExiting] = useState(false)
+  const isVisible = controlledOpen !== undefined ? controlledOpen : internalVisible
 
-  // Auto-dismiss timer
   useEffect(() => {
-    if (persistent || duration <= 0) return
+    if (persistent || duration <= 0 || !isVisible) return
 
     const timer = setTimeout(() => {
       handleClose()
     }, duration)
 
     return () => clearTimeout(timer)
-  }, [duration, persistent])
+  }, [duration, persistent, isVisible])
 
-  // Size classes
+  const handleClose = () => {
+    setIsExiting(true)
+    setTimeout(() => {
+      setInternalVisible(false)
+      onOpenChange?.(false)
+      onClose?.(id)
+    }, 200)
+  }
+
   const sizeClasses = {
-    sm: 'p-3 text-sm',
-    md: 'p-4 text-base',
-    lg: 'p-5 text-lg'
+    sm: 'p-3 text-xs',
+    md: 'p-4 text-sm',
+    lg: 'p-5 text-base'
   }
 
-  // Variant classes with proper visibility
   const variantClasses = {
-    default: 'bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-600',
-    filled: 'bg-slate-900 dark:bg-slate-100 text-white dark:text-slate-900',
-    outlined: 'bg-transparent border-2',
-    minimal: 'bg-transparent border-none'
+    default: 'bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-lg',
+    filled: 'bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 shadow-lg',
+    outlined: 'bg-white/80 dark:bg-zinc-900/80 backdrop-blur-sm border-2 border-zinc-300 dark:border-zinc-700 text-zinc-900 dark:text-zinc-100',
+    minimal: 'bg-zinc-50 dark:bg-zinc-900/50 border border-transparent text-zinc-800 dark:text-zinc-200'
   }
 
-  // Type classes
   const typeClasses = {
     success: {
-      default: 'border-green-200 dark:border-green-700',
-      filled: 'bg-green-600 text-white',
-      outlined: 'border-green-500 text-green-700 dark:text-green-300',
-      minimal: 'text-green-600 dark:text-green-400'
+      default: 'border-emerald-200 dark:border-emerald-900/60 bg-emerald-50/60 dark:bg-emerald-950/20 text-emerald-950 dark:text-emerald-100',
+      filled: 'bg-emerald-600 text-white',
+      outlined: 'border-emerald-500 text-emerald-700 dark:text-emerald-300',
+      minimal: 'text-emerald-700 dark:text-emerald-400'
     },
     error: {
-      default: 'border-red-200 dark:border-red-700',
-      filled: 'bg-red-600 text-white',
-      outlined: 'border-red-500 text-red-700 dark:text-red-300',
-      minimal: 'text-red-600 dark:text-red-400'
+      default: 'border-rose-200 dark:border-rose-900/60 bg-rose-50/60 dark:bg-rose-950/20 text-rose-950 dark:text-rose-100',
+      filled: 'bg-rose-600 text-white',
+      outlined: 'border-rose-500 text-rose-700 dark:text-rose-300',
+      minimal: 'text-rose-700 dark:text-rose-400'
     },
     warning: {
-      default: 'border-yellow-200 dark:border-yellow-700',
-      filled: 'bg-yellow-600 text-white',
-      outlined: 'border-yellow-500 text-yellow-700 dark:text-yellow-300',
-      minimal: 'text-yellow-600 dark:text-yellow-400'
+      default: 'border-amber-200 dark:border-amber-900/60 bg-amber-50/60 dark:bg-amber-950/20 text-amber-950 dark:text-amber-100',
+      filled: 'bg-amber-600 text-white',
+      outlined: 'border-amber-500 text-amber-700 dark:text-amber-300',
+      minimal: 'text-amber-700 dark:text-amber-400'
     },
     info: {
-      default: 'border-blue-200 dark:border-blue-700',
+      default: 'border-blue-200 dark:border-blue-900/60 bg-blue-50/60 dark:bg-blue-950/20 text-blue-950 dark:text-blue-100',
       filled: 'bg-blue-600 text-white',
       outlined: 'border-blue-500 text-blue-700 dark:text-blue-300',
-      minimal: 'text-blue-600 dark:text-blue-400'
+      minimal: 'text-blue-700 dark:text-blue-400'
     },
     default: {
-      default: 'border-slate-200 dark:border-slate-600',
-      filled: 'bg-slate-600 text-white',
-      outlined: 'border-slate-500 text-slate-700 dark:text-slate-300',
-      minimal: 'text-slate-600 dark:text-slate-400'
+      default: 'border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100',
+      filled: 'bg-zinc-800 text-white',
+      outlined: 'border-zinc-400 text-zinc-800 dark:text-zinc-200',
+      minimal: 'text-zinc-700 dark:text-zinc-300'
     }
   }
 
-  // Shadow classes
   const shadowClasses = {
     none: '',
     sm: 'shadow-sm',
@@ -203,40 +126,29 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
     xl: 'shadow-xl'
   }
 
-  // Position classes
   const positionClasses = {
     'top-left': 'top-4 left-4',
     'top-right': 'top-4 right-4',
-    'top-center': 'top-4 left-1/2 transform -translate-x-1/2',
+    'top-center': 'top-4 left-1/2 -translate-x-1/2',
     'bottom-left': 'bottom-4 left-4',
     'bottom-right': 'bottom-4 right-4',
-    'bottom-center': 'bottom-4 left-1/2 transform -translate-x-1/2'
+    'bottom-center': 'bottom-4 left-1/2 -translate-x-1/2'
   }
 
-  // Icon component
   const getIcon = () => {
-    const iconClasses = 'w-5 h-5 flex-shrink-0'
-    
+    const iconClasses = 'w-4 h-4 mt-0.5 shrink-0'
     switch (type) {
       case 'success':
-        return <CheckCircleIcon className={iconClasses} />
+        return <CheckCircle2 className={cn(iconClasses, 'text-emerald-600 dark:text-emerald-400')} />
       case 'error':
-        return <XCircleIcon className={iconClasses} />
+        return <AlertCircle className={cn(iconClasses, 'text-rose-600 dark:text-rose-400')} />
       case 'warning':
-        return <AlertCircleIcon className={iconClasses} />
+        return <AlertTriangle className={cn(iconClasses, 'text-amber-600 dark:text-amber-400')} />
       case 'info':
-        return <InfoIcon className={iconClasses} />
+        return <Info className={cn(iconClasses, 'text-blue-600 dark:text-blue-400')} />
       default:
         return null
     }
-  }
-
-  const handleClose = () => {
-    setIsExiting(true)
-    setTimeout(() => {
-      setIsVisible(false)
-      onClose?.(id)
-    }, 300)
   }
 
   if (!isVisible) return null
@@ -244,10 +156,11 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
   return (
     <div
       ref={ref}
+      role="status"
+      aria-live="polite"
       className={cn(
-        'fixed z-50 max-w-sm w-full',
+        'fixed z-50 max-w-sm w-full transition-all duration-200 ease-out',
         positionClasses[position],
-        'transform transition-all duration-300 ease-in-out',
         isExiting ? 'opacity-0 scale-95 translate-y-2' : 'opacity-100 scale-100 translate-y-0',
         className
       )}
@@ -261,46 +174,31 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
       {...props}
     >
       <div className={cn(
-        'rounded-lg',
+        'rounded-xl',
         sizeClasses[size],
         variantClasses[variant],
         typeClasses[type][variant],
         shadowClasses[shadow],
-        'flex items-start space-x-3'
+        'flex items-start gap-3 backdrop-blur-sm'
       )}>
-        {/* Icon */}
-        {getIcon() && (
-          <div className="flex-shrink-0">
-            {getIcon()}
-          </div>
-        )}
+        {getIcon()}
 
-        {/* Content */}
         <div className="flex-1 min-w-0">
           {title && (
-            <h4 className="font-medium mb-1">{title}</h4>
+            <h5 className="font-semibold text-xs tracking-tight mb-0.5">{title}</h5>
           )}
-          <p className="text-sm opacity-90">{message}</p>
-          
-          {/* Action */}
-          {action && (
-            <div className="mt-3">
-              {action}
-            </div>
-          )}
+          {message && <p className="text-xs opacity-90 leading-relaxed">{message}</p>}
+          {children}
+          {action && <div className="mt-2.5">{action}</div>}
         </div>
 
-        {/* Close Button */}
         {closable && (
           <button
             onClick={handleClose}
-            className={cn(
-              'flex-shrink-0 p-1 rounded-md transition-colors duration-200',
-              'hover:bg-black/10 dark:hover:bg-white/10',
-              'focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500'
-            )}
+            aria-label="Close notification"
+            className="shrink-0 p-1 rounded-md text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
-            <XIcon className="w-4 h-4" />
+            <X className="w-3.5 h-3.5" />
           </button>
         )}
       </div>
@@ -310,4 +208,71 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
 
 Toast.displayName = "Toast"
 
+export const ToastTitle = forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHeadingElement>>(
+  ({ className, ...props }, ref) => (
+    <h5 ref={ref} className={cn("text-xs font-semibold tracking-tight text-zinc-900 dark:text-zinc-100", className)} {...props} />
+  )
+)
+ToastTitle.displayName = "ToastTitle"
+
+export const ToastDescription = forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLParagraphElement>>(
+  ({ className, ...props }, ref) => (
+    <p ref={ref} className={cn("text-xs text-zinc-600 dark:text-zinc-300 leading-relaxed mt-0.5", className)} {...props} />
+  )
+)
+ToastDescription.displayName = "ToastDescription"
+
+export const ToastAction = forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
+  ({ className, ...props }, ref) => (
+    <button
+      ref={ref}
+      className={cn(
+        "inline-flex h-7 items-center justify-center rounded-md border border-zinc-200 dark:border-zinc-700 bg-transparent px-2.5 text-xs font-medium transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-zinc-400",
+        className
+      )}
+      {...props}
+    />
+  )
+)
+ToastAction.displayName = "ToastAction"
+
+export const ToastClose = forwardRef<HTMLButtonElement, React.ButtonHTMLAttributes<HTMLButtonElement>>(
+  ({ className, ...props }, ref) => (
+    <button
+      ref={ref}
+      className={cn(
+        "absolute right-2 top-2 rounded-md p-1 text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 opacity-70 hover:opacity-100 transition-opacity",
+        className
+      )}
+      {...props}
+    >
+      <X className="h-3.5 w-3.5" />
+    </button>
+  )
+)
+ToastClose.displayName = "ToastClose"
+
+export const ToastViewport = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div
+      ref={ref}
+      className={cn(
+        "fixed top-0 z-[100] flex max-h-screen w-full flex-col-reverse p-4 sm:bottom-0 sm:right-0 sm:top-auto sm:flex-col md:max-w-[420px]",
+        className
+      )}
+      {...props}
+    />
+  )
+)
+ToastViewport.displayName = "ToastViewport"
+
+export interface ToastProviderProps {
+  children: React.ReactNode
+}
+
+export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
+  return <>{children}</>
+}
+
 export { Toast }
+

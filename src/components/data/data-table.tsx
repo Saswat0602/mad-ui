@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { cn } from '../../lib/utils'
+import { Search, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight } from 'lucide-react'
 
 export interface DataTableColumn<T> {
   key: keyof T
@@ -88,7 +89,7 @@ export const DataTable = <T extends Record<string, any>>({
     return filteredData.slice(startIndex, startIndex + pageSize)
   }, [filteredData, currentPage, pageSize, pagination])
 
-  const totalPages = Math.ceil(filteredData.length / pageSize)
+  const totalPages = Math.max(1, Math.ceil(filteredData.length / pageSize))
 
   const handleSort = (column: keyof T) => {
     if (!sortable) return
@@ -112,20 +113,21 @@ export const DataTable = <T extends Record<string, any>>({
   }
 
   return (
-    <div className={cn('w-full', className)}>
+    <div className={cn('w-full space-y-3', className)}>
       {searchable && (
-        <div className="mb-4">
+        <div className="relative max-w-sm">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 dark:text-zinc-500 pointer-events-none" />
           <input
             type="text"
-            placeholder="Search..."
+            placeholder="Search records..."
             value={searchTerm}
             onChange={(e) => handleSearch(e.target.value)}
-            className="w-full px-3 py-2 border border-input rounded-md bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all shadow-2xs"
           />
         </div>
       )}
 
-      <div className="border rounded-md">
+      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 overflow-hidden shadow-2xs">
         <DataTableHeader
           columns={columns}
           sortColumn={sortColumn}
@@ -133,15 +135,21 @@ export const DataTable = <T extends Record<string, any>>({
           onSort={handleSort}
           sortable={sortable}
         />
-        <div className="divide-y">
-          {paginatedData.map((item, index) => (
-            <DataTableRow
-              key={index}
-              item={item}
-              columns={columns}
-              onClick={onRowClick ? () => onRowClick(item) : undefined}
-            />
-          ))}
+        <div className="divide-y divide-zinc-100 dark:divide-zinc-850">
+          {paginatedData.length > 0 ? (
+            paginatedData.map((item, index) => (
+              <DataTableRow
+                key={index}
+                item={item}
+                columns={columns}
+                onClick={onRowClick ? () => onRowClick(item) : undefined}
+              />
+            ))
+          ) : (
+            <div className="px-4 py-8 text-center text-xs text-zinc-500 dark:text-zinc-400">
+              No matching records found.
+            </div>
+          )}
         </div>
       </div>
 
@@ -150,7 +158,7 @@ export const DataTable = <T extends Record<string, any>>({
           currentPage={currentPage}
           totalPages={totalPages}
           onPageChange={handlePageChange}
-          className="mt-4"
+          className="pt-1"
         />
       )}
     </div>
@@ -165,8 +173,8 @@ export const DataTableHeader = <T extends Record<string, any>>({
   sortable
 }: DataTableHeaderProps<T>) => {
   return (
-    <div className="bg-muted/50">
-      <div className="grid grid-cols-12 gap-4 px-4 py-3 text-left text-sm font-medium text-muted-foreground">
+    <div className="bg-zinc-50/80 dark:bg-zinc-900/90 border-b border-zinc-200 dark:border-zinc-800">
+      <div className="grid grid-cols-12 gap-4 px-4 py-3 text-left text-xs font-semibold text-zinc-600 dark:text-zinc-300">
         {columns.map((column) => (
           <div
             key={String(column.key)}
@@ -178,21 +186,17 @@ export const DataTableHeader = <T extends Record<string, any>>({
             {sortable && column.sortable !== false ? (
               <button
                 onClick={() => onSort?.(column.key)}
-                className="flex items-center space-x-1 hover:text-foreground transition-colors"
+                className="flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors group cursor-pointer"
               >
                 <span>{column.header}</span>
-                {sortColumn === column.key && (
-                  <svg
-                    className={cn(
-                      'h-4 w-4 transition-transform',
-                      sortDirection === 'desc' && 'rotate-180'
-                    )}
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4" />
-                  </svg>
+                {sortColumn === column.key ? (
+                  sortDirection === 'desc' ? (
+                    <ArrowDown className="h-3 w-3 text-blue-500" />
+                  ) : (
+                    <ArrowUp className="h-3 w-3 text-blue-500" />
+                  )
+                ) : (
+                  <ArrowUpDown className="h-3 w-3 opacity-0 group-hover:opacity-60 transition-opacity" />
                 )}
               </button>
             ) : (
@@ -213,7 +217,7 @@ export const DataTableRow = <T extends Record<string, any>>({
   return (
     <div
       className={cn(
-        'grid grid-cols-12 gap-4 px-4 py-3 text-sm hover:bg-muted/50 transition-colors',
+        'grid grid-cols-12 gap-4 px-4 py-3 text-xs text-zinc-800 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors items-center',
         onClick && 'cursor-pointer'
       )}
       onClick={onClick}
@@ -222,7 +226,7 @@ export const DataTableRow = <T extends Record<string, any>>({
         <div
           key={String(column.key)}
           className={cn(
-            'flex items-center',
+            'flex items-center min-w-0 break-words',
             column.width ? column.width : 'col-span-1'
           )}
         >
@@ -239,70 +243,32 @@ export const DataTablePagination: React.FC<DataTablePaginationProps> = ({
   onPageChange,
   className
 }) => {
-  const getVisiblePages = () => {
-    const delta = 2
-    const range = []
-    const rangeWithDots = []
-
-    for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
-      range.push(i)
-    }
-
-    if (currentPage - delta > 2) {
-      rangeWithDots.push(1, '...')
-    } else {
-      rangeWithDots.push(1)
-    }
-
-    rangeWithDots.push(...range)
-
-    if (currentPage + delta < totalPages - 1) {
-      rangeWithDots.push('...', totalPages)
-    } else {
-      rangeWithDots.push(totalPages)
-    }
-
-    return rangeWithDots
-  }
-
   return (
-    <div className={cn('flex items-center justify-between', className)}>
-      <div className="text-sm text-muted-foreground">
-        Page {currentPage} of {totalPages}
+    <div className={cn('flex items-center justify-between text-xs', className)}>
+      <div className="text-zinc-500 dark:text-zinc-400">
+        Page <span className="font-semibold text-zinc-900 dark:text-zinc-100">{currentPage}</span> of{' '}
+        <span className="font-semibold text-zinc-900 dark:text-zinc-100">{totalPages}</span>
       </div>
-      <div className="flex items-center space-x-1">
+      <div className="flex items-center gap-1.5">
         <button
           onClick={() => onPageChange(currentPage - 1)}
           disabled={currentPage === 1}
-          className="px-3 py-1 text-sm border rounded hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
-          Previous
+          <ChevronLeft className="h-3.5 w-3.5" />
+          <span>Previous</span>
         </button>
-        {getVisiblePages().map((page, index) => (
-          <React.Fragment key={index}>
-            {page === '...' ? (
-              <span className="px-3 py-1 text-sm text-muted-foreground">...</span>
-            ) : (
-              <button
-                onClick={() => onPageChange(page as number)}
-                className={cn(
-                  'px-3 py-1 text-sm border rounded hover:bg-accent hover:text-accent-foreground',
-                  currentPage === page && 'bg-primary text-primary-foreground'
-                )}
-              >
-                {page}
-              </button>
-            )}
-          </React.Fragment>
-        ))}
+
         <button
           onClick={() => onPageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-          className="px-3 py-1 text-sm border rounded hover:bg-accent hover:text-accent-foreground disabled:opacity-50 disabled:cursor-not-allowed"
+          disabled={currentPage >= totalPages}
+          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
         >
-          Next
+          <span>Next</span>
+          <ChevronRight className="h-3.5 w-3.5" />
         </button>
       </div>
     </div>
   )
 }
+

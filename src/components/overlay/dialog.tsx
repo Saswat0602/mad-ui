@@ -1,39 +1,27 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, createContext, useContext } from 'react'
 import { cn } from '../../lib/utils'
+import { X } from 'lucide-react'
+
+interface DialogContextType {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+const DialogContext = createContext<DialogContextType | null>(null)
+
+export const useDialog = () => {
+  const context = useContext(DialogContext)
+  if (!context) {
+    throw new Error('Dialog components must be used within a Dialog')
+  }
+  return context
+}
 
 export interface DialogProps {
   open: boolean
   onOpenChange: (open: boolean) => void
   children: React.ReactNode
   className?: string
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  dismissible?: boolean
-  persistent?: boolean
-  onShow?: () => void
-  onHide?: () => void
-  animation?: 'slide' | 'fade' | 'scale' | 'none'
-  animationDuration?: number
-  onAnimationStart?: () => void
-  onAnimationEnd?: () => void
-  theme?: 'light' | 'dark' | 'auto'
-  locale?: string
-  rtl?: boolean
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
 }
 
 export interface DialogTriggerProps {
@@ -45,6 +33,7 @@ export interface DialogTriggerProps {
 export interface DialogContentProps {
   children: React.ReactNode
   className?: string
+  showCloseButton?: boolean
   onEscapeKeyDown?: () => void
   onInteractOutside?: () => void
 }
@@ -69,14 +58,18 @@ export interface DialogDescriptionProps {
   className?: string
 }
 
+export interface DialogCloseProps {
+  children?: React.ReactNode
+  className?: string
+  asChild?: boolean
+}
+
 export const Dialog: React.FC<DialogProps> = ({
   open,
   onOpenChange,
   children,
   className
 }) => {
-  const overlayRef = useRef<HTMLDivElement>(null)
-
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && open) {
@@ -95,12 +88,14 @@ export const Dialog: React.FC<DialogProps> = ({
     }
   }, [open, onOpenChange])
 
-  if (!open) return null
-
   return (
-    <div className={cn('fixed inset-0 z-50 flex items-center justify-center', className)}>
-      {children}
-    </div>
+    <DialogContext.Provider value={{ open, onOpenChange }}>
+      {open && (
+        <div className={cn('fixed inset-0 z-50 flex items-center justify-center p-4', className)}>
+          {children}
+        </div>
+      )}
+    </DialogContext.Provider>
   )
 }
 
@@ -109,14 +104,25 @@ export const DialogTrigger: React.FC<DialogTriggerProps> = ({
   asChild = false,
   className
 }) => {
+  const { onOpenChange } = useDialog()
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onOpenChange(true)
+  }
+
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      className: cn(children.props.className, className)
+    return React.cloneElement(children as React.ReactElement<any>, {
+      onClick: (e: React.MouseEvent) => {
+        (children as any).props?.onClick?.(e)
+        handleClick(e)
+      },
+      className: cn((children as any).props?.className, className)
     })
   }
   
   return (
-    <div className={cn('inline-block', className)}>
+    <div className={cn('inline-block cursor-pointer', className)} onClick={handleClick}>
       {children}
     </div>
   )
@@ -125,28 +131,48 @@ export const DialogTrigger: React.FC<DialogTriggerProps> = ({
 export const DialogContent: React.FC<DialogContentProps> = ({
   children,
   className,
+  showCloseButton = true,
   onEscapeKeyDown,
   onInteractOutside
 }) => {
+  const { onOpenChange } = useDialog()
+
   const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && onInteractOutside) {
-      onInteractOutside()
+    if (e.target === e.currentTarget) {
+      if (onInteractOutside) {
+        onInteractOutside()
+      } else {
+        onOpenChange(false)
+      }
     }
   }
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200"
       onClick={handleOverlayClick}
     >
       <div
+        role="dialog"
+        aria-modal="true"
         className={cn(
-          'relative bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-lg shadow-lg max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto',
+          'relative w-full max-w-lg rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-zinc-900 dark:text-zinc-100 shadow-2xl transition-all duration-200',
           className
         )}
         onClick={(e) => e.stopPropagation()}
       >
         {children}
+
+        {showCloseButton && (
+          <button
+            type="button"
+            onClick={() => onOpenChange(false)}
+            aria-label="Close dialog"
+            className="absolute right-4 top-4 rounded-lg p-1 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        )}
       </div>
     </div>
   )
@@ -157,7 +183,7 @@ export const DialogHeader: React.FC<DialogHeaderProps> = ({
   className
 }) => {
   return (
-    <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left p-6 pb-0', className)}>
+    <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left mb-4', className)}>
       {children}
     </div>
   )
@@ -168,7 +194,7 @@ export const DialogFooter: React.FC<DialogFooterProps> = ({
   className
 }) => {
   return (
-    <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 p-6 pt-0', className)}>
+    <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-6 gap-2 sm:gap-0', className)}>
       {children}
     </div>
   )
@@ -179,7 +205,7 @@ export const DialogTitle: React.FC<DialogTitleProps> = ({
   className
 }) => {
   return (
-    <h2 className={cn('text-lg font-semibold leading-none tracking-tight', className)}>
+    <h2 className={cn('text-base font-semibold leading-none tracking-tight text-foreground', className)}>
       {children}
     </h2>
   )
@@ -190,8 +216,40 @@ export const DialogDescription: React.FC<DialogDescriptionProps> = ({
   className
 }) => {
   return (
-    <p className={cn('text-sm text-slate-600 dark:text-slate-400', className)}>
+    <p className={cn('text-xs text-muted-foreground leading-relaxed', className)}>
       {children}
     </p>
   )
 }
+
+export const DialogClose: React.FC<DialogCloseProps> = ({
+  children,
+  className,
+  asChild = false
+}) => {
+  const { onOpenChange } = useDialog()
+
+  const handleClick = () => onOpenChange(false)
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children as React.ReactElement<any>, {
+      onClick: (e: React.MouseEvent) => {
+        (children as any).props?.onClick?.(e)
+        handleClick()
+      },
+      className: cn((children as any).props?.className, className)
+    })
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={handleClick}
+      className={cn('inline-flex items-center justify-center rounded-lg text-xs font-medium cursor-pointer', className)}
+    >
+      {children || 'Close'}
+    </button>
+  )
+}
+
+export default Dialog

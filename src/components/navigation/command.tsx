@@ -1,166 +1,182 @@
-import React, { useState, useRef, useEffect } from 'react'
+import React from 'react'
 import { cn } from '../../lib/utils'
+import { Search } from 'lucide-react'
 
-export interface CommandProps {
+export interface CommandProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   className?: string
 }
 
-export interface CommandInputProps {
+export interface CommandInputProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'value' | 'onChange'> {
   placeholder?: string
   value?: string
   onValueChange?: (value: string) => void
   className?: string
 }
 
-export interface CommandListProps {
+export interface CommandListProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   className?: string
 }
 
-export interface CommandEmptyProps {
+export interface CommandEmptyProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   className?: string
 }
 
-export interface CommandGroupProps {
+export interface CommandGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   heading?: string
   className?: string
 }
 
-export interface CommandItemProps {
+export interface CommandItemProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   onSelect?: () => void
   disabled?: boolean
   className?: string
 }
 
-export interface CommandSeparatorProps {
+export interface CommandSeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
   className?: string
 }
 
-export const Command: React.FC<CommandProps> = ({
-  children,
-  className
-}) => {
-  return (
-    <div className={cn('flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground', className)}>
-      {children}
-    </div>
-  )
-}
-
-export const CommandInput: React.FC<CommandInputProps> = ({
-  placeholder = 'Search...',
-  value,
-  onValueChange,
-  className
-}) => {
-  return (
-    <div className="flex items-center border-b px-3">
-      <svg
-        className="mr-2 h-4 w-4 shrink-0 opacity-50"
-        fill="none"
-        stroke="currentColor"
-        viewBox="0 0 24 24"
+export const Command = React.forwardRef<HTMLDivElement, CommandProps>(
+  ({ children, className, ...props }, ref) => {
+    return (
+      <div 
+        ref={ref}
+        className={cn('flex h-full w-full flex-col overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-md', className)}
+        {...props}
       >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-      <input
-        type="text"
-        placeholder={placeholder}
-        value={value}
-        onChange={(e) => onValueChange?.(e.target.value)}
+        {children}
+      </div>
+    )
+  }
+)
+Command.displayName = 'Command'
+
+export const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps>(
+  ({ placeholder = 'Type a command or search...', value, onValueChange, className, ...props }, ref) => {
+    return (
+      <div className="flex items-center border-b border-zinc-200/80 dark:border-zinc-800/80 px-3.5">
+        <Search className="mr-2.5 h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
+        <input
+          ref={ref}
+          type="text"
+          placeholder={placeholder}
+          value={value}
+          onChange={(e) => onValueChange?.(e.target.value)}
+          className={cn(
+            'flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 disabled:cursor-not-allowed disabled:opacity-50',
+            className
+          )}
+          {...props}
+        />
+      </div>
+    )
+  }
+)
+CommandInput.displayName = 'CommandInput'
+
+export const CommandList = React.forwardRef<HTMLDivElement, CommandListProps>(
+  ({ children, className, ...props }, ref) => {
+    return (
+      <div 
+        ref={ref}
+        className={cn('max-h-[300px] overflow-y-auto overflow-x-hidden p-1', className)}
+        {...props}
+      >
+        {children}
+      </div>
+    )
+  }
+)
+CommandList.displayName = 'CommandList'
+
+export const CommandEmpty = React.forwardRef<HTMLDivElement, CommandEmptyProps>(
+  ({ children, className, ...props }, ref) => {
+    return (
+      <div 
+        ref={ref}
+        className={cn('py-6 text-center text-xs text-muted-foreground', className)}
+        {...props}
+      >
+        {children}
+      </div>
+    )
+  }
+)
+CommandEmpty.displayName = 'CommandEmpty'
+
+export const CommandGroup = React.forwardRef<HTMLDivElement, CommandGroupProps>(
+  ({ children, heading, className, ...props }, ref) => {
+    return (
+      <div 
+        ref={ref}
+        className={cn('overflow-hidden p-1 text-foreground', className)}
+        {...props}
+      >
+        {heading && (
+          <div className="px-2 py-1.5 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+            {heading}
+          </div>
+        )}
+        {children}
+      </div>
+    )
+  }
+)
+CommandGroup.displayName = 'CommandGroup'
+
+export const CommandItem = React.forwardRef<HTMLDivElement, CommandItemProps>(
+  ({ children, onSelect, disabled = false, className, ...props }, ref) => {
+    const handleSelect = () => {
+      if (!disabled && onSelect) {
+        onSelect()
+      }
+    }
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        handleSelect()
+      }
+    }
+
+    return (
+      <div
+        ref={ref}
         className={cn(
-          'flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
+          'relative flex cursor-pointer select-none items-center rounded-lg px-2.5 py-1.5 text-xs font-medium outline-none transition-colors',
+          disabled
+            ? 'pointer-events-none opacity-50'
+            : 'hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-zinc-50',
           className
         )}
+        onClick={handleSelect}
+        onKeyDown={handleKeyDown}
+        tabIndex={disabled ? -1 : 0}
+        {...props}
+      >
+        {children}
+      </div>
+    )
+  }
+)
+CommandItem.displayName = 'CommandItem'
+
+export const CommandSeparator = React.forwardRef<HTMLDivElement, CommandSeparatorProps>(
+  ({ className, ...props }, ref) => {
+    return (
+      <div 
+        ref={ref}
+        className={cn('-mx-1 my-1 h-px bg-zinc-200/80 dark:bg-zinc-800/80', className)} 
+        {...props}
       />
-    </div>
-  )
-}
-
-export const CommandList: React.FC<CommandListProps> = ({
-  children,
-  className
-}) => {
-  return (
-    <div className={cn('max-h-[300px] overflow-y-auto overflow-x-hidden', className)}>
-      {children}
-    </div>
-  )
-}
-
-export const CommandEmpty: React.FC<CommandEmptyProps> = ({
-  children,
-  className
-}) => {
-  return (
-    <div className={cn('py-6 text-center text-sm', className)}>
-      {children}
-    </div>
-  )
-}
-
-export const CommandGroup: React.FC<CommandGroupProps> = ({
-  children,
-  heading,
-  className
-}) => {
-  return (
-    <div className={cn('overflow-hidden p-1 text-foreground', className)}>
-      {heading && (
-        <div className="px-2 py-1.5 text-xs font-medium text-muted-foreground">
-          {heading}
-        </div>
-      )}
-      {children}
-    </div>
-  )
-}
-
-export const CommandItem: React.FC<CommandItemProps> = ({
-  children,
-  onSelect,
-  disabled = false,
-  className
-}) => {
-  const handleSelect = () => {
-    if (!disabled && onSelect) {
-      onSelect()
-    }
+    )
   }
+)
+CommandSeparator.displayName = 'CommandSeparator'
 
-  const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault()
-      handleSelect()
-    }
-  }
-
-  return (
-    <div
-      className={cn(
-        'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors',
-        disabled
-          ? 'pointer-events-none opacity-50'
-          : 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
-        className
-      )}
-      onClick={handleSelect}
-      onKeyDown={handleKeyDown}
-      tabIndex={disabled ? -1 : 0}
-    >
-      {children}
-    </div>
-  )
-}
-
-export const CommandSeparator: React.FC<CommandSeparatorProps> = ({
-  className
-}) => {
-  return (
-    <div className={cn('-mx-1 my-1 h-px bg-muted', className)} />
-  )
-}
+export default Command

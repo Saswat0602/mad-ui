@@ -481,20 +481,9 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         </nav>
         
         {/* Footer Section */}
-        {showFooter && (
+        {showFooter && footerContent && (
           <div className="mt-auto pt-4">
-            {footerContent ? (
-              footerContent
-            ) : (
-              !isCollapsed && (
-                <div className={cn("text-xs", currentTheme.textSecondary, "text-center p-3 rounded-lg", currentTheme.hover)}>
-                  <div className="flex items-center justify-center space-x-2">
-                    <Heart size={12} className="text-red-400" />
-                    <span>Made with love</span>
-                  </div>
-                </div>
-              )
-            )}
+            {footerContent}
           </div>
         )}
 
@@ -512,4 +501,72 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
 
 Sidebar.displayName = "Sidebar";
 
+export const SidebarHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("flex flex-col space-y-2 p-4", className)} {...props} />
+  )
+);
+SidebarHeader.displayName = "SidebarHeader";
+
+export const SidebarContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("flex-1 overflow-y-auto px-3 py-2 space-y-1", className)} {...props} />
+  )
+);
+SidebarContent.displayName = "SidebarContent";
+
+export const SidebarFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("mt-auto p-4 border-t border-zinc-200 dark:border-zinc-800", className)} {...props} />
+  )
+);
+SidebarFooter.displayName = "SidebarFooter";
+
+export const SidebarGroup = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("space-y-1 py-2", className)} {...props} />
+  )
+);
+SidebarGroup.displayName = "SidebarGroup";
+
+export const SidebarGroupLabel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("px-2 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1", className)} {...props} />
+  )
+);
+SidebarGroupLabel.displayName = "SidebarGroupLabel";
+
+export const SidebarMenu = React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(
+  ({ className, ...props }, ref) => (
+    <ul ref={ref} className={cn("space-y-1 list-none p-0 m-0", className)} {...props} />
+  )
+);
+SidebarMenu.displayName = "SidebarMenu";
+
+export const SidebarMenuItem = React.forwardRef<HTMLLIElement, React.LiHTMLAttributes<HTMLLIElement>>(
+  ({ className, ...props }, ref) => (
+    <li ref={ref} className={cn("relative", className)} {...props} />
+  )
+);
+SidebarMenuItem.displayName = "SidebarMenuItem";
+
+export const SidebarMenuButton = React.forwardRef<
+  HTMLButtonElement,
+  React.ButtonHTMLAttributes<HTMLButtonElement> & { isActive?: boolean }
+>(({ className, isActive, ...props }, ref) => (
+  <button
+    ref={ref}
+    className={cn(
+      "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer text-left",
+      isActive
+        ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-semibold"
+        : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/70 hover:text-zinc-900 dark:hover:text-zinc-100",
+      className
+    )}
+    {...props}
+  />
+));
+SidebarMenuButton.displayName = "SidebarMenuButton";
+
 export { Sidebar };
+

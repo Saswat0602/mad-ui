@@ -1,8 +1,16 @@
 // Media Components Module
 export { AspectRatio } from '../components/media/aspect-ratio'
-export { Carousel } from '../components/media/carousel'
-export { Avatar } from '../components/media/avatar'
+export { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselPrevious, 
+  CarouselNext, 
+  CarouselIndicator 
+} from '../components/media/carousel'
+export { Avatar, AvatarImage, AvatarFallback, AvatarGroup } from '../components/media/avatar'
 export { Badge } from '../components/media/badge'
+
 export { 
   TypographyH1, 
   TypographyH2, 

@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { cn } from '../../lib/utils'
+import { CheckCircle2, AlertCircle, AlertTriangle, Info, X } from 'lucide-react'
 
 export interface Toast {
   id: string
@@ -44,13 +45,13 @@ export const Sonner: React.FC<SonnerProps> = ({
   return (
     <div
       className={cn(
-        'fixed z-50 flex flex-col gap-2 p-4 max-w-sm w-full',
+        'fixed z-50 flex flex-col gap-2.5 p-4 max-w-sm w-full pointer-events-none',
         positionClasses[position],
         className
       )}
     >
       {toasts.map((toast) => (
-        <Toast
+        <ToastItem
           key={toast.id}
           toast={toast}
           onDismiss={onDismiss}
@@ -60,14 +61,14 @@ export const Sonner: React.FC<SonnerProps> = ({
   )
 }
 
-export const Toast: React.FC<ToastProps> = ({
+export const ToastItem: React.FC<ToastProps> = ({
   toast,
   onDismiss,
   className
 }) => {
   const [isVisible, setIsVisible] = useState(false)
   const [isLeaving, setIsLeaving] = useState(false)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout>>()
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined)
 
   useEffect(() => {
     setIsVisible(true)
@@ -89,67 +90,51 @@ export const Toast: React.FC<ToastProps> = ({
     setIsLeaving(true)
     setTimeout(() => {
       onDismiss(toast.id)
-    }, 300)
+    }, 200)
   }
 
   const typeClasses = {
-    default: 'bg-background border-border',
-    success: 'bg-green-50 border-green-200 text-green-800',
-    error: 'bg-red-50 border-red-200 text-red-800',
-    warning: 'bg-yellow-50 border-yellow-200 text-yellow-800',
-    info: 'bg-blue-50 border-blue-200 text-blue-800'
+    default: 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100',
+    success: 'bg-white dark:bg-zinc-900 border-emerald-500/30 text-zinc-900 dark:text-zinc-100',
+    error: 'bg-white dark:bg-zinc-900 border-red-500/30 text-zinc-900 dark:text-zinc-100',
+    warning: 'bg-white dark:bg-zinc-900 border-amber-500/30 text-zinc-900 dark:text-zinc-100',
+    info: 'bg-white dark:bg-zinc-900 border-blue-500/30 text-zinc-900 dark:text-zinc-100'
   }
 
   const typeIcons = {
     default: null,
-    success: (
-      <svg className="h-4 w-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-      </svg>
-    ),
-    error: (
-      <svg className="h-4 w-4 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-      </svg>
-    ),
-    warning: (
-      <svg className="h-4 w-4 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.732 16.5c-.77.833.192 2.5 1.732 2.5z" />
-      </svg>
-    ),
-    info: (
-      <svg className="h-4 w-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-      </svg>
-    )
+    success: <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />,
+    error: <AlertCircle className="h-4 w-4 text-red-500 shrink-0" />,
+    warning: <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />,
+    info: <Info className="h-4 w-4 text-blue-500 shrink-0" />
   }
 
   return (
     <div
       className={cn(
-        'relative w-full rounded-lg border p-4 shadow-lg transition-all duration-300',
+        'pointer-events-auto relative w-full rounded-xl border p-4 shadow-lg transition-all duration-200 backdrop-blur-sm',
         typeClasses[toast.type || 'default'],
-        isVisible ? 'translate-x-0 opacity-100' : 'translate-x-full opacity-0',
-        isLeaving && 'translate-x-full opacity-0',
+        isVisible ? 'translate-y-0 opacity-100 scale-100' : 'translate-y-2 opacity-0 scale-95',
+        isLeaving && 'translate-y-2 opacity-0 scale-95',
         className
       )}
     >
       <div className="flex items-start gap-3">
         {typeIcons[toast.type || 'default'] && (
-          <div className="flex-shrink-0">
+          <div className="shrink-0 mt-0.5">
             {typeIcons[toast.type || 'default']}
           </div>
         )}
         
-        <div className="flex-1 min-w-0">
-          <div className="font-medium">{toast.title}</div>
+        <div className="flex-1 min-w-0 pr-4">
+          <div className="text-sm font-semibold leading-tight">{toast.title}</div>
           {toast.description && (
-            <div className="mt-1 text-sm opacity-90">{toast.description}</div>
+            <div className="mt-1 text-xs text-muted-foreground leading-relaxed">{toast.description}</div>
           )}
           {toast.action && (
             <button
               onClick={toast.action.onClick}
-              className="mt-2 text-sm font-medium underline hover:no-underline"
+              className="mt-2.5 inline-flex items-center text-xs font-semibold text-primary hover:underline"
             >
               {toast.action.label}
             </button>
@@ -158,40 +143,15 @@ export const Toast: React.FC<ToastProps> = ({
 
         <button
           onClick={handleDismiss}
-          className="flex-shrink-0 opacity-70 hover:opacity-100 transition-opacity"
+          className="shrink-0 -mr-1 -mt-1 p-1 text-muted-foreground hover:text-foreground rounded-md transition-colors"
+          title="Dismiss"
         >
-          <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-          </svg>
+          <X className="h-3.5 w-3.5" />
         </button>
       </div>
     </div>
   )
 }
 
-// Hook for managing toasts
-export const useToasts = () => {
-  const [toasts, setToasts] = useState<Toast[]>([])
-
-  const addToast = (toast: Omit<Toast, 'id'>) => {
-    const id = Math.random().toString(36).substr(2, 9)
-    const newToast = { ...toast, id }
-    setToasts(prev => [...prev, newToast])
-    return id
-  }
-
-  const dismissToast = (id: string) => {
-    setToasts(prev => prev.filter(toast => toast.id !== id))
-  }
-
-  const dismissAll = () => {
-    setToasts([])
-  }
-
-  return {
-    toasts,
-    addToast,
-    dismissToast,
-    dismissAll
-  }
-}
+// Backward compatibility alias
+export const Toast = ToastItem

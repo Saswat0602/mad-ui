@@ -31,13 +31,33 @@ export { Slider } from './core/slider'
 export { Layout } from './layout/layout'
 export { Modal } from './layout/modal'
 export { Navbar } from './layout/navbar'
-export { Sidebar } from './layout/sidebar'
-export { Popover } from './layout/popover'
-export { Tooltip } from './layout/tooltip'
+export { 
+  Sidebar, 
+  SidebarHeader, 
+  SidebarContent, 
+  SidebarFooter, 
+  SidebarGroup, 
+  SidebarGroupLabel, 
+  SidebarMenu, 
+  SidebarMenuItem, 
+  SidebarMenuButton 
+} from './layout/sidebar'
+export { Popover, PopoverTrigger, PopoverContent, PopoverClose, usePopover } from './layout/popover'
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, useTooltip } from './layout/tooltip'
 export { Drawer } from './layout/drawer'
-export { Sheet } from './layout/sheet'
-export { Resizable } from './layout/resizable'
-export { ScrollArea } from './layout/scroll-area'
+export { 
+  Sheet, 
+  SheetTrigger, 
+  SheetContent, 
+  SheetHeader, 
+  SheetFooter, 
+  SheetTitle, 
+  SheetDescription, 
+  SheetClose, 
+  useSheet 
+} from './layout/sheet'
+export { Resizable, ResizableHandle, ResizablePanel } from './layout/resizable'
+export { ScrollArea, ScrollBar } from './layout/scroll-area'
 
 // Form components
 export { Accordion } from './forms/accordion'
@@ -51,38 +71,82 @@ export { RadioGroup } from './forms/radio-group'
 export { Form } from './forms/react-hook-form'
 
 // Feedback components
-export { Alert } from './feedback/alert'
-export { Toast } from './feedback/toast'
+export { Alert, AlertTitle, AlertDescription } from './feedback/alert'
+export { 
+  Toast, 
+  ToastTitle, 
+  ToastDescription, 
+  ToastAction, 
+  ToastClose, 
+  ToastViewport, 
+  ToastProvider 
+} from './feedback/toast'
 export { Sonner } from './feedback/sonner'
 
 // Navigation components
-export { NavigationMenu } from './navigation/navigation-menu'
-export { Menubar } from './navigation/menubar'
-export { Command } from './navigation/command'
+export { 
+  NavigationMenu, 
+  NavigationMenuList, 
+  NavigationMenuItem, 
+  NavigationMenuTrigger, 
+  NavigationMenuContent, 
+  NavigationMenuLink 
+} from './navigation/navigation-menu'
+export { 
+  Menubar, 
+  MenubarMenu, 
+  MenubarTrigger, 
+  MenubarContent, 
+  MenubarItem, 
+  MenubarSeparator, 
+  MenubarLabel, 
+  MenubarGroup 
+} from './navigation/menubar'
+export { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator } from './navigation/command'
 export { Combobox } from './navigation/combobox'
-export { Pagination } from './navigation/pagination'
+export { Pagination, PaginationItem, PaginationContent, PaginationEllipsis } from './navigation/pagination'
 
 // Data components
-export { Table } from './data/table'
-export { DataTable } from './data/data-table'
-export { Chart } from './data/chart'
+export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './data/table'
+export { DataTable, DataTableHeader, DataTableRow, DataTablePagination } from './data/data-table'
+export { Chart, BarChart, LineChart, PieChart, DoughnutChart } from './data/chart'
 
 // Overlay components
-export { Dialog } from './overlay/dialog'
-export { AlertDialog } from './overlay/alert-dialog'
-export { DropdownMenu } from './overlay/dropdown-menu'
-export { ContextMenu } from './overlay/context-menu'
-export { HoverCard } from './overlay/hover-card'
+export { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription, DialogClose } from './overlay/dialog'
+export { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogAction, AlertDialogCancel } from './overlay/alert-dialog'
+export { 
+  DropdownMenu, 
+  DropdownMenuTrigger, 
+  DropdownMenuContent, 
+  DropdownMenuItem, 
+  DropdownMenuSeparator, 
+  DropdownMenuLabel, 
+  DropdownMenuGroup, 
+  DropdownMenuCheckboxItem, 
+  DropdownMenuRadioGroup, 
+  DropdownMenuRadioItem, 
+  DropdownMenuShortcut 
+} from './overlay/dropdown-menu'
+export { ContextMenu, ContextMenuTrigger, ContextMenuContent, ContextMenuItem, ContextMenuSeparator, ContextMenuLabel, ContextMenuGroup } from './overlay/context-menu'
+export { HoverCard, HoverCardTrigger, HoverCardContent } from './overlay/hover-card'
 export { Separator } from './overlay/separator'
-export { Toggle } from './overlay/toggle'
-export { Collapsible } from './overlay/collapsible'
+export { Toggle, ToggleGroup } from './overlay/toggle'
+export { Collapsible, CollapsibleTrigger, CollapsibleContent } from './overlay/collapsible'
 
 // Media components
-export { Avatar } from './media/avatar'
+export { Avatar, AvatarImage, AvatarFallback, AvatarGroup } from './media/avatar'
 export { Badge } from './media/badge'
 export { AspectRatio } from './media/aspect-ratio'
-export { Carousel } from './media/carousel'
+export { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselPrevious, 
+  CarouselNext, 
+  CarouselIndicator 
+} from './media/carousel'
 export { TypographyH1, TypographyH2, TypographyH3, TypographyH4, TypographyH5, TypographyH6, TypographyP, TypographyBlockquote, TypographyCode, TypographyLead, TypographyLarge, TypographySmall, TypographyMuted } from './media/typography'
+
 
 // Date picker component
 export { DatePicker, DatePickerInput, DatePickerContent, DatePickerCalendar } from './date-picker'

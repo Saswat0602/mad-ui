@@ -1,13 +1,29 @@
 import * as React from "react"
 import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
+import { X } from "lucide-react"
 
-export interface PopoverProps extends React.HTMLAttributes<HTMLDivElement> {
-  isOpen: boolean
-  onClose: () => void
-  trigger: React.ReactNode
+interface PopoverContextType {
+  open: boolean
+  setOpen: (open: boolean) => void
+}
+
+const PopoverContext = React.createContext<PopoverContextType | null>(null)
+
+export const usePopover = () => {
+  const context = React.useContext(PopoverContext)
+  return context
+}
+
+export interface PopoverProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+  isOpen?: boolean
+  open?: boolean
+  defaultOpen?: boolean
+  onClose?: () => void
+  onOpenChange?: (open: boolean) => void
+  trigger?: React.ReactNode
   children: React.ReactNode
   placement?: "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "left-start" | "left-end" | "right-start" | "right-end"
+  side?: "top" | "bottom" | "left" | "right"
   size?: "sm" | "md" | "lg" | "xl"
   variant?: "default" | "outlined" | "filled"
   color?: string
@@ -23,18 +39,38 @@ export interface PopoverProps extends React.HTMLAttributes<HTMLDivElement> {
   closeOnEscape?: boolean
   showCloseButton?: boolean
   zIndex?: number
-  animation?: "fade" | "slide" | "scale" | "none"
-  delay?: number
+}
+
+export interface PopoverTriggerProps {
+  children: React.ReactNode
+  asChild?: boolean
+  className?: string
+}
+
+export interface PopoverContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  children: React.ReactNode
+  align?: "start" | "center" | "end"
+  side?: "top" | "bottom" | "left" | "right"
+  sideOffset?: number
+}
+
+export interface PopoverCloseProps {
+  children?: React.ReactNode
+  className?: string
 }
 
 const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
   ({ 
     className, 
-    isOpen, 
+    isOpen: legacyIsOpen, 
+    open: controlledOpen,
+    defaultOpen = false,
     onClose, 
+    onOpenChange,
     trigger, 
     children,
     placement = "bottom",
+    side,
     size = "md",
     variant = "default",
     color,
@@ -43,285 +79,237 @@ const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
     textColor,
     borderRadius,
     shadow = "lg",
-    arrow = true,
-    arrowColor,
-    offset = 8,
+    arrow = false,
     closeOnClickOutside = true,
     closeOnEscape = true,
     showCloseButton = false,
     zIndex = 50,
-    animation = "fade",
-    delay = 0,
     style,
     ...props 
   }, ref) => {
-    
-    const [isVisible, setIsVisible] = React.useState(false)
+    const isControlled = controlledOpen !== undefined || legacyIsOpen !== undefined
+    const effectiveOpen = controlledOpen !== undefined ? controlledOpen : legacyIsOpen !== undefined ? legacyIsOpen : false
+    const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
+    const open = isControlled ? effectiveOpen : uncontrolledOpen
+
     const triggerRef = React.useRef<HTMLDivElement>(null)
     const popoverRef = React.useRef<HTMLDivElement>(null)
-    
-    // Size classes
-    const sizeClasses = {
-      sm: "max-w-xs",
-      md: "max-w-sm",
-      lg: "max-w-md",
-      xl: "max-w-lg"
-    }
-    
-    // Shadow classes
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg",
-      xl: "shadow-xl"
-    }
-    
-    // Animation classes
-    const animationClasses = {
-      fade: "transition-opacity duration-200",
-      slide: "transition-all duration-200",
-      scale: "transition-transform duration-200",
-      none: ""
-    }
-    
-    // Variant styles
-    const getVariantStyles = () => {
-      switch (variant) {
-        case "outlined":
-          return {
-            backgroundColor: backgroundColor || color || "var(--bg-card)",
-            border: `1px solid ${borderColor || "var(--border-primary)"}`,
-            borderRadius: borderRadius || "8px"
-          }
-        case "filled":
-          return {
-            backgroundColor: backgroundColor || color || "var(--bg-tertiary)",
-            border: "none",
-            borderRadius: borderRadius || "8px"
-          }
-        default:
-          return {
-            backgroundColor: backgroundColor || color || "var(--bg-card)",
-            border: "none",
-            borderRadius: borderRadius || "8px"
-          }
+
+    const setOpen = (newOpen: boolean) => {
+      if (!isControlled) {
+        setUncontrolledOpen(newOpen)
+      }
+      onOpenChange?.(newOpen)
+      if (!newOpen && onClose) {
+        onClose()
       }
     }
-    
-    // Custom styles
-    const customStyles: React.CSSProperties = {
-      color: textColor || "var(--text-primary)",
-      zIndex,
-      ...getVariantStyles(),
-      ...style
-    }
-    
-    // Handle escape key
+
+    // Escape listener
     React.useEffect(() => {
       const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === "Escape" && closeOnEscape) {
-          onClose()
+        if (e.key === "Escape" && closeOnEscape && open) {
+          setOpen(false)
         }
       }
 
-      if (isOpen) {
+      if (open) {
         document.addEventListener("keydown", handleEscape)
       }
-
       return () => {
         document.removeEventListener("keydown", handleEscape)
       }
-    }, [isOpen, onClose, closeOnEscape])
-    
-    // Handle click outside
+    }, [open, closeOnEscape])
+
+    // Click outside listener
     React.useEffect(() => {
       const handleClickOutside = (e: MouseEvent) => {
         if (
           closeOnClickOutside &&
+          open &&
           popoverRef.current &&
           !popoverRef.current.contains(e.target as Node) &&
           triggerRef.current &&
           !triggerRef.current.contains(e.target as Node)
         ) {
-          onClose()
+          setOpen(false)
         }
       }
 
-      if (isOpen) {
+      if (open) {
         document.addEventListener("mousedown", handleClickOutside)
       }
-
       return () => {
         document.removeEventListener("mousedown", handleClickOutside)
       }
-    }, [isOpen, onClose, closeOnClickOutside])
-    
-    // Handle visibility with delay
-    React.useEffect(() => {
-      if (isOpen) {
-        const timer = setTimeout(() => setIsVisible(true), delay)
-        return () => clearTimeout(timer)
-      } else {
-        setIsVisible(false)
-      }
-    }, [isOpen, delay])
-    
-    // Get placement styles
-    const getPlacementStyles = () => {
-      const baseOffset = offset + (arrow ? 8 : 0)
-      
-      switch (placement) {
-        case "top":
-          return { bottom: `calc(100% + ${baseOffset}px)`, left: "50%", transform: "translateX(-50%)" }
-        case "top-start":
-          return { bottom: `calc(100% + ${baseOffset}px)`, left: 0 }
-        case "top-end":
-          return { bottom: `calc(100% + ${baseOffset}px)`, right: 0 }
-        case "bottom":
-          return { top: `calc(100% + ${baseOffset}px)`, left: "50%", transform: "translateX(-50%)" }
-        case "bottom-start":
-          return { top: `calc(100% + ${baseOffset}px)`, left: 0 }
-        case "bottom-end":
-          return { top: `calc(100% + ${baseOffset}px)`, right: 0 }
-        case "left":
-          return { right: `calc(100% + ${baseOffset}px)`, top: "50%", transform: "translateY(-50%)" }
-        case "left-start":
-          return { right: `calc(100% + ${baseOffset}px)`, top: 0 }
-        case "left-end":
-          return { right: `calc(100% + ${baseOffset}px)`, bottom: 0 }
-        case "right":
-          return { left: `calc(100% + ${baseOffset}px)`, top: "50%", transform: "translateY(-50%)" }
-        case "right-start":
-          return { left: `calc(100% + ${baseOffset}px)`, top: 0 }
-        case "right-end":
-          return { left: `calc(100% + ${baseOffset}px)`, bottom: 0 }
-        default:
-          return { top: `calc(100% + ${baseOffset}px)`, left: "50%", transform: "translateX(-50%)" }
-      }
+    }, [open, closeOnClickOutside])
+
+    const effectivePlacement = side || placement
+
+    const getPlacementClasses = () => {
+      if (effectivePlacement.startsWith("top")) return "bottom-full left-1/2 -translate-x-1/2 mb-2"
+      if (effectivePlacement.startsWith("bottom")) return "top-full left-1/2 -translate-x-1/2 mt-2"
+      if (effectivePlacement.startsWith("left")) return "right-full top-1/2 -translate-y-1/2 mr-2"
+      if (effectivePlacement.startsWith("right")) return "left-full top-1/2 -translate-y-1/2 ml-2"
+      return "top-full left-0 mt-2"
     }
-    
-    // Get arrow styles
-    const getArrowStyles = () => {
-      const arrowSize = 8
-      const arrowOffset = offset
-      
-      switch (placement) {
-        case "top":
-        case "top-start":
-        case "top-end":
-          return {
-            top: "100%",
-            left: placement === "top" ? "50%" : placement === "top-start" ? "16px" : "auto",
-            right: placement === "top-end" ? "16px" : "auto",
-            transform: placement === "top" ? "translateX(-50%)" : "none",
-            borderTop: `${arrowSize}px solid ${arrowColor || backgroundColor || "var(--bg-card)"}`,
-            borderLeft: `${arrowSize}px solid transparent`,
-            borderRight: `${arrowSize}px solid transparent`
-          }
-        case "bottom":
-        case "bottom-start":
-        case "bottom-end":
-          return {
-            bottom: "100%",
-            left: placement === "bottom" ? "50%" : placement === "bottom-start" ? "16px" : "auto",
-            right: placement === "bottom-end" ? "16px" : "auto",
-            transform: placement === "bottom" ? "translateX(-50%)" : "none",
-            borderBottom: `${arrowSize}px solid ${arrowColor || backgroundColor || "var(--bg-card)"}`,
-            borderLeft: `${arrowSize}px solid transparent`,
-            borderRight: `${arrowSize}px solid transparent`
-          }
-        case "left":
-        case "left-start":
-        case "left-end":
-          return {
-            left: "100%",
-            top: placement === "left" ? "50%" : placement === "left-start" ? "16px" : "auto",
-            bottom: placement === "left-end" ? "16px" : "auto",
-            transform: placement === "left" ? "translateY(-50%)" : "none",
-            borderLeft: `${arrowSize}px solid ${arrowColor || backgroundColor || "var(--bg-card)"}`,
-            borderTop: `${arrowSize}px solid transparent`,
-            borderBottom: `${arrowSize}px solid transparent`
-          }
-        case "right":
-        case "right-start":
-        case "right-end":
-          return {
-            right: "100%",
-            top: placement === "right" ? "50%" : placement === "right-start" ? "16px" : "auto",
-            bottom: placement === "right-end" ? "16px" : "auto",
-            transform: placement === "right" ? "translateY(-50%)" : "none",
-            borderRight: `${arrowSize}px solid ${arrowColor || backgroundColor || "var(--bg-card)"}`,
-            borderTop: `${arrowSize}px solid transparent`,
-            borderBottom: `${arrowSize}px solid transparent`
-          }
-        default:
-          return {}
-      }
+
+    const sizeClasses = {
+      sm: "w-64 p-3",
+      md: "w-80 p-4",
+      lg: "w-96 p-5",
+      xl: "w-[28rem] p-6"
     }
-    
-    if (!isOpen) return null
-    
-    return (
-      <div className="relative inline-block">
-        {/* Trigger */}
-        <div ref={triggerRef}>
-          {trigger}
-        </div>
-        
-        {/* Popover */}
-        <div
-          ref={popoverRef}
-          className={cn(
-            "absolute z-50",
-            sizeClasses[size],
-            shadowClasses[shadow],
-            animationClasses[animation],
-            className
-          )}
-          style={{
-            ...customStyles,
-            ...getPlacementStyles(),
-            opacity: isVisible ? 1 : 0,
-            transform: isVisible 
-              ? (placement?.startsWith("top") || placement?.startsWith("bottom") 
-                  ? "translateX(-50%)" 
-                  : "translateY(-50%)")
-              : (placement?.startsWith("top") || placement?.startsWith("bottom")
-                  ? "translateX(-50%) translateY(10px)"
-                  : "translateY(-50%) translateX(10px)")
-          }}
-          {...props}
-        >
-          {/* Close button */}
-          {showCloseButton && (
-            <button
-              onClick={onClose}
-              className="absolute top-2 right-2 p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              style={{ color: "var(--text-muted)" }}
-            >
-              ✕
-            </button>
-          )}
-          
-          {/* Content */}
-          <div className="p-4">
-            {children}
+
+    // Legacy trigger prop API
+    if (trigger !== undefined) {
+      return (
+        <div ref={ref} className="relative inline-block" {...props}>
+          <div
+            ref={triggerRef}
+            onClick={() => setOpen(!open)}
+            className="cursor-pointer"
+          >
+            {trigger}
           </div>
-          
-          {/* Arrow */}
-          {arrow && (
+
+          {open && (
             <div
-              className="absolute w-0 h-0"
-              style={getArrowStyles()}
-            />
+              ref={popoverRef}
+              className={cn(
+                "absolute z-50 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 shadow-xl animate-in fade-in-0 zoom-in-95 duration-150",
+                getPlacementClasses(),
+                sizeClasses[size],
+                className
+              )}
+              style={style}
+            >
+              {showCloseButton && (
+                <button
+                  onClick={() => setOpen(false)}
+                  className="absolute top-2.5 right-2.5 p-1 rounded-md text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
+                  aria-label="Close popover"
+                >
+                  <X className="h-3.5 w-3.5" />
+                </button>
+              )}
+              {children}
+            </div>
           )}
         </div>
-      </div>
+      )
+    }
+
+    // Compound component API
+    return (
+      <PopoverContext.Provider value={{ open, setOpen }}>
+        <div ref={ref} className={cn("relative inline-block", className)} style={style} {...props}>
+          {children}
+        </div>
+      </PopoverContext.Provider>
     )
   }
 )
 
 Popover.displayName = "Popover"
+
+export const PopoverTrigger: React.FC<PopoverTriggerProps> = ({
+  children,
+  asChild = false,
+  className
+}) => {
+  const context = usePopover()
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    context?.setOpen(!context.open)
+  }
+
+  if (asChild && React.isValidElement(children)) {
+    return React.cloneElement(children, {
+      className: cn(children.props.className, className),
+      onClick: (e: React.MouseEvent) => {
+        handleClick(e)
+        children.props.onClick?.(e)
+      }
+    })
+  }
+
+  return (
+    <div className={cn("inline-block cursor-pointer", className)} onClick={handleClick}>
+      {children}
+    </div>
+  )
+}
+
+export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
+  ({ children, className, align = "center", side = "bottom", sideOffset = 4, ...props }, ref) => {
+    const context = usePopover()
+    const contentRef = React.useRef<HTMLDivElement>(null)
+
+    React.useEffect(() => {
+      const handleClickOutside = (e: MouseEvent) => {
+        if (contentRef.current && !contentRef.current.contains(e.target as Node)) {
+          context?.setOpen(false)
+        }
+      }
+
+      if (context?.open) {
+        document.addEventListener("mousedown", handleClickOutside)
+      }
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside)
+      }
+    }, [context?.open, context])
+
+    if (!context?.open) return null
+
+    const alignClasses = {
+      start: "left-0",
+      center: "left-1/2 -translate-x-1/2",
+      end: "right-0"
+    }
+
+    const sideClasses = {
+      top: "bottom-full mb-2",
+      bottom: "top-full mt-2",
+      left: "right-full mr-2",
+      right: "left-full ml-2"
+    }
+
+    return (
+      <div
+        ref={contentRef}
+        className={cn(
+          "absolute z-50 w-72 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 text-zinc-900 dark:text-zinc-100 shadow-xl outline-none animate-in fade-in-0 zoom-in-95 duration-150",
+          sideClasses[side],
+          alignClasses[align],
+          className
+        )}
+        style={{ marginTop: sideOffset }}
+        {...props}
+      >
+        {children}
+      </div>
+    )
+  }
+)
+PopoverContent.displayName = "PopoverContent"
+
+export const PopoverClose: React.FC<PopoverCloseProps> = ({ children, className }) => {
+  const context = usePopover()
+  return (
+    <div
+      className={cn("inline-block cursor-pointer", className)}
+      onClick={() => context?.setOpen(false)}
+    >
+      {children || (
+        <button className="p-1 rounded-md text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100">
+          <X className="h-4 w-4" />
+        </button>
+      )}
+    </div>
+  )
+}
 
 export { Popover }

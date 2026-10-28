@@ -1,5 +1,5 @@
 // Data Components Module
-export { Table } from '../components/data/table'
+export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from '../components/data/table'
 export { DataTable } from '../components/data/data-table'
 export { Chart } from '../components/data/chart'
 

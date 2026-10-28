@@ -50,7 +50,7 @@ export const Menubar: React.FC<MenubarProps> = ({
   className
 }) => {
   return (
-    <div className={cn('flex h-10 items-center space-x-1 rounded-md border bg-background p-1', className)}>
+    <div className={cn('flex h-9 items-center space-x-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-1 text-zinc-900 dark:text-zinc-100 shadow-2xs', className)}>
       {children}
     </div>
   )
@@ -105,8 +105,8 @@ export const MenubarTrigger: React.FC<MenubarTriggerProps> = ({
       <button
         ref={triggerRef}
         className={cn(
-          'flex cursor-default select-none items-center rounded-sm px-3 py-1.5 text-sm font-medium outline-none focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[state=open]:text-accent-foreground',
-          isOpen && 'bg-accent text-accent-foreground',
+          'flex cursor-default select-none items-center rounded-lg px-2.5 py-1 text-xs font-medium text-zinc-700 dark:text-zinc-200 outline-none transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-850 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer',
+          isOpen && 'bg-zinc-100 dark:bg-zinc-850 text-zinc-900 dark:text-zinc-100',
           className
         )}
         onClick={handleClick}
@@ -118,7 +118,7 @@ export const MenubarTrigger: React.FC<MenubarTriggerProps> = ({
       {isOpen && (
         <div
           ref={contentRef}
-          className="absolute left-0 top-full z-50 mt-1 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
+          className="absolute left-0 top-full z-50 mt-1.5 min-w-[8rem] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-1 text-zinc-900 dark:text-zinc-100 shadow-xl animate-in fade-in-0 zoom-in-95 duration-150"
         >
           {React.Children.map(children, (child) => {
             if (React.isValidElement(child) && child.type === MenubarContent) {
@@ -152,10 +152,10 @@ export const MenubarItem: React.FC<MenubarItemProps> = ({
   return (
     <div
       className={cn(
-        'relative flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-none transition-colors',
+        'relative flex cursor-default select-none items-center rounded-lg px-2.5 py-1.5 text-xs outline-none transition-colors text-zinc-800 dark:text-zinc-200',
         disabled
-          ? 'pointer-events-none opacity-50'
-          : 'hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground',
+          ? 'pointer-events-none opacity-40'
+          : 'hover:bg-zinc-100 dark:hover:bg-zinc-850 hover:text-zinc-900 dark:hover:text-zinc-100 cursor-pointer',
         className
       )}
       onClick={disabled ? undefined : onClick}

@@ -1,5 +1,20 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, createContext, useContext } from 'react'
 import { cn } from '../../lib/utils'
+
+interface AlertDialogContextType {
+  open: boolean
+  onOpenChange: (open: boolean) => void
+}
+
+const AlertDialogContext = createContext<AlertDialogContextType | null>(null)
+
+export const useAlertDialog = () => {
+  const context = useContext(AlertDialogContext)
+  if (!context) {
+    throw new Error('AlertDialog components must be used within an AlertDialog')
+  }
+  return context
+}
 
 export interface AlertDialogProps {
   open: boolean
@@ -77,12 +92,14 @@ export const AlertDialog: React.FC<AlertDialogProps> = ({
     }
   }, [open, onOpenChange])
 
-  if (!open) return null
-
   return (
-    <div className={cn('fixed inset-0 z-50 flex items-center justify-center', className)}>
-      {children}
-    </div>
+    <AlertDialogContext.Provider value={{ open, onOpenChange }}>
+      {open && (
+        <div className={cn('fixed inset-0 z-50 flex items-center justify-center p-4', className)}>
+          {children}
+        </div>
+      )}
+    </AlertDialogContext.Provider>
   )
 }
 
@@ -91,14 +108,25 @@ export const AlertDialogTrigger: React.FC<AlertDialogTriggerProps> = ({
   asChild = false,
   className
 }) => {
+  const { onOpenChange } = useAlertDialog()
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    onOpenChange(true)
+  }
+
   if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
-      className: cn(children.props.className, className)
+    return React.cloneElement(children as React.ReactElement<any>, {
+      onClick: (e: React.MouseEvent) => {
+        (children as any).props?.onClick?.(e)
+        handleClick(e)
+      },
+      className: cn((children as any).props?.className, className)
     })
   }
   
   return (
-    <div className={cn('inline-block', className)}>
+    <div className={cn('inline-block cursor-pointer', className)} onClick={handleClick}>
       {children}
     </div>
   )
@@ -110,6 +138,8 @@ export const AlertDialogContent: React.FC<AlertDialogContentProps> = ({
   onEscapeKeyDown,
   onInteractOutside
 }) => {
+  const { onOpenChange } = useAlertDialog()
+
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget && onInteractOutside) {
       onInteractOutside()
@@ -118,12 +148,14 @@ export const AlertDialogContent: React.FC<AlertDialogContentProps> = ({
 
   return (
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-xs p-4 animate-in fade-in duration-200"
       onClick={handleOverlayClick}
     >
       <div
+        role="alertdialog"
+        aria-modal="true"
         className={cn(
-          'relative bg-background border rounded-lg shadow-lg max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto',
+          'relative w-full max-w-lg rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-zinc-900 dark:text-zinc-100 shadow-2xl transition-all duration-200',
           className
         )}
         onClick={(e) => e.stopPropagation()}
@@ -139,7 +171,7 @@ export const AlertDialogHeader: React.FC<AlertDialogHeaderProps> = ({
   className
 }) => {
   return (
-    <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left p-6 pb-0', className)}>
+    <div className={cn('flex flex-col space-y-2 text-center sm:text-left mb-4', className)}>
       {children}
     </div>
   )
@@ -150,7 +182,7 @@ export const AlertDialogFooter: React.FC<AlertDialogFooterProps> = ({
   className
 }) => {
   return (
-    <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 p-6 pt-0', className)}>
+    <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-6 gap-2 sm:gap-0', className)}>
       {children}
     </div>
   )
@@ -161,7 +193,7 @@ export const AlertDialogTitle: React.FC<AlertDialogTitleProps> = ({
   className
 }) => {
   return (
-    <h2 className={cn('text-lg font-semibold leading-none tracking-tight', className)}>
+    <h2 className={cn('text-base font-semibold leading-none tracking-tight text-foreground', className)}>
       {children}
     </h2>
   )
@@ -172,7 +204,7 @@ export const AlertDialogDescription: React.FC<AlertDialogDescriptionProps> = ({
   className
 }) => {
   return (
-    <p className={cn('text-sm text-muted-foreground', className)}>
+    <p className={cn('text-xs text-muted-foreground leading-relaxed', className)}>
       {children}
     </p>
   )
@@ -183,13 +215,21 @@ export const AlertDialogAction: React.FC<AlertDialogActionProps> = ({
   className,
   onClick
 }) => {
+  const { onOpenChange } = useAlertDialog()
+
+  const handleClick = (e: React.MouseEvent) => {
+    onClick?.()
+    onOpenChange(false)
+  }
+
   return (
     <button
+      type="button"
       className={cn(
-        'inline-flex h-10 items-center justify-center rounded-md bg-primary px-4 py-2 text-sm font-medium text-primary-foreground ring-offset-background transition-colors hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+        'inline-flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-xs font-semibold text-primary-foreground shadow-xs transition-opacity hover:opacity-90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer',
         className
       )}
-      onClick={onClick}
+      onClick={handleClick}
     >
       {children}
     </button>
@@ -201,15 +241,25 @@ export const AlertDialogCancel: React.FC<AlertDialogCancelProps> = ({
   className,
   onClick
 }) => {
+  const { onOpenChange } = useAlertDialog()
+
+  const handleClick = (e: React.MouseEvent) => {
+    onClick?.()
+    onOpenChange(false)
+  }
+
   return (
     <button
+      type="button"
       className={cn(
-        'inline-flex h-10 items-center justify-center rounded-md border border-input bg-background px-4 py-2 text-sm font-medium ring-offset-background transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+        'inline-flex h-9 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-4 text-xs font-medium text-zinc-800 dark:text-zinc-200 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/40 cursor-pointer',
         className
       )}
-      onClick={onClick}
+      onClick={handleClick}
     >
       {children}
     </button>
   )
 }
+
+export default AlertDialog

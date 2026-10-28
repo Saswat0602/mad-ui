@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { cn } from '../../lib/utils'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 export interface CarouselProps {
   children: React.ReactNode
@@ -202,14 +203,13 @@ export const CarouselPrevious: React.FC<CarouselPreviousProps> = ({
   return (
     <button
       className={cn(
-        'inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+        'inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow-md transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer',
         className
       )}
       onClick={onClick}
+      aria-label="Previous slide"
     >
-      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-      </svg>
+      <ChevronLeft className="h-4 w-4" />
     </button>
   )
 }
@@ -221,14 +221,13 @@ export const CarouselNext: React.FC<CarouselNextProps> = ({
   return (
     <button
       className={cn(
-        'inline-flex h-8 w-8 items-center justify-center rounded-full border border-border bg-background text-foreground shadow-sm transition-colors hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2',
+        'inline-flex h-8 w-8 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-800 dark:text-zinc-200 shadow-md transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer',
         className
       )}
       onClick={onClick}
+      aria-label="Next slide"
     >
-      <svg className="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-      </svg>
+      <ChevronRight className="h-4 w-4" />
     </button>
   )
 }

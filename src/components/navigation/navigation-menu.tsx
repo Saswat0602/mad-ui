@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { cn } from '../../lib/utils'
+import { ChevronDown } from 'lucide-react'
 
 export interface NavigationMenuProps {
   children: React.ReactNode
@@ -107,29 +108,25 @@ export const NavigationMenuTrigger: React.FC<NavigationMenuTriggerProps> = ({
       <button
         ref={triggerRef}
         className={cn(
-          'group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50 data-[active]:bg-accent/50 data-[state=open]:bg-accent/50',
+          'group inline-flex h-9 w-max items-center justify-center rounded-lg bg-transparent px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-200 transition-colors hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100 focus:outline-none disabled:pointer-events-none disabled:opacity-50',
+          isOpen && 'bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100',
           className
         )}
         aria-expanded={isOpen}
         aria-haspopup="true"
       >
         {children}
-        <svg
+        <ChevronDown
           className={cn(
-            'relative top-[1px] ml-1 h-3 w-3 transition duration-200 group-data-[state=open]:rotate-180',
+            'relative top-[1px] ml-1.5 h-3.5 w-3.5 transition-transform duration-200',
             isOpen && 'rotate-180'
           )}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        />
       </button>
       {isOpen && (
         <div
           ref={contentRef}
-          className="absolute left-0 top-full w-screen max-w-xs rounded-md border bg-popover p-4 text-popover-foreground shadow-lg data-[motion=from-start]:animate-enterFromLeft data-[motion=from-end]:animate-enterFromRight data-[motion=to-start]:animate-exitToLeft data-[motion=to-end]:animate-exitToRight"
+          className="absolute left-0 top-full mt-1.5 w-screen max-w-xs rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-3 text-zinc-900 dark:text-zinc-100 shadow-xl animate-in fade-in-0 zoom-in-95 duration-150"
         >
           {React.Children.map(children, (child) => {
             if (React.isValidElement(child) && child.type === NavigationMenuContent) {

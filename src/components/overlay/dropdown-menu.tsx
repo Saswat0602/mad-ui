@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect, createContext, useContext } from 'react'
 import { cn } from '../../lib/utils'
+import { Check, ChevronRight } from 'lucide-react'
 
 interface DropdownMenuContextType {
   isOpen: boolean
@@ -216,7 +217,7 @@ export const DropdownMenuContent: React.FC<DropdownMenuContentProps> = ({
     <div
       ref={contentRef}
       className={cn(
-        'absolute z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2',
+        'absolute z-50 min-w-[8rem] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-1 text-zinc-900 dark:text-zinc-100 shadow-xl animate-in fade-in-0 zoom-in-95 duration-150',
         alignClasses[align],
         sideClasses[side],
         className
@@ -317,9 +318,7 @@ export const DropdownMenuCheckboxItem: React.FC<DropdownMenuCheckboxItemProps> =
     >
       <div className="mr-2 flex h-4 w-4 items-center justify-center">
         {checked && (
-          <svg className="h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-            <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-          </svg>
+          <Check className="h-3.5 w-3.5 text-primary" />
         )}
       </div>
       {children}
@@ -418,11 +417,9 @@ export const DropdownMenuSubTrigger: React.FC<DropdownMenuSubTriggerProps> = ({
       onMouseLeave={() => setIsOpen(false)}
     >
       {children}
-      <svg className="ml-auto h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-      </svg>
+      <ChevronRight className="ml-auto h-3.5 w-3.5 text-zinc-400" />
       {isOpen && (
-        <div className="absolute left-full top-0 ml-1 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md">
+        <div className="absolute left-full top-0 ml-1 min-w-[8rem] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-1 text-zinc-900 dark:text-zinc-100 shadow-xl">
           {React.Children.map(children, (child) => {
             if (React.isValidElement(child) && child.type === DropdownMenuSubContent) {
               return child.props.children

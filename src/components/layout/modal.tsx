@@ -1,6 +1,6 @@
 import * as React from "react"
 import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
+import { X } from "lucide-react"
 
 export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen: boolean
@@ -22,60 +22,7 @@ export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
   overlayColor?: string
   overlayBlur?: boolean
   zIndex?: number
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  dismissible?: boolean
-  persistent?: boolean
-  onShow?: () => void
-  onHide?: () => void
-  animation?: 'slide' | 'fade' | 'scale' | 'none'
-  animationDuration?: number
-  onAnimationStart?: () => void
-  onAnimationEnd?: () => void
-  theme?: 'light' | 'dark' | 'auto'
-  locale?: string
-  rtl?: boolean
-  keyboardDismissible?: boolean
-  onKeyboardDismiss?: (key: string) => void
-  clickable?: boolean
-  onClick?: () => void
-  onDoubleClick?: () => void
-  onRightClick?: (event: React.MouseEvent) => void
-  contextMenuItems?: Array<{
-    label: string
-    onClick: () => void
-    icon?: React.ReactNode
-    disabled?: boolean
-  }>
-  draggable?: boolean
-  onDragMove?: (position: { x: number; y: number }) => void
-  onDragComplete?: (position: { x: number; y: number }) => void
-  swipeable?: boolean
-  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
-  resizable?: boolean
-  onResize?: (size: { width: number; height: number }) => void
-  scrollable?: boolean
-  onScrollChange?: (scrollY: number) => void
-  focusable?: boolean
-  autoFocus?: boolean
-  onFocus?: () => void
-  onBlur?: () => void
-  tabIndex?: number
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
+  footer?: React.ReactNode
 }
 
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
@@ -100,122 +47,107 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     overlayColor,
     overlayBlur = true,
     zIndex = 50,
+    footer,
     style,
     ...props 
   }, ref) => {
     
     // Size classes
     const sizeClasses = {
-      sm: "max-w-md",
-      md: "max-w-lg",
-      lg: "max-w-2xl",
-      xl: "max-w-4xl",
-      full: "max-w-full"
+      sm: "max-w-sm",
+      md: "max-w-md",
+      lg: "max-w-lg",
+      xl: "max-w-2xl",
+      full: "max-w-full m-4"
     }
-    
-    // Shadow classes
+
     const shadowClasses = {
       none: "",
       sm: "shadow-sm",
       md: "shadow-md",
-      lg: "shadow-lg",
-      xl: "shadow-xl"
+      lg: "shadow-xl",
+      xl: "shadow-2xl"
     }
-    
+
     // Handle escape key
     React.useEffect(() => {
-      const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === "Escape" && closeOnEscape) {
+      const handleKeyDown = (e: KeyboardEvent) => {
+        if (e.key === "Escape" && closeOnEscape && isOpen) {
           onClose()
         }
       }
 
       if (isOpen) {
-        document.addEventListener("keydown", handleEscape)
+        document.addEventListener("keydown", handleKeyDown)
         document.body.style.overflow = "hidden"
       }
 
       return () => {
-        document.removeEventListener("keydown", handleEscape)
+        document.removeEventListener("keydown", handleKeyDown)
         document.body.style.overflow = "unset"
       }
-    }, [isOpen, onClose, closeOnEscape])
-    
-    // Handle overlay click
+    }, [isOpen, closeOnEscape, onClose])
+
     const handleOverlayClick = (e: React.MouseEvent) => {
-      if (closeOnOverlayClick && e.target === e.currentTarget) {
+      if (e.target === e.currentTarget && closeOnOverlayClick) {
         onClose()
       }
     }
-    
-    // Handle modal click (prevent closing)
-    const handleModalClick = (e: React.MouseEvent) => {
-      e.stopPropagation()
-    }
-    
+
     if (!isOpen) return null
-    
-    const customStyles: React.CSSProperties = {
-      backgroundColor: backgroundColor || color || "var(--bg-card)",
-      color: textColor || "var(--text-primary)",
-      borderColor: borderColor || "var(--border-primary)",
-      borderRadius: borderRadius,
-      zIndex,
-      ...style
-    }
-    
-    const overlayStyles: React.CSSProperties = {
-      backgroundColor: overlayColor || "var(--bg-overlay)",
-      backdropFilter: overlayBlur ? "blur(4px)" : "none"
-    }
-    
+
     return (
       <div 
-        className="fixed inset-0 flex items-center justify-center p-4"
-        style={overlayStyles}
+        className={cn(
+          "fixed inset-0 flex items-center justify-center p-4 transition-all duration-200",
+          overlayBlur ? "backdrop-blur-xs" : ""
+        )}
+        style={{
+          zIndex,
+          backgroundColor: overlayColor || "rgba(0, 0, 0, 0.65)"
+        }}
         onClick={handleOverlayClick}
       >
         <div 
           ref={ref}
+          role="dialog"
+          aria-modal="true"
           className={cn(
-            "w-full rounded-lg transition-all duration-200",
+            "relative w-full rounded-2xl border transition-all duration-200",
+            "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100",
             sizeClasses[size],
             shadowClasses[shadow],
             fullWidth && "w-full",
             fullHeight && "h-full",
             className
           )}
-          style={customStyles}
-          onClick={handleModalClick}
+          style={{
+            borderRadius,
+            ...(backgroundColor || color ? { backgroundColor: backgroundColor || color } : {}),
+            ...(borderColor ? { borderColor } : {}),
+            ...(textColor ? { color: textColor } : {}),
+            ...style
+          }}
+          onClick={(e) => e.stopPropagation()}
           {...props}
         >
           {/* Header */}
-          {title && (
-            <div 
-              className="flex items-center justify-between p-6"
-              style={{ 
-                borderBottom: `1px solid ${borderColor || "var(--border-primary)"}` 
-              }}
-            >
-              <h2 
-                className="text-xl font-semibold"
-                style={{ color: textColor || "var(--text-primary)" }}
-              >
-                {title}
-              </h2>
+          {(title || showCloseButton) && (
+            <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
+              {title ? (
+                <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 leading-none">
+                  {title}
+                </h3>
+              ) : <div />}
+              
               {showCloseButton && (
                 <button
+                  type="button"
                   onClick={onClose}
-                  className={cn(
-                    "p-1 rounded-lg transition-colors",
-                    "focus:outline-none focus:ring-2 focus:ring-offset-2",
-                    "hover:bg-black/10 dark:hover:bg-white/10"
-                  )}
-                  style={{
-                    color: "var(--text-muted)"
-                  }}
+                  aria-label="Close modal"
+                  className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40"
                 >
-                  <span className="h-5 w-5">✕</span>
+                  <X className="h-4 w-4" />
                 </button>
               )}
             </div>
@@ -225,6 +157,13 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
           <div className="p-6">
             {children}
           </div>
+
+          {/* Optional Footer */}
+          {footer && (
+            <div className="px-6 py-3.5 border-t border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 rounded-b-2xl flex items-center justify-end gap-2">
+              {footer}
+            </div>
+          )}
         </div>
       </div>
     )

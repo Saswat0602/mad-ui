@@ -1,16 +1,21 @@
 import * as React from "react"
 import { cn } from "../../lib/utils"
-import { componentColors } from "../../lib/colors"
+import { CheckCircle2, AlertCircle, AlertTriangle, Info, Bell, X } from "lucide-react"
+
+export type AlertType = "default" | "success" | "error" | "warning" | "info" | "primary" | "neutral" | "destructive"
+export type AlertVariant = "default" | "destructive" | "success" | "warning" | "info" | "filled" | "outlined"
 
 export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
-  type?: "success" | "error" | "warning" | "info" | "primary" | "neutral"
+  type?: AlertType
+  variant?: AlertVariant
   title?: string
   message?: string
   onClose?: () => void
   closable?: boolean
-  variant?: "default" | "filled" | "outlined"
   size?: "sm" | "md" | "lg"
   fullWidth?: boolean
+  icon?: React.ReactNode
+  actions?: React.ReactNode
   color?: string
   backgroundColor?: string
   borderColor?: string
@@ -18,47 +23,26 @@ export interface AlertProps extends React.HTMLAttributes<HTMLDivElement> {
   iconColor?: string
   borderRadius?: string | number
   shadow?: "none" | "sm" | "md" | "lg"
-  icon?: React.ReactNode
-  actions?: React.ReactNode
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
   loading?: boolean
   dismissible?: boolean
   autoDismiss?: boolean
   dismissTimeout?: number
   onDismiss?: () => void
   onShow?: () => void
-  persistent?: boolean
   priority?: "low" | "medium" | "high" | "critical"
   category?: string
   tags?: string[]
-  metadata?: Record<string, any>
-  sound?: boolean
-  vibration?: boolean
-  position?: "top" | "bottom" | "center" | "top-left" | "top-right" | "bottom-left" | "bottom-right"
-  animation?: "fade" | "slide" | "scale" | "bounce" | "none"
-  progress?: boolean
-  progressValue?: number
-  onProgressComplete?: () => void
 }
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
   ({ 
     className, 
-    type = "info",
+    type,
+    variant = "default",
     title,
     message,
     onClose,
     closable = false,
-    variant = "default",
     size = "md",
     fullWidth = false,
     color,
@@ -67,188 +51,194 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
     textColor,
     iconColor,
     borderRadius,
-    shadow = "sm",
+    shadow = "none",
     icon,
     actions,
     children,
     style,
+    role = "alert",
     ...props 
   }, ref) => {
-    
-    // Size classes
+    // Resolve effective semantic variant from type or variant
+    const resolvedVariant: AlertType = (
+      type === "error" ? "destructive" :
+      type === "primary" ? "info" :
+      type === "neutral" ? "default" :
+      (type || (variant === "outlined" || variant === "filled" ? "default" : variant) || "default")
+    ) as AlertType
+
     const sizeClasses = {
-      sm: "p-3",
-      md: "p-4",
-      lg: "p-6"
+      sm: "p-3 text-xs [&>svg]:h-3.5 [&>svg]:w-3.5",
+      md: "p-4 text-sm [&>svg]:h-4 [&>svg]:w-4",
+      lg: "p-5 text-base [&>svg]:h-5 [&>svg]:w-5"
     }
-    
-    // Shadow classes
+
     const shadowClasses = {
       none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-lg"
+      sm: "shadow-xs",
+      md: "shadow-sm",
+      lg: "shadow-md"
     }
-    
-    // Default alert configuration
-    const alertConfig = {
-      success: {
-        icon: "✓",
-        bgColor: "var(--accent-success)",
-        borderColor: "var(--accent-success)",
-        textColor: "var(--text-inverse)",
-        iconColor: "var(--text-inverse)"
-      },
-      error: {
-        icon: "✕",
-        bgColor: "var(--accent-error)",
-        borderColor: "var(--accent-error)",
-        textColor: "var(--text-inverse)",
-        iconColor: "var(--text-inverse)"
-      },
-      warning: {
-        icon: "⚠",
-        bgColor: "var(--accent-warning)",
-        borderColor: "var(--accent-warning)",
-        textColor: "var(--text-inverse)",
-        iconColor: "var(--text-inverse)"
-      },
-      info: {
-        icon: "ℹ",
-        bgColor: "var(--accent-info)",
-        borderColor: "var(--accent-info)",
-        textColor: "var(--text-inverse)",
-        iconColor: "var(--text-inverse)"
-      },
-      primary: {
-        icon: "ℹ",
-        bgColor: "var(--accent-primary)",
-        borderColor: "var(--accent-primary)",
-        textColor: "var(--text-inverse)",
-        iconColor: "var(--text-inverse)"
-      },
-      neutral: {
-        icon: "ℹ",
-        bgColor: "var(--bg-tertiary)",
-        borderColor: "var(--border-primary)",
-        textColor: "var(--text-primary)",
-        iconColor: "var(--text-muted)"
-      }
-    }
-    
-    const config = alertConfig[type]
-    
-    // Variant styles
-    const getVariantStyles = () => {
-      switch (variant) {
-        case "filled":
-          return {
-            backgroundColor: backgroundColor || color || config.bgColor,
-            color: textColor || config.textColor,
-            border: "none"
-          }
-        case "outlined":
-          return {
-            backgroundColor: "transparent",
-            color: textColor || config.textColor,
-            border: `1px solid ${borderColor || config.borderColor}`
-          }
+
+    // Default icon lookup
+    const getDefaultIcon = () => {
+      switch (resolvedVariant) {
+        case "success":
+          return <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600 dark:text-emerald-400" />
+        case "destructive":
+        case "error":
+          return <AlertCircle className="h-4 w-4 shrink-0 text-red-600 dark:text-red-400" />
+        case "warning":
+          return <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
+        case "info":
+        case "primary":
+          return <Info className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
         default:
-          return {
-            backgroundColor: backgroundColor || "var(--bg-card)",
-            color: textColor || config.textColor,
-            border: `1px solid ${borderColor || config.borderColor}`
-          }
+          return <Bell className="h-4 w-4 shrink-0 text-zinc-600 dark:text-zinc-400" />
       }
     }
-    
-    const customStyles: React.CSSProperties = {
-      ...getVariantStyles(),
-      borderRadius: borderRadius,
-      ...style
-    }
-    
-    const handleClose = () => {
-      if (onClose) {
-        onClose()
+
+    // Semantic variant styling (clean, modern Tailwind conforming to senior standards)
+    const getVariantClasses = () => {
+      if (variant === "filled") {
+        switch (resolvedVariant) {
+          case "success":
+            return "bg-emerald-600 text-white border-transparent"
+          case "destructive":
+          case "error":
+            return "bg-red-600 text-white border-transparent"
+          case "warning":
+            return "bg-amber-600 text-white border-transparent"
+          case "info":
+          case "primary":
+            return "bg-blue-600 text-white border-transparent"
+          default:
+            return "bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 border-transparent"
+        }
+      }
+
+      if (variant === "outlined") {
+        switch (resolvedVariant) {
+          case "success":
+            return "bg-transparent text-emerald-700 dark:text-emerald-400 border-emerald-500/40"
+          case "destructive":
+          case "error":
+            return "bg-transparent text-red-700 dark:text-red-400 border-red-500/40"
+          case "warning":
+            return "bg-transparent text-amber-700 dark:text-amber-400 border-amber-500/40"
+          case "info":
+          case "primary":
+            return "bg-transparent text-blue-700 dark:text-blue-400 border-blue-500/40"
+          default:
+            return "bg-transparent text-zinc-800 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700"
+        }
+      }
+
+      // Default subtle semantic tinting
+      switch (resolvedVariant) {
+        case "success":
+          return "bg-emerald-500/10 text-emerald-900 dark:text-emerald-200 border-emerald-500/20 dark:border-emerald-500/30"
+        case "destructive":
+        case "error":
+          return "bg-red-500/10 text-red-900 dark:text-red-200 border-red-500/20 dark:border-red-500/30"
+        case "warning":
+          return "bg-amber-500/10 text-amber-900 dark:text-amber-200 border-amber-500/20 dark:border-amber-500/30"
+        case "info":
+        case "primary":
+          return "bg-blue-500/10 text-blue-900 dark:text-blue-200 border-blue-500/20 dark:border-blue-500/30"
+        default:
+          return "bg-zinc-50 dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 border-zinc-200 dark:border-zinc-800"
       }
     }
-    
+
+    const effectiveIcon = icon !== undefined ? icon : getDefaultIcon()
+
     return (
       <div
         ref={ref}
+        role={role}
         className={cn(
-          "relative border rounded-lg transition-all duration-200",
+          "relative w-full rounded-xl border transition-all duration-200",
           sizeClasses[size],
           shadowClasses[shadow],
-          fullWidth && "w-full",
+          getVariantClasses(),
+          fullWidth ? "w-full" : "",
           className
         )}
-        style={customStyles}
+        style={{
+          borderRadius,
+          ...(backgroundColor ? { backgroundColor } : {}),
+          ...(borderColor ? { borderColor } : {}),
+          ...(textColor ? { color: textColor } : {}),
+          ...style
+        }}
         {...props}
       >
-        <div className="flex items-start">
-          {/* Icon */}
-          <div className="flex-shrink-0 mr-3">
-            {icon || (
-              <span 
-                className="text-lg font-bold"
-                style={{ color: iconColor || config.iconColor }}
-              >
-                {config.icon}
-              </span>
-            )}
-          </div>
-          
-          {/* Content */}
+        <div className="flex items-start gap-3">
+          {effectiveIcon && (
+            <div className="shrink-0 mt-0.5" style={{ color: iconColor }}>
+              {effectiveIcon}
+            </div>
+          )}
+
           <div className="flex-1 min-w-0">
             {title && (
-              <h3 className="text-sm font-medium mb-1">
+              <h5 className="font-semibold text-sm leading-tight tracking-tight mb-1">
                 {title}
-              </h3>
+              </h5>
             )}
             {message && (
-              <div className="text-sm">
+              <div className="text-xs leading-relaxed opacity-90">
                 {message}
               </div>
             )}
-            {children && (
-              <div className="mt-2">
-                {children}
-              </div>
-            )}
+            {children}
             {actions && (
-              <div className="mt-3 flex gap-2">
+              <div className="mt-3 flex items-center gap-2">
                 {actions}
               </div>
             )}
           </div>
-          
-          {/* Close button */}
+
           {(closable || onClose) && (
-            <div className="ml-auto pl-3">
-              <button
-                type="button"
-                onClick={handleClose}
-                className={cn(
-                  "inline-flex rounded-md p-1.5 transition-colors",
-                  "focus:outline-none focus:ring-2 focus:ring-offset-2",
-                  "hover:bg-black/10 dark:hover:bg-white/10"
-                )}
-                style={{
-                  color: iconColor || config.iconColor
-                }}
-              >
-                <span className="h-4 w-4">✕</span>
-              </button>
-            </div>
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close alert"
+              className="shrink-0 -mr-1 -mt-1 p-1 rounded-md text-current opacity-70 hover:opacity-100 hover:bg-black/5 dark:hover:bg-white/10 transition-all cursor-pointer focus:outline-none focus:ring-1 focus:ring-current"
+            >
+              <X className="h-4 w-4" />
+            </button>
           )}
         </div>
       </div>
     )
   }
 )
-
 Alert.displayName = "Alert"
 
-export { Alert }
+const AlertTitle = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLHeadingElement>
+>(({ className, ...props }, ref) => (
+  <h5
+    ref={ref}
+    className={cn("mb-1 font-semibold leading-tight tracking-tight text-sm", className)}
+    {...props}
+  />
+))
+AlertTitle.displayName = "AlertTitle"
+
+const AlertDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("text-xs leading-relaxed opacity-90 [&_p]:leading-relaxed", className)}
+    {...props}
+  />
+))
+AlertDescription.displayName = "AlertDescription"
+
+export { Alert, AlertTitle, AlertDescription }

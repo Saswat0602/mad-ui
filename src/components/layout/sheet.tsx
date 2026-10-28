@@ -1,9 +1,27 @@
-import React, { useEffect, useRef } from 'react'
+import React, { createContext, useContext, useState, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { cn } from '../../lib/utils'
+import { X } from 'lucide-react'
+
+interface SheetContextType {
+  open: boolean
+  setOpen: (open: boolean) => void
+}
+
+const SheetContext = createContext<SheetContextType | null>(null)
+
+export const useSheet = () => {
+  const context = useContext(SheetContext)
+  if (!context) {
+    throw new Error('Sheet components must be used within a <Sheet>')
+  }
+  return context
+}
 
 export interface SheetProps {
-  open: boolean
-  onOpenChange: (open: boolean) => void
+  open?: boolean
+  defaultOpen?: boolean
+  onOpenChange?: (open: boolean) => void
   children: React.ReactNode
   className?: string
 }
@@ -42,36 +60,35 @@ export interface SheetDescriptionProps {
   className?: string
 }
 
+export interface SheetCloseProps {
+  children?: React.ReactNode
+  className?: string
+}
+
 export const Sheet: React.FC<SheetProps> = ({
-  open,
+  open: controlledOpen,
+  defaultOpen = false,
   onOpenChange,
   children,
   className
 }) => {
-  useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && open) {
-        onOpenChange(false)
-      }
-    }
+  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen)
+  const isControlled = controlledOpen !== undefined
+  const open = isControlled ? controlledOpen : uncontrolledOpen
 
-    if (open) {
-      document.addEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'hidden'
+  const setOpen = (newOpen: boolean) => {
+    if (!isControlled) {
+      setUncontrolledOpen(newOpen)
     }
-
-    return () => {
-      document.removeEventListener('keydown', handleEscape)
-      document.body.style.overflow = 'unset'
-    }
-  }, [open, onOpenChange])
-
-  if (!open) return null
+    onOpenChange?.(newOpen)
+  }
 
   return (
-    <div className={cn('fixed inset-0 z-50', className)}>
-      {children}
-    </div>
+    <SheetContext.Provider value={{ open, setOpen }}>
+      <div className={cn('relative inline-block', className)}>
+        {children}
+      </div>
+    </SheetContext.Provider>
   )
 }
 
@@ -80,14 +97,25 @@ export const SheetTrigger: React.FC<SheetTriggerProps> = ({
   asChild = false,
   className
 }) => {
+  const { setOpen } = useSheet()
+
+  const handleClick = (e: React.MouseEvent) => {
+    e.stopPropagation()
+    setOpen(true)
+  }
+
   if (asChild && React.isValidElement(children)) {
     return React.cloneElement(children, {
-      className: cn(children.props.className, className)
+      className: cn(children.props.className, className),
+      onClick: (e: React.MouseEvent) => {
+        handleClick(e)
+        children.props.onClick?.(e)
+      }
     })
   }
-  
+
   return (
-    <div className={cn('inline-block', className)}>
+    <div className={cn('inline-block cursor-pointer', className)} onClick={handleClick}>
       {children}
     </div>
   )
@@ -100,34 +128,89 @@ export const SheetContent: React.FC<SheetContentProps> = ({
   onEscapeKeyDown,
   onInteractOutside
 }) => {
+  const { open, setOpen } = useSheet()
+  const [mounted, setMounted] = useState(false)
+  const contentRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && open) {
+        onEscapeKeyDown ? onEscapeKeyDown() : setOpen(false)
+      }
+    }
+
+    if (open) {
+      document.addEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'hidden'
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape)
+      document.body.style.overflow = 'unset'
+    }
+  }, [open, setOpen, onEscapeKeyDown])
+
+  if (!mounted || !open) return null
+
   const handleOverlayClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget && onInteractOutside) {
-      onInteractOutside()
+    if (e.target === e.currentTarget) {
+      onInteractOutside ? onInteractOutside() : setOpen(false)
     }
   }
 
   const sideClasses = {
-    top: 'inset-x-0 top-0 border-b data-[state=closed]:slide-out-to-top data-[state=open]:slide-in-from-top',
-    right: 'inset-y-0 right-0 h-full w-3/4 border-l data-[state=closed]:slide-out-to-right data-[state=open]:slide-in-from-right sm:max-w-sm',
-    bottom: 'inset-x-0 bottom-0 border-t data-[state=closed]:slide-out-to-bottom data-[state=open]:slide-in-from-bottom',
-    left: 'inset-y-0 left-0 h-full w-3/4 border-r data-[state=closed]:slide-out-to-left data-[state=open]:slide-in-from-left sm:max-w-sm'
+    top: 'inset-x-0 top-0 border-b border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-top duration-300',
+    right: 'inset-y-0 right-0 h-full w-full sm:max-w-md border-l border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-right duration-300',
+    bottom: 'inset-x-0 bottom-0 border-t border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-bottom duration-300',
+    left: 'inset-y-0 left-0 h-full w-full sm:max-w-md border-r border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-left duration-300'
   }
 
-  return (
+  return createPortal(
     <div
-      className="fixed inset-0 bg-black/50 backdrop-blur-sm"
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center"
       onClick={handleOverlayClick}
+      aria-modal="true"
+      role="dialog"
     >
       <div
+        ref={contentRef}
         className={cn(
-          'fixed z-50 bg-background p-6 shadow-lg transition ease-in-out data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:duration-300 data-[state=open]:duration-500',
+          'fixed z-50 bg-white dark:bg-zinc-950 p-6 shadow-2xl transition ease-in-out text-zinc-900 dark:text-zinc-100 flex flex-col justify-between overflow-y-auto',
           sideClasses[side],
           className
         )}
         onClick={(e) => e.stopPropagation()}
       >
+        <button
+          onClick={() => setOpen(false)}
+          className="absolute right-4 top-4 rounded-md p-1.5 text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer"
+          aria-label="Close sheet"
+        >
+          <X className="h-4 w-4" />
+        </button>
         {children}
       </div>
+    </div>,
+    document.body
+  )
+}
+
+export const SheetClose: React.FC<SheetCloseProps> = ({ children, className }) => {
+  const { setOpen } = useSheet()
+  return (
+    <div
+      className={cn('inline-block cursor-pointer', className)}
+      onClick={() => setOpen(false)}
+    >
+      {children || (
+        <button className="px-3 py-1.5 rounded-lg border border-zinc-200 dark:border-zinc-800 text-xs font-medium hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+          Close
+        </button>
+      )}
     </div>
   )
 }
@@ -137,7 +220,7 @@ export const SheetHeader: React.FC<SheetHeaderProps> = ({
   className
 }) => {
   return (
-    <div className={cn('flex flex-col space-y-2 text-center sm:text-left', className)}>
+    <div className={cn('flex flex-col space-y-1.5 text-left', className)}>
       {children}
     </div>
   )
@@ -148,7 +231,7 @@ export const SheetFooter: React.FC<SheetFooterProps> = ({
   className
 }) => {
   return (
-    <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2', className)}>
+    <div className={cn('flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 pt-4 border-t border-zinc-100 dark:border-zinc-850 mt-4', className)}>
       {children}
     </div>
   )
@@ -159,7 +242,7 @@ export const SheetTitle: React.FC<SheetTitleProps> = ({
   className
 }) => {
   return (
-    <h2 className={cn('text-lg font-semibold text-foreground', className)}>
+    <h2 className={cn('text-base font-semibold text-zinc-900 dark:text-zinc-100 tracking-tight', className)}>
       {children}
     </h2>
   )
@@ -170,8 +253,9 @@ export const SheetDescription: React.FC<SheetDescriptionProps> = ({
   className
 }) => {
   return (
-    <p className={cn('text-sm text-muted-foreground', className)}>
+    <p className={cn('text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed', className)}>
       {children}
     </p>
   )
 }
+

@@ -57,43 +57,96 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup
 } from './components/overlay/dropdown-menu'
-export { Toggle } from './components/overlay/toggle'
+export { Toggle, ToggleGroup } from './components/overlay/toggle'
 export { Separator } from './components/overlay/separator'
 
 // Layout Components
 export { Layout } from './components/layout/layout'
 export { Navbar } from './components/layout/navbar'
-export { Sidebar } from './components/layout/sidebar'
+export { 
+  Sidebar, 
+  SidebarHeader, 
+  SidebarContent, 
+  SidebarFooter, 
+  SidebarGroup, 
+  SidebarGroupLabel, 
+  SidebarMenu, 
+  SidebarMenuItem, 
+  SidebarMenuButton 
+} from './components/layout/sidebar'
 export { Modal } from './components/layout/modal'
-export { Popover } from './components/layout/popover'
-export { Tooltip } from './components/layout/tooltip'
-export { Sheet } from './components/layout/sheet'
+export { Popover, PopoverTrigger, PopoverContent, PopoverClose, usePopover } from './components/layout/popover'
+export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, useTooltip } from './components/layout/tooltip'
+export { 
+  Sheet, 
+  SheetTrigger, 
+  SheetContent, 
+  SheetHeader, 
+  SheetFooter, 
+  SheetTitle, 
+  SheetDescription, 
+  SheetClose, 
+  useSheet 
+} from './components/layout/sheet'
 export { Drawer } from './components/layout/drawer'
-export { Resizable } from './components/layout/resizable'
-export { ScrollArea } from './components/layout/scroll-area'
+export { Resizable, ResizableHandle, ResizablePanel } from './components/layout/resizable'
+export { ScrollArea, ScrollBar } from './components/layout/scroll-area'
 
 // Data Components
-export { Table } from './components/data/table'
-export { DataTable } from './components/data/data-table'
-export { Chart } from './components/data/chart'
+export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './components/data/table'
+export { DataTable, DataTableHeader, DataTableRow, DataTablePagination } from './components/data/data-table'
+export { Chart, BarChart, LineChart, PieChart, DoughnutChart } from './components/data/chart'
 
 // Feedback Components
-export { Alert } from './components/feedback/alert'
+export { Alert, AlertTitle, AlertDescription } from './components/feedback/alert'
 export { Sonner } from './components/feedback/sonner'
-export { Toast } from './components/feedback/toast'
+export { 
+  Toast, 
+  ToastTitle, 
+  ToastDescription, 
+  ToastAction, 
+  ToastClose, 
+  ToastViewport, 
+  ToastProvider 
+} from './components/feedback/toast'
+
 
 // Navigation Components
-export { NavigationMenu } from './components/navigation/navigation-menu'
-export { Menubar } from './components/navigation/menubar'
-export { Command } from './components/navigation/command'
+export { 
+  NavigationMenu, 
+  NavigationMenuList, 
+  NavigationMenuItem, 
+  NavigationMenuTrigger, 
+  NavigationMenuContent, 
+  NavigationMenuLink 
+} from './components/navigation/navigation-menu'
+export { 
+  Menubar, 
+  MenubarMenu, 
+  MenubarTrigger, 
+  MenubarContent, 
+  MenubarItem, 
+  MenubarSeparator, 
+  MenubarLabel, 
+  MenubarGroup 
+} from './components/navigation/menubar'
+export { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator } from './components/navigation/command'
 export { Combobox } from './components/navigation/combobox'
-export { Pagination } from './components/navigation/pagination'
+export { Pagination, PaginationItem, PaginationContent, PaginationEllipsis } from './components/navigation/pagination'
 
 // Media Components
-export { Avatar } from './components/media/avatar'
+export { Avatar, AvatarImage, AvatarFallback, AvatarGroup } from './components/media/avatar'
 export { Badge } from './components/media/badge'
 export { AspectRatio } from './components/media/aspect-ratio'
-export { Carousel } from './components/media/carousel'
+export { 
+  Carousel, 
+  CarouselContent, 
+  CarouselItem, 
+  CarouselPrevious, 
+  CarouselNext, 
+  CarouselIndicator 
+} from './components/media/carousel'
+
 export { 
   TypographyH1, 
   TypographyH2, 

@@ -116,14 +116,14 @@ export default function HomePage() {
     <div className="space-y-24 pb-20">
       {/* Hero Section */}
       <section className="relative pt-12 md:pt-20 text-center px-4 sm:px-6 lg:px-8 max-w-5xl mx-auto space-y-8">
-        {/* Release Pill */}
-        <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border/60 bg-muted/30 text-xs font-medium text-muted-foreground hover:border-primary/40 transition-colors">
+        {/* Release Pill using authentic Mad UI Badge */}
+        <Badge variant="outline" className="inline-flex items-center gap-2 px-3 py-1 text-xs font-medium border-border/60 bg-muted/30 text-muted-foreground hover:border-primary/40 transition-colors cursor-default">
           <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
           <span className="font-semibold text-foreground">Mad UI v2.15.14</span>
           <span className="text-muted-foreground/60">•</span>
           <span>57+ Production Components</span>
           <ArrowRight className="h-3 w-3 text-primary ml-0.5" />
-        </div>
+        </Badge>
 
         {/* Headline */}
         <div className="space-y-4">
@@ -520,10 +520,10 @@ export default function HomePage() {
       {/* Component Catalog by Category (Requested by User) */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-6xl space-y-8">
         <div className="border-t border-border/40 pt-12 space-y-2 text-center max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full border border-border/60 bg-muted/30 text-[11px] font-medium text-muted-foreground">
+          <Badge variant="secondary" className="inline-flex items-center gap-1.5 px-2.5 py-0.5 text-[11px] font-medium text-muted-foreground">
             <LayoutGrid className="h-3 w-3 text-primary" />
             <span>Complete Component Ecosystem</span>
-          </div>
+          </Badge>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Explore 57+ Components by Category
           </h2>
@@ -532,12 +532,12 @@ export default function HomePage() {
           </p>
         </div>
 
-        {/* 8 Category Bento Grid */}
+        {/* 8 Category Bento Grid using authentic Mad UI Card & Badge primitives */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
           {categories.map((cat) => (
-            <div 
+            <Card 
               key={cat.name}
-              className="p-5 rounded-xl border border-border/60 bg-card/60 hover:bg-card hover:border-border transition-all duration-200 flex flex-col justify-between space-y-4 group"
+              className="p-5 border border-border/60 bg-card/60 hover:bg-card hover:border-border transition-all duration-200 flex flex-col justify-between space-y-4 group shadow-2xs"
             >
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
@@ -553,16 +553,17 @@ export default function HomePage() {
                 </p>
               </div>
 
-              {/* Component Tag Pills */}
+              {/* Component Tag Pills using authentic Mad UI Badges */}
               <div className="space-y-3 pt-1">
                 <div className="flex flex-wrap gap-1.5">
                   {cat.tags.map((tag) => (
-                    <Link 
-                      key={tag} 
-                      href={`/docs/components/${tag.toLowerCase()}`}
-                      className="text-[11px] px-2 py-0.5 rounded-md border border-border/50 bg-muted/20 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      {tag}
+                    <Link key={tag} href={`/docs/components/${tag.toLowerCase()}`}>
+                      <Badge 
+                        variant="outline" 
+                        className="text-[11px] px-2 py-0.5 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer border-border/50"
+                      >
+                        {tag}
+                      </Badge>
                     </Link>
                   ))}
                 </div>
@@ -575,7 +576,7 @@ export default function HomePage() {
                   <ArrowRight className="h-3 w-3" />
                 </Link>
               </div>
-            </div>
+            </Card>
           ))}
         </div>
       </section>
@@ -592,7 +593,7 @@ export default function HomePage() {
         </div>
 
         <div className="grid sm:grid-cols-3 gap-4">
-          <div className="p-5 rounded-lg border border-border/50 bg-card/40 space-y-2">
+          <Card className="p-5 border border-border/50 bg-card/40 space-y-2">
             <div className="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center">
               <Layers className="h-4 w-4" />
             </div>
@@ -600,9 +601,9 @@ export default function HomePage() {
             <p className="text-xs text-muted-foreground leading-relaxed">
               Import from full package, category bundle (<code className="text-foreground">/core</code>, <code className="text-foreground">/forms</code>), or single components (<code className="text-foreground">/button</code>).
             </p>
-          </div>
+          </Card>
 
-          <div className="p-5 rounded-lg border border-border/50 bg-card/40 space-y-2">
+          <Card className="p-5 border border-border/50 bg-card/40 space-y-2">
             <div className="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center">
               <ShieldCheck className="h-4 w-4" />
             </div>
@@ -610,9 +611,9 @@ export default function HomePage() {
             <p className="text-xs text-muted-foreground leading-relaxed">
               Strictly typed with peer dependency support across React 18 and React 19 without type friction.
             </p>
-          </div>
+          </Card>
 
-          <div className="p-5 rounded-lg border border-border/50 bg-card/40 space-y-2">
+          <Card className="p-5 border border-border/50 bg-card/40 space-y-2">
             <div className="w-8 h-8 rounded-md bg-primary/10 text-primary flex items-center justify-center">
               <Cpu className="h-4 w-4" />
             </div>
@@ -620,7 +621,7 @@ export default function HomePage() {
             <p className="text-xs text-muted-foreground leading-relaxed">
               Only standard utilities: <code className="text-foreground">clsx</code>, <code className="text-foreground">tailwind-merge</code>, and <code className="text-foreground">lucide-react</code>. No heavy runtime baggage.
             </p>
-          </div>
+          </Card>
         </div>
       </section>
 
