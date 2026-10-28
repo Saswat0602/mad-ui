@@ -36,6 +36,9 @@ jobs:
       - name: Run unit and smoke tests
         run: npm test
 
+      - name: Check package exports and fields (publint)
+        run: npm run check:pkg
+
       - name: Install docs dependencies
         run: |
           cd docs

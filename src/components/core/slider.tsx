@@ -269,7 +269,6 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
       document.removeEventListener('touchmove', handleTouchMove)
       document.removeEventListener('touchend', handleTouchEnd)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleTouchEnd = handleMouseUp

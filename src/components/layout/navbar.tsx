@@ -608,7 +608,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                               <button
                                 key={index}
                                 onClick={() => {
-                                  item.action && item.action();
+                                  item.action?.();
                                   setShowProfileMenu(false);
                                 }}
                                 className={cn(

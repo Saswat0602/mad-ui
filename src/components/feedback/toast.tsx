@@ -21,6 +21,7 @@ export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, '
   shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
   onClose?: (id?: string) => void
   open?: boolean
+  isVisible?: boolean
   onOpenChange?: (open: boolean) => void
 }
 
@@ -43,6 +44,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
   shadow = 'md',
   onClose,
   open: controlledOpen,
+  isVisible: isVisibleProp,
   onOpenChange,
   className,
   children,
@@ -51,7 +53,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
 }, ref) => {
   const [internalVisible, setInternalVisible] = useState(true)
   const [isExiting, setIsExiting] = useState(false)
-  const isVisible = controlledOpen !== undefined ? controlledOpen : internalVisible
+  const isVisible = controlledOpen !== undefined ? controlledOpen : (isVisibleProp !== undefined ? isVisibleProp : internalVisible)
 
   useEffect(() => {
     if (isVisible) {

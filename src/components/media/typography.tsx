@@ -6,19 +6,19 @@ export interface TypographyProps {
   className?: string
 }
 
-export interface TypographyH1Props extends TypographyProps {}
-export interface TypographyH2Props extends TypographyProps {}
-export interface TypographyH3Props extends TypographyProps {}
-export interface TypographyH4Props extends TypographyProps {}
-export interface TypographyH5Props extends TypographyProps {}
-export interface TypographyH6Props extends TypographyProps {}
-export interface TypographyPProps extends TypographyProps {}
-export interface TypographyBlockquoteProps extends TypographyProps {}
-export interface TypographyCodeProps extends TypographyProps {}
-export interface TypographyLeadProps extends TypographyProps {}
-export interface TypographyLargeProps extends TypographyProps {}
-export interface TypographySmallProps extends TypographyProps {}
-export interface TypographyMutedProps extends TypographyProps {}
+export type TypographyH1Props = TypographyProps
+export type TypographyH2Props = TypographyProps
+export type TypographyH3Props = TypographyProps
+export type TypographyH4Props = TypographyProps
+export type TypographyH5Props = TypographyProps
+export type TypographyH6Props = TypographyProps
+export type TypographyPProps = TypographyProps
+export type TypographyBlockquoteProps = TypographyProps
+export type TypographyCodeProps = TypographyProps
+export type TypographyLeadProps = TypographyProps
+export type TypographyLargeProps = TypographyProps
+export type TypographySmallProps = TypographyProps
+export type TypographyMutedProps = TypographyProps
 
 export const TypographyH1: React.FC<TypographyH1Props> = ({
   children,

@@ -140,7 +140,11 @@ export const SheetContent: React.FC<SheetContentProps> = ({
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && open) {
-        onEscapeKeyDown ? onEscapeKeyDown() : setOpen(false)
+        if (onEscapeKeyDown) {
+          onEscapeKeyDown()
+        } else {
+          setOpen(false)
+        }
       }
     }
 
@@ -159,7 +163,11 @@ export const SheetContent: React.FC<SheetContentProps> = ({
 
   const handleOverlayClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
-      onInteractOutside ? onInteractOutside() : setOpen(false)
+      if (onInteractOutside) {
+        onInteractOutside()
+      } else {
+        setOpen(false)
+      }
     }
   }
 

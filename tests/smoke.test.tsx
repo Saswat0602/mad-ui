@@ -15,9 +15,9 @@ import { Progress } from '../src/components/core/progress'
 import { Skeleton } from '../src/components/core/skeleton'
 
 // Forms
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from '../src/components/forms/accordion'
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../src/components/forms/tabs'
-import { Breadcrumbs, BreadcrumbItem, BreadcrumbLink } from '../src/components/forms/breadcrumbs'
+import { Accordion } from '../src/components/forms/accordion'
+import { Tabs } from '../src/components/forms/tabs'
+import { Breadcrumbs } from '../src/components/forms/breadcrumbs'
 import { Calendar } from '../src/components/forms/calendar'
 
 // Feedback
@@ -74,12 +74,14 @@ describe('Smoke & SSR Component Suite', () => {
       expect(container.querySelector('span')).toBeDefined()
     })
 
-    it('renders Switch and handles toggle', () => {
-      const { getByRole } = render(
+    it('renders Checkbox and Switch', () => {
+      const { getByRole, getByLabelText } = render(
         <StrictMode>
+          <Checkbox aria-label="Accept terms" />
           <Switch aria-label="Toggle notifications" />
         </StrictMode>
       )
+      expect(getByLabelText('Accept terms')).toBeDefined()
       expect(getByRole('switch')).toBeDefined()
     })
 
@@ -87,6 +89,15 @@ describe('Smoke & SSR Component Suite', () => {
       const { container } = render(
         <StrictMode>
           <Slider value={[50]} min={0} max={100} />
+        </StrictMode>
+      )
+      expect(container.firstChild).toBeDefined()
+    })
+
+    it('renders Skeleton loader', () => {
+      const { container } = render(
+        <StrictMode>
+          <Skeleton className="h-4 w-32" />
         </StrictMode>
       )
       expect(container.firstChild).toBeDefined()
@@ -102,6 +113,15 @@ describe('Smoke & SSR Component Suite', () => {
         </StrictMode>
       )
       expect(getByText('Notice')).toBeDefined()
+    })
+
+    it('renders Toast notification', () => {
+      const { getByText } = render(
+        <StrictMode>
+          <Toast isVisible={true} message="Changes saved successfully" />
+        </StrictMode>
+      )
+      expect(getByText('Changes saved successfully')).toBeDefined()
     })
 
     it('renders Dialog with trigger mounted', () => {
@@ -120,6 +140,22 @@ describe('Smoke & SSR Component Suite', () => {
       expect(getByText('Open Modal')).toBeDefined()
     })
 
+    it('renders AlertDialog with trigger mounted', () => {
+      const { getByText } = render(
+        <StrictMode>
+          <AlertDialog open={false} onOpenChange={() => {}}>
+            <AlertDialogTrigger>Delete Account</AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+              </AlertDialogHeader>
+            </AlertDialogContent>
+          </AlertDialog>
+        </StrictMode>
+      )
+      expect(getByText('Delete Account')).toBeDefined()
+    })
+
     it('renders Calendar component', () => {
       const testDate = new Date(2026, 0, 15)
       const { container } = render(
@@ -128,6 +164,20 @@ describe('Smoke & SSR Component Suite', () => {
         </StrictMode>
       )
       expect(container.firstChild).toBeDefined()
+    })
+
+    it('renders Breadcrumbs navigation', () => {
+      const items = [
+        { label: 'Home', href: '/' },
+        { label: 'Components', href: '/components' },
+        { label: 'Button' }
+      ]
+      const { getByText } = render(
+        <StrictMode>
+          <Breadcrumbs items={items} />
+        </StrictMode>
+      )
+      expect(getByText('Components')).toBeDefined()
     })
 
     it('renders Tabs with active content', () => {
