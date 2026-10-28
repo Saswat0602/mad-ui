@@ -50,10 +50,10 @@ export default function InstallationPage() {
   }
 
   const pkgCommands = {
-    npm: "npm install mad-ui-components lucide-react clsx tailwind-merge",
-    pnpm: "pnpm add mad-ui-components lucide-react clsx tailwind-merge",
-    yarn: "yarn add mad-ui-components lucide-react clsx tailwind-merge",
-    bun: "bun add mad-ui-components lucide-react clsx tailwind-merge"
+    npm: "npm install mad-ui-components",
+    pnpm: "pnpm add mad-ui-components",
+    yarn: "yarn add mad-ui-components",
+    bun: "bun add mad-ui-components"
   }
 
   return (
@@ -201,11 +201,11 @@ export default function InstallationPage() {
               <div className="flex items-center gap-2.5">
                 <span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[11px] font-bold">2</span>
                 <h3 className="text-sm font-semibold text-foreground">
-                  Install Mad UI &amp; Peer Dependencies
+                  Install Mad UI
                 </h3>
               </div>
               <CodeSnippet 
-                code="npm install mad-ui-components lucide-react clsx tailwind-merge"
+                code="npm install mad-ui-components"
                 language="bash"
                 copiedKey={copiedKey}
                 onCopy={copyText}
@@ -305,7 +305,7 @@ export default function Home() {
                 </h3>
               </div>
               <CodeSnippet 
-                code="npm install -D tailwindcss postcss autoprefixer\nnpx tailwindcss init -p\nnpm install mad-ui-components lucide-react clsx tailwind-merge"
+                code="npm install -D tailwindcss postcss autoprefixer\nnpx tailwindcss init -p\nnpm install mad-ui-components"
                 language="bash"
                 copiedKey={copiedKey}
                 onCopy={copyText}
@@ -384,7 +384,7 @@ export default App`}
                 Mad UI requires React &gt;= 18.0.0 and Tailwind CSS 3 or 4.
               </p>
               <CodeSnippet 
-                code="npm install react react-dom mad-ui-components lucide-react clsx tailwind-merge"
+                code="npm install react react-dom mad-ui-components"
                 language="bash"
                 copiedKey={copiedKey}
                 onCopy={copyText}

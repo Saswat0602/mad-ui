@@ -22,10 +22,10 @@ export default function GettingStartedPage() {
   }
 
   const installCommands = {
-    npm: 'npm install mad-ui-components lucide-react clsx tailwind-merge',
-    pnpm: 'pnpm add mad-ui-components lucide-react clsx tailwind-merge',
-    yarn: 'yarn add mad-ui-components lucide-react clsx tailwind-merge',
-    bun: 'bun add mad-ui-components lucide-react clsx tailwind-merge',
+    npm: 'npm install mad-ui-components',
+    pnpm: 'pnpm add mad-ui-components',
+    yarn: 'yarn add mad-ui-components',
+    bun: 'bun add mad-ui-components',
   }
 
   return (
@@ -71,7 +71,7 @@ export default function GettingStartedPage() {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          Install <code className="text-foreground font-mono">mad-ui-components</code> and its peer utilities:
+          Install <code className="text-foreground font-mono">mad-ui-components</code> into your project (dependencies like <code className="font-mono text-foreground">clsx</code>, <code className="font-mono text-foreground">tailwind-merge</code>, and <code className="font-mono text-foreground">lucide-react</code> are bundled automatically):
         </p>
 
         <div className="rounded-lg border border-border/60 bg-zinc-950 overflow-hidden text-xs">

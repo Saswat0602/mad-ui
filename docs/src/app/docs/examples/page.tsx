@@ -1,813 +1,859 @@
 "use client"
 
 import React, { useState } from 'react'
-import { Button } from 'mad-ui-components/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from 'mad-ui-components/card'
-import { Badge } from 'mad-ui-components/badge'
-import { Input } from 'mad-ui-components/input'
-import { Label } from 'mad-ui-components/label'
-import { Checkbox } from 'mad-ui-components/checkbox'
-import { Switch } from 'mad-ui-components/switch'
-import { Progress } from 'mad-ui-components/progress'
-import { Slider } from 'mad-ui-components/slider'
-import { Rating } from 'mad-ui-components/rating'
-import { Textarea } from 'mad-ui-components/textarea'
+import Link from 'next/link'
+import { 
+  Button, 
+  Card, 
+  CardContent, 
+  CardDescription, 
+  CardHeader, 
+  CardTitle, 
+  CardFooter,
+  Badge, 
+  Input, 
+  Label, 
+  Checkbox, 
+  Switch, 
+  Progress, 
+  Slider, 
+  Rating, 
+  Textarea,
+  Avatar,
+  Select
+} from 'mad-ui-components'
 import { 
   Copy, 
   Check, 
-  Code, 
-  Play,
-  Heart,
-  Mail,
-  User,
-  Lock,
-  Eye,
-  EyeOff,
-  Download,
-  Settings,
-  Bell,
+  Eye, 
+  Code2, 
+  Mail, 
+  Lock, 
+  EyeOff, 
+  ShieldCheck, 
+  CreditCard, 
+  Users, 
+  Send, 
+  Github, 
+  Globe, 
   ArrowRight,
-  ShoppingCart,
-  Phone,
-  Building,
-  Monitor
+  Bell,
+  Clock,
+  Sparkles,
+  Layers,
+  CheckCircle2,
+  AlertCircle
 } from 'lucide-react'
 
-interface CopyCodeBlockProps {
-  code: string
-  filename: string
-  language?: string
-}
-
-const CopyCodeBlock: React.FC<CopyCodeBlockProps> = ({ code, filename, language = 'tsx' }) => {
-  const [copied, setCopied] = useState(false)
-  
-  const handleCopy = () => {
-    navigator.clipboard.writeText(code)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-  
-  return (
-    <div className="relative group">
-      <div className="bg-slate-950 border border-slate-800 rounded-xl overflow-hidden">
-        <div className="flex items-center justify-between px-4 py-3 border-b border-slate-800 bg-slate-900/50">
-          <div className="flex items-center gap-2">
-            <div className="flex gap-1.5">
-              <div className="w-3 h-3 rounded-full bg-red-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-yellow-500/80"></div>
-              <div className="w-3 h-3 rounded-full bg-green-500/80"></div>
-            </div>
-            <div className="h-4 w-px bg-slate-700 mx-2"></div>
-            <span className="text-sm text-slate-400 font-medium">{filename}</span>
-            <Badge variant="outline" className="text-xs px-2 py-0.5 bg-slate-800 border-slate-700 text-slate-300">
-              {language}
-            </Badge>
-          </div>
-          <Button 
-            variant="ghost" 
-            size="sm" 
-            onClick={handleCopy}
-            className="h-8 w-8 p-0 hover:bg-slate-800 text-slate-400 hover:text-slate-200"
-          >
-            {copied ? (
-              <Check className="h-4 w-4 text-green-400" />
-            ) : (
-              <Copy className="h-4 w-4" />
-            )}
-          </Button>
-        </div>
-        <div className="p-4">
-          <pre className="text-sm font-mono text-slate-100 overflow-x-auto whitespace-pre-wrap">
-            <code>{code}</code>
-          </pre>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-const ExampleCard: React.FC<{ 
+interface ExamplePattern {
+  id: string
   title: string
+  category: 'auth' | 'settings' | 'billing' | 'team'
   description: string
-  children: React.ReactNode
   code: string
-}> = ({ title, description, children, code }) => {
-  const [showCode, setShowCode] = useState(false)
-  
-
-
-  return (
-    <Card className="group hover:shadow-xl transition-all duration-300">
-      <CardHeader>
-        <div className="flex items-center justify-between mb-2">
-          <Badge variant="outline" className="text-xs px-2 py-1">
-            Example
-          </Badge>
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={() => setShowCode(!showCode)}
-            className="h-8 w-8 p-0"
-          >
-            <Code className="h-4 w-4" />
-          </Button>
-        </div>
-        <CardTitle className="text-xl">{title}</CardTitle>
-        <CardDescription>{description}</CardDescription>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="p-6 border-2 border-dashed border-border rounded-xl bg-muted/30">
-          {children}
-        </div>
-        {showCode && (
-          <CopyCodeBlock
-            filename={`${title.toLowerCase().replace(/\s+/g, '-')}.tsx`}
-            code={code}
-          />
-        )}
-      </CardContent>
-    </Card>
-  )
+  component: React.ReactNode
 }
 
 export default function ExamplesPage() {
+  const [activeTab, setActiveTab] = useState<'all' | 'auth' | 'settings' | 'billing' | 'team'>('all')
+  const [viewModes, setViewModes] = useState<Record<string, 'preview' | 'code'>>({})
+  const [copiedId, setCopiedId] = useState<string | null>(null)
+
+  // Interactive state for Login Form
+  const [loginEmail, setLoginEmail] = useState('alex.chen@enterprise.io')
+  const [loginPassword, setLoginPassword] = useState('••••••••••••')
+  const [showPassword, setShowPassword] = useState(false)
+  const [rememberMe, setRememberMe] = useState(true)
+  const [loginLoading, setLoginLoading] = useState(false)
+
+  // Interactive state for Settings Panel
+  const [twoFactor, setTwoFactor] = useState(true)
+  const [emailAlerts, setEmailAlerts] = useState(true)
+  const [sessionTimeout, setSessionTimeout] = useState(45)
+  const [ratingScore, setRatingScore] = useState(5)
+  const [profileProgress, setProfileProgress] = useState(85)
+
+  // Interactive state for Billing
+  const [cardName, setCardName] = useState('Alex Chen')
+  const [cardNumber, setCardNumber] = useState('4242 •••• •••• 4242')
+  const [autoRenew, setAutoRenew] = useState(true)
+
+  // Interactive state for Team
+  const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteRole, setInviteRole] = useState('member')
+
+  const toggleViewMode = (id: string, mode: 'preview' | 'code') => {
+    setViewModes(prev => ({ ...prev, [id]: mode }))
+  }
+
+  const handleCopyCode = (id: string, code: string) => {
+    navigator.clipboard.writeText(code)
+    setCopiedId(id)
+    setTimeout(() => setCopiedId(null), 2000)
+  }
+
+  const examples: ExamplePattern[] = [
+    {
+      id: 'auth-login',
+      title: 'Enterprise Authentication & SSO',
+      category: 'auth',
+      description: 'Production sign-in card with social SSO providers, password visibility toggle, and accessibility compliance.',
+      code: `import React, { useState } from 'react'
+import { Button, Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Input, Label, Checkbox } from 'mad-ui-components'
+import { Mail, Lock, Eye, EyeOff, Github, Globe } from 'lucide-react'
+
+export function AuthenticationCard() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
-  const [notifications, setNotifications] = useState(true)
-  const [volume, setVolume] = useState(50)
-  const [rating] = useState(4)
-  const [progress] = useState(65)
+  const [rememberMe, setRememberMe] = useState(true)
   const [loading, setLoading] = useState(false)
 
-  const handleLogin = () => {
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault()
     setLoading(true)
-    setTimeout(() => setLoading(false), 2000)
+    setTimeout(() => setLoading(false), 1500)
   }
 
   return (
-    <div className="space-y-12 w-full">
+    <Card className="w-full max-w-md mx-auto shadow-sm">
+      <CardHeader className="space-y-1">
+        <CardTitle className="text-xl font-bold">Welcome back</CardTitle>
+        <CardDescription className="text-xs">
+          Sign in to access your enterprise dashboard
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {/* Social SSO */}
+        <div className="grid grid-cols-2 gap-2">
+          <Button variant="outline" size="sm" className="w-full text-xs" leftIcon={<Github className="h-4 w-4" />}>
+            GitHub
+          </Button>
+          <Button variant="outline" size="sm" className="w-full text-xs" leftIcon={<Globe className="h-4 w-4" />}>
+            Google SSO
+          </Button>
+        </div>
+
+        <div className="relative flex items-center justify-center">
+          <div className="border-t border-border w-full" />
+          <span className="bg-card px-2 text-[11px] text-muted-foreground uppercase font-mono absolute">
+            Or continue with
+          </span>
+        </div>
+
+        <form onSubmit={handleLogin} className="space-y-3 pt-1">
+          <div className="space-y-1.5">
+            <Label htmlFor="email" className="text-xs font-medium">Work Email</Label>
+            <Input 
+              id="email" 
+              type="email" 
+              placeholder="alex@company.com" 
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              leftIcon={<Mail className="h-3.5 w-3.5" />}
+              required 
+            />
+          </div>
+
+          <div className="space-y-1.5">
+            <div className="flex items-center justify-between text-xs">
+              <Label htmlFor="password">Password</Label>
+              <a href="#" className="text-primary hover:underline font-medium text-[11px]">Forgot password?</a>
+            </div>
+            <div className="relative">
+              <Input 
+                id="password" 
+                type={showPassword ? 'text' : 'password'} 
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                leftIcon={<Lock className="h-3.5 w-3.5" />}
+                required 
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+              >
+                {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+              </button>
+            </div>
+          </div>
+
+          <div className="flex items-center space-x-2 pt-1">
+            <Checkbox 
+              id="remember" 
+              checked={rememberMe} 
+              onChange={(e) => setRememberMe(e.target.checked)}
+              label="Remember this device for 30 days" 
+            />
+          </div>
+
+          <Button type="submit" className="w-full mt-2 font-medium" loading={loading}>
+            Sign In to Account
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
+  )
+}`,
+      component: (
+        <Card className="w-full max-w-md mx-auto shadow-sm border border-border/80">
+          <CardHeader className="space-y-1 pb-4">
+            <CardTitle className="text-xl font-bold">Welcome back</CardTitle>
+            <CardDescription className="text-xs">
+              Sign in to access your enterprise dashboard
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="grid grid-cols-2 gap-2">
+              <Button variant="outline" size="sm" className="w-full text-xs" leftIcon={<Github className="h-4 w-4" />}>
+                GitHub
+              </Button>
+              <Button variant="outline" size="sm" className="w-full text-xs" leftIcon={<Globe className="h-4 w-4" />}>
+                Google SSO
+              </Button>
+            </div>
+
+            <div className="relative flex items-center justify-center my-2">
+              <div className="border-t border-border w-full" />
+              <span className="bg-card px-2 text-[10px] text-muted-foreground uppercase font-mono absolute">
+                Or with work email
+              </span>
+            </div>
+
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault()
+                setLoginLoading(true)
+                setTimeout(() => setLoginLoading(false), 1200)
+              }} 
+              className="space-y-3"
+            >
+              <div className="space-y-1.5">
+                <Label htmlFor="demo-login-email" className="text-xs font-medium">Work Email</Label>
+                <Input 
+                  id="demo-login-email" 
+                  type="email" 
+                  value={loginEmail}
+                  onChange={(e) => setLoginEmail(e.target.value)}
+                  leftIcon={<Mail className="h-3.5 w-3.5" />}
+                  required 
+                />
+              </div>
+
+              <div className="space-y-1.5">
+                <div className="flex items-center justify-between text-xs">
+                  <Label htmlFor="demo-login-pwd">Password</Label>
+                  <span className="text-primary hover:underline cursor-pointer font-medium text-[11px]">Forgot password?</span>
+                </div>
+                <div className="relative">
+                  <Input 
+                    id="demo-login-pwd" 
+                    type={showPassword ? 'text' : 'password'} 
+                    value={loginPassword}
+                    onChange={(e) => setLoginPassword(e.target.value)}
+                    leftIcon={<Lock className="h-3.5 w-3.5" />}
+                    required 
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer"
+                  >
+                    {showPassword ? <EyeOff className="h-3.5 w-3.5" /> : <Eye className="h-3.5 w-3.5" />}
+                  </button>
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-2 pt-1">
+                <Checkbox 
+                  id="demo-remember" 
+                  checked={rememberMe} 
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  label="Remember this device for 30 days" 
+                />
+              </div>
+
+              <Button type="submit" className="w-full mt-2 font-medium" loading={loginLoading}>
+                Sign In to Account
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
+      )
+    },
+    {
+      id: 'settings-preferences',
+      title: 'Workspace Preferences & Security',
+      category: 'settings',
+      description: 'Account settings panel featuring precision sliders, toggle switches, rating components, and completion telemetry.',
+      code: `import React, { useState } from 'react'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Switch, Slider, Progress, Rating, Button, Badge } from 'mad-ui-components'
+import { ShieldCheck, Bell, Clock } from 'lucide-react'
+
+export function WorkspaceSettings() {
+  const [twoFactor, setTwoFactor] = useState(true)
+  const [emailAlerts, setEmailAlerts] = useState(true)
+  const [sessionTimeout, setSessionTimeout] = useState(45)
+  const [ratingScore, setRatingScore] = useState(5)
+
+  return (
+    <Card className="w-full max-w-lg mx-auto shadow-sm">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-bold">Security &amp; Preferences</CardTitle>
+          <Badge variant="success" className="text-[10px]">Verified Account</Badge>
+        </div>
+        <CardDescription className="text-xs">
+          Manage your enterprise security protocols and notification triggers.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-5">
+        <div className="p-3.5 rounded-lg border border-border/60 bg-muted/20 space-y-3.5">
+          <div className="flex items-center justify-between">
+            <div className="space-y-0.5">
+              <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+                Two-Factor Authentication
+              </span>
+              <span className="text-[11px] text-muted-foreground block">
+                Enforce hardware key or TOTP code upon login
+              </span>
+            </div>
+            <Switch checked={twoFactor} onChange={(e) => setTwoFactor(e.target.checked)} />
+          </div>
+
+          <div className="border-t border-border/40 pt-3 flex items-center justify-between">
+            <div className="space-y-0.5">
+              <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                <Bell className="h-3.5 w-3.5 text-primary" />
+                Security Incident Alerts
+              </span>
+              <span className="text-[11px] text-muted-foreground block">
+                Instant SMS and webhook notices on unauthorized attempts
+              </span>
+            </div>
+            <Switch checked={emailAlerts} onChange={(e) => setEmailAlerts(e.target.checked)} />
+          </div>
+
+          <div className="border-t border-border/40 pt-3 space-y-1.5">
+            <div className="flex items-center justify-between text-xs">
+              <span className="font-semibold text-foreground flex items-center gap-1.5">
+                <Clock className="h-3.5 w-3.5 text-primary" />
+                Session Idle Inactivity Timeout
+              </span>
+              <Badge variant="outline" className="font-mono text-[10px]">{sessionTimeout}m</Badge>
+            </div>
+            <Slider 
+              value={sessionTimeout} 
+              onChange={(val) => setSessionTimeout(Array.isArray(val) ? val[0] : val)}
+              min={15} 
+              max={120} 
+              step={5} 
+            />
+          </div>
+        </div>
+
+        <div className="space-y-1.5">
+          <div className="flex items-center justify-between text-xs">
+            <span className="font-medium text-foreground">Profile Setup Completion</span>
+            <span className="font-mono text-xs font-semibold text-primary">85%</span>
+          </div>
+          <Progress value={85} />
+        </div>
+      </CardContent>
+      <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-3">
+        <Button variant="outline" size="sm" className="text-xs">Cancel</Button>
+        <Button size="sm" className="text-xs">Save Changes</Button>
+      </CardFooter>
+    </Card>
+  )
+}`,
+      component: (
+        <Card className="w-full max-w-lg mx-auto shadow-sm border border-border/80">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg font-bold">Security &amp; Preferences</CardTitle>
+              <Badge variant="success" className="text-[10px]">Verified Account</Badge>
+            </div>
+            <CardDescription className="text-xs">
+              Manage your enterprise security protocols and notification triggers.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-5">
+            <div className="p-3.5 rounded-lg border border-border/60 bg-muted/20 space-y-3.5">
+              <div className="flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                    <ShieldCheck className="h-3.5 w-3.5 text-primary" />
+                    Two-Factor Authentication
+                  </span>
+                  <span className="text-[11px] text-muted-foreground block">
+                    Enforce hardware key or TOTP code upon login
+                  </span>
+                </div>
+                <Switch checked={twoFactor} onChange={(e) => setTwoFactor(e.target.checked)} />
+              </div>
+
+              <div className="border-t border-border/40 pt-3 flex items-center justify-between">
+                <div className="space-y-0.5">
+                  <span className="text-xs font-semibold text-foreground flex items-center gap-1.5">
+                    <Bell className="h-3.5 w-3.5 text-primary" />
+                    Security Incident Alerts
+                  </span>
+                  <span className="text-[11px] text-muted-foreground block">
+                    Instant SMS and webhook notices on unauthorized attempts
+                  </span>
+                </div>
+                <Switch checked={emailAlerts} onChange={(e) => setEmailAlerts(e.target.checked)} />
+              </div>
+
+              <div className="border-t border-border/40 pt-3 space-y-1.5">
+                <div className="flex items-center justify-between text-xs">
+                  <span className="font-semibold text-foreground flex items-center gap-1.5">
+                    <Clock className="h-3.5 w-3.5 text-primary" />
+                    Session Idle Timeout
+                  </span>
+                  <Badge variant="outline" className="font-mono text-[10px]">{sessionTimeout}m</Badge>
+                </div>
+                <Slider 
+                  value={sessionTimeout} 
+                  onChange={(val) => setSessionTimeout(Array.isArray(val) ? val[0] : val)}
+                  min={15} 
+                  max={120} 
+                  step={5} 
+                />
+              </div>
+            </div>
+
+            <div className="space-y-1.5">
+              <div className="flex items-center justify-between text-xs">
+                <span className="font-medium text-foreground">Profile Setup Completion</span>
+                <span className="font-mono text-xs font-semibold text-primary">{profileProgress}%</span>
+              </div>
+              <Progress value={profileProgress} />
+            </div>
+
+            <div className="flex items-center justify-between pt-1 text-xs">
+              <span className="font-medium text-muted-foreground">Admin Experience Rating</span>
+              <Rating value={ratingScore} />
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-end gap-2 border-t border-border/40 pt-3">
+            <Button variant="outline" size="sm" className="text-xs">Cancel</Button>
+            <Button size="sm" className="text-xs">Save Changes</Button>
+          </CardFooter>
+        </Card>
+      )
+    },
+    {
+      id: 'billing-payment',
+      title: 'Payment Method & Subscription',
+      category: 'billing',
+      description: 'Billing portal card with masked card number, plan renewal toggles, and status badges.',
+      code: `import React, { useState } from 'react'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter, Input, Label, Switch, Button, Badge } from 'mad-ui-components'
+import { CreditCard, CheckCircle2 } from 'lucide-react'
+
+export function BillingPortal() {
+  const [autoRenew, setAutoRenew] = useState(true)
+
+  return (
+    <Card className="w-full max-w-md mx-auto shadow-sm">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-bold">Billing &amp; Payment</CardTitle>
+          <Badge variant="secondary" className="font-mono text-[10px]">Tier 3 • Enterprise</Badge>
+        </div>
+        <CardDescription className="text-xs">
+          Manage payment details and active subscription tier.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="p-3 rounded-lg border border-border/60 bg-muted/20 flex items-center justify-between">
+          <div className="space-y-0.5">
+            <span className="text-xs font-semibold text-foreground block">Active Plan: Enterprise Pro</span>
+            <span className="text-[11px] text-muted-foreground">$249 / month • Renews in 18 days</span>
+          </div>
+          <Badge variant="success" className="text-[10px]">Current</Badge>
+        </div>
+
+        <div className="space-y-3">
+          <div className="space-y-1.5">
+            <Label htmlFor="card-name" className="text-xs">Cardholder Name</Label>
+            <Input id="card-name" defaultValue="Alex Chen" />
+          </div>
+
+          <div className="space-y-1.5">
+            <Label htmlFor="card-num" className="text-xs">Card Number</Label>
+            <Input 
+              id="card-num" 
+              defaultValue="4242 •••• •••• 4242" 
+              leftIcon={<CreditCard className="h-3.5 w-3.5" />} 
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-2">
+            <div className="space-y-1.5">
+              <Label htmlFor="card-exp" className="text-xs">Expiration</Label>
+              <Input id="card-exp" defaultValue="12 / 28" />
+            </div>
+            <div className="space-y-1.5">
+              <Label htmlFor="card-cvc" className="text-xs">CVC Code</Label>
+              <Input id="card-cvc" defaultValue="982" />
+            </div>
+          </div>
+        </div>
+
+        <div className="flex items-center justify-between pt-2 border-t border-border/40 text-xs">
+          <div className="space-y-0.5">
+            <span className="font-semibold text-foreground block">Automatic Invoicing</span>
+            <span className="text-[11px] text-muted-foreground">Charge primary payment method</span>
+          </div>
+          <Switch checked={autoRenew} onChange={(e) => setAutoRenew(e.target.checked)} />
+        </div>
+      </CardContent>
+      <CardFooter className="border-t border-border/40 pt-3 flex justify-between">
+        <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+          <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+          PCI-DSS Level 1 Compliant
+        </span>
+        <Button size="sm" className="text-xs">Update Method</Button>
+      </CardFooter>
+    </Card>
+  )
+}`,
+      component: (
+        <Card className="w-full max-w-md mx-auto shadow-sm border border-border/80">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg font-bold">Billing &amp; Payment</CardTitle>
+              <Badge variant="secondary" className="font-mono text-[10px]">Tier 3 • Enterprise</Badge>
+            </div>
+            <CardDescription className="text-xs">
+              Manage payment details and active subscription tier.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="p-3 rounded-lg border border-border/60 bg-muted/20 flex items-center justify-between">
+              <div className="space-y-0.5">
+                <span className="text-xs font-semibold text-foreground block">Active Plan: Enterprise Pro</span>
+                <span className="text-[11px] text-muted-foreground">$249 / month • Renews in 18 days</span>
+              </div>
+              <Badge variant="success" className="text-[10px]">Current</Badge>
+            </div>
+
+            <div className="space-y-3">
+              <div className="space-y-1.5">
+                <Label htmlFor="demo-card-name" className="text-xs">Cardholder Name</Label>
+                <Input id="demo-card-name" value={cardName} onChange={(e) => setCardName(e.target.value)} />
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="demo-card-num" className="text-xs">Card Number</Label>
+                <Input 
+                  id="demo-card-num" 
+                  value={cardNumber} 
+                  onChange={(e) => setCardNumber(e.target.value)}
+                  leftIcon={<CreditCard className="h-3.5 w-3.5" />} 
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2">
+                <div className="space-y-1.5">
+                  <Label htmlFor="demo-card-exp" className="text-xs">Expiration</Label>
+                  <Input id="demo-card-exp" defaultValue="12 / 28" />
+                </div>
+                <div className="space-y-1.5">
+                  <Label htmlFor="demo-card-cvc" className="text-xs">CVC Code</Label>
+                  <Input id="demo-card-cvc" defaultValue="982" />
+                </div>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-between pt-2 border-t border-border/40 text-xs">
+              <div className="space-y-0.5">
+                <span className="font-semibold text-foreground block">Automatic Invoicing</span>
+                <span className="text-[11px] text-muted-foreground">Charge primary payment method</span>
+              </div>
+              <Switch checked={autoRenew} onChange={(e) => setAutoRenew(e.target.checked)} />
+            </div>
+          </CardContent>
+          <CardFooter className="border-t border-border/40 pt-3 flex justify-between">
+            <span className="text-[11px] text-muted-foreground flex items-center gap-1">
+              <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
+              PCI-DSS Level 1 Compliant
+            </span>
+            <Button size="sm" className="text-xs">Update Method</Button>
+          </CardFooter>
+        </Card>
+      )
+    },
+    {
+      id: 'team-invites',
+      title: 'Team Access & Collaboration',
+      category: 'team',
+      description: 'Member invitation panel with role assignment, permission badges, and active member roster.',
+      code: `import React, { useState } from 'react'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, Input, Button, Badge, Avatar } from 'mad-ui-components'
+import { Users, Mail } from 'lucide-react'
+
+export function TeamAccessPanel() {
+  const members = [
+    { name: 'Sarah Lin', email: 'sarah@enterprise.io', role: 'Owner', avatar: 'SL' },
+    { name: 'Marcus Vance', email: 'marcus@enterprise.io', role: 'Engineer', avatar: 'MV' },
+    { name: 'Elena Rostova', email: 'elena@enterprise.io', role: 'Designer', avatar: 'ER' },
+  ]
+
+  return (
+    <Card className="w-full max-w-lg mx-auto shadow-sm">
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-lg font-bold flex items-center gap-2">
+            <Users className="h-4 w-4 text-primary" />
+            <span>Organization Members</span>
+          </CardTitle>
+          <Badge variant="outline" className="font-mono text-[10px]">3 Seats Active</Badge>
+        </div>
+        <CardDescription className="text-xs">
+          Invite teammates and grant scoped role permissions.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="flex gap-2">
+          <Input 
+            placeholder="colleague@enterprise.io" 
+            leftIcon={<Mail className="h-3.5 w-3.5" />}
+            className="text-xs"
+          />
+          <Button size="sm" className="text-xs shrink-0">Send Invite</Button>
+        </div>
+
+        <div className="space-y-2 pt-2 border-t border-border/40">
+          {members.map((m, idx) => (
+            <div key={idx} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/30 transition-colors">
+              <div className="flex items-center gap-2.5">
+                <Avatar fallback={m.avatar} className="h-8 w-8 text-xs font-semibold bg-zinc-200 dark:bg-zinc-800" />
+                <div className="space-y-0.5">
+                  <span className="text-xs font-semibold text-foreground block">{m.name}</span>
+                  <span className="text-[11px] text-muted-foreground block">{m.email}</span>
+                </div>
+              </div>
+              <Badge variant={m.role === 'Owner' ? 'default' : 'secondary'} className="text-[10px]">
+                {m.role}
+              </Badge>
+            </div>
+          ))}
+        </div>
+      </CardContent>
+    </Card>
+  )
+}`,
+      component: (
+        <Card className="w-full max-w-lg mx-auto shadow-sm border border-border/80">
+          <CardHeader className="pb-3">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-lg font-bold flex items-center gap-2">
+                <Users className="h-4 w-4 text-primary" />
+                <span>Organization Members</span>
+              </CardTitle>
+              <Badge variant="outline" className="font-mono text-[10px]">3 Seats Active</Badge>
+            </div>
+            <CardDescription className="text-xs">
+              Invite teammates and grant scoped role permissions.
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex gap-2">
+              <Input 
+                placeholder="colleague@enterprise.io" 
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+                leftIcon={<Mail className="h-3.5 w-3.5" />}
+                className="text-xs"
+              />
+              <Button size="sm" className="text-xs shrink-0">Send Invite</Button>
+            </div>
+
+            <div className="space-y-2 pt-2 border-t border-border/40">
+              {[
+                { name: 'Sarah Lin', email: 'sarah@enterprise.io', role: 'Owner', avatar: 'SL' },
+                { name: 'Marcus Vance', email: 'marcus@enterprise.io', role: 'Engineer', avatar: 'MV' },
+                { name: 'Elena Rostova', email: 'elena@enterprise.io', role: 'Designer', avatar: 'ER' },
+              ].map((m, idx) => (
+                <div key={idx} className="flex items-center justify-between p-2 rounded-lg hover:bg-muted/30 transition-colors">
+                  <div className="flex items-center gap-2.5">
+                    <Avatar fallback={m.avatar} className="h-8 w-8 text-xs font-semibold bg-zinc-200 dark:bg-zinc-800" />
+                    <div className="space-y-0.5">
+                      <span className="text-xs font-semibold text-foreground block">{m.name}</span>
+                      <span className="text-[11px] text-muted-foreground block">{m.email}</span>
+                    </div>
+                  </div>
+                  <Badge variant={m.role === 'Owner' ? 'default' : 'secondary'} className="text-[10px]">
+                    {m.role}
+                  </Badge>
+                </div>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )
+    }
+  ]
+
+  const filteredExamples = activeTab === 'all' 
+    ? examples 
+    : examples.filter(ex => ex.category === activeTab)
+
+  return (
+    <div className="space-y-12 w-full pb-16">
       {/* Header */}
       <div className="border-b border-border/40 pb-8">
         <div className="flex items-center gap-2 mb-2 text-xs font-semibold uppercase tracking-wider text-primary">
           <span>Documentation</span>
           <span>•</span>
-          <span>Patterns</span>
+          <span>Application Patterns</span>
         </div>
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
-          Real-World Examples
+          Real-World Application Patterns
         </h1>
         <p className="mt-2 text-base text-muted-foreground leading-relaxed max-w-3xl">
-          Complete, production-tested application patterns built with Mad UI components. Copy, paste, and customize these patterns for your projects.
+          Complete, production-grade interface patterns built directly with Mad UI primitives. Copy, paste, and customize with zero setup friction.
         </p>
+
+        {/* Category Filters */}
+        <div className="flex flex-wrap items-center gap-2 mt-6">
+          {[
+            { id: 'all', label: 'All Patterns' },
+            { id: 'auth', label: 'Authentication' },
+            { id: 'settings', label: 'Security & Preferences' },
+            { id: 'billing', label: 'Billing & Payments' },
+            { id: 'team', label: 'Team Collaboration' },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as typeof activeTab)}
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
+                activeTab === tab.id
+                  ? 'bg-foreground text-background font-semibold shadow-xs'
+                  : 'bg-muted/40 text-muted-foreground hover:text-foreground hover:bg-muted'
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
-        {/* Examples Grid */}
-        <div className="grid lg:grid-cols-2 gap-8 space-y-0">
-          {/* Login Form */}
-          <ExampleCard
-            title="Login Form"
-            description="A complete login form with email, password, and remember me functionality."
-            code={`import { useState } from 'react'
-import { Button } from 'mad-ui-components/button'
-import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components/card'
-import { Input } from 'mad-ui-components/input'
-import { Label } from 'mad-ui-components/label'
-import { Checkbox } from 'mad-ui-components/checkbox'
-import { Mail, Lock, Eye, EyeOff } from 'lucide-react'
+      {/* Examples Showcase Stream */}
+      <div className="space-y-12">
+        {filteredExamples.map((ex) => {
+          const currentMode = viewModes[ex.id] || 'preview'
 
-export function LoginForm() {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [rememberMe, setRememberMe] = useState(false)
-  const [loading, setLoading] = useState(false)
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    // Simulate login
-    setTimeout(() => setLoading(false), 2000)
-  }
-
-  return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <CardTitle>Welcome Back</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="email"
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                className="pl-10"
-                required
-              />
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                id="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="Enter your password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="pl-10 pr-10"
-                required
-              />
-              <Button
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-              </Button>
-            </div>
-          </div>
-          
-          <div className="flex items-center space-x-2">
-            <Checkbox
-              id="remember"
-              checked={rememberMe}
-              onCheckedChange={setRememberMe}
-            />
-            <Label htmlFor="remember" className="text-sm">Remember me</Label>
-          </div>
-          
-          <Button type="submit" className="w-full" loading={loading}>
-            {loading ? 'Signing in...' : 'Sign In'}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
-  )
-}`}
-          >
-            <Card className="w-full max-w-md mx-auto">
-              <CardHeader>
-                <CardTitle>Welcome Back</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        className="pl-10"
-                      />
-                    </div>
+          return (
+            <div key={ex.id} className="rounded-2xl border border-border/70 bg-card/40 overflow-hidden shadow-xs">
+              {/* Pattern Header Bar */}
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-6 py-4 border-b border-border/60 bg-muted/20">
+                <div className="space-y-0.5">
+                  <div className="flex items-center gap-2">
+                    <h3 className="font-semibold text-base text-foreground">{ex.title}</h3>
+                    <Badge variant="outline" className="text-[10px] uppercase font-mono">{ex.category}</Badge>
                   </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        id="password"
-                        type={showPassword ? "text" : "password"}
-                        placeholder="Enter your password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        className="pl-10 pr-10"
-                      />
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="sm"
-                        className="absolute right-1 top-1/2 transform -translate-y-1/2 h-8 w-8 p-0"
-                        onClick={() => setShowPassword(!showPassword)}
-                      >
-                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                      </Button>
-                    </div>
-                  </div>
-                  
-                  <div className="flex items-center space-x-2">
-                    <Checkbox
-                      id="remember"
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                    />
-                    <Label htmlFor="remember" className="text-sm">Remember me</Label>
-                  </div>
-                  
-                  <Button type="submit" className="w-full" loading={loading}>
-                    {loading ? 'Signing in...' : 'Sign In'}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </ExampleCard>
-
-          {/* Settings Panel */}
-          <ExampleCard
-            title="Settings Panel"
-            description="User preferences panel with various controls and progress indicators."
-            code={`import { useState } from 'react'
-import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components/card'
-import { Label } from 'mad-ui-components/label'
-import { Switch } from 'mad-ui-components/switch'
-import { Slider } from 'mad-ui-components/slider'
-import { Progress } from 'mad-ui-components/progress'
-import { Rating } from 'mad-ui-components/rating'
-import { Button } from 'mad-ui-components/button'
-import { Bell, Settings, Volume2 } from 'lucide-react'
-
-export function SettingsPanel() {
-  const [notifications, setNotifications] = useState(true)
-  const [volume, setVolume] = useState(50)
-  const [rating, setRating] = useState(4)
-  const [progress, setProgress] = useState(65)
-
-  return (
-    <Card className="w-full max-w-md mx-auto">
-      <CardHeader>
-        <div className="flex items-center gap-2">
-          <Settings className="h-5 w-5" />
-          <CardTitle>User Preferences</CardTitle>
-        </div>
-      </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Bell className="h-4 w-4 text-muted-foreground" />
-              <Label htmlFor="notifications">Push Notifications</Label>
-            </div>
-            <Switch
-              id="notifications"
-              checked={notifications}
-              onCheckedChange={setNotifications}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Volume2 className="h-4 w-4 text-muted-foreground" />
-              <Label>Volume: {volume}%</Label>
-            </div>
-            <Slider
-              value={volume}
-              onValueChange={setVolume}
-              max={100}
-              step={1}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label>Rate Your Experience</Label>
-            <Rating value={rating} onValueChange={setRating} />
-          </div>
-
-          <div className="space-y-2">
-            <Label>Profile Completion</Label>
-            <Progress value={progress} className="w-full" />
-            <p className="text-sm text-muted-foreground">{progress}% complete</p>
-          </div>
-        </div>
-
-        <div className="flex gap-2">
-          <Button variant="outline" className="flex-1">Cancel</Button>
-          <Button className="flex-1">Save Changes</Button>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}`}
-          >
-            <Card className="w-full max-w-md mx-auto">
-              <CardHeader>
-                <div className="flex items-center gap-2">
-                  <Settings className="h-5 w-5" />
-                  <CardTitle>User Preferences</CardTitle>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="space-y-4">
-                  <div className="flex items-center justify-between">
-                    <div className="flex items-center gap-2">
-                      <Bell className="h-4 w-4 text-muted-foreground" />
-                      <Label htmlFor="notifications">Push Notifications</Label>
-                    </div>
-                    <Switch
-                      id="notifications"
-                      checked={notifications}
-                      onChange={(e) => setNotifications(e.target.checked)}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Settings className="h-4 w-4 text-muted-foreground" />
-                      <Label>Volume: {volume}%</Label>
-                    </div>
-                    <Slider
-                      value={volume}
-                      onChange={(value) => setVolume(Array.isArray(value) ? value[0] : value)}
-                      max={100}
-                      step={1}
-                    />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Rate Your Experience</Label>
-                    <Rating value={rating} />
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label>Profile Completion</Label>
-                    <Progress value={progress} className="w-full" />
-                    <p className="text-sm text-muted-foreground">{progress}% complete</p>
-                  </div>
+                  <p className="text-xs text-muted-foreground">{ex.description}</p>
                 </div>
 
-                <div className="flex gap-2">
-                  <Button variant="outline" className="flex-1">Cancel</Button>
-                  <Button className="flex-1">Save Changes</Button>
+                {/* Segmented Controls: Preview vs Code */}
+                <div className="flex items-center gap-2 shrink-0">
+                  <div className="inline-flex rounded-lg border border-border/60 bg-muted/40 p-0.5 text-xs">
+                    <button
+                      onClick={() => toggleViewMode(ex.id, 'preview')}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+                        currentMode === 'preview'
+                          ? 'bg-background text-foreground font-semibold shadow-2xs'
+                          : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      <Eye className="h-3.5 w-3.5" />
+                      <span>Preview</span>
+                    </button>
+                    <button
+                      onClick={() => toggleViewMode(ex.id, 'code')}
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md text-xs font-medium transition-colors cursor-pointer ${
+                        currentMode === 'code'
+                          ? 'bg-background text-foreground font-semibold shadow-2xs'
+                          : 'text-muted-foreground hover:text-foreground'
+                      }`}
+                    >
+                      <Code2 className="h-3.5 w-3.5" />
+                      <span>Code</span>
+                    </button>
+                  </div>
+
+                  <button
+                    onClick={() => handleCopyCode(ex.id, ex.code)}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg border border-border/60 bg-background hover:bg-muted text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+                    title="Copy code"
+                  >
+                    {copiedId === ex.id ? (
+                      <>
+                        <Check className="h-3.5 w-3.5 text-emerald-500" />
+                        <span className="text-emerald-500 font-medium">Copied</span>
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="h-3.5 w-3.5" />
+                        <span>Copy</span>
+                      </>
+                    )}
+                  </button>
                 </div>
-              </CardContent>
-            </Card>
-          </ExampleCard>
+              </div>
 
-          {/* Product Card */}
-          <ExampleCard
-            title="Product Card"
-            description="E-commerce style product card with rating, pricing, and action buttons."
-            code={`import { Card, CardContent, CardHeader } from 'mad-ui-components/card'
-import { Badge } from 'mad-ui-components/badge'
-import { Button } from 'mad-ui-components/button'
-import { Rating } from 'mad-ui-components/rating'
-import { ShoppingCart, Heart } from 'lucide-react'
-
-export function ProductCard() {
-  return (
-    <Card className="w-full max-w-sm mx-auto overflow-hidden">
-      <div className="relative">
-        <div className="aspect-square bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 flex items-center justify-center">
-          <div className="text-6xl">📱</div>
-        </div>
-        <Badge className="absolute top-2 right-2 bg-green-500 text-white">
-          20% OFF
-        </Badge>
-        <Button
-          variant="ghost"
-          size="sm"
-          className="absolute top-2 left-2 h-8 w-8 p-0 bg-white/80 hover:bg-white"
-        >
-          <Heart className="h-4 w-4" />
-        </Button>
+              {/* Pattern Body: Live Preview Canvas or Monaco Code Box */}
+              <div className="p-6 sm:p-10 bg-zinc-50/50 dark:bg-[#0c0d12]/60">
+                {currentMode === 'preview' ? (
+                  <div className="w-full flex items-center justify-center">
+                    {ex.component}
+                  </div>
+                ) : (
+                  <div className="rounded-xl border border-zinc-800 bg-[#0d0e12] overflow-hidden text-xs">
+                    <div className="flex items-center justify-between px-4 py-2 border-b border-zinc-800/80 bg-[#14151b] text-zinc-400">
+                      <span className="font-mono text-[11px] text-zinc-300">
+                        {ex.id}.tsx
+                      </span>
+                      <span className="text-[10px] text-zinc-500 font-mono uppercase">TypeScript / TSX</span>
+                    </div>
+                    <pre className="p-4 font-mono text-[12px] leading-relaxed text-zinc-200 overflow-x-auto whitespace-pre-wrap max-h-[500px]">
+                      <code>{ex.code}</code>
+                    </pre>
+                  </div>
+                )}
+              </div>
+            </div>
+          )
+        })}
       </div>
-      
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between">
-          <Badge variant="outline">Electronics</Badge>
-          <Rating value={4.5} readonly size="sm" />
+
+      {/* Footer Navigation CTA */}
+      <section className="rounded-2xl border border-border/60 bg-gradient-to-b from-card/80 to-muted/20 p-8 text-center space-y-4">
+        <h3 className="text-xl font-bold text-foreground">Ready to Build Your Application?</h3>
+        <p className="text-xs text-muted-foreground max-w-md mx-auto">
+          Explore all 57+ components or review framework-specific setup guides.
+        </p>
+        <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
+          <Link href="/docs/components">
+            <Button size="sm" className="px-5 font-semibold">
+              <span>Component Catalog</span>
+              <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
+            </Button>
+          </Link>
+          <Link href="/docs/installation">
+            <Button variant="outline" size="sm" className="px-5">
+              <span>Installation Guides</span>
+            </Button>
+          </Link>
         </div>
-      </CardHeader>
-      
-      <CardContent className="space-y-4">
-        <div>
-          <h3 className="font-semibold text-lg">Premium Smartphone</h3>
-          <p className="text-sm text-muted-foreground">
-            Latest flagship phone with amazing features
-          </p>
-        </div>
-        
-        <div className="flex items-center gap-2">
-          <span className="text-2xl font-bold">$799</span>
-          <span className="text-lg text-muted-foreground line-through">$999</span>
-        </div>
-        
-        <div className="flex gap-2">
-          <Button className="flex-1">
-            <ShoppingCart className="mr-2 h-4 w-4" />
-            Add to Cart
-          </Button>
-          <Button variant="outline">
-            Buy Now
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
-  )
-}`}
-          >
-            <Card className="w-full max-w-sm mx-auto overflow-hidden">
-              <div className="relative">
-                <div className="aspect-square bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900/20 dark:to-pink-900/20 flex items-center justify-center">
-                  <div className="text-6xl">📱</div>
-                </div>
-                <Badge className="absolute top-2 right-2 bg-green-500 text-white">
-                  20% OFF
-                </Badge>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="absolute top-2 left-2 h-8 w-8 p-0 bg-white/80 hover:bg-white"
-                >
-                  <Heart className="h-4 w-4" />
-                </Button>
-              </div>
-              
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <Badge variant="outline">Electronics</Badge>
-                  <Rating value={4.5} size="sm" />
-                </div>
-              </CardHeader>
-              
-              <CardContent className="space-y-4">
-                <div>
-                  <h3 className="font-semibold text-lg">Premium Smartphone</h3>
-                  <p className="text-sm text-muted-foreground">
-                    Latest flagship phone with amazing features
-                  </p>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  <span className="text-2xl font-bold">$799</span>
-                  <span className="text-lg text-muted-foreground line-through">$999</span>
-                </div>
-                
-                <div className="flex gap-2">
-                  <Button className="flex-1">
-                    <ShoppingCart className="mr-2 h-4 w-4" />
-                    Add to Cart
-                  </Button>
-                  <Button variant="outline">
-                    Buy Now
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          </ExampleCard>
-
-          {/* Contact Form */}
-          <ExampleCard
-            title="Contact Form"
-            description="Complete contact form with multiple input types and validation."
-            code={`import { useState } from 'react'
-import { Button } from 'mad-ui-components/button'
-import { Card, CardContent, CardHeader, CardTitle } from 'mad-ui-components/card'
-import { Input } from 'mad-ui-components/input'
-import { Label } from 'mad-ui-components/label'
-import { Textarea } from 'mad-ui-components/textarea'
-import { Select } from 'mad-ui-components/select'
-import { User, Mail, Phone, Building, Send } from 'lucide-react'
-
-export function ContactForm() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    company: '',
-    subject: '',
-    message: ''
-  })
-  const [loading, setLoading] = useState(false)
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    // Simulate form submission
-    setTimeout(() => setLoading(false), 2000)
-  }
-
-  const subjectOptions = [
-    { value: 'general', label: 'General Inquiry' },
-    { value: 'support', label: 'Technical Support' },
-    { value: 'sales', label: 'Sales Question' },
-    { value: 'billing', label: 'Billing Issue' }
-  ]
-
-  return (
-    <Card className="w-full max-w-lg mx-auto">
-      <CardHeader>
-        <CardTitle>Get in Touch</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="name">Full Name</Label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="name"
-                  placeholder="John Doe"
-                  value={formData.name}
-                  onChange={(e) => setFormData({...formData, name: e.target.value})}
-                  className="pl-10"
-                  required
-                />
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="email"
-                  type="email"
-                  placeholder="john@example.com"
-                  value={formData.email}
-                  onChange={(e) => setFormData({...formData, email: e.target.value})}
-                  className="pl-10"
-                  required
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="phone">Phone</Label>
-              <div className="relative">
-                <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="phone"
-                  placeholder="+1 (555) 123-4567"
-                  value={formData.phone}
-                  onChange={(e) => setFormData({...formData, phone: e.target.value})}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="company">Company</Label>
-              <div className="relative">
-                <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                <Input
-                  id="company"
-                  placeholder="Acme Inc."
-                  value={formData.company}
-                  onChange={(e) => setFormData({...formData, company: e.target.value})}
-                  className="pl-10"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="subject">Subject</Label>
-            <Select
-              value={formData.subject}
-              onValueChange={(value) => setFormData({...formData, subject: value})}
-              options={subjectOptions}
-              placeholder="Select a subject"
-            />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="message">Message</Label>
-            <Textarea
-              id="message"
-              placeholder="Tell us how we can help you..."
-              value={formData.message}
-              onChange={(e) => setFormData({...formData, message: e.target.value})}
-              rows={4}
-              required
-            />
-          </div>
-
-          <Button type="submit" className="w-full" loading={loading}>
-            <Send className="mr-2 h-4 w-4" />
-            {loading ? 'Sending...' : 'Send Message'}
-          </Button>
-        </form>
-      </CardContent>
-    </Card>
-  )
-}`}
-          >
-            <Card className="w-full max-w-lg mx-auto">
-              <CardHeader>
-                <CardTitle>Get in Touch</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <form className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Full Name</Label>
-                      <div className="relative">
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          id="name"
-                          placeholder="John Doe"
-                          className="pl-10"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <div className="relative">
-                        <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          id="email"
-                          type="email"
-                          placeholder="john@example.com"
-                          className="pl-10"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone</Label>
-                      <div className="relative">
-                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          id="phone"
-                          placeholder="+1 (555) 123-4567"
-                          className="pl-10"
-                        />
-                      </div>
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="company">Company</Label>
-                      <div className="relative">
-                        <Building className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                        <Input
-                          id="company"
-                          placeholder="Acme Inc."
-                          className="pl-10"
-                        />
-                      </div>
-                    </div>
-                  </div>
-
-                  <div className="space-y-2">
-                    <Label htmlFor="message">Message</Label>
-                    <Textarea
-                      id="message"
-                      placeholder="Tell us how we can help you..."
-                      rows={4}
-                    />
-                  </div>
-
-                  <Button type="submit" className="w-full">
-                    <Mail className="mr-2 h-4 w-4" />
-                    Send Message
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </ExampleCard>
-        </div>
-
-        {/* Call to Action */}
-        <section className="mt-24 text-center animate-in fade-in slide-in-from-bottom-8 duration-1000 delay-800">
-          <div className="max-w-4xl mx-auto">
-            <div className="bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-3xl p-12 border border-primary/20">
-              <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary to-primary/80 flex items-center justify-center mx-auto mb-8 shadow-lg shadow-primary/25">
-                <Code className="h-10 w-10 text-primary-foreground" />
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold mb-6 tracking-tight">
-                Need More Examples?
-              </h2>
-              <p className="text-lg md:text-xl text-muted-foreground mb-8 leading-relaxed">
-                Check out our comprehensive documentation for more component examples and advanced usage patterns.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Button size="lg" className="text-lg px-8 py-4 h-14">
-                  <Monitor className="mr-3 h-5 w-5" />
-                  View All Components
-                  <ArrowRight className="ml-3 h-5 w-5" />
-                </Button>
-                <Button variant="outline" size="lg" className="text-lg px-8 py-4 h-14">
-                  <Download className="mr-3 h-5 w-5" />
-                  Download Templates
-                </Button>
-              </div>
-            </div>
-          </div>
-        </section>
+      </section>
     </div>
   )
 }

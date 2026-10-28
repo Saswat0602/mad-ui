@@ -31,20 +31,20 @@ An enterprise-grade, accessible, and themeable React UI component library built 
 
 ### 1. Installation
 
-Install `mad-ui-components` along with peer utilities:
+Install `mad-ui-components` into your project:
 
 ```bash
 # npm
-npm install mad-ui-components lucide-react clsx tailwind-merge
+npm install mad-ui-components
 
 # pnpm
-pnpm add mad-ui-components lucide-react clsx tailwind-merge
+pnpm add mad-ui-components
 
 # yarn
-yarn add mad-ui-components lucide-react clsx tailwind-merge
+yarn add mad-ui-components
 
 # bun
-bun add mad-ui-components lucide-react clsx tailwind-merge
+bun add mad-ui-components
 ```
 
 ### 2. Configure Tailwind CSS

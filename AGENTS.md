@@ -160,3 +160,61 @@ When adding a new component to the library, follow this strict checklist:
 4. **Verification**:
    - Run `npm run build` in root to verify ESM and `.d.mts` bundling.
    - Run `npm run build` in `docs` to ensure static page generation succeeds.
+
+---
+
+## 8. Package Dependencies & Consumer Installation Standards
+
+1. **Zero Redundant Package Installs**:
+   - `clsx`, `tailwind-merge`, and `lucide-react` are declared as direct `dependencies` in root `package.json`.
+   - **RULE**: NEVER instruct consumers to install `npm install mad-ui-components lucide-react clsx tailwind-merge`.
+   - Consumers only need:
+     ```bash
+     npm install mad-ui-components
+     ```
+   - Documentation, quickstart guides, and README must only mention installing `mad-ui-components`.
+
+---
+
+## 9. Next.js Dev Server & Bundler Stability
+
+1. **`clean: false` in `tsup.config.ts`**:
+   - `tsup.config.ts` must maintain `clean: false`. Enabling `clean: true` deletes `dist/` on every rebuild, which breaks file-handle watches in Next.js Turbopack and triggers an infinite recompilation loop (`Module not found: Can't resolve 'mad-ui-components'`).
+2. **Subpath `"default"` Export Fallback**:
+   - Every subpath export in root `package.json` must include `"default": "./dist/<name>.mjs"`:
+     ```json
+     "./button": {
+       "types": "./dist/button.d.mts",
+       "import": "./dist/button.mjs",
+       "default": "./dist/button.mjs"
+     }
+     ```
+   - This prevents Node/Next.js SSR from throwing `ERR_PACKAGE_PATH_NOT_EXPORTED`.
+3. **No Direct Symlinks to `src/` in Docs `tsconfig.json`**:
+   - Do NOT alias `mad-ui-components` directly to `../src` in `docs/tsconfig.json`. React 19's typing for `cloneElement` conflicts with React 18 component definitions in `src/`. `docs` must consume the pre-bundled ESM/DTS in `dist/`.
+
+---
+
+## 10. NPM Release & 2FA Publishing Protocol
+
+1. **Strict Version Bumping**:
+   - Before publishing, always bump the `version` field in root `package.json` (e.g. `2.15.14` -> `2.15.15`). NPM rejects attempts to republish or overwrite existing versions (`npm error 409 Conflict`).
+2. **Auth Token Security (`~/.npmrc`)**:
+   - NPM CLI deliberately ignores authentication tokens (`_authToken`) in project-level `.npmrc` files for security reasons. Auth tokens must reside in the user's home directory (`~/.npmrc`).
+3. **Interactive 2FA Web Authorization**:
+   - When 2FA is active on the npm account, npm CLI 11 prompts with an authentication URL:
+     `Authenticate your account at: https://www.npmjs.com/auth/cli/<uuid>`
+   - The user authorizes the request in their logged-in browser, after which npm immediately completes the upload and outputs `+ mad-ui-components@<version>`.
+
+---
+
+## 11. Code Showcase & Real-World Example Standards
+
+1. **No "Box-in-Box" Nested Wireframes**:
+   - Never wrap component demos in multiple nested cards or dashed outline boxes (`border-2 border-dashed border-border`).
+   - Use clean, seamless preview frames with subtle dot-grid canvases (`bg-zinc-50/80` in light mode, `#0c0d12` in dark mode).
+2. **Segmented Preview / Code Toggle**:
+   - All example cards must feature segmented toggle buttons (`[Eye Preview] [Code2 Code]`) and a 1-click copy button.
+   - Code blocks must use Monaco-style styling with macOS traffic light chrome, line numbers, and clean token highlighting.
+3. **Authentic Enterprise Patterns**:
+   - Example cards must demonstrate realistic, production-tested enterprise flows (SSO authentication, Security preferences, Team member access, Billing portals), NOT toy examples with emojis.
