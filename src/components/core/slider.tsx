@@ -106,7 +106,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
   orientation = 'horizontal',
   range = false,
   disabled = false,
-  showValue = true,
+  showValue = false,
   showMarks = false,
   marks = [],
   color,
@@ -130,9 +130,9 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
 
   // Size classes
   const sizeClasses = {
-    sm: 'h-2',
-    md: 'h-3',
-    lg: 'h-4'
+    sm: 'h-1.5',
+    md: 'h-2',
+    lg: 'h-2.5'
   }
 
   const thumbSizeClasses = {
@@ -143,10 +143,10 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
 
   // Variant classes with proper visibility
   const variantClasses = {
-    default: 'bg-slate-200 dark:bg-slate-600',
-    filled: 'bg-blue-100 dark:bg-blue-900/20',
-    outlined: 'bg-transparent border-2 border-slate-300 dark:border-slate-600',
-    minimal: 'bg-slate-100 dark:bg-slate-700'
+    default: 'bg-zinc-200 dark:bg-zinc-800',
+    filled: 'bg-zinc-200/70 dark:bg-zinc-800/70',
+    outlined: 'bg-transparent border border-zinc-300 dark:border-zinc-700',
+    minimal: 'bg-zinc-100 dark:bg-zinc-900'
   }
 
   // Shadow classes
@@ -304,10 +304,11 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
       {/* Value Display */}
       {showValue && (
         <div className={cn(
-          'mb-2 text-sm font-medium',
+          'mb-2 flex items-center justify-between text-xs font-medium text-zinc-500 dark:text-zinc-400',
           orientation === 'vertical' && 'absolute -top-8 left-0'
         )}>
-          {range ? `${currentMin} - ${currentMax}` : currentMax}
+          <span>Value</span>
+          <span className="font-mono text-zinc-900 dark:text-zinc-100">{range ? `${currentMin} - ${currentMax}` : currentMax}</span>
         </div>
       )}
 
@@ -330,7 +331,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
       >
         {/* Track Fill */}
         <div
-          className="absolute top-0 left-0 h-full bg-blue-500 dark:bg-blue-400 rounded-full transition-all duration-200 ease-out"
+          className="absolute top-0 left-0 h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-100 ease-out"
           style={{
             backgroundColor: color || undefined,
             ...getTrackFill()
@@ -348,7 +349,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
               className={cn(
                 'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
                 thumbSizeClasses[size],
-                'bg-white dark:bg-slate-200 border-2 border-blue-500 dark:border-blue-400 rounded-full shadow-md',
+                'bg-white dark:bg-zinc-100 border-2 border-blue-600 dark:border-blue-500 rounded-full shadow-md',
                 'hover:scale-110 hover:shadow-lg transition-all duration-150 ease-out active:scale-95',
                 disabled && 'cursor-not-allowed opacity-50'
               )}
@@ -365,7 +366,7 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
               className={cn(
                 'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
                 thumbSizeClasses[size],
-                'bg-white dark:bg-slate-200 border-2 border-blue-500 dark:border-blue-400 rounded-full shadow-md',
+                'bg-white dark:bg-zinc-100 border-2 border-blue-600 dark:border-blue-500 rounded-full shadow-md',
                 'hover:scale-110 hover:shadow-lg transition-all duration-150 ease-out active:scale-95',
                 disabled && 'cursor-not-allowed opacity-50'
               )}
@@ -385,8 +386,8 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
             className={cn(
               'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
               thumbSizeClasses[size],
-              'bg-white dark:bg-slate-200 border-2 border-blue-500 dark:border-blue-400 rounded-full shadow-md',
-              'hover:scale-110 transition-transform duration-150 ease-out',
+              'bg-white dark:bg-zinc-100 border-2 border-blue-600 dark:border-blue-500 rounded-full shadow-md',
+              'hover:scale-110 active:scale-95 transition-all duration-150 ease-out',
               disabled && 'cursor-not-allowed opacity-50'
             )}
             style={{

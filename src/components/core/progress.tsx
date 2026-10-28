@@ -28,9 +28,9 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     const percentage = Math.min(Math.max((value / max) * 100, 0), 100)
 
     const sizeClasses = {
-      sm: "h-2",
-      md: "h-3",
-      lg: "h-4"
+      sm: "h-1.5",
+      md: "h-2",
+      lg: "h-3"
     }
 
     const variantClasses = {
@@ -52,7 +52,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         <div
           ref={ref}
           className={cn(
-            "relative overflow-hidden rounded-full bg-zinc-100 dark:bg-zinc-800",
+            "relative overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800",
             sizeClasses[size],
             className
           )}
