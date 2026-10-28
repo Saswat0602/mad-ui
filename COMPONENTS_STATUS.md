@@ -60,7 +60,7 @@ This document provides a comprehensive audit of all **55+ components** in `mad-u
 | Component | Source Path | Subpath Export | Status | Features & Notes |
 | :--- | :--- | :--- | :---: | :--- |
 | **Drawer** | `src/components/layout/drawer.tsx` | `mad-ui-components/drawer` | 🟢 100% Stable | Smooth sliding panel from top, bottom, left, or right with backdrop. |
-| **Layout** | `src/components/layout/layout.tsx` | `mad-ui-components/layout` | 🟢 100% Stable | Responsive page container with sticky header and sidebar integration. |
+| **Layout** | `src/components/layout/layout.tsx` | `mad-ui-components/layout-shell` | 🟢 100% Stable | Responsive page container with sticky header and sidebar integration. |
 | **Modal** | `src/components/layout/modal.tsx` | `mad-ui-components/modal` | 🟢 100% Stable | Centered overlay dialog with backdrop blur, focus trap, and escape key listener. |
 | **Navbar** | `src/components/layout/navbar.tsx` | `mad-ui-components/navbar` | 🟢 100% Stable | Responsive navigation bar with brand, profile menu, and mobile hamburger. |
 | **Popover** | `src/components/layout/popover.tsx` | `mad-ui-components/popover` | 🟢 100% Stable | Floating contextual card triggered on click/hover with auto-positioning. |
