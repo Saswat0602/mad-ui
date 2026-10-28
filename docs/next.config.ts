@@ -9,11 +9,16 @@ const nextConfig: NextConfig = {
   typescript: {
     ignoreBuildErrors: false,
   },
-  eslint: {
-    ignoreDuringBuilds: false,
-  },
   outputFileTracingRoot: path.resolve(__dirname, ".."),
   transpilePackages: ["mad-ui-components"],
+  webpack: (config) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      "mad-ui-components$": path.resolve(__dirname, "../src/index.ts"),
+      "mad-ui-components": path.resolve(__dirname, "../src/individual"),
+    };
+    return config;
+  },
 };
 
 const withMDX = createMDX({

@@ -29,7 +29,7 @@ export default function GettingStartedPage() {
   }
 
   return (
-    <div className="space-y-12 max-w-4xl">
+    <div className="space-y-12 w-full">
       {/* Header */}
       <div className="border-b border-border/40 pb-8">
         <div className="flex items-center gap-2 mb-2 text-xs font-semibold uppercase tracking-wider text-primary">

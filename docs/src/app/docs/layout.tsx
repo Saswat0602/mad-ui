@@ -12,7 +12,7 @@ export default function DocsLayout({
   const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false)
 
   return (
-    <div className="container mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+    <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
       {/* Mobile Sidebar Toggle Bar */}
       <div className="md:hidden flex items-center justify-between py-2.5 border-b border-border/40 mb-4">
         <button
@@ -49,14 +49,14 @@ export default function DocsLayout({
       )}
 
       {/* Desktop Layout */}
-      <div className="flex gap-8">
+      <div className="flex gap-8 lg:gap-10 xl:gap-12">
         {/* Sticky Sidebar */}
-        <div className="hidden md:block w-60 lg:w-64 shrink-0 border-r border-border/40 min-h-[calc(100vh-3.5rem)] sticky top-14 py-6 pr-2">
+        <div className="hidden md:block w-64 lg:w-72 shrink-0 border-r border-border/40 min-h-[calc(100vh-3.5rem)] sticky top-14 py-6 pr-6">
           <DocsSidebar />
         </div>
 
         {/* Content Area */}
-        <div className="flex-1 min-w-0 py-6 max-w-5xl">
+        <div className="flex-1 min-w-0 py-8 lg:py-10 max-w-5xl xl:max-w-6xl 2xl:max-w-7xl">
           {children}
         </div>
       </div>

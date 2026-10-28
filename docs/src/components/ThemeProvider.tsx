@@ -28,15 +28,17 @@ export function ThemeProvider({
   storageKey = 'mad-ui-theme',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(defaultTheme)
-
-  // Initialize theme from localStorage on client side
-  useEffect(() => {
-    const storedTheme = localStorage?.getItem(storageKey) as Theme
-    if (storedTheme) {
-      setTheme(storedTheme)
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        const storedTheme = localStorage?.getItem(storageKey) as Theme
+        if (storedTheme) return storedTheme
+      } catch {
+        // Ignore localStorage access errors
+      }
     }
-  }, [storageKey])
+    return defaultTheme
+  })
 
   useEffect(() => {
     const root = window.document.documentElement

@@ -139,7 +139,7 @@ export const ComponentDocLayout: React.FC<ComponentDocLayoutProps> = ({
   ]
 
   return (
-    <div className="container max-w-4xl mx-auto px-4 py-8">
+    <div className="w-full mx-auto px-4 py-8">
       {/* Header */}
       <div className="mb-8 space-y-2">
         <div className="flex items-center gap-2">

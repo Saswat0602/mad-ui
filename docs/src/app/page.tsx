@@ -19,11 +19,11 @@ import {
   ArrowRight, 
   Copy, 
   Check, 
+  Github,
   ShieldCheck, 
   Layers, 
   Cpu
 } from 'lucide-react'
-import { GithubIcon } from '@/components/GithubIcon'
 
 export default function HomePage() {
   const [activePm, setActivePm] = useState<'npm' | 'pnpm' | 'yarn' | 'bun'>('npm')
@@ -87,7 +87,7 @@ export default function HomePage() {
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center h-10 px-4 rounded-md border border-border/60 bg-background hover:bg-muted text-sm font-medium transition-colors"
           >
-            <GithubIcon className="h-4 w-4 mr-2" />
+            <Github className="h-4 w-4 mr-2" />
             <span>Star on GitHub</span>
           </a>
         </div>

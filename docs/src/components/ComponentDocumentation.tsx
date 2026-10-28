@@ -8,8 +8,7 @@ import { PropsTable } from './PropsTable'
 import { CodeBlock } from './CodeBlock'
 import { StatusBadge } from './StatusBadge'
 import Link from 'next/link'
-import { Copy, Check, Eye, Code2, Terminal, BookOpen, ExternalLink } from 'lucide-react'
-import { GithubIcon } from './GithubIcon'
+import { Copy, Check, Eye, Code2, Terminal, BookOpen, ExternalLink, Github } from 'lucide-react'
 import { getComponentExamples } from '@/lib/component-examples'
 import { getComponentProps } from '@/lib/component-props'
 import { getComponentBySlug } from '@/lib/component-registry'
@@ -51,7 +50,7 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
   }
 
   return (
-    <div className="space-y-8 max-w-4xl">
+    <div className="space-y-10 w-full">
       {/* Breadcrumb */}
       <nav className="flex items-center space-x-1.5 text-xs text-muted-foreground">
         <Link href="/docs/components" className="hover:text-foreground transition-colors">
@@ -93,14 +92,14 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
               className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs font-medium rounded-md border border-border/50 bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
               title="GitHub source"
             >
-              <GithubIcon className="h-3.5 w-3.5" />
+              <Github className="h-3.5 w-3.5" />
               <span>Source</span>
               <ExternalLink className="h-3 w-3 opacity-60" />
             </a>
           </div>
         </div>
 
-        <p className="text-base text-muted-foreground leading-relaxed">
+        <p className="text-base text-muted-foreground leading-relaxed max-w-3xl">
           {component.description}
         </p>
 
@@ -137,11 +136,11 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
         </div>
       </div>
 
-      {/* Clean Navigation Tabs */}
-      <div className="border-b border-border/40">
-        <nav className="flex space-x-6 -mb-px">
+      {/* Sleek Segmented Navigation Tabs */}
+      <div className="flex items-center overflow-x-auto pb-1 scrollbar-none">
+        <div className="inline-flex items-center p-1 rounded-xl bg-muted/50 border border-border/40 text-xs sm:text-sm">
           {[
-            { id: 'examples', label: 'Preview', icon: Eye },
+            { id: 'examples', label: 'Live Preview', icon: Eye },
             { id: 'props', label: 'API Reference', icon: Code2 },
             { id: 'usage', label: 'Installation & Import', icon: Terminal },
             { id: 'guide', label: 'Guidelines', icon: BookOpen }
@@ -152,10 +151,10 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as 'examples' | 'props' | 'usage' | 'guide')}
-                className={`flex items-center gap-2 py-3 px-1 border-b-2 font-medium text-xs sm:text-sm transition-colors ${
+                className={`flex items-center gap-2 py-2 px-3.5 rounded-lg font-medium text-xs sm:text-sm transition-all whitespace-nowrap ${
                   isActive
-                    ? 'border-primary text-foreground font-semibold'
-                    : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border'
+                    ? 'bg-background text-foreground shadow-xs font-semibold'
+                    : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'
                 }`}
               >
                 <Icon className={`h-4 w-4 ${isActive ? 'text-primary' : 'text-muted-foreground'}`} />
@@ -163,23 +162,26 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
               </button>
             )
           })}
-        </nav>
+        </div>
       </div>
 
       {/* Tab Content */}
       <div className="pt-2">
         <AnimatePresence mode="wait">
           {activeTab === 'examples' && (
-            <div key="examples" className="space-y-8">
+            <div key="examples" className="space-y-12">
               {examples.length > 0 ? (
                 examples.map((example, index) => (
-                  <div key={index} className="space-y-3">
-                    <div className="space-y-1">
-                      <h3 className="text-base font-semibold text-foreground">
-                        {example.title}
-                      </h3>
+                  <section key={index} className="space-y-4 pt-4 first:pt-0">
+                    <div className="flex flex-col gap-1 border-b border-border/30 pb-3">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-2 h-2 rounded-full bg-primary ring-4 ring-primary/20 shrink-0" />
+                        <h2 className="text-lg sm:text-xl font-bold tracking-tight text-foreground">
+                          {example.title}
+                        </h2>
+                      </div>
                       {example.description && (
-                        <p className="text-xs text-muted-foreground leading-relaxed">
+                        <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed pl-5">
                           {example.description}
                         </p>
                       )}
@@ -187,7 +189,7 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
                     <ComponentPreview code={example.code}>
                       {example.preview}
                     </ComponentPreview>
-                  </div>
+                  </section>
                 ))
               ) : (
                 <div className="text-center py-12 border border-dashed border-border/50 rounded-lg">

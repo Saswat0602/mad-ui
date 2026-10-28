@@ -148,24 +148,21 @@ export default function ExamplesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-slate-100 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
-      <div className="container mx-auto max-w-7xl px-4 py-16 lg:py-24">
-        {/* Header */}
-        <div className="text-center mb-16 animate-in fade-in slide-in-from-bottom-8 duration-1000">
-          <Badge variant="outline" className="mb-6 px-6 py-3 text-sm font-semibold border-primary/20 bg-primary/5">
-            <Play className="w-4 h-4 mr-2" />
-            Live Examples
-          </Badge>
-          <h1 className="text-5xl md:text-6xl lg:text-7xl font-black mb-8 leading-tight tracking-tight">
-            <span className="block text-foreground">Real-World</span>
-            <span className="block bg-gradient-to-r from-violet-600 via-purple-600 to-pink-600 bg-clip-text text-transparent drop-shadow-sm">
-              Component Examples
-            </span>
-          </h1>
-          <p className="text-xl md:text-2xl text-muted-foreground max-w-4xl mx-auto leading-relaxed font-medium">
-            Discover how to use Mad UI components in real applications. Copy, paste, and customize these examples for your projects.
-          </p>
+    <div className="space-y-12 w-full">
+      {/* Header */}
+      <div className="border-b border-border/40 pb-8">
+        <div className="flex items-center gap-2 mb-2 text-xs font-semibold uppercase tracking-wider text-primary">
+          <span>Documentation</span>
+          <span>•</span>
+          <span>Patterns</span>
         </div>
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
+          Real-World Examples
+        </h1>
+        <p className="mt-2 text-base text-muted-foreground leading-relaxed max-w-3xl">
+          Complete, production-tested application patterns built with Mad UI components. Copy, paste, and customize these patterns for your projects.
+        </p>
+      </div>
 
         {/* Examples Grid */}
         <div className="grid lg:grid-cols-2 gap-8 space-y-0">
@@ -811,7 +808,6 @@ export function ContactForm() {
             </div>
           </div>
         </section>
-      </div>
     </div>
   )
 }

@@ -1,1 +1,0 @@
-import {clsx}from'clsx';import {twMerge}from'tailwind-merge';import'react';import {jsx}from'react/jsx-runtime';function e(...t){return twMerge(clsx(t))}var i=({ratio:t=16/9,children:r,className:a})=>jsx("div",{className:e("relative w-full",a),style:{aspectRatio:t},children:r});export{i as AspectRatio};
