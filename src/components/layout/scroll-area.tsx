@@ -1,58 +1,59 @@
 import React from 'react'
-import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
 import { cn } from '../../lib/utils'
 
-export interface ScrollAreaProps
-  extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
+export interface ScrollAreaProps extends React.HTMLAttributes<HTMLDivElement> {
   orientation?: 'vertical' | 'horizontal' | 'both'
 }
 
-export const ScrollArea = React.forwardRef<
-  React.ElementRef<typeof ScrollAreaPrimitive.Root>,
-  ScrollAreaProps
->(({ className, children, orientation = 'vertical', ...props }, ref) => (
-  <ScrollAreaPrimitive.Root
-    ref={ref}
-    className={cn('relative overflow-hidden', className)}
-    {...props}
-  >
-    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
-      {children}
-    </ScrollAreaPrimitive.Viewport>
-    {(orientation === 'vertical' || orientation === 'both') && (
-      <ScrollBar orientation="vertical" />
-    )}
-    {(orientation === 'horizontal' || orientation === 'both') && (
-      <ScrollBar orientation="horizontal" />
-    )}
-    <ScrollAreaPrimitive.Corner />
-  </ScrollAreaPrimitive.Root>
-))
-ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
+export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
+  ({ className, children, orientation = 'vertical', ...props }, ref) => {
+    const overflowClasses = {
+      vertical: 'overflow-y-auto overflow-x-hidden',
+      horizontal: 'overflow-x-auto overflow-y-hidden',
+      both: 'overflow-auto',
+    }
 
-export interface ScrollBarProps
-  extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> {}
+    return (
+      <div
+        ref={ref}
+        className={cn('relative overflow-hidden', className)}
+        {...props}
+      >
+        <div
+          className={cn(
+            'h-full w-full rounded-[inherit] scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700 hover:scrollbar-thumb-zinc-400 dark:hover:scrollbar-thumb-zinc-600',
+            overflowClasses[orientation]
+          )}
+        >
+          {children}
+        </div>
+      </div>
+    )
+  }
+)
+ScrollArea.displayName = 'ScrollArea'
 
-export const ScrollBar = React.forwardRef<
-  React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
-  ScrollBarProps
->(({ className, orientation = 'vertical', ...props }, ref) => (
-  <ScrollAreaPrimitive.ScrollAreaScrollbar
-    ref={ref}
-    orientation={orientation}
-    className={cn(
-      'flex touch-none select-none transition-colors duration-150 ease-out',
-      orientation === 'vertical' &&
-        'h-full w-2.5 border-l border-l-transparent p-[1px]',
-      orientation === 'horizontal' &&
-        'h-2.5 flex-col border-t border-t-transparent p-[1px]',
-      className
-    )}
-    {...props}
-  >
-    <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400 dark:hover:bg-zinc-600 transition-colors" />
-  </ScrollAreaPrimitive.ScrollAreaScrollbar>
-))
-ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName
+export interface ScrollBarProps extends React.HTMLAttributes<HTMLDivElement> {
+  orientation?: 'vertical' | 'horizontal'
+}
+
+export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
+  ({ className, orientation = 'vertical', ...props }, ref) => (
+    <div
+      ref={ref}
+      aria-hidden="true"
+      className={cn(
+        'flex touch-none select-none transition-colors duration-150 ease-out',
+        orientation === 'vertical' && 'h-full w-2.5 border-l border-l-transparent p-[1px]',
+        orientation === 'horizontal' && 'h-2.5 flex-col border-t border-t-transparent p-[1px]',
+        className
+      )}
+      {...props}
+    >
+      <div className="relative flex-1 rounded-full bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400 dark:hover:bg-zinc-600 transition-colors" />
+    </div>
+  )
+)
+ScrollBar.displayName = 'ScrollBar'
 
 export default ScrollArea

@@ -1,7 +1,9 @@
-import React from 'react'
-import * as AccordionPrimitive from '@radix-ui/react-accordion'
+"use client"
+
+import React, { createContext, useContext, forwardRef } from 'react'
 import { ChevronDown } from 'lucide-react'
 import { cn } from '../../lib/utils'
+import { useControllableState } from '../../lib/use-controllable-state'
 
 export interface AccordionItemData {
   id?: string
@@ -10,71 +12,127 @@ export interface AccordionItemData {
   disabled?: boolean
 }
 
-export interface AccordionItemProps
-  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item> {}
+interface AccordionContextValue {
+  isOpen: (value: string) => boolean
+  toggle: (value: string) => void
+  disabled?: boolean
+}
 
-export const AccordionItem = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Item>,
-  AccordionItemProps
->(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item
-    ref={ref}
-    className={cn('border-b border-zinc-200 dark:border-zinc-800 last:border-b-0', className)}
-    {...props}
-  />
-))
+const AccordionContext = createContext<AccordionContextValue | null>(null)
+
+function useAccordionContext() {
+  const ctx = useContext(AccordionContext)
+  if (!ctx) {
+    throw new Error('Accordion compound components must be used within an Accordion')
+  }
+  return ctx
+}
+
+const AccordionItemContext = createContext<{ value: string; disabled?: boolean } | null>(null)
+
+export interface AccordionItemProps extends React.HTMLAttributes<HTMLDivElement> {
+  value: string
+  disabled?: boolean
+}
+
+export const AccordionItem = forwardRef<HTMLDivElement, AccordionItemProps>(
+  ({ className, value, disabled, children, ...props }, ref) => {
+    return (
+      <AccordionItemContext.Provider value={{ value, disabled }}>
+        <div
+          ref={ref}
+          data-state={disabled ? 'disabled' : undefined}
+          className={cn('border-b border-zinc-200 dark:border-zinc-800 last:border-b-0', className)}
+          {...props}
+        >
+          {children}
+        </div>
+      </AccordionItemContext.Provider>
+    )
+  }
+)
 AccordionItem.displayName = 'AccordionItem'
 
-export interface AccordionTriggerProps
-  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Trigger> {
+export interface AccordionTriggerProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   iconPosition?: 'left' | 'right'
   customIcon?: any
 }
 
-export const AccordionTrigger = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Trigger>,
-  AccordionTriggerProps
->(({ className, children, iconPosition = 'right', customIcon: CustomIcon, ...props }, ref) => {
-  const IconComponent = CustomIcon || ChevronDown
+export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerProps>(
+  ({ className, children, iconPosition = 'right', customIcon: CustomIcon, onClick, ...props }, ref) => {
+    const { isOpen, toggle } = useAccordionContext()
+    const itemCtx = useContext(AccordionItemContext)
+    const val = itemCtx?.value || ''
+    const open = isOpen(val)
+    const disabled = props.disabled || itemCtx?.disabled
 
-  return (
-    <AccordionPrimitive.Header className="flex">
-      <AccordionPrimitive.Trigger
+    const IconComponent = CustomIcon || ChevronDown
+
+    const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(e)
+      if (!e.defaultPrevented && !disabled) {
+        toggle(val)
+      }
+    }
+
+    return (
+      <div className="flex">
+        <button
+          ref={ref}
+          type="button"
+          aria-expanded={open}
+          disabled={disabled}
+          data-state={open ? 'open' : 'closed'}
+          onClick={handleClick}
+          className={cn(
+            'flex flex-1 items-center justify-between py-4 px-5 text-sm font-medium transition-all text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-50 disabled:pointer-events-none cursor-pointer',
+            iconPosition === 'left' && 'flex-row-reverse justify-end gap-3',
+            className
+          )}
+          {...props}
+        >
+          <span className="flex-1 text-left">{children}</span>
+          <IconComponent
+            className={cn(
+              'h-4 w-4 shrink-0 transition-transform duration-200 text-zinc-500',
+              open && 'rotate-180'
+            )}
+          />
+        </button>
+      </div>
+    )
+  }
+)
+AccordionTrigger.displayName = 'AccordionTrigger'
+
+export interface AccordionContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const AccordionContent = forwardRef<HTMLDivElement, AccordionContentProps>(
+  ({ className, children, ...props }, ref) => {
+    const { isOpen } = useAccordionContext()
+    const itemCtx = useContext(AccordionItemContext)
+    const val = itemCtx?.value || ''
+    const open = isOpen(val)
+
+    return (
+      <div
         ref={ref}
+        data-state={open ? 'open' : 'closed'}
         className={cn(
-          'flex flex-1 items-center justify-between py-4 px-5 text-sm font-medium transition-all text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 [&[data-state=open]>svg]:rotate-180 disabled:opacity-50 disabled:pointer-events-none',
-          iconPosition === 'left' && 'flex-row-reverse justify-end gap-3',
-          className
+          'grid transition-all duration-200 ease-in-out',
+          open ? 'grid-rows-[1fr] opacity-100' : 'grid-rows-[0fr] opacity-0 pointer-events-none'
         )}
-        {...props}
       >
-        <span className="flex-1 text-left">{children}</span>
-        <IconComponent className="h-4 w-4 shrink-0 transition-transform duration-200 text-zinc-500" />
-      </AccordionPrimitive.Trigger>
-    </AccordionPrimitive.Header>
-  )
-})
-AccordionTrigger.displayName = AccordionPrimitive.Trigger.displayName
-
-export interface AccordionContentProps
-  extends React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Content> {}
-
-export const AccordionContent = React.forwardRef<
-  React.ElementRef<typeof AccordionPrimitive.Content>,
-  AccordionContentProps
->(({ className, children, ...props }, ref) => (
-  <AccordionPrimitive.Content
-    ref={ref}
-    className={cn(
-      'overflow-hidden text-sm text-zinc-600 dark:text-zinc-400 data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down',
-      className
-    )}
-    {...props}
-  >
-    <div className="pb-4 pt-0 px-5">{children}</div>
-  </AccordionPrimitive.Content>
-))
-AccordionContent.displayName = AccordionPrimitive.Content.displayName
+        <div className="overflow-hidden">
+          <div className={cn('pb-4 pt-0 px-5 text-sm text-zinc-600 dark:text-zinc-400', className)} {...props}>
+            {children}
+          </div>
+        </div>
+      </div>
+    )
+  }
+)
+AccordionContent.displayName = 'AccordionContent'
 
 export interface AccordionProps {
   items?: AccordionItemData[]
@@ -89,110 +147,84 @@ export interface AccordionProps {
   animated?: boolean
   type?: 'single' | 'multiple'
   collapsible?: boolean
-  value?: any
-  defaultValue?: any
-  onValueChange?: any
+  value?: string | string[]
+  defaultValue?: string | string[]
+  onValueChange?: (value: any) => void
   children?: React.ReactNode
   [key: string]: any
 }
 
-export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(({
-  items,
-  allowMultiple = false,
-  defaultOpen = [],
-  className,
-  itemClassName,
-  headerClassName,
-  contentClassName,
-  iconPosition = 'right',
-  customIcon,
-  animated = true,
-  type,
-  collapsible = true,
-  value,
-  defaultValue,
-  onValueChange,
-  children,
-  ...props
-}, ref) => {
-  // If compound children passed, render Radix Root
-  if (!items) {
-    if (type === 'multiple' || allowMultiple) {
-      return (
-        <AccordionPrimitive.Root
-          ref={ref as any}
-          type="multiple"
-          value={value}
-          defaultValue={defaultValue}
-          onValueChange={onValueChange}
-          className={cn('rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800 shadow-sm', className)}
-          {...props}
-        >
-          {children}
-        </AccordionPrimitive.Root>
-      )
+export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
+  (
+    {
+      items,
+      allowMultiple = false,
+      defaultOpen = [],
+      className,
+      itemClassName,
+      headerClassName,
+      contentClassName,
+      iconPosition = 'right',
+      customIcon,
+      animated = true,
+      type = 'single',
+      collapsible = true,
+      value: controlledValue,
+      defaultValue,
+      onValueChange,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const isMultiple = type === 'multiple' || allowMultiple
+
+    // Derive initial default value
+    const computeInitialDefault = () => {
+      if (defaultValue !== undefined) return defaultValue
+      if (items && defaultOpen.length > 0) {
+        if (isMultiple) {
+          return defaultOpen.map((idx: number) => items[idx]?.id || `item-${idx}`)
+        }
+        return items[defaultOpen[0]]?.id || `item-${defaultOpen[0]}`
+      }
+      return isMultiple ? [] : ''
     }
 
-    return (
-      <AccordionPrimitive.Root
-        ref={ref as any}
-        type="single"
-        collapsible={collapsible}
-        value={value}
-        defaultValue={defaultValue}
-        onValueChange={onValueChange}
-        className={cn('rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800 shadow-sm', className)}
-        {...props}
-      >
-        {children}
-      </AccordionPrimitive.Root>
-    )
-  }
+    const [currentVal, setCurrentVal] = useControllableState<any>({
+      prop: controlledValue,
+      defaultProp: computeInitialDefault(),
+      onChange: onValueChange,
+    })
 
-  // Convenience items prop
-  if (allowMultiple) {
-    const multiDefault = defaultOpen.map((idx: number) => items[idx]?.id || `item-${idx}`)
-    return (
-      <AccordionPrimitive.Root
-        ref={ref as any}
-        type="multiple"
-        defaultValue={multiDefault}
-        className={cn('rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800 shadow-sm', className)}
-        {...props}
-      >
-        {items.map((item: AccordionItemData, idx: number) => {
-          const val = item.id || `item-${idx}`
-          return (
-            <AccordionItem key={val} value={val} disabled={item.disabled} className={itemClassName}>
-              <AccordionTrigger
-                iconPosition={iconPosition}
-                customIcon={customIcon}
-                className={headerClassName}
-              >
-                {item.title}
-              </AccordionTrigger>
-              <AccordionContent className={contentClassName}>
-                {item.content}
-              </AccordionContent>
-            </AccordionItem>
-          )
-        })}
-      </AccordionPrimitive.Root>
-    )
-  }
+    const isOpen = (itemVal: string) => {
+      if (isMultiple) {
+        return Array.isArray(currentVal) && currentVal.includes(itemVal)
+      }
+      return currentVal === itemVal
+    }
 
-  const singleDefault = defaultOpen.length > 0 ? (items[defaultOpen[0]]?.id || `item-${defaultOpen[0]}`) : undefined
+    const toggle = (itemVal: string) => {
+      if (isMultiple) {
+        const arr = Array.isArray(currentVal) ? [...currentVal] : []
+        const idx = arr.indexOf(itemVal)
+        if (idx >= 0) {
+          arr.splice(idx, 1)
+        } else {
+          arr.push(itemVal)
+        }
+        setCurrentVal(arr)
+      } else {
+        if (currentVal === itemVal) {
+          if (collapsible) setCurrentVal('')
+        } else {
+          setCurrentVal(itemVal)
+        }
+      }
+    }
 
-  return (
-    <AccordionPrimitive.Root
-      ref={ref as any}
-      type="single"
-      collapsible={collapsible}
-      defaultValue={singleDefault}
-      className={cn('rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800 shadow-sm', className)}
-      {...props}
-    >
-      {items.map((item: AccordionItemData, idx: number) => {
+    const content = items ? (
+      items.map((item: AccordionItemData, idx: number) => {
         const val = item.id || `item-${idx}`
         return (
           <AccordionItem key={val} value={val} disabled={item.disabled} className={itemClassName}>
@@ -203,15 +235,30 @@ export const Accordion = React.forwardRef<HTMLDivElement, AccordionProps>(({
             >
               {item.title}
             </AccordionTrigger>
-            <AccordionContent className={contentClassName}>
-              {item.content}
-            </AccordionContent>
+            <AccordionContent className={contentClassName}>{item.content}</AccordionContent>
           </AccordionItem>
         )
-      })}
-    </AccordionPrimitive.Root>
-  )
-})
+      })
+    ) : (
+      children
+    )
+
+    return (
+      <AccordionContext.Provider value={{ isOpen, toggle }}>
+        <div
+          ref={ref}
+          className={cn(
+            'rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800 shadow-sm',
+            className
+          )}
+          {...props}
+        >
+          {content}
+        </div>
+      </AccordionContext.Provider>
+    )
+  }
+)
 Accordion.displayName = 'Accordion'
 
 export default Accordion

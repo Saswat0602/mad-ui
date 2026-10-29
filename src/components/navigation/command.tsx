@@ -177,7 +177,7 @@ export const CommandSeparator = React.forwardRef<HTMLDivElement, CommandSeparato
     )
   }
 )
-import * as DialogPrimitive from '@radix-ui/react-dialog'
+import { Dialog, DialogContent, type DialogProps } from '../overlay/dialog'
 
 export interface CommandShortcutProps extends React.HTMLAttributes<HTMLSpanElement> {}
 
@@ -191,23 +191,20 @@ export const CommandShortcut: React.FC<CommandShortcutProps> = ({ className, ...
 }
 CommandShortcut.displayName = 'CommandShortcut'
 
-export interface CommandDialogProps extends DialogPrimitive.DialogProps {
+export interface CommandDialogProps extends DialogProps {
   children: React.ReactNode
   className?: string
 }
 
 export const CommandDialog: React.FC<CommandDialogProps> = ({ children, className, ...props }) => {
   return (
-    <DialogPrimitive.Root {...props}>
-      <DialogPrimitive.Portal>
-        <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
-        <DialogPrimitive.Content className="fixed left-[50%] top-[50%] z-50 w-full max-w-lg translate-x-[-50%] translate-y-[-50%] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 shadow-2xl duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] p-0">
-          <Command className={cn('border-none shadow-none', className)}>
-            {children}
-          </Command>
-        </DialogPrimitive.Content>
-      </DialogPrimitive.Portal>
-    </DialogPrimitive.Root>
+    <Dialog {...props}>
+      <DialogContent showCloseButton={false} className="p-0 overflow-hidden max-w-lg">
+        <Command className={cn('border-none shadow-none', className)}>
+          {children}
+        </Command>
+      </DialogContent>
+    </Dialog>
   )
 }
 CommandDialog.displayName = 'CommandDialog'

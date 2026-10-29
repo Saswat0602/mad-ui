@@ -94,49 +94,51 @@
 
 ## 🟢 Phase 2 — Primitives & Headless Rewrite (Weeks 4–10) — [COMPLETED]
 
-**Goal**: Rebuild interactive primitives on accessible headless foundations (Radix UI primitives). Every interactive component provides full WAI-ARIA roles, roving focus, portal mounting, focus trapping, and smooth animations without breaking backwards compatibility.
+**Goal**: Build 100% pure standalone, native React interactive primitives with zero external UI dependencies (0 `@radix-ui/*` packages). Every interactive component provides full WAI-ARIA roles, roving focus, portal mounting, focus trapping, Pointer Events, and smooth animations without breaking backwards compatibility.
 
 ### Completed Milestones
-- [x] **Shared Internals & Motion System**:
-  - Installed all 22 official `@radix-ui/react-*` primitive packages as direct library dependencies.
-  - Created `src/lib/compose-event-handlers.ts` for safe event handler chaining.
-  - Expanded `tailwind.config.js` and `src/styles.css` with keyframe animations (`accordion-down`, `accordion-up`, `collapsible-down`, `collapsible-up`, `caret-blink`, slide/zoom enter & exit utilities) and `@media (prefers-reduced-motion: reduce)` support.
+- [x] **Zero Third-Party UI Foundation (100% Pure Standalone Mad UI)**:
+  - Completely uninstalled all 24 `@radix-ui/*` packages from root `package.json`.
+  - Created native `src/lib/slot.tsx` implementing `Slot` and `Slottable` for `asChild` support.
+  - Created native `src/lib/use-controllable-state.ts` for dual controlled/uncontrolled state management.
+  - Created native `src/lib/use-click-outside.ts` for click-outside backdrop dismissal.
+  - Native `Portal` (`src/lib/portal.tsx`), focus trapping (`src/lib/focus.ts`), keyboard navigation (`src/lib/keyboard.ts`), and event chaining (`src/lib/compose-event-handlers.ts`).
 - [x] **Group 1 — Modal & Overlay Layer**:
-  - `Dialog`: Built on `@radix-ui/react-dialog` with focus trap, portal mounting, and backdrop blur.
-  - `AlertDialog`: Built on `@radix-ui/react-alert-dialog` for accessible destructive confirmations.
-  - `Sheet`: Multi-directional slide-out drawer (`top`, `bottom`, `left`, `right`) with smooth CSS animations.
-  - `Drawer` & `Modal`: Backwards-compatible accessible overlays backed by Radix Dialog.
+  - `Dialog`: Native portal mounting, focus trap, body scroll lock, backdrop blur, and Escape dismiss.
+  - `AlertDialog`: Destructive confirmation overlay with explicit action/cancel triggers and focus management.
+  - `Sheet`: Multi-directional slide-out drawer (`top`, `bottom`, `left`, `right`) with smooth animations.
+  - `Drawer` & `Modal`: Standalone accessible overlays with customizable dimensions and header/footer slots.
 - [x] **Group 2 — Floating Primitives**:
-  - `Popover`: Built on `@radix-ui/react-popover` supporting both compound and convenience `trigger` prop.
-  - `Tooltip`: Built on `@radix-ui/react-tooltip` with `TooltipProvider` and delay configuration.
-  - `HoverCard`: Built on `@radix-ui/react-hover-card` for rich preview content on hover.
+  - `Popover`: Standalone floating panel anchored to trigger bounding rect supporting both compound and convenience `trigger` prop.
+  - `Tooltip`: Standalone hover/focus tooltip with `TooltipProvider` and delay configuration.
+  - `HoverCard`: Standalone preview card with hover intent delays.
 - [x] **Group 3 — Menu Primitives**:
-  - `DropdownMenu`: Built on `@radix-ui/react-dropdown-menu` with submenus, checkboxes, radios, shortcuts, and roving focus.
-  - `ContextMenu`: Built on `@radix-ui/react-context-menu` for right-click desktop experiences.
-  - `Menubar`: Built on `@radix-ui/react-menubar` for horizontal application menubars.
+  - `DropdownMenu`: Native menu with submenus, checkboxes, radios, shortcuts, and click-outside dismissal.
+  - `ContextMenu`: Desktop right-click context menu positioning dynamically at pointer coordinates.
+  - `Menubar`: Horizontal application menubar with active menu hover switching.
 - [x] **Group 4 — Selection & Command**:
-  - `Select`: Built on `@radix-ui/react-select` with WAI-ARIA `role="listbox"`, roving focus, and check indicators.
-  - `Combobox`: Rebuilt with searchable popover list and portal mounting.
-  - `Command`: Added `CommandDialog` and `CommandShortcut`.
+  - `Select`: Native listbox with `role="listbox"`, item selection, trigger value display, and check indicators.
+  - `Combobox`: Searchable filter input with native popover dropdown.
+  - `Command`: Fast command palette with `CommandDialog` and `CommandShortcut`.
 - [x] **Group 5 — Navigation & Disclosure**:
-  - `Tabs`: Built on `@radix-ui/react-tabs` with roving arrow-key focus and dual compound + `items` API.
-  - `Accordion`: Built on `@radix-ui/react-accordion` with animated collapse using CSS variables and dual compound + `items` API.
-  - `Collapsible`: Built on `@radix-ui/react-collapsible` with smooth height animations.
+  - `Tabs`: Native tablist with roving keyboard navigation and dual compound + `items` API.
+  - `Accordion`: Native animated collapsible panels with single/multiple modes and dual compound + `items` API.
+  - `Collapsible`: Standalone collapsible section with smooth grid transitions.
 - [x] **Group 6 — Form Controls**:
-  - `Checkbox`: Built on `@radix-ui/react-checkbox` with indeterminate state, check icon, and label association.
-  - `Switch`: Built on `@radix-ui/react-switch` with animated thumb and synthetic event support.
-  - `RadioGroup`: Built on `@radix-ui/react-radio-group` with arrow-key navigation and label click targeting.
-  - `Slider`: Built on `@radix-ui/react-slider` with multi-thumb range support, touch/pointer capture, and zero listener leaks.
-  - `Toggle` & `ToggleGroup`: Built on `@radix-ui/react-toggle` and `@radix-ui/react-toggle-group`.
-- [x] **Group 7 — Layout & Scroll Primitives**:
-  - `ScrollArea`: Built on `@radix-ui/react-scroll-area` with draggable scrollbar thumbs and native gestures.
-  - `Separator`: Built on `@radix-ui/react-separator` with semantic ARIA roles and orientation styles.
-  - `Avatar`: Built on `@radix-ui/react-avatar` with image loading state management and fallbacks.
-  - `AspectRatio`: Updated with `forwardRef` and standard HTML div props.
+  - `Checkbox`: Accessible `role="checkbox"` with checked/unchecked/indeterminate states and label association.
+  - `Switch`: Accessible `role="switch"` with sliding thumb animation and synthetic event support.
+  - `RadioGroup`: Accessible `role="radiogroup"` with keyboard arrow selection and label click targeting.
+  - `Slider`: Pure Pointer Events slider with multi-thumb range support, touch capture, and zero listener leaks.
+  - `Toggle` & `ToggleGroup`: Single and multi-selection toggle buttons.
+- [x] **Group 7 — Layout & Media Primitives**:
+  - `ScrollArea`: Native scrollable container with customized scrollbar styling.
+  - `Separator`: Accessible separator with orientation and decorative modes.
+  - `Avatar`: Standalone avatar with image error detection and fallback initials.
+  - `AspectRatio`: Ratio-preserving container with `forwardRef`.
 - [x] **Automated Testing & Accessibility Expansion**:
-  - Expanded test suite from 21 to 34 passing tests in `tests/smoke.test.tsx`.
-  - Added automated `axe-core` accessibility tests for Checkbox, Switch, Tabs, Avatar, Button, and Card with 0 violations.
-  - Verified Next.js 16.4.3 documentation build across all 64 routes with 0 errors.
+  - All 34 tests passing in `tests/smoke.test.tsx` (StrictMode, SSR renderToString, axe-core audits).
+  - Next.js 16.4.3 documentation build verified across all 64 static routes with 0 errors.
+  - Package manifest and `publint` audits verified.
 
 ---
 

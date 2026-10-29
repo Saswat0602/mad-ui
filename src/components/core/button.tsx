@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import { cn, createVariants } from "../../lib/utils"
+import { Slot } from "../../lib/slot"
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
@@ -53,11 +54,13 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     leftIcon,
     rightIcon,
     fullWidth,
+    asChild = false,
     children,
     ...props
   }, ref) => {
+    const Comp = asChild ? Slot : "button"
     return (
-      <button
+      <Comp
         className={cn(
           buttonVariants({ variant, size }),
           fullWidth && "w-full",
@@ -92,7 +95,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         {!loading && leftIcon && <span className="shrink-0">{leftIcon}</span>}
         {children}
         {!loading && rightIcon && <span className="shrink-0">{rightIcon}</span>}
-      </button>
+      </Comp>
     )
   }
 )

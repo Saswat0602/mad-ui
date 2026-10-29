@@ -1,9 +1,18 @@
-import React from 'react'
-import * as AvatarPrimitive from '@radix-ui/react-avatar'
+"use client"
+
+import React, { createContext, useContext, useState, forwardRef } from 'react'
 import { cn } from '../../lib/utils'
 
-export interface AvatarProps
-  extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
+interface AvatarContextValue {
+  imageLoaded: boolean
+  setImageLoaded: (loaded: boolean) => void
+  imageError: boolean
+  setImageError: (error: boolean) => void
+}
+
+const AvatarContext = createContext<AvatarContextValue | null>(null)
+
+export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   src?: string
   alt?: string
   fallback?: React.ReactNode
@@ -11,96 +20,141 @@ export interface AvatarProps
   shape?: 'circle' | 'square'
 }
 
-export const AvatarImage = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Image>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Image
-    ref={ref}
-    className={cn('aspect-square h-full w-full object-cover', className)}
-    {...props}
-  />
-))
-AvatarImage.displayName = AvatarPrimitive.Image.displayName
+export interface AvatarImageProps extends React.ImgHTMLAttributes<HTMLImageElement> {}
 
-export const AvatarFallback = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Fallback>,
-  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
->(({ className, ...props }, ref) => (
-  <AvatarPrimitive.Fallback
-    ref={ref}
-    className={cn(
-      'flex h-full w-full items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold uppercase tracking-tight',
-      className
-    )}
-    {...props}
-  />
-))
-AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
+export const AvatarImage = forwardRef<HTMLImageElement, AvatarImageProps>(
+  ({ className, onLoad, onError, alt = 'Avatar', ...props }, ref) => {
+    const ctx = useContext(AvatarContext)
 
-export const Avatar = React.forwardRef<
-  React.ElementRef<typeof AvatarPrimitive.Root>,
-  AvatarProps
->(({
-  className,
-  src,
-  alt,
-  fallback,
-  size = 'md',
-  shape = 'circle',
-  children,
-  ...props
-}, ref) => {
-  const sizeClasses = {
-    sm: 'h-8 w-8 text-xs',
-    md: 'h-10 w-10 text-sm',
-    lg: 'h-12 w-12 text-base',
-    xl: 'h-16 w-16 text-lg',
-  }
+    const handleLoad = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+      ctx?.setImageLoaded(true)
+      ctx?.setImageError(false)
+      onLoad?.(e)
+    }
 
-  const shapeClasses = {
-    circle: 'rounded-full',
-    square: 'rounded-xl',
-  }
+    const handleError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+      ctx?.setImageLoaded(false)
+      ctx?.setImageError(true)
+      onError?.(e)
+    }
 
-  // If compound children are provided
-  if (children) {
+    if (ctx?.imageError) return null
+
     return (
-      <AvatarPrimitive.Root
+      <img
+        ref={ref}
+        alt={alt}
+        onLoad={handleLoad}
+        onError={handleError}
+        className={cn('aspect-square h-full w-full object-cover', className)}
+        {...props}
+      />
+    )
+  }
+)
+AvatarImage.displayName = 'AvatarImage'
+
+export interface AvatarFallbackProps extends React.HTMLAttributes<HTMLDivElement> {}
+
+export const AvatarFallback = forwardRef<HTMLDivElement, AvatarFallbackProps>(
+  ({ className, children, ...props }, ref) => {
+    const ctx = useContext(AvatarContext)
+
+    if (ctx && ctx.imageLoaded && !ctx.imageError) return null
+
+    return (
+      <div
         ref={ref}
         className={cn(
-          'relative inline-flex shrink-0 overflow-hidden font-semibold select-none border border-zinc-200/60 dark:border-zinc-800/60',
-          sizeClasses[size],
-          shapeClasses[shape],
+          'flex h-full w-full items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold uppercase tracking-tight select-none',
           className
         )}
         {...props}
       >
         {children}
-      </AvatarPrimitive.Root>
+      </div>
     )
   }
+)
+AvatarFallback.displayName = 'AvatarFallback'
 
-  // Direct props usage
-  return (
-    <AvatarPrimitive.Root
-      ref={ref}
-      className={cn(
-        'relative inline-flex shrink-0 overflow-hidden font-semibold select-none border border-zinc-200/60 dark:border-zinc-800/60',
-        sizeClasses[size],
-        shapeClasses[shape],
-        className
-      )}
-      {...props}
-    >
-      {src && <AvatarImage src={src} alt={alt || 'Avatar'} />}
-      <AvatarFallback>
-        {fallback || (alt ? alt.slice(0, 2).toUpperCase() : 'U')}
-      </AvatarFallback>
-    </AvatarPrimitive.Root>
-  )
-})
-Avatar.displayName = AvatarPrimitive.Root.displayName
+export const Avatar = forwardRef<HTMLDivElement, AvatarProps>(
+  (
+    {
+      className,
+      src,
+      alt,
+      fallback,
+      size = 'md',
+      shape = 'circle',
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const [imageLoaded, setImageLoaded] = useState(false)
+    const [imageError, setImageError] = useState(!src)
+
+    const sizeClasses = {
+      sm: 'h-8 w-8 text-xs',
+      md: 'h-10 w-10 text-sm',
+      lg: 'h-12 w-12 text-base',
+      xl: 'h-16 w-16 text-lg',
+    }
+
+    const shapeClasses = {
+      circle: 'rounded-full',
+      square: 'rounded-xl',
+    }
+
+    const contextValue = {
+      imageLoaded,
+      setImageLoaded,
+      imageError,
+      setImageError,
+    }
+
+    if (children) {
+      return (
+        <AvatarContext.Provider value={contextValue}>
+          <div
+            ref={ref}
+            className={cn(
+              'relative inline-flex shrink-0 overflow-hidden font-semibold select-none border border-zinc-200/60 dark:border-zinc-800/60',
+              sizeClasses[size],
+              shapeClasses[shape],
+              className
+            )}
+            {...props}
+          >
+            {children}
+          </div>
+        </AvatarContext.Provider>
+      )
+    }
+
+    return (
+      <AvatarContext.Provider value={contextValue}>
+        <div
+          ref={ref}
+          className={cn(
+            'relative inline-flex shrink-0 overflow-hidden font-semibold select-none border border-zinc-200/60 dark:border-zinc-800/60',
+            sizeClasses[size],
+            shapeClasses[shape],
+            className
+          )}
+          {...props}
+        >
+          {src && <AvatarImage src={src} alt={alt || 'Avatar'} />}
+          <AvatarFallback>
+            {fallback || (alt ? alt.slice(0, 2).toUpperCase() : 'U')}
+          </AvatarFallback>
+        </div>
+      </AvatarContext.Provider>
+    )
+  }
+)
+Avatar.displayName = 'Avatar'
 
 export interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
