@@ -1,126 +1,71 @@
-import React, { useState } from 'react'
+import React from 'react'
+import * as CollapsiblePrimitive from '@radix-ui/react-collapsible'
 import { cn } from '../../lib/utils'
 
-export interface CollapsibleProps {
-  children: React.ReactNode
-  className?: string
-  defaultOpen?: boolean
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  disabled?: boolean
+export interface CollapsibleProps extends React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.Root> {
   onToggle?: (isOpen: boolean) => void
   onExpand?: () => void
   onCollapse?: () => void
-  animation?: 'slide' | 'fade' | 'scale' | 'none'
-  animationDuration?: number
-  onAnimationStart?: () => void
-  onAnimationEnd?: () => void
-  theme?: 'light' | 'dark' | 'auto'
-  locale?: string
-  rtl?: boolean
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
+}
+
+export const Collapsible = React.forwardRef<
+  React.ElementRef<typeof CollapsiblePrimitive.Root>,
+  CollapsibleProps
+>(({ onToggle, onExpand, onCollapse, onOpenChange, ...props }, ref) => {
+  const handleOpenChange = (open: boolean) => {
+    onOpenChange?.(open)
+    onToggle?.(open)
+    if (open) {
+      onExpand?.()
+    } else {
+      onCollapse?.()
+    }
   }
-}
-
-export interface CollapsibleTriggerProps {
-  children: React.ReactNode
-  asChild?: boolean
-  className?: string
-  onClick?: () => void
-}
-
-export interface CollapsibleContentProps {
-  children: React.ReactNode
-  className?: string
-}
-
-export const Collapsible: React.FC<CollapsibleProps> = ({
-  children,
-  className,
-  defaultOpen = false
-}) => {
-  const [isOpen, setIsOpen] = useState(defaultOpen)
 
   return (
-    <div className={cn('w-full', className)}>
-      {React.Children.map(children, (child) => {
-        if (React.isValidElement(child)) {
-          const c = child as React.ReactElement<any>
-          if (child.type === CollapsibleTrigger) {
-            return React.cloneElement(c, {
-              onClick: () => setIsOpen(!isOpen)
-            })
-          }
-          if (child.type === CollapsibleContent) {
-            return React.cloneElement(c, {
-              isOpen
-            })
-          }
-        }
-        return child
-      })}
-    </div>
+    <CollapsiblePrimitive.Root
+      ref={ref}
+      onOpenChange={handleOpenChange}
+      {...props}
+    />
   )
-}
+})
+Collapsible.displayName = CollapsiblePrimitive.Root.displayName
 
-export const CollapsibleTrigger: React.FC<CollapsibleTriggerProps> = ({
-  children,
-  asChild = false,
-  className,
-  onClick
-}) => {
-  if (asChild && React.isValidElement(children)) {
-    const child = children as React.ReactElement<any>
-    return React.cloneElement(child, {
-      className: cn(child.props.className, className),
-      onClick
-    })
-  }
-  
-  return (
-    <button
-      type="button"
-      className={cn(
-        'flex w-full items-center justify-between py-4 font-medium transition-all hover:underline [&[data-state=open]>svg]:rotate-180',
-        className
-      )}
-      onClick={onClick}
-    >
-      {children}
-    </button>
-  )
-}
+export interface CollapsibleTriggerProps
+  extends React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.CollapsibleTrigger> {}
 
-export const CollapsibleContent: React.FC<CollapsibleContentProps & { isOpen?: boolean }> = ({
-  children,
-  className,
-  isOpen
-}) => {
-  if (!isOpen) return null
+export const CollapsibleTrigger = React.forwardRef<
+  React.ElementRef<typeof CollapsiblePrimitive.CollapsibleTrigger>,
+  CollapsibleTriggerProps
+>(({ className, ...props }, ref) => (
+  <CollapsiblePrimitive.CollapsibleTrigger
+    ref={ref}
+    className={cn(
+      'flex items-center justify-between font-medium transition-all outline-none',
+      className
+    )}
+    {...props}
+  />
+))
+CollapsibleTrigger.displayName = CollapsiblePrimitive.CollapsibleTrigger.displayName
 
-  return (
-    <div
-      className={cn(
-        'overflow-hidden text-sm transition-all data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down',
-        className
-      )}
-    >
-      <div className="pb-4 pt-0">
-        {children}
-      </div>
-    </div>
-  )
-}
+export interface CollapsibleContentProps
+  extends React.ComponentPropsWithoutRef<typeof CollapsiblePrimitive.CollapsibleContent> {}
+
+export const CollapsibleContent = React.forwardRef<
+  React.ElementRef<typeof CollapsiblePrimitive.CollapsibleContent>,
+  CollapsibleContentProps
+>(({ className, ...props }, ref) => (
+  <CollapsiblePrimitive.CollapsibleContent
+    ref={ref}
+    className={cn(
+      'overflow-hidden transition-all data-[state=closed]:animate-collapsible-up data-[state=open]:animate-collapsible-down',
+      className
+    )}
+    {...props}
+  />
+))
+CollapsibleContent.displayName = CollapsiblePrimitive.CollapsibleContent.displayName
+
+export default Collapsible

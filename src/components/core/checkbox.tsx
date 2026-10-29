@@ -1,110 +1,127 @@
-"use client"
+import React from 'react'
+import * as CheckboxPrimitive from '@radix-ui/react-checkbox'
+import { Check, Minus } from 'lucide-react'
+import { cn } from '../../lib/utils'
 
-import * as React from "react"
-import { cn, createVariants } from "../../lib/utils"
-
-export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface CheckboxProps
+  extends Omit<React.ComponentPropsWithoutRef<typeof CheckboxPrimitive.Root>, 'checked' | 'defaultChecked' | 'onChange'> {
   label?: string
   description?: string
   error?: boolean
   indeterminate?: boolean
-  size?: "sm" | "md" | "lg"
+  size?: 'sm' | 'md' | 'lg'
+  checked?: boolean | 'indeterminate'
+  defaultChecked?: boolean | 'indeterminate'
+  onChange?: (e: any) => void
 }
 
-const checkboxVariants = createVariants({
-  base: "peer h-4 w-4 shrink-0 rounded border border-zinc-300 dark:border-zinc-700 bg-background text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 accent-blue-600 transition-all cursor-pointer",
-  variants: {
-    size: {
-      sm: "h-3.5 w-3.5",
-      md: "h-4 w-4",
-      lg: "h-5 w-5",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-  },
-})
+export const Checkbox = React.forwardRef<
+  React.ElementRef<typeof CheckboxPrimitive.Root>,
+  CheckboxProps
+>(({
+  className,
+  label,
+  description,
+  error,
+  indeterminate,
+  size = 'md',
+  id,
+  checked,
+  defaultChecked,
+  disabled,
+  onChange,
+  onCheckedChange,
+  ...props
+}, ref) => {
+  const generatedId = React.useId()
+  const checkboxId = id || generatedId
 
-const Checkbox = React.forwardRef<HTMLInputElement, CheckboxProps>(
-  ({ className, label, description, error, indeterminate, size = "md", id, ...props }, ref) => {
-    const checkboxRef = React.useRef<HTMLInputElement>(null)
+  const computedChecked = indeterminate ? 'indeterminate' : checked
+  const computedDefaultChecked = indeterminate ? 'indeterminate' : defaultChecked
 
-    // Combine refs
-    React.useImperativeHandle(ref, () => checkboxRef.current!)
+  const handleCheckedChange = (state: CheckboxPrimitive.CheckedState) => {
+    onCheckedChange?.(state)
+    if (onChange) {
+      onChange({
+        target: { checked: state === true, value: String(state) },
+        currentTarget: { checked: state === true },
+        preventDefault: () => {},
+        stopPropagation: () => {},
+      })
+    }
+  }
 
-    // Set indeterminate state
-    React.useEffect(() => {
-      if (checkboxRef.current) {
-        checkboxRef.current.indeterminate = indeterminate || false
-      }
-    }, [indeterminate])
+  const sizeClasses = {
+    sm: 'h-3.5 w-3.5 rounded',
+    md: 'h-4 w-4 rounded-md',
+    lg: 'h-5 w-5 rounded-md',
+  }
 
-    const generatedId = React.useId()
-    const checkboxId = id || generatedId
+  const iconSizes = {
+    sm: 'h-2.5 w-2.5 stroke-[3]',
+    md: 'h-3.5 w-3.5 stroke-[3]',
+    lg: 'h-4 w-4 stroke-[3]',
+  }
 
-    return (
-      <div className="flex items-start space-x-3">
-        <div className="relative flex items-center h-5">
-          <input
-            type="checkbox"
-            ref={checkboxRef}
-            id={checkboxId}
+  const checkboxNode = (
+    <CheckboxPrimitive.Root
+      ref={ref}
+      id={checkboxId}
+      checked={computedChecked}
+      defaultChecked={computedDefaultChecked}
+      onCheckedChange={handleCheckedChange}
+      disabled={disabled}
+      className={cn(
+        'peer shrink-0 border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50',
+        'data-[state=checked]:bg-blue-600 data-[state=checked]:border-blue-600 data-[state=checked]:text-white',
+
+        'data-[state=indeterminate]:bg-blue-600 data-[state=indeterminate]:border-blue-600 data-[state=indeterminate]:text-white',
+        error && 'border-red-500 dark:border-red-500',
+        sizeClasses[size],
+        className
+      )}
+      {...props}
+    >
+      <CheckboxPrimitive.Indicator className="flex items-center justify-center text-current">
+        {indeterminate ? (
+          <Minus className={iconSizes[size]} />
+        ) : (
+          <Check className={iconSizes[size]} />
+        )}
+      </CheckboxPrimitive.Indicator>
+    </CheckboxPrimitive.Root>
+  )
+
+  if (!label && !description) {
+    return checkboxNode
+  }
+
+  return (
+    <div className="flex items-start space-x-2.5">
+      <div className="flex items-center h-5">
+        {checkboxNode}
+      </div>
+      <div className="grid gap-1 leading-none select-none">
+        {label && (
+          <label
+            htmlFor={checkboxId}
             className={cn(
-              checkboxVariants({ size }),
-              error && "border-destructive",
-              className
+              'text-sm font-medium leading-none cursor-pointer text-zinc-900 dark:text-zinc-100',
+              disabled && 'cursor-not-allowed opacity-70'
             )}
-            {...props}
-          />
-          {/* Check icon */}
-          {props.checked && !indeterminate && (
-            <svg
-              className="absolute inset-0 h-full w-full p-0.5 text-primary-foreground pointer-events-none"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={3}
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
-          )}
-          {/* Indeterminate icon */}
-          {indeterminate && (
-            <svg
-              className="absolute inset-0 h-full w-full p-1 text-primary-foreground pointer-events-none"
-              fill="currentColor"
-              viewBox="0 0 20 20"
-            >
-              <path fillRule="evenodd" d="M3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clipRule="evenodd" />
-            </svg>
-          )}
-        </div>
-
-        {(label || description) && (
-          <div className="grid gap-1.5 leading-none">
-            {label && (
-              <label
-                htmlFor={checkboxId}
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-              >
-                {label}
-              </label>
-            )}
-            {description && (
-              <p className={cn(
-                "text-sm text-muted-foreground",
-                error && "text-destructive"
-              )}>
-                {description}
-              </p>
-            )}
-          </div>
+          >
+            {label}
+          </label>
+        )}
+        {description && (
+          <p className={cn('text-xs text-zinc-500 dark:text-zinc-400', error && 'text-red-500 dark:text-red-400')}>
+            {description}
+          </p>
         )}
       </div>
-    )
-  }
-)
+    </div>
+  )
+})
+Checkbox.displayName = 'Checkbox'
 
-Checkbox.displayName = "Checkbox"
-
-export { Checkbox }
+export default Checkbox

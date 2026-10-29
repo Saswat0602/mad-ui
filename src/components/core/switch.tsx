@@ -1,109 +1,113 @@
-"use client"
+import React from 'react'
+import * as SwitchPrimitive from '@radix-ui/react-switch'
+import { cn } from '../../lib/utils'
 
-import * as React from "react"
-import { cn, createVariants } from "../../lib/utils"
-
-export interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'size'> {
+export interface SwitchProps
+  extends Omit<React.ComponentPropsWithoutRef<typeof SwitchPrimitive.Root>, 'onChange'> {
   label?: string
   description?: string
-  size?: "sm" | "md" | "lg"
+  size?: 'sm' | 'md' | 'lg'
+  onChange?: (e: any) => void
 }
 
-const switchVariants = createVariants({
-  base: "peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent shadow-xs transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 data-[state=checked]:bg-blue-600 dark:data-[state=checked]:bg-blue-500 data-[state=unchecked]:bg-zinc-200 dark:data-[state=unchecked]:bg-zinc-700",
-  variants: {
-    size: {
-      sm: "h-5 w-9",
-      md: "h-6 w-11",
-      lg: "h-7 w-14",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-  },
-})
 
-const thumbVariants = createVariants({
-  base: "pointer-events-none block rounded-full bg-white dark:bg-zinc-100 shadow-md ring-0 transition-transform data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0",
-  variants: {
-    size: {
-      sm: "h-4 w-4 data-[state=checked]:translate-x-4",
-      md: "h-5 w-5 data-[state=checked]:translate-x-5",
-      lg: "h-6 w-6 data-[state=checked]:translate-x-7",
-    },
-  },
-  defaultVariants: {
-    size: "md",
-  },
-})
+export const Switch = React.forwardRef<
+  React.ElementRef<typeof SwitchPrimitive.Root>,
+  SwitchProps
+>(({
+  className,
+  label,
+  description,
+  size = 'md',
+  id,
+  disabled,
+  checked,
+  defaultChecked,
+  onCheckedChange,
+  onChange,
+  ...props
+}, ref) => {
+  const generatedId = React.useId()
+  const switchId = id || generatedId
 
-const Switch = React.forwardRef<HTMLInputElement, SwitchProps>(
-  ({ className, label, description, size = "md", id, checked, ...props }, ref) => {
-    const [isChecked, setIsChecked] = React.useState(checked || false)
-    const generatedId = React.useId()
-    const switchId = id || generatedId
-
-    React.useEffect(() => {
-      if (checked !== undefined) {
-        setIsChecked(checked)
-      }
-    }, [checked])
-
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      setIsChecked(e.target.checked)
-      props.onChange?.(e)
+  const handleCheckedChange = (state: boolean) => {
+    onCheckedChange?.(state)
+    if (onChange) {
+      onChange({
+        target: { checked: state, value: String(state) },
+        currentTarget: { checked: state },
+        preventDefault: () => {},
+        stopPropagation: () => {},
+      })
     }
+  }
 
-    return (
-      <div className="flex items-center space-x-3">
-        <button
-          type="button"
-          role="switch"
-          aria-checked={isChecked}
-          data-state={isChecked ? "checked" : "unchecked"}
-          className={cn(switchVariants({ size }), className)}
-          onClick={() => {
-            const input = document.getElementById(switchId) as HTMLInputElement
-            input?.click()
-          }}
-        >
-          <span
-            data-state={isChecked ? "checked" : "unchecked"}
-            className={thumbVariants({ size })}
-          />
-        </button>
-        <input
-          type="checkbox"
-          id={switchId}
-          ref={ref}
-          className="sr-only"
-          checked={isChecked}
-          {...props}
-          onChange={handleChange}
-        />
 
-        {(label || description) && (
-          <div className="grid gap-1.5 leading-none">
-            {label && (
-              <label
-                htmlFor={switchId}
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-              >
-                {label}
-              </label>
+  const rootSizes = {
+    sm: 'h-4 w-7',
+    md: 'h-5 w-9',
+    lg: 'h-6 w-11',
+  }
+
+  const thumbSizes = {
+    sm: 'h-3 w-3 data-[state=checked]:translate-x-3 data-[state=unchecked]:translate-x-0.5',
+    md: 'h-4 w-4 data-[state=checked]:translate-x-4 data-[state=unchecked]:translate-x-0.5',
+    lg: 'h-5 w-5 data-[state=checked]:translate-x-5 data-[state=unchecked]:translate-x-0.5',
+  }
+
+  const switchNode = (
+    <SwitchPrimitive.Root
+      ref={ref}
+      id={switchId}
+      checked={checked}
+      defaultChecked={defaultChecked}
+      onCheckedChange={handleCheckedChange}
+      disabled={disabled}
+      className={cn(
+        'peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-zinc-950 disabled:cursor-not-allowed disabled:opacity-50',
+        'data-[state=checked]:bg-blue-600 dark:data-[state=checked]:bg-blue-600 data-[state=unchecked]:bg-zinc-200 dark:data-[state=unchecked]:bg-zinc-700',
+        rootSizes[size],
+        className
+      )}
+      {...props}
+    >
+      <SwitchPrimitive.Thumb
+        className={cn(
+          'pointer-events-none block rounded-full bg-white shadow-md ring-0 transition-transform duration-200 ease-in-out',
+          thumbSizes[size]
+        )}
+      />
+    </SwitchPrimitive.Root>
+  )
+
+  if (!label && !description) {
+    return switchNode
+  }
+
+  return (
+    <div className="flex items-center space-x-3">
+      {switchNode}
+      <div className="grid gap-1 leading-none select-none">
+        {label && (
+          <label
+            htmlFor={switchId}
+            className={cn(
+              'text-sm font-medium leading-none cursor-pointer text-zinc-900 dark:text-zinc-100',
+              disabled && 'cursor-not-allowed opacity-70'
             )}
-            {description && (
-              <p className="text-sm text-muted-foreground">
-                {description}
-              </p>
-            )}
-          </div>
+          >
+            {label}
+          </label>
+        )}
+        {description && (
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            {description}
+          </p>
         )}
       </div>
-    )
-  }
-)
+    </div>
+  )
+})
+Switch.displayName = 'Switch'
 
-Switch.displayName = "Switch"
-
-export { Switch }
+export default Switch

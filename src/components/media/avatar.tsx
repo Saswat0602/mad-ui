@@ -1,7 +1,9 @@
 import React from 'react'
+import * as AvatarPrimitive from '@radix-ui/react-avatar'
 import { cn } from '../../lib/utils'
 
-export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
+export interface AvatarProps
+  extends React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Root> {
   src?: string
   alt?: string
   fallback?: React.ReactNode
@@ -9,7 +11,37 @@ export interface AvatarProps extends React.HTMLAttributes<HTMLDivElement> {
   shape?: 'circle' | 'square'
 }
 
-export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(({
+export const AvatarImage = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Image>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Image>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Image
+    ref={ref}
+    className={cn('aspect-square h-full w-full object-cover', className)}
+    {...props}
+  />
+))
+AvatarImage.displayName = AvatarPrimitive.Image.displayName
+
+export const AvatarFallback = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Fallback>,
+  React.ComponentPropsWithoutRef<typeof AvatarPrimitive.Fallback>
+>(({ className, ...props }, ref) => (
+  <AvatarPrimitive.Fallback
+    ref={ref}
+    className={cn(
+      'flex h-full w-full items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 font-semibold uppercase tracking-tight',
+      className
+    )}
+    {...props}
+  />
+))
+AvatarFallback.displayName = AvatarPrimitive.Fallback.displayName
+
+export const Avatar = React.forwardRef<
+  React.ElementRef<typeof AvatarPrimitive.Root>,
+  AvatarProps
+>(({
   className,
   src,
   alt,
@@ -19,24 +51,22 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(({
   children,
   ...props
 }, ref) => {
-  const [imageError, setImageError] = React.useState(false)
-
   const sizeClasses = {
     sm: 'h-8 w-8 text-xs',
     md: 'h-10 w-10 text-sm',
     lg: 'h-12 w-12 text-base',
-    xl: 'h-16 w-16 text-lg'
-  }
-  
-  const shapeClasses = {
-    circle: 'rounded-full',
-    square: 'rounded-xl'
+    xl: 'h-16 w-16 text-lg',
   }
 
-  // If children passed, support declarative Radix/Shadcn compound usage
+  const shapeClasses = {
+    circle: 'rounded-full',
+    square: 'rounded-xl',
+  }
+
+  // If compound children are provided
   if (children) {
     return (
-      <div
+      <AvatarPrimitive.Root
         ref={ref}
         className={cn(
           'relative inline-flex shrink-0 overflow-hidden font-semibold select-none border border-zinc-200/60 dark:border-zinc-800/60',
@@ -47,12 +77,13 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(({
         {...props}
       >
         {children}
-      </div>
+      </AvatarPrimitive.Root>
     )
   }
-  
+
+  // Direct props usage
   return (
-    <div
+    <AvatarPrimitive.Root
       ref={ref}
       className={cn(
         'relative inline-flex shrink-0 overflow-hidden font-semibold select-none border border-zinc-200/60 dark:border-zinc-800/60',
@@ -62,81 +93,45 @@ export const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(({
       )}
       {...props}
     >
-      {src && !imageError ? (
-        <img
-          src={src}
-          alt={alt || 'Avatar'}
-          onError={() => setImageError(true)}
-          className={cn(
-            'h-full w-full object-cover',
-            shapeClasses[shape]
-          )}
-        />
-      ) : (
-        <div
-          className={cn(
-            'flex h-full w-full items-center justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 uppercase tracking-tight',
-            shapeClasses[shape]
-          )}
-        >
-          {fallback || alt?.slice(0, 2).toUpperCase() || 'U'}
-        </div>
-      )}
-    </div>
+      {src && <AvatarImage src={src} alt={alt || 'Avatar'} />}
+      <AvatarFallback>
+        {fallback || (alt ? alt.slice(0, 2).toUpperCase() : 'U')}
+      </AvatarFallback>
+    </AvatarPrimitive.Root>
   )
 })
-Avatar.displayName = 'Avatar'
+Avatar.displayName = AvatarPrimitive.Root.displayName
 
-export const AvatarImage = React.forwardRef<
-  HTMLImageElement,
-  React.ImgHTMLAttributes<HTMLImageElement>
->(({ className, ...props }, ref) => (
-  <img
-    ref={ref}
-    className={cn('aspect-square h-full w-full object-cover', className)}
-    {...props}
-  />
-))
-AvatarImage.displayName = 'AvatarImage'
-
-export const AvatarFallback = React.forwardRef<
-  HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
->(({ className, ...props }, ref) => (
-  <div
-    ref={ref}
-    className={cn(
-      'flex h-full w-full items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 text-zinc-700 dark:text-zinc-300 text-xs font-semibold uppercase',
-      className
-    )}
-    {...props}
-  />
-))
-AvatarFallback.displayName = 'AvatarFallback'
-
-export const AvatarGroup: React.FC<{
+export interface AvatarGroupProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
-  className?: string
   max?: number
-}> = ({ children, className, max }) => {
+}
+
+export const AvatarGroup: React.FC<AvatarGroupProps> = ({
+  children,
+  className,
+  max,
+  ...props
+}) => {
   const childrenArray = React.Children.toArray(children)
   const displayCount = max ? Math.min(childrenArray.length, max) : childrenArray.length
   const hiddenCount = max ? Math.max(0, childrenArray.length - max) : 0
-  
+
   return (
-    <div className={cn('flex -space-x-2.5 items-center', className)}>
+    <div className={cn('flex -space-x-2.5 items-center', className)} {...props}>
       {childrenArray.slice(0, displayCount).map((child, index) => (
-        <div key={index} className="ring-2 ring-background rounded-full shrink-0">
+        <div key={index} className="ring-2 ring-white dark:ring-zinc-950 rounded-full shrink-0">
           {child}
         </div>
       ))}
       {hiddenCount > 0 && (
-        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-200 dark:bg-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 ring-2 ring-background shrink-0">
+        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-zinc-200 dark:bg-zinc-800 text-xs font-semibold text-zinc-700 dark:text-zinc-300 ring-2 ring-white dark:ring-zinc-950 shrink-0">
           +{hiddenCount}
         </div>
       )}
     </div>
   )
 }
+AvatarGroup.displayName = 'AvatarGroup'
 
 export default Avatar

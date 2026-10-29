@@ -5,7 +5,9 @@ export {
   CommandEmpty, 
   CommandGroup, 
   CommandItem, 
-  CommandSeparator 
+  CommandSeparator,
+  CommandShortcut,
+  CommandDialog
 } from '../components/navigation/command'
 export type { 
   CommandProps, 
@@ -14,5 +16,8 @@ export type {
   CommandEmptyProps, 
   CommandGroupProps, 
   CommandItemProps, 
-  CommandSeparatorProps 
+  CommandSeparatorProps,
+  CommandShortcutProps,
+  CommandDialogProps
 } from '../components/navigation/command'
+

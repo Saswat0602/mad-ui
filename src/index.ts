@@ -18,12 +18,12 @@ export { Textarea } from './components/core/textarea'
 
 // Form Components
 export { RadioGroup, RadioGroupItem } from './components/forms/radio-group'
-export { Accordion } from './components/forms/accordion'
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './components/forms/accordion'
 export { Calendar } from './components/forms/calendar'
 export { DateTimePicker } from './components/forms/datetime-picker'
 export { InputOTP, InputOTPGroup, InputOTPSlot } from './components/forms/input-otp'
 export { Breadcrumbs } from './components/forms/breadcrumbs'
-export { Tabs } from './components/forms/tabs'
+export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/forms/tabs'
 export { 
   Form, 
   FormField, 
@@ -94,7 +94,7 @@ export {
   DropdownMenuSubTrigger,
   DropdownMenuRadioGroup
 } from './components/overlay/dropdown-menu'
-export { Toggle, ToggleGroup } from './components/overlay/toggle'
+export { Toggle, ToggleGroup, ToggleGroupItem } from './components/overlay/toggle'
 export { Separator } from './components/overlay/separator'
 
 // Layout Components
@@ -167,7 +167,7 @@ export {
   MenubarLabel, 
   MenubarGroup 
 } from './components/navigation/menubar'
-export { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator } from './components/navigation/command'
+export { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator, CommandShortcut, CommandDialog } from './components/navigation/command'
 export { Combobox } from './components/navigation/combobox'
 export { Pagination, PaginationItem, PaginationContent, PaginationEllipsis } from './components/navigation/pagination'
 
@@ -216,7 +216,7 @@ export type { SkeletonProps } from './components/core/skeleton'
 export type { TextareaProps } from './components/core/textarea'
 
 export type { RadioGroupProps, RadioGroupItemProps } from './components/forms/radio-group'
-export type { AccordionProps, AccordionItem } from './components/forms/accordion'
+export type { AccordionProps, AccordionItemData, AccordionItemProps, AccordionTriggerProps, AccordionContentProps } from './components/forms/accordion'
 export type { CalendarProps } from './components/forms/calendar'
 export type { DateTimePickerProps } from './components/forms/datetime-picker'
 export type { InputOTPProps, InputOTPGroupProps, InputOTPSlotProps } from './components/forms/input-otp'
@@ -289,7 +289,7 @@ export type {
   DropdownMenuSubTriggerProps,
   DropdownMenuRadioGroupProps
 } from './components/overlay/dropdown-menu'
-export type { ToggleProps } from './components/overlay/toggle'
+export type { ToggleProps, ToggleGroupProps, ToggleGroupItemProps } from './components/overlay/toggle'
 export type { SeparatorProps } from './components/overlay/separator'
 
 export type { LayoutProps } from './components/layout/layout'

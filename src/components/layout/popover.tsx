@@ -1,316 +1,117 @@
+"use client"
+
 import * as React from "react"
+import * as PopoverPrimitive from "@radix-ui/react-popover"
 import { cn } from "../../lib/utils"
-import { X } from "lucide-react"
 
-interface PopoverContextType {
-  open: boolean
-  setOpen: (open: boolean) => void
-}
-
-const PopoverContext = React.createContext<PopoverContextType | null>(null)
-
-export const usePopover = () => {
-  const context = React.useContext(PopoverContext)
-  return context
-}
-
-export interface PopoverProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
+export type PopoverProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Root> & {
   isOpen?: boolean
-  open?: boolean
-  defaultOpen?: boolean
   onClose?: () => void
-  onOpenChange?: (open: boolean) => void
   trigger?: React.ReactNode
-  children: React.ReactNode
-  placement?: "top" | "bottom" | "left" | "right" | "top-start" | "top-end" | "bottom-start" | "bottom-end" | "left-start" | "left-end" | "right-start" | "right-end"
-  side?: "top" | "bottom" | "left" | "right"
-  size?: "sm" | "md" | "lg" | "xl"
-  variant?: "default" | "outlined" | "filled"
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  borderRadius?: string | number
-  shadow?: "none" | "sm" | "md" | "lg" | "xl"
-  arrow?: boolean
-  arrowColor?: string
-  offset?: number
-  closeOnClickOutside?: boolean
-  closeOnEscape?: boolean
-  showCloseButton?: boolean
-  zIndex?: number
-}
-
-export interface PopoverTriggerProps {
-  children: React.ReactNode
-  asChild?: boolean
-  className?: string
-}
-
-export interface PopoverContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  children: React.ReactNode
-  align?: "start" | "center" | "end"
-  side?: "top" | "bottom" | "left" | "right"
-  sideOffset?: number
-}
-
-export interface PopoverCloseProps {
+  placement?: "top" | "bottom" | "left" | "right"
   children?: React.ReactNode
-  className?: string
 }
 
-const Popover = React.forwardRef<HTMLDivElement, PopoverProps>(
-  ({ 
-    className, 
-    isOpen: legacyIsOpen, 
-    open: controlledOpen,
-    defaultOpen = false,
-    onClose, 
-    onOpenChange,
-    trigger, 
-    children,
-    placement = "bottom",
-    side,
-    size = "md",
-    variant = "default",
-    color,
-    backgroundColor,
-    borderColor,
-    textColor,
-    borderRadius,
-    shadow = "lg",
-    arrow = false,
-    closeOnClickOutside = true,
-    closeOnEscape = true,
-    showCloseButton = false,
-    zIndex = 50,
-    style,
-    ...props 
-  }, ref) => {
-    const isControlled = controlledOpen !== undefined || legacyIsOpen !== undefined
-    const effectiveOpen = controlledOpen !== undefined ? controlledOpen : legacyIsOpen !== undefined ? legacyIsOpen : false
-    const [uncontrolledOpen, setUncontrolledOpen] = React.useState(defaultOpen)
-    const open = isControlled ? effectiveOpen : uncontrolledOpen
+export type PopoverTriggerProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Trigger>
+export type PopoverAnchorProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Anchor>
+export type PopoverCloseProps = React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Close>
 
-    const triggerRef = React.useRef<HTMLDivElement>(null)
-    const popoverRef = React.useRef<HTMLDivElement>(null)
+export interface PopoverContentProps
+  extends React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content> {
+  showArrow?: boolean
+}
 
-    const setOpen = (newOpen: boolean) => {
-      if (!isControlled) {
-        setUncontrolledOpen(newOpen)
-      }
-      onOpenChange?.(newOpen)
-      if (!newOpen && onClose) {
-        onClose()
-      }
-    }
+const PopoverRoot = PopoverPrimitive.Root
+const PopoverTrigger = PopoverPrimitive.Trigger
+const PopoverAnchor = PopoverPrimitive.Anchor
+const PopoverClose = PopoverPrimitive.Close
 
-    // Escape listener
-    React.useEffect(() => {
-      const handleEscape = (e: KeyboardEvent) => {
-        if (e.key === "Escape" && closeOnEscape && open) {
-          setOpen(false)
-        }
-      }
-
-      if (open) {
-        document.addEventListener("keydown", handleEscape)
-      }
-      return () => {
-        document.removeEventListener("keydown", handleEscape)
-      }
-    }, [open, closeOnEscape])
-
-    // Click outside listener
-    React.useEffect(() => {
-      const handleClickOutside = (e: MouseEvent) => {
-        if (
-          closeOnClickOutside &&
-          open &&
-          popoverRef.current &&
-          !popoverRef.current.contains(e.target as Node) &&
-          triggerRef.current &&
-          !triggerRef.current.contains(e.target as Node)
-        ) {
-          setOpen(false)
-        }
-      }
-
-      if (open) {
-        document.addEventListener("mousedown", handleClickOutside)
-      }
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside)
-      }
-    }, [open, closeOnClickOutside])
-
-    const effectivePlacement = side || placement
-
-    const getPlacementClasses = () => {
-      if (effectivePlacement.startsWith("top")) return "bottom-full left-1/2 -translate-x-1/2 mb-2"
-      if (effectivePlacement.startsWith("bottom")) return "top-full left-1/2 -translate-x-1/2 mt-2"
-      if (effectivePlacement.startsWith("left")) return "right-full top-1/2 -translate-y-1/2 mr-2"
-      if (effectivePlacement.startsWith("right")) return "left-full top-1/2 -translate-y-1/2 ml-2"
-      return "top-full left-0 mt-2"
-    }
-
-    const sizeClasses = {
-      sm: "w-64 p-3",
-      md: "w-80 p-4",
-      lg: "w-96 p-5",
-      xl: "w-[28rem] p-6"
-    }
-
-    // Legacy trigger prop API
-    if (trigger !== undefined) {
-      return (
-        <div ref={ref} className="relative inline-block" {...props}>
-          <div
-            ref={triggerRef}
-            onClick={() => setOpen(!open)}
-            className="cursor-pointer"
-          >
-            {trigger}
-          </div>
-
-          {open && (
-            <div
-              ref={popoverRef}
-              className={cn(
-                "absolute z-50 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 shadow-xl animate-in fade-in-0 zoom-in-95 duration-150",
-                getPlacementClasses(),
-                sizeClasses[size],
-                className
-              )}
-              style={style}
-            >
-              {showCloseButton && (
-                <button
-                  onClick={() => setOpen(false)}
-                  className="absolute top-2.5 right-2.5 p-1 rounded-md text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer"
-                  aria-label="Close popover"
-                >
-                  <X className="h-3.5 w-3.5" />
-                </button>
-              )}
-              {children}
-            </div>
-          )}
-        </div>
-      )
-    }
-
-    // Compound component API
-    return (
-      <PopoverContext.Provider value={{ open, setOpen }}>
-        <div ref={ref} className={cn("relative inline-block", className)} style={style} {...props}>
-          {children}
-        </div>
-      </PopoverContext.Provider>
-    )
-  }
-)
-
-Popover.displayName = "Popover"
-
-export const PopoverTrigger: React.FC<PopoverTriggerProps> = ({
-  children,
-  asChild = false,
-  className
-}) => {
-  const context = usePopover()
-
-  const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation()
-    context?.setOpen(!context.open)
-  }
-
-  if (asChild && React.isValidElement(children)) {
-    const child = children as React.ReactElement<any>
-    return React.cloneElement(child, {
-      className: cn(child.props.className, className),
-      onClick: (e: React.MouseEvent) => {
-        handleClick(e)
-        child.props.onClick?.(e)
-      }
-    })
-  }
-
-  return (
-    <div className={cn("inline-block cursor-pointer", className)} onClick={handleClick}>
+const PopoverContent = React.forwardRef<
+  React.ElementRef<typeof PopoverPrimitive.Content>,
+  PopoverContentProps
+>(({ className, align = "center", sideOffset = 4, showArrow = false, children, ...props }, ref) => (
+  <PopoverPrimitive.Portal>
+    <PopoverPrimitive.Content
+      ref={ref}
+      align={align}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 w-72 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-zinc-900 dark:text-zinc-100 shadow-xl outline-none duration-150 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        className
+      )}
+      {...props}
+    >
       {children}
-    </div>
-  )
-}
+      {showArrow && (
+        <PopoverPrimitive.Arrow className="fill-white dark:fill-zinc-900 stroke-zinc-200 dark:stroke-zinc-800" />
+      )}
+    </PopoverPrimitive.Content>
+  </PopoverPrimitive.Portal>
+))
+PopoverContent.displayName = PopoverPrimitive.Content.displayName
 
-export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentProps>(
-  ({ children, className, align = "center", side = "bottom", sideOffset = 4, ...props }, ref) => {
-    const context = usePopover()
-    const contentRef = React.useRef<HTMLDivElement>(null)
+// Support both compound usage (<Popover><PopoverTrigger /><PopoverContent /></Popover>)
+// and convenience usage (<Popover trigger={<button>Open</button>}>Content</Popover>)
+const Popover: React.FC<PopoverProps> = ({
+  open,
+  defaultOpen,
+  onOpenChange,
+  isOpen,
+  onClose,
+  trigger,
+  placement,
+  children,
+  ...props
+}) => {
+  const isControlled = open !== undefined || isOpen !== undefined
+  const resolvedOpen = open !== undefined ? open : isOpen
+  const handleOpenChange = (nextOpen: boolean) => {
+    onOpenChange?.(nextOpen)
+    if (!nextOpen) onClose?.()
+  }
 
-    React.useEffect(() => {
-      const handleClickOutside = (e: MouseEvent) => {
-        if (contentRef.current && !contentRef.current.contains(e.target as Node)) {
-          context?.setOpen(false)
-        }
-      }
-
-      if (context?.open) {
-        document.addEventListener("mousedown", handleClickOutside)
-      }
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside)
-      }
-    }, [context?.open, context])
-
-    if (!context?.open) return null
-
-    const alignClasses = {
-      start: "left-0",
-      center: "left-1/2 -translate-x-1/2",
-      end: "right-0"
-    }
-
-    const sideClasses = {
-      top: "bottom-full mb-2",
-      bottom: "top-full mt-2",
-      left: "right-full mr-2",
-      right: "left-full ml-2"
-    }
-
+  // If trigger prop is passed, render convenience wrapper
+  if (trigger) {
     return (
-      <div
-        ref={contentRef}
-        className={cn(
-          "absolute z-50 w-72 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-4 text-zinc-900 dark:text-zinc-100 shadow-xl outline-none animate-in fade-in-0 zoom-in-95 duration-150",
-          sideClasses[side],
-          alignClasses[align],
-          className
-        )}
-        style={{ marginTop: sideOffset }}
+      <PopoverRoot
+        open={isControlled ? resolvedOpen : undefined}
+        defaultOpen={defaultOpen}
+        onOpenChange={handleOpenChange}
         {...props}
       >
-        {children}
-      </div>
+        <PopoverTrigger asChild>
+          {React.isValidElement(trigger) ? trigger : <span>{trigger}</span>}
+        </PopoverTrigger>
+        <PopoverContent side={placement}>
+          {children}
+        </PopoverContent>
+      </PopoverRoot>
     )
   }
-)
-PopoverContent.displayName = "PopoverContent"
 
-export const PopoverClose: React.FC<PopoverCloseProps> = ({ children, className }) => {
-  const context = usePopover()
   return (
-    <div
-      className={cn("inline-block cursor-pointer", className)}
-      onClick={() => context?.setOpen(false)}
+    <PopoverRoot
+      open={isControlled ? resolvedOpen : undefined}
+      defaultOpen={defaultOpen}
+      onOpenChange={handleOpenChange}
+      {...props}
     >
-      {children || (
-        <button className="p-1 rounded-md text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100">
-          <X className="h-4 w-4" />
-        </button>
-      )}
-    </div>
+      {children}
+    </PopoverRoot>
   )
 }
 
-export { Popover }
+export const usePopover = () => ({
+  open: false,
+  setOpen: () => {},
+})
+
+export {
+  Popover,
+  PopoverTrigger,
+  PopoverContent,
+  PopoverAnchor,
+  PopoverClose,
+}
+
+export default Popover

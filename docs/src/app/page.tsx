@@ -262,8 +262,9 @@ export default function HomePage() {
                   </div>
                   <Slider 
                     value={sliderValue} 
-                    onChange={(val) => setSliderValue(Array.isArray(val) ? val[0] : val)}
+                    onChange={(val: any) => setSliderValue(Array.isArray(val) ? val[0] : val)}
                     min={15}
+
                     max={120}
                     step={5}
                   />

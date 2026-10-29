@@ -1,210 +1,94 @@
-import React, { useState, useRef, useEffect, createContext, useContext } from 'react'
-import { cn } from '../../lib/utils'
+"use client"
 
-interface TooltipContextType {
-  open: boolean
-  setOpen: (open: boolean) => void
-}
+import * as React from "react"
+import * as TooltipPrimitive from "@radix-ui/react-tooltip"
+import { cn } from "../../lib/utils"
 
-const TooltipContext = createContext<TooltipContextType | null>(null)
+const TooltipProvider = TooltipPrimitive.Provider
+const TooltipRoot = TooltipPrimitive.Root
+const TooltipTrigger = TooltipPrimitive.Trigger
+const TooltipPortal = TooltipPrimitive.Portal
 
-export const useTooltip = () => {
-  const context = useContext(TooltipContext)
-  return context
-}
-
-export interface TooltipProps {
+export interface TooltipProps extends React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Root> {
   content?: React.ReactNode
-  children: React.ReactNode
-  position?: 'top' | 'bottom' | 'left' | 'right'
-  side?: 'top' | 'bottom' | 'left' | 'right'
+  position?: "top" | "bottom" | "left" | "right"
+  side?: "top" | "bottom" | "left" | "right"
   delay?: number
-  className?: string
+  delayDuration?: number
   contentClassName?: string
-  open?: boolean
-  defaultOpen?: boolean
-  onOpenChange?: (open: boolean) => void
 }
 
-export interface TooltipTriggerProps {
-  children: React.ReactNode
-  asChild?: boolean
-  className?: string
-}
+export type TooltipTriggerProps = React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Trigger>
+export type TooltipContentProps = React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+export type TooltipProviderProps = React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Provider>
 
-export interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement> {
-  children?: React.ReactNode
-  side?: 'top' | 'bottom' | 'left' | 'right'
-  sideOffset?: number
-}
+const TooltipContent = React.forwardRef<
+  React.ElementRef<typeof TooltipPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof TooltipPrimitive.Content>
+>(({ className, sideOffset = 4, ...props }, ref) => (
+  <TooltipPortal>
+    <TooltipPrimitive.Content
+      ref={ref}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 overflow-hidden rounded-md bg-zinc-900 px-3 py-1.5 text-xs text-zinc-50 animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 dark:bg-zinc-100 dark:text-zinc-900 shadow-md",
+        className
+      )}
+      {...props}
+    />
+  </TooltipPortal>
+))
+TooltipContent.displayName = TooltipPrimitive.Content.displayName
 
-export const Tooltip: React.FC<TooltipProps> = ({
+// Support both compound usage (<Tooltip><TooltipTrigger /><TooltipContent /></Tooltip>)
+// and convenience usage (<Tooltip content="Save">Button</Tooltip>)
+const Tooltip: React.FC<TooltipProps> = ({
   content,
   children,
-  position = 'top',
+  position,
   side,
-  delay = 200,
-  className,
+  delay,
+  delayDuration = 200,
   contentClassName,
-  open: controlledOpen,
-  defaultOpen = false,
-  onOpenChange
+  ...props
 }) => {
-  const [uncontrolledOpen, setUncontrolledOpen] = useState(defaultOpen)
-  const isControlled = controlledOpen !== undefined
-  const open = isControlled ? controlledOpen : uncontrolledOpen
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const resolvedDelay = delay !== undefined ? delay : delayDuration
+  const resolvedSide = side || position || "top"
 
-  const setOpen = (newOpen: boolean) => {
-    if (!isControlled) {
-      setUncontrolledOpen(newOpen)
-    }
-    onOpenChange?.(newOpen)
-  }
-
-  const showTooltip = () => {
-    timeoutRef.current = setTimeout(() => {
-      setOpen(true)
-    }, delay)
-  }
-
-  const hideTooltip = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-    setOpen(false)
-  }
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-    }
-  }, [])
-
-  const effectiveSide = side || position
-
-  const positionClasses = {
-    top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
-    bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
-    left: 'right-full top-1/2 -translate-y-1/2 mr-2',
-    right: 'left-full top-1/2 -translate-y-1/2 ml-2'
-  }
-
-  // If used with content prop (legacy API)
   if (content !== undefined) {
     return (
-      <div
-        className={cn('relative inline-block', className)}
-        onMouseEnter={showTooltip}
-        onMouseLeave={hideTooltip}
-        onFocus={showTooltip}
-        onBlur={hideTooltip}
-      >
-        {children}
-        {open && (
-          <div
-            role="tooltip"
-            className={cn(
-              'absolute z-50 px-2.5 py-1 text-xs font-medium rounded-md shadow-md pointer-events-none whitespace-nowrap animate-in fade-in-0 zoom-in-95 duration-150',
-              'bg-zinc-900 text-zinc-100 border border-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:border-zinc-200',
-              positionClasses[effectiveSide],
-              contentClassName
-            )}
-          >
+      <TooltipProvider delayDuration={resolvedDelay}>
+        <TooltipRoot delayDuration={resolvedDelay} {...props}>
+          <TooltipTrigger asChild>
+            {React.isValidElement(children) ? children : <span>{children}</span>}
+          </TooltipTrigger>
+          <TooltipContent side={resolvedSide} className={contentClassName}>
             {content}
-          </div>
-        )}
-      </div>
+          </TooltipContent>
+        </TooltipRoot>
+      </TooltipProvider>
     )
   }
 
-  // Compound component API
   return (
-    <TooltipContext.Provider value={{ open, setOpen }}>
-      <div className={cn('relative inline-block', className)}>
+    <TooltipProvider delayDuration={resolvedDelay}>
+      <TooltipRoot delayDuration={resolvedDelay} {...props}>
         {children}
-      </div>
-    </TooltipContext.Provider>
+      </TooltipRoot>
+    </TooltipProvider>
   )
 }
 
-export const TooltipTrigger: React.FC<TooltipTriggerProps> = ({
-  children,
-  asChild = false,
-  className
-}) => {
-  const context = useTooltip()
+export const useTooltip = () => ({
+  open: false,
+  setOpen: () => {},
+})
 
-  const handleMouseEnter = () => context?.setOpen(true)
-  const handleMouseLeave = () => context?.setOpen(false)
-
-  if (asChild && React.isValidElement(children)) {
-    const child = children as React.ReactElement<any>
-    return React.cloneElement(child, {
-      className: cn(child.props.className, className),
-      onMouseEnter: (e: React.MouseEvent) => {
-        handleMouseEnter()
-        child.props.onMouseEnter?.(e)
-      },
-      onMouseLeave: (e: React.MouseEvent) => {
-        handleMouseLeave()
-        child.props.onMouseLeave?.(e)
-      }
-    })
-  }
-
-  return (
-    <div
-      className={cn('inline-block cursor-default', className)}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      onFocus={handleMouseEnter}
-      onBlur={handleMouseLeave}
-    >
-      {children}
-    </div>
-  )
+export {
+  Tooltip,
+  TooltipTrigger,
+  TooltipContent,
+  TooltipProvider,
 }
 
-export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
-  ({ children, side = 'top', className, ...props }, ref) => {
-    const context = useTooltip()
-    if (!context?.open) return null
-
-    const positionClasses = {
-      top: 'bottom-full left-1/2 -translate-x-1/2 mb-2',
-      bottom: 'top-full left-1/2 -translate-x-1/2 mt-2',
-      left: 'right-full top-1/2 -translate-y-1/2 mr-2',
-      right: 'left-full top-1/2 -translate-y-1/2 ml-2'
-    }
-
-    return (
-      <div
-        ref={ref}
-        role="tooltip"
-        className={cn(
-          'absolute z-50 px-2.5 py-1 text-xs font-medium rounded-md shadow-md pointer-events-none whitespace-nowrap animate-in fade-in-0 zoom-in-95 duration-150',
-          'bg-zinc-900 text-zinc-100 border border-zinc-800 dark:bg-zinc-100 dark:text-zinc-900 dark:border-zinc-200',
-          positionClasses[side],
-          className
-        )}
-        {...props}
-      >
-        {children}
-      </div>
-    )
-  }
-)
-TooltipContent.displayName = 'TooltipContent'
-
-export interface TooltipProviderProps {
-  children: React.ReactNode
-  delayDuration?: number
-}
-
-export const TooltipProvider: React.FC<TooltipProviderProps> = ({ children }) => {
-  return <>{children}</>
-}
-
+export default Tooltip

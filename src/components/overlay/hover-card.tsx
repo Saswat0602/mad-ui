@@ -1,155 +1,35 @@
-import React, { useState, useRef, useEffect } from 'react'
-import { cn } from '../../lib/utils'
+"use client"
 
-export interface HoverCardProps {
-  children: React.ReactNode
-  className?: string
-}
+import * as React from "react"
+import * as HoverCardPrimitive from "@radix-ui/react-hover-card"
+import { cn } from "../../lib/utils"
 
-export interface HoverCardTriggerProps {
-  children: React.ReactNode
-  asChild?: boolean
-  className?: string
-}
+const HoverCard = HoverCardPrimitive.Root
+const HoverCardTrigger = HoverCardPrimitive.Trigger
 
-export interface HoverCardContentProps {
-  children: React.ReactNode
-  className?: string
-  align?: 'start' | 'center' | 'end'
-  side?: 'top' | 'right' | 'bottom' | 'left'
-  sideOffset?: number
-}
+export type HoverCardProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Root>
+export type HoverCardTriggerProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Trigger>
+export type HoverCardContentProps = React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>
 
-export const HoverCard: React.FC<HoverCardProps> = ({
-  children,
-  className
-}) => {
-  return (
-    <div className={cn('relative inline-block', className)}>
-      {children}
-    </div>
-  )
-}
-
-export const HoverCardTrigger: React.FC<HoverCardTriggerProps> = ({
-  children,
-  asChild = false,
-  className
-}) => {
-  if (asChild && React.isValidElement(children)) {
-    const child = children as React.ReactElement<any>
-    return React.cloneElement(child, {
-      className: cn(child.props.className, className)
-    })
-  }
-  
-  return (
-    <div className={cn('inline-block', className)}>
-      {children}
-    </div>
-  )
-}
-
-export const HoverCardContent: React.FC<HoverCardContentProps> = ({
-  children,
-  className,
-  align = 'center',
-  side = 'top',
-  sideOffset = 4
-}) => {
-  const [isVisible, setIsVisible] = useState(false)
-  const [position, setPosition] = useState({ x: 0, y: 0 })
-  const triggerRef = useRef<HTMLDivElement>(null)
-  const contentRef = useRef<HTMLDivElement>(null)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  const alignClasses = {
-    start: 'left-0',
-    center: 'left-1/2 -translate-x-1/2',
-    end: 'right-0'
-  }
-
-  const sideClasses = {
-    top: 'bottom-full mb-2',
-    right: 'left-full ml-2',
-    bottom: 'top-full mt-2',
-    left: 'right-full mr-2'
-  }
-
-  const showCard = () => {
-    timeoutRef.current = setTimeout(() => {
-      if (triggerRef.current) {
-        const rect = triggerRef.current.getBoundingClientRect()
-        setPosition({ x: rect.left, y: rect.top })
-        setIsVisible(true)
-      }
-    }, 300)
-  }
-
-  const hideCard = () => {
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-    setIsVisible(false)
-  }
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-    }
-  }, [])
-
-  return (
-    <>
-      <div
-        ref={triggerRef}
-        onMouseEnter={showCard}
-        onMouseLeave={hideCard}
-        onFocus={showCard}
-        onBlur={hideCard}
-      >
-        {React.Children.map(children, (child) => {
-          if (React.isValidElement(child)) {
-            const c = child as React.ReactElement<any>
-            return React.cloneElement(c, {
-              onMouseEnter: (e: React.MouseEvent) => {
-                showCard()
-                if (c.props.onMouseEnter) {
-                  c.props.onMouseEnter(e)
-                }
-              },
-              onMouseLeave: (e: React.MouseEvent) => {
-                hideCard()
-                if (c.props.onMouseLeave) {
-                  c.props.onMouseLeave(e)
-                }
-              }
-            })
-          }
-          return child
-        })}
-      </div>
-      {isVisible && (
-        <div
-          ref={contentRef}
-          className={cn(
-            'absolute z-50 w-64 rounded-md border bg-popover p-4 text-popover-foreground shadow-md',
-            alignClasses[align],
-            sideClasses[side],
-            className
-          )}
-          style={{
-            left: position.x,
-            top: position.y
-          }}
-          onMouseEnter={showCard}
-          onMouseLeave={hideCard}
-        >
-          {children}
-        </div>
+const HoverCardContent = React.forwardRef<
+  React.ElementRef<typeof HoverCardPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof HoverCardPrimitive.Content>
+>(({ className, align = "center", sideOffset = 4, ...props }, ref) => (
+  <HoverCardPrimitive.Portal>
+    <HoverCardPrimitive.Content
+      ref={ref}
+      align={align}
+      sideOffset={sideOffset}
+      className={cn(
+        "z-50 w-64 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-zinc-900 dark:text-zinc-100 shadow-md outline-none duration-150 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2",
+        className
       )}
-    </>
-  )
-}
+      {...props}
+    />
+  </HoverCardPrimitive.Portal>
+))
+HoverCardContent.displayName = HoverCardPrimitive.Content.displayName
+
+export { HoverCard, HoverCardTrigger, HoverCardContent }
+
+export default HoverCard

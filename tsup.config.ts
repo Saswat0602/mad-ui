@@ -7,7 +7,7 @@ const sharedOptions = {
   splitting: false,
   sourcemap: true,
   clean: false, // MUST stay false — clean:true breaks Next.js Turbopack file-handle watches
-  external: ['react', 'react-dom', 'clsx', 'tailwind-merge', 'lucide-react'],
+  external: ['react', 'react-dom', 'clsx', 'tailwind-merge', 'lucide-react', /^@radix-ui\//],
   esbuildOptions(options: any) {
     options.jsx = 'automatic'
     options.keepNames = true    // Needed for React DevTools component names

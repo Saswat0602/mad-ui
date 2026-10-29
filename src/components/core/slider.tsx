@@ -1,9 +1,10 @@
-import React, { forwardRef, useState, useRef, useEffect } from 'react'
+import React, { forwardRef } from 'react'
+import * as SliderPrimitive from '@radix-ui/react-slider'
 import { cn } from '../../lib/utils'
 
 export interface SliderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
-  value?: number | [number, number]
-  defaultValue?: number | [number, number]
+  value?: number | number[] | [number, number]
+  defaultValue?: number | number[] | [number, number]
   min?: number
   max?: number
   step?: number
@@ -15,87 +16,14 @@ export interface SliderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 
   showValue?: boolean
   showMarks?: boolean
   marks?: Array<{ value: number; label?: string }>
-  color?: string
-  backgroundColor?: string
-  trackColor?: string
-  thumbColor?: string
-  borderRadius?: string | number
-  shadow?: 'none' | 'sm' | 'md' | 'lg' | 'xl'
   fullWidth?: boolean
-  onChange?: (value: number | [number, number]) => void
-  onValueChange?: (value: number | [number, number]) => void
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  error?: string
-  success?: boolean
-  validation?: {
-    required?: boolean
-    custom?: (value: number | [number, number]) => boolean | string
-  }
-  shortcuts?: Array<{
-    label: string
-    value: number | [number, number]
-    onClick: () => void
-  }>
-  customMarks?: Array<{
-    value: number
-    label?: string
-    className?: string
-    tooltip?: string
-  }>
-  onValueHover?: (value: number | [number, number]) => void
-  onValueFocus?: (value: number | [number, number]) => void
-  keyboardNavigation?: boolean
-  autoFocus?: boolean
-  interactive?: boolean
-  clickable?: boolean
-  onValueClick?: (value: number | [number, number]) => void
-  onValueDoubleClick?: (value: number | [number, number]) => void
-  onRightClick?: (value: number | [number, number], event: React.MouseEvent) => void
-  contextMenuItems?: Array<{
-    label: string
-    onClick: (value: number | [number, number]) => void
-    icon?: React.ReactNode
-    disabled?: boolean
-  }>
-  draggable?: boolean
-  onDragMove?: (position: { x: number; y: number }) => void
-  onDragComplete?: (position: { x: number; y: number }) => void
-  swipeable?: boolean
-  onSwipe?: (direction: 'left' | 'right' | 'up' | 'down') => void
-  resizable?: boolean
-  onResize?: (size: { width: number; height: number }) => void
-  scrollable?: boolean
-  onScrollChange?: (scrollY: number) => void
-  focusable?: boolean
-  onFocus?: () => void
-  onBlur?: () => void
-  tabIndex?: number
-  animation?: 'slide' | 'fade' | 'scale' | 'bounce' | 'none'
-  animationDuration?: number
-  onAnimationStart?: () => void
-  onAnimationEnd?: () => void
-  theme?: 'light' | 'dark' | 'auto'
-  locale?: string
-  rtl?: boolean
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
+  onChange?: (value: number | number[] | [number, number]) => void
+  onValueChange?: (value: number | number[] | [number, number]) => void
+  [key: string]: any
 }
 
-const Slider = forwardRef<HTMLDivElement, SliderProps>(({
+
+export const Slider = forwardRef<HTMLDivElement, SliderProps>(({
   value: controlledValue,
   defaultValue = 0,
   min = 0,
@@ -109,314 +37,93 @@ const Slider = forwardRef<HTMLDivElement, SliderProps>(({
   showValue = false,
   showMarks = false,
   marks = [],
-  color,
-  backgroundColor,
-  trackColor,
-  thumbColor,
-  borderRadius,
-  shadow = 'none',
   fullWidth = false,
   onChange,
   onValueChange,
   className,
-  style,
   ...props
 }, ref) => {
-  const [value, setValue] = useState<number | [number, number]>(controlledValue ?? defaultValue)
-  const isDraggingRef = useRef(false)  // Use ref instead of state to avoid stale closures in document listeners
-  const [activeThumb, setActiveThumb] = useState<'min' | 'max' | null>(null)
-  const activeThumbRef = useRef<'min' | 'max' | null>(null)
-  const sliderRef = useRef<HTMLDivElement>(null)
-  const thumbRef = useRef<HTMLDivElement>(null)
-
-  // Size classes
-  const sizeClasses = {
-    sm: 'h-1.5',
-    md: 'h-2',
-    lg: 'h-2.5'
+  const toArray = (val?: number | number[] | [number, number]): number[] => {
+    if (val === undefined) return [0]
+    return Array.isArray(val) ? val : [val]
   }
 
-  const thumbSizeClasses = {
-    sm: 'w-4 h-4',
-    md: 'w-5 h-5',
-    lg: 'w-6 h-6'
+  const values = controlledValue !== undefined ? toArray(controlledValue) : undefined
+  const defaultValues = defaultValue !== undefined ? toArray(defaultValue) : [0]
+
+  const handleValueChange = (newValues: number[]) => {
+    const isMulti = range || newValues.length > 1
+    const result = isMulti ? newValues : newValues[0]
+    onValueChange?.(result)
+    onChange?.(result)
   }
 
-  // Variant classes with proper visibility
-  const variantClasses = {
-    default: 'bg-zinc-200 dark:bg-zinc-800',
-    filled: 'bg-zinc-200/70 dark:bg-zinc-800/70',
-    outlined: 'bg-transparent border border-zinc-300 dark:border-zinc-700',
-    minimal: 'bg-zinc-100 dark:bg-zinc-900'
+  const trackSizes: Record<'sm' | 'md' | 'lg', string> = {
+    sm: 'h-1',
+    md: 'h-1.5',
+    lg: 'h-2.5',
   }
 
-  // Shadow classes
-  const shadowClasses = {
-    none: '',
-    sm: 'shadow-sm',
-    md: 'shadow-md',
-    lg: 'shadow-lg',
-    xl: 'shadow-xl'
+  const thumbSizes: Record<'sm' | 'md' | 'lg', string> = {
+    sm: 'h-3.5 w-3.5',
+    md: 'h-4 w-4',
+    lg: 'h-5 w-5',
   }
 
-  // Update value when controlled value changes
-  useEffect(() => {
-    if (controlledValue !== undefined) {
-      setValue(controlledValue)
-    }
-  }, [controlledValue])
-
-  // Calculate percentage for positioning
-  const getPercentage = (val: number) => {
-    return ((val - min) / (max - min)) * 100
-  }
-
-  // Get current values
-  const currentValue = controlledValue ?? value
-  const currentMin = range ? (currentValue as [number, number])[0] : 0
-  const currentMax = range ? (currentValue as [number, number])[1] : (currentValue as number)
-
-  // Calculate track fill
-  const getTrackFill = () => {
-    if (range) {
-      const minPercent = getPercentage(currentMin)
-      const maxPercent = getPercentage(currentMax)
-      return {
-        left: `${minPercent}%`,
-        width: `${maxPercent - minPercent}%`
-      }
-    } else {
-      return {
-        left: '0%',
-        width: `${getPercentage(currentMax)}%`
-      }
-    }
-  }
-
-  // Handle mouse/touch events
-  const handleMouseDown = (e: React.MouseEvent | React.TouchEvent, thumb: 'min' | 'max' | null) => {
-    if (disabled) return
-    isDraggingRef.current = true
-    activeThumbRef.current = thumb
-    setActiveThumb(thumb)
-    document.addEventListener('mousemove', handleMouseMove)
-    document.addEventListener('mouseup', handleMouseUp)
-    document.addEventListener('touchmove', handleTouchMove)
-    document.addEventListener('touchend', handleTouchEnd)
-  }
-
-  const handleMouseMove = (e: MouseEvent) => {
-    if (!isDraggingRef.current || !sliderRef.current) return
-    updateValue(e.clientX, e.clientY)
-  }
-
-  const handleTouchMove = (e: TouchEvent) => {
-    if (!isDraggingRef.current || !sliderRef.current) return
-    const touch = e.touches[0]
-    updateValue(touch.clientX, touch.clientY)
-  }
-
-  const updateValue = (clientX: number, clientY: number) => {
-    if (!sliderRef.current) return
-
-    const rect = sliderRef.current.getBoundingClientRect()
-    let newValue: number
-
-    if (orientation === 'horizontal') {
-      const percentage = Math.max(0, Math.min(100, ((clientX - rect.left) / rect.width) * 100))
-      newValue = min + (percentage / 100) * (max - min)
-    } else {
-      const percentage = Math.max(0, Math.min(100, ((rect.bottom - clientY) / rect.height) * 100))
-      newValue = min + (percentage / 100) * (max - min)
-    }
-
-    // Snap to step
-    newValue = Math.round(newValue / step) * step
-    newValue = Math.max(min, Math.min(max, newValue))
-
-    if (range && activeThumbRef.current) {
-      const newRangeValue: [number, number] = [...(currentValue as [number, number])]
-      if (activeThumbRef.current === 'min') {
-        newRangeValue[0] = Math.min(newValue, newRangeValue[1] - step)
-      } else {
-        newRangeValue[1] = Math.max(newValue, newRangeValue[0] + step)
-      }
-      setValue(newRangeValue)
-      onValueChange?.(newRangeValue)
-      onChange?.(newRangeValue)
-    } else {
-      setValue(newValue)
-      onValueChange?.(newValue)
-      onChange?.(newValue)
-    }
-  }
-
-  const handleMouseUp = () => {
-    isDraggingRef.current = false
-    activeThumbRef.current = null
-    setActiveThumb(null)
-    document.removeEventListener('mousemove', handleMouseMove)
-    document.removeEventListener('mouseup', handleMouseUp)
-    document.removeEventListener('touchmove', handleTouchMove)
-    document.removeEventListener('touchend', handleTouchEnd)
-  }
-
-  // Cleanup listeners on unmount
-  useEffect(() => {
-    return () => {
-      document.removeEventListener('mousemove', handleMouseMove)
-      document.removeEventListener('mouseup', handleMouseUp)
-      document.removeEventListener('touchmove', handleTouchMove)
-      document.removeEventListener('touchend', handleTouchEnd)
-    }
-  }, [])
-
-  const handleTouchEnd = handleMouseUp
-
-  // Handle click on track
-  const handleTrackClick = (e: React.MouseEvent) => {
-    if (disabled) return
-    updateValue(e.clientX, e.clientY)
-  }
-
-  // Render marks
-  const renderMarks = () => {
-    if (!showMarks || marks.length === 0) return null
-
-    return marks.map((mark, index) => (
-      <div
-        key={index}
-        className="absolute text-xs text-zinc-500 dark:text-zinc-400"
-        style={{
-          [orientation === 'horizontal' ? 'left' : 'bottom']: `${getPercentage(mark.value)}%`,
-          transform: orientation === 'horizontal' ? 'translateX(-50%)' : 'translateY(50%)'
-        }}
-      >
-        {mark.label || mark.value}
-      </div>
-    ))
-  }
+  const thumbsCount = values ? values.length : (range ? Math.max(defaultValues.length, 2) : 1)
 
   return (
-    <div
-      ref={ref}
-      className={cn(
-        'relative',
-        fullWidth && 'w-full',
-        orientation === 'vertical' && 'h-64',
-        className
-      )}
-      style={{
-        color,
-        backgroundColor,
-        borderRadius: typeof borderRadius === 'number' ? `${borderRadius}px` : borderRadius,
-        ...style
-      }}
-      {...props}
-    >
-      {/* Value Display */}
-      {showValue && (
-        <div className={cn(
-          'mb-2 flex items-center justify-between text-xs font-medium text-zinc-500 dark:text-zinc-400',
-          orientation === 'vertical' && 'absolute -top-8 left-0'
-        )}>
-          <span>Value</span>
-          <span className="font-mono text-zinc-900 dark:text-zinc-100">{range ? `${currentMin} - ${currentMax}` : currentMax}</span>
+    <div className={cn('relative flex flex-col gap-1.5', fullWidth && 'w-full', className)}>
+      <SliderPrimitive.Root
+        ref={ref as any}
+        min={min}
+        max={max}
+        step={step}
+        orientation={orientation}
+        disabled={disabled}
+        value={values}
+        defaultValue={values ? undefined : defaultValues}
+        onValueChange={handleValueChange}
+        className={cn(
+          'relative flex touch-none select-none items-center',
+          orientation === 'horizontal' ? 'w-full' : 'h-full flex-col',
+          disabled && 'opacity-50 cursor-not-allowed'
+        )}
+        {...props}
+      >
+        <SliderPrimitive.Track
+          className={cn(
+            'relative grow overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800 transition-colors',
+            orientation === 'horizontal' ? trackSizes[size as 'sm' | 'md' | 'lg' || 'md'] : 'w-1.5'
+          )}
+        >
+          <SliderPrimitive.Range className="absolute h-full bg-blue-600 dark:bg-blue-500 rounded-full" />
+        </SliderPrimitive.Track>
+
+        {Array.from({ length: thumbsCount }).map((_, i) => (
+          <SliderPrimitive.Thumb
+            key={i}
+            className={cn(
+              'block rounded-full border border-blue-600/40 bg-white dark:bg-zinc-100 shadow-md transition-colors',
+              'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 focus-visible:ring-offset-2',
+              'disabled:pointer-events-none cursor-grab active:cursor-grabbing',
+              thumbSizes[size as 'sm' | 'md' | 'lg' || 'md']
+            )}
+          />
+        ))}
+
+      </SliderPrimitive.Root>
+
+      {showMarks && marks.length > 0 && (
+        <div className="relative w-full flex justify-between px-1 text-[11px] text-zinc-400">
+          {marks.map((m: { value: number; label?: string }) => (
+            <span key={m.value}>{m.label || m.value}</span>
+          ))}
         </div>
       )}
-
-      {/* Slider Track */}
-      <div
-        ref={sliderRef}
-        className={cn(
-          'relative cursor-pointer',
-          orientation === 'horizontal' ? 'w-full' : 'h-full w-2',
-          sizeClasses[size],
-          variantClasses[variant],
-          'rounded-full',
-          shadowClasses[shadow]
-        )}
-        style={{
-          backgroundColor: trackColor,
-          transform: orientation === 'vertical' ? 'rotate(180deg)' : undefined
-        }}
-        onClick={handleTrackClick}
-      >
-        {/* Track Fill */}
-        <div
-          className="absolute top-0 left-0 h-full bg-blue-600 dark:bg-blue-500 rounded-full transition-all duration-100 ease-out"
-          style={{
-            backgroundColor: color || undefined,
-            ...getTrackFill()
-          }}
-        />
-
-        {/* Marks */}
-        {renderMarks()}
-
-        {/* Thumbs */}
-        {range ? (
-          <>
-            {/* Min Thumb */}
-            <div
-              className={cn(
-                'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
-                thumbSizeClasses[size],
-                'bg-white dark:bg-zinc-100 border-2 border-blue-600 dark:border-blue-500 rounded-full shadow-md',
-                'hover:scale-110 hover:shadow-lg transition-all duration-150 ease-out active:scale-95',
-                disabled && 'cursor-not-allowed opacity-50'
-              )}
-              style={{
-                backgroundColor: thumbColor,
-                left: `${getPercentage(currentMin)}%`,
-                transform: 'translate(-50%, -50%)'
-              }}
-              onMouseDown={(e) => handleMouseDown(e, 'min')}
-              onTouchStart={(e) => handleMouseDown(e, 'min')}
-            />
-            {/* Max Thumb */}
-            <div
-              className={cn(
-                'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
-                thumbSizeClasses[size],
-                'bg-white dark:bg-zinc-100 border-2 border-blue-600 dark:border-blue-500 rounded-full shadow-md',
-                'hover:scale-110 hover:shadow-lg transition-all duration-150 ease-out active:scale-95',
-                disabled && 'cursor-not-allowed opacity-50'
-              )}
-              style={{
-                backgroundColor: thumbColor,
-                left: `${getPercentage(currentMax)}%`,
-                transform: 'translate(-50%, -50%)'
-              }}
-              onMouseDown={(e) => handleMouseDown(e, 'max')}
-              onTouchStart={(e) => handleMouseDown(e, 'max')}
-            />
-          </>
-        ) : (
-          /* Single Thumb */
-          <div
-            ref={thumbRef}
-            className={cn(
-              'absolute top-1/2 transform -translate-y-1/2 cursor-grab active:cursor-grabbing',
-              thumbSizeClasses[size],
-              'bg-white dark:bg-zinc-100 border-2 border-blue-600 dark:border-blue-500 rounded-full shadow-md',
-              'hover:scale-110 active:scale-95 transition-all duration-150 ease-out',
-              disabled && 'cursor-not-allowed opacity-50'
-            )}
-            style={{
-              backgroundColor: thumbColor,
-              left: `${getPercentage(currentMax)}%`,
-              transform: 'translate(-50%, -50%)'
-            }}
-            onMouseDown={(e) => handleMouseDown(e, null)}
-            onTouchStart={(e) => handleMouseDown(e, null)}
-          />
-        )}
-      </div>
     </div>
   )
 })
+Slider.displayName = 'Slider'
 
-Slider.displayName = "Slider"
-
-export { Slider }
+export default Slider

@@ -1,105 +1,58 @@
-import React, { useRef, useEffect, useState } from 'react'
+import React from 'react'
+import * as ScrollAreaPrimitive from '@radix-ui/react-scroll-area'
 import { cn } from '../../lib/utils'
 
-export interface ScrollAreaProps {
-  children: React.ReactNode
-  className?: string
-  orientation?: 'vertical' | 'horizontal'
-  scrollHideDelay?: number
+export interface ScrollAreaProps
+  extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.Root> {
+  orientation?: 'vertical' | 'horizontal' | 'both'
 }
 
-export interface ScrollBarProps {
-  orientation?: 'vertical' | 'horizontal'
-  className?: string
-}
+export const ScrollArea = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.Root>,
+  ScrollAreaProps
+>(({ className, children, orientation = 'vertical', ...props }, ref) => (
+  <ScrollAreaPrimitive.Root
+    ref={ref}
+    className={cn('relative overflow-hidden', className)}
+    {...props}
+  >
+    <ScrollAreaPrimitive.Viewport className="h-full w-full rounded-[inherit]">
+      {children}
+    </ScrollAreaPrimitive.Viewport>
+    {(orientation === 'vertical' || orientation === 'both') && (
+      <ScrollBar orientation="vertical" />
+    )}
+    {(orientation === 'horizontal' || orientation === 'both') && (
+      <ScrollBar orientation="horizontal" />
+    )}
+    <ScrollAreaPrimitive.Corner />
+  </ScrollAreaPrimitive.Root>
+))
+ScrollArea.displayName = ScrollAreaPrimitive.Root.displayName
 
-export const ScrollArea: React.FC<ScrollAreaProps> = ({
-  children,
-  className,
-  orientation = 'vertical',
-  scrollHideDelay = 600
-}) => {
-  const [showScrollbar, setShowScrollbar] = useState(false)
-  const scrollAreaRef = useRef<HTMLDivElement>(null)
-  const scrollbarRef = useRef<HTMLDivElement>(null)
-  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+export interface ScrollBarProps
+  extends React.ComponentPropsWithoutRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar> {}
 
-  const handleScroll = () => {
-    setShowScrollbar(true)
-    
-    if (timeoutRef.current) {
-      clearTimeout(timeoutRef.current)
-    }
-    
-    timeoutRef.current = setTimeout(() => {
-      setShowScrollbar(false)
-    }, scrollHideDelay)
-  }
+export const ScrollBar = React.forwardRef<
+  React.ElementRef<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>,
+  ScrollBarProps
+>(({ className, orientation = 'vertical', ...props }, ref) => (
+  <ScrollAreaPrimitive.ScrollAreaScrollbar
+    ref={ref}
+    orientation={orientation}
+    className={cn(
+      'flex touch-none select-none transition-colors duration-150 ease-out',
+      orientation === 'vertical' &&
+        'h-full w-2.5 border-l border-l-transparent p-[1px]',
+      orientation === 'horizontal' &&
+        'h-2.5 flex-col border-t border-t-transparent p-[1px]',
+      className
+    )}
+    {...props}
+  >
+    <ScrollAreaPrimitive.ScrollAreaThumb className="relative flex-1 rounded-full bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400 dark:hover:bg-zinc-600 transition-colors" />
+  </ScrollAreaPrimitive.ScrollAreaScrollbar>
+))
+ScrollBar.displayName = ScrollAreaPrimitive.ScrollAreaScrollbar.displayName
 
-  useEffect(() => {
-    const scrollArea = scrollAreaRef.current
-    if (scrollArea) {
-      scrollArea.addEventListener('scroll', handleScroll)
-      return () => scrollArea.removeEventListener('scroll', handleScroll)
-    }
-  }, [scrollHideDelay])
-
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current)
-      }
-    }
-  }, [])
-
-  return (
-    <div className={cn('relative overflow-hidden', className)}>
-      <div
-        ref={scrollAreaRef}
-        className={cn(
-          'h-full w-full overflow-auto',
-          orientation === 'horizontal' && 'overflow-x-auto overflow-y-hidden',
-          orientation === 'vertical' && 'overflow-y-auto overflow-x-hidden'
-        )}
-      >
-        {children}
-      </div>
-      <ScrollBar
-        ref={scrollbarRef}
-        orientation={orientation}
-        className={cn(
-          'transition-opacity duration-300',
-          showScrollbar ? 'opacity-100' : 'opacity-0'
-        )}
-      />
-    </div>
-  )
-}
-
-export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
-  ({ orientation = 'vertical', className }, ref) => {
-    const isVertical = orientation === 'vertical'
-    
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          'flex touch-none select-none transition-colors duration-150 ease-out hover:bg-primary/20',
-          isVertical
-            ? 'h-full w-2.5 border-l border-l-transparent p-[1px]'
-            : 'h-2.5 w-full border-t border-t-transparent p-[1px]',
-          className
-        )}
-      >
-        <div
-          className={cn(
-            'relative flex-1 rounded-full bg-primary/20',
-            isVertical ? 'w-full' : 'h-full'
-          )}
-        />
-      </div>
-    )
-  }
-)
-
-ScrollBar.displayName = 'ScrollBar'
+export default ScrollArea

@@ -7,6 +7,8 @@ import { navigationExamples } from './navigation'
 import { dataExamples } from './data'
 import { feedbackExamples } from './feedback'
 
+import React from 'react'
+
 export interface ComponentExample {
   title: string
   description?: string
@@ -24,7 +26,8 @@ export const COMPONENT_EXAMPLES: Record<string, ComponentExample[]> = {
   ...navigationExamples,
   ...dataExamples,
   ...feedbackExamples
-}
+} as unknown as Record<string, ComponentExample[]>
+
 
 const SLUG_ALIASES: Record<string, string> = {
   inputotp: 'input-otp',

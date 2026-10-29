@@ -1,4 +1,7 @@
+"use client"
+
 import * as React from "react"
+import * as DialogPrimitive from "@radix-ui/react-dialog"
 import { cn } from "../../lib/utils"
 import { X } from "lucide-react"
 
@@ -23,6 +26,22 @@ export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
   overlayBlur?: boolean
   zIndex?: number
   footer?: React.ReactNode
+}
+
+const sizeClasses = {
+  sm: "max-w-sm",
+  md: "max-w-md",
+  lg: "max-w-lg",
+  xl: "max-w-2xl",
+  full: "max-w-full m-4"
+}
+
+const shadowClasses = {
+  none: "",
+  sm: "shadow-sm",
+  md: "shadow-md",
+  lg: "shadow-xl",
+  xl: "shadow-2xl"
 }
 
 const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
@@ -51,121 +70,81 @@ const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     style,
     ...props 
   }, ref) => {
-    
-    // Size classes
-    const sizeClasses = {
-      sm: "max-w-sm",
-      md: "max-w-md",
-      lg: "max-w-lg",
-      xl: "max-w-2xl",
-      full: "max-w-full m-4"
-    }
-
-    const shadowClasses = {
-      none: "",
-      sm: "shadow-sm",
-      md: "shadow-md",
-      lg: "shadow-xl",
-      xl: "shadow-2xl"
-    }
-
-    // Handle escape key
-    React.useEffect(() => {
-      const handleKeyDown = (e: KeyboardEvent) => {
-        if (e.key === "Escape" && closeOnEscape && isOpen) {
-          onClose()
-        }
-      }
-
-      if (isOpen) {
-        document.addEventListener("keydown", handleKeyDown)
-        document.body.style.overflow = "hidden"
-      }
-
-      return () => {
-        document.removeEventListener("keydown", handleKeyDown)
-        document.body.style.overflow = "unset"
-      }
-    }, [isOpen, closeOnEscape, onClose])
-
-    const handleOverlayClick = (e: React.MouseEvent) => {
-      if (e.target === e.currentTarget && closeOnOverlayClick) {
-        onClose()
-      }
-    }
-
-    if (!isOpen) return null
-
     return (
-      <div 
-        className={cn(
-          "fixed inset-0 flex items-center justify-center p-4 transition-all duration-200",
-          overlayBlur ? "backdrop-blur-xs" : ""
-        )}
-        style={{
-          zIndex,
-          backgroundColor: overlayColor || "rgba(0, 0, 0, 0.65)"
-        }}
-        onClick={handleOverlayClick}
-      >
-        <div 
-          ref={ref}
-          role="dialog"
-          aria-modal="true"
-          className={cn(
-            "relative w-full rounded-2xl border transition-all duration-200",
-            "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100",
-            sizeClasses[size],
-            shadowClasses[shadow],
-            fullWidth && "w-full",
-            fullHeight && "h-full",
-            className
-          )}
-          style={{
-            borderRadius,
-            ...(backgroundColor || color ? { backgroundColor: backgroundColor || color } : {}),
-            ...(borderColor ? { borderColor } : {}),
-            ...(textColor ? { color: textColor } : {}),
-            ...style
-          }}
-          onClick={(e) => e.stopPropagation()}
-          {...props}
-        >
-          {/* Header */}
-          {(title || showCloseButton) && (
-            <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
-              {title ? (
-                <h3 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 leading-none">
-                  {title}
-                </h3>
-              ) : <div />}
-              
-              {showCloseButton && (
-                <button
-                  type="button"
-                  onClick={onClose}
-                  aria-label="Close modal"
-                  className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
+      <DialogPrimitive.Root open={isOpen} onOpenChange={(open) => !open && onClose()}>
+        <DialogPrimitive.Portal>
+          <DialogPrimitive.Overlay
+            className={cn(
+              "fixed inset-0 bg-black/60 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 duration-200",
+              overlayBlur ? "backdrop-blur-xs" : ""
+            )}
+            style={{
+              zIndex,
+              backgroundColor: overlayColor || undefined
+            }}
+          />
+          <DialogPrimitive.Content
+            ref={ref}
+            onPointerDownOutside={(e) => {
+              if (!closeOnOverlayClick) e.preventDefault()
+            }}
+            onEscapeKeyDown={(e) => {
+              if (!closeOnEscape) e.preventDefault()
+            }}
+            className={cn(
+              "fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full rounded-2xl border duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
+              "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100",
+              sizeClasses[size],
+              shadowClasses[shadow],
+              fullWidth && "w-full",
+              fullHeight && "h-full",
+              className
+            )}
+            style={{
+              zIndex: zIndex + 1,
+              borderRadius,
+              ...(backgroundColor || color ? { backgroundColor: backgroundColor || color } : {}),
+              ...(borderColor ? { borderColor } : {}),
+              ...(textColor ? { color: textColor } : {}),
+              ...style
+            }}
+            {...props}
+          >
+            {/* Header */}
+            {(title || showCloseButton) && (
+              <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
+                {title ? (
+                  <DialogPrimitive.Title className="text-base font-semibold text-zinc-900 dark:text-zinc-100 leading-none">
+                    {title}
+                  </DialogPrimitive.Title>
+                ) : <div />}
+                
+                {showCloseButton && (
+                  <DialogPrimitive.Close
+                    type="button"
+                    aria-label="Close modal"
+                    className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-primary/40"
+                  >
+                    <X className="h-4 w-4" />
+                  </DialogPrimitive.Close>
+                )}
+              </div>
+            )}
+            
+            {/* Content */}
+            <div className="p-6">
+              {children}
             </div>
-          )}
-          
-          {/* Content */}
-          <div className="p-6">
-            {children}
-          </div>
 
-          {/* Optional Footer */}
-          {footer && (
-            <div className="px-6 py-3.5 border-t border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 rounded-b-2xl flex items-center justify-end gap-2">
-              {footer}
-            </div>
-          )}
-        </div>
-      </div>
+            {/* Optional Footer */}
+            {footer && (
+              <div className="px-6 py-3.5 border-t border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 rounded-b-2xl flex items-center justify-end gap-2">
+                {footer}
+              </div>
+            )}
+          </DialogPrimitive.Content>
+        </DialogPrimitive.Portal>
+      </DialogPrimitive.Root>
     )
   }
 )

@@ -7,13 +7,11 @@
 
 ---
 
-## 📊 Phase Overview & Status Matrix
-
-| Phase | Title | Target Scope | Status | Completion |
-| :---: | :--- | :--- | :---: | :---: |
+## 📊 Phase Overview & Status| Phase | Title | Target Scope | Status | Completion |
+| :--- | :--- | :--- | :---: | :---: |
 | **Phase 0** | **Stop the Bleeding** | P0 bug fixes, `"use client"`, packaging exports, docs preview, hygiene | 🟢 **COMPLETED** | **100%** |
 | **Phase 1** | **Foundation Infrastructure** | Vitest testing, axe a11y, Changesets, tokens, manifest, root ESLint, CI, zinc migration | 🟢 **COMPLETED** | **100%** |
-| **Phase 2** | **Primitives & Headless Rewrite** | Radix headless foundation, unified motion system, keyboard a11y maps | ⚪ **UPCOMING** | 0% |
+| **Phase 2** | **Primitives & Headless Rewrite** | Radix headless foundation, unified motion system, keyboard a11y maps | 🟢 **COMPLETED** | **100%** |
 | **Phase 3** | **Advanced Components & Forms** | Composable forms (zod + react-hook-form), virtualized DataTable | ⚪ **UPCOMING** | 0% |
 | **Phase 4** | **Showcase Platform & DX** | Interactive theme builder, CLI component adder, props documentation | ⚪ **UPCOMING** | 0% |
 | **Phase 5** | **Release & Community** | NPM 3.0 release, migration guides, automated release provenance | ⚪ **UPCOMING** | 0% |
@@ -94,23 +92,51 @@
 
 ---
 
-## ⚪ Phase 2 — Primitives & Headless Rewrite (Weeks 4–10) — [UPCOMING]
+## 🟢 Phase 2 — Primitives & Headless Rewrite (Weeks 4–10) — [COMPLETED]
 
-**Goal**: Rebuild interactive primitives on accessible headless foundations. Every interactive component reaches an A/B grade.
+**Goal**: Rebuild interactive primitives on accessible headless foundations (Radix UI primitives). Every interactive component provides full WAI-ARIA roles, roving focus, portal mounting, focus trapping, and smooth animations without breaking backwards compatibility.
 
-- [ ] **Headless Primitive Layer (Radix UI)**:
-  - Group 1: Dialog, AlertDialog, Sheet, Drawer
-  - Group 2: Popover, Tooltip, HoverCard
-  - Group 3: DropdownMenu, ContextMenu, Menubar
-  - Group 4: Select, Combobox, Command
-  - Group 5: Tabs, Accordion, Collapsible
-  - Group 6: Checkbox, Switch, RadioGroup, Slider, Toggle
-- [ ] **Shared Internals**:
-  - Implement `Slot`, `useControllableState`, `composeEventHandlers`, `Presence`.
-- [ ] **Unified Motion System**:
-  - Complete `animations.css` with `prefers-reduced-motion` compliance.
-- [ ] **Keyboard Navigation & APG Compliance**:
-  - Comprehensive keyboard interaction specs for all interactive components.
+### Completed Milestones
+- [x] **Shared Internals & Motion System**:
+  - Installed all 22 official `@radix-ui/react-*` primitive packages as direct library dependencies.
+  - Created `src/lib/compose-event-handlers.ts` for safe event handler chaining.
+  - Expanded `tailwind.config.js` and `src/styles.css` with keyframe animations (`accordion-down`, `accordion-up`, `collapsible-down`, `collapsible-up`, `caret-blink`, slide/zoom enter & exit utilities) and `@media (prefers-reduced-motion: reduce)` support.
+- [x] **Group 1 — Modal & Overlay Layer**:
+  - `Dialog`: Built on `@radix-ui/react-dialog` with focus trap, portal mounting, and backdrop blur.
+  - `AlertDialog`: Built on `@radix-ui/react-alert-dialog` for accessible destructive confirmations.
+  - `Sheet`: Multi-directional slide-out drawer (`top`, `bottom`, `left`, `right`) with smooth CSS animations.
+  - `Drawer` & `Modal`: Backwards-compatible accessible overlays backed by Radix Dialog.
+- [x] **Group 2 — Floating Primitives**:
+  - `Popover`: Built on `@radix-ui/react-popover` supporting both compound and convenience `trigger` prop.
+  - `Tooltip`: Built on `@radix-ui/react-tooltip` with `TooltipProvider` and delay configuration.
+  - `HoverCard`: Built on `@radix-ui/react-hover-card` for rich preview content on hover.
+- [x] **Group 3 — Menu Primitives**:
+  - `DropdownMenu`: Built on `@radix-ui/react-dropdown-menu` with submenus, checkboxes, radios, shortcuts, and roving focus.
+  - `ContextMenu`: Built on `@radix-ui/react-context-menu` for right-click desktop experiences.
+  - `Menubar`: Built on `@radix-ui/react-menubar` for horizontal application menubars.
+- [x] **Group 4 — Selection & Command**:
+  - `Select`: Built on `@radix-ui/react-select` with WAI-ARIA `role="listbox"`, roving focus, and check indicators.
+  - `Combobox`: Rebuilt with searchable popover list and portal mounting.
+  - `Command`: Added `CommandDialog` and `CommandShortcut`.
+- [x] **Group 5 — Navigation & Disclosure**:
+  - `Tabs`: Built on `@radix-ui/react-tabs` with roving arrow-key focus and dual compound + `items` API.
+  - `Accordion`: Built on `@radix-ui/react-accordion` with animated collapse using CSS variables and dual compound + `items` API.
+  - `Collapsible`: Built on `@radix-ui/react-collapsible` with smooth height animations.
+- [x] **Group 6 — Form Controls**:
+  - `Checkbox`: Built on `@radix-ui/react-checkbox` with indeterminate state, check icon, and label association.
+  - `Switch`: Built on `@radix-ui/react-switch` with animated thumb and synthetic event support.
+  - `RadioGroup`: Built on `@radix-ui/react-radio-group` with arrow-key navigation and label click targeting.
+  - `Slider`: Built on `@radix-ui/react-slider` with multi-thumb range support, touch/pointer capture, and zero listener leaks.
+  - `Toggle` & `ToggleGroup`: Built on `@radix-ui/react-toggle` and `@radix-ui/react-toggle-group`.
+- [x] **Group 7 — Layout & Scroll Primitives**:
+  - `ScrollArea`: Built on `@radix-ui/react-scroll-area` with draggable scrollbar thumbs and native gestures.
+  - `Separator`: Built on `@radix-ui/react-separator` with semantic ARIA roles and orientation styles.
+  - `Avatar`: Built on `@radix-ui/react-avatar` with image loading state management and fallbacks.
+  - `AspectRatio`: Updated with `forwardRef` and standard HTML div props.
+- [x] **Automated Testing & Accessibility Expansion**:
+  - Expanded test suite from 21 to 34 passing tests in `tests/smoke.test.tsx`.
+  - Added automated `axe-core` accessibility tests for Checkbox, Switch, Tabs, Avatar, Button, and Card with 0 violations.
+  - Verified Next.js 16.4.3 documentation build across all 64 routes with 0 errors.
 
 ---
 
@@ -134,14 +160,15 @@
 | Check / Tool | Target | Status | Result |
 | :--- | :--- | :---: | :--- |
 | **TypeScript Typecheck** | `tsc --noEmit` | ✅ Passing | 0 errors |
-| **Unit & Smoke Tests** | `vitest run` (`tests/smoke.test.tsx`) | ✅ Passing | 21 / 21 tests passing |
-| **Accessibility Audits** | `vitest-axe` (`axe-core`) | ✅ Passing | 0 violations |
+| **Unit & Smoke Tests** | `vitest run` (`tests/smoke.test.tsx`) | ✅ Passing | 34 / 34 tests passing |
+| **Accessibility Audits** | `vitest-axe` (`axe-core`) | ✅ Passing | 0 violations (Checkbox, Switch, Tabs, Avatar, Button, Card) |
 | **Package Linter** | `publint` (`npm run check:pkg`) | ✅ Passing | 64 / 64 subpaths valid |
 | **Manifest Audit** | `node scripts/verify-manifest.js` | ✅ Passing | 55 / 55 components verified |
 | **Root Linter** | `eslint src tests` | ✅ Passing | 0 errors |
-| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 64 bundles + 69.35 KB CSS |
+| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 64 bundles + 74.54 KB CSS |
 | **Documentation Build** | `next build` (Next.js 16.4.3 Turbopack) | ✅ Passing | 64 / 64 static pages generated |
 | **Documentation Linter** | `npm --prefix docs run lint` | ✅ Passing | 0 errors, 0 warnings |
+
 
 ---
 

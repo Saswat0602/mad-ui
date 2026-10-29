@@ -1,72 +1,52 @@
 import React from 'react'
+import * as SeparatorPrimitive from '@radix-ui/react-separator'
 import { cn } from '../../lib/utils'
 
-export interface SeparatorProps extends React.HTMLAttributes<HTMLDivElement> {
-  orientation?: 'horizontal' | 'vertical'
-  decorative?: boolean
-  // Enterprise features
-  analyticsId?: string
-  analyticsEvent?: string
-  analyticsData?: Record<string, any>
-  ariaLabel?: string
-  ariaDescribedBy?: string
-  role?: string
-  dataTestId?: string
-  onAnalytics?: (event: string, data?: Record<string, any>) => void
-  tooltip?: string
-  loading?: boolean
-  color?: string
-  backgroundColor?: string
-  borderColor?: string
-  textColor?: string
-  borderRadius?: string | number
-  shadow?: 'none' | 'sm' | 'md' | 'lg'
+export interface SeparatorProps
+  extends React.ComponentPropsWithoutRef<typeof SeparatorPrimitive.Root> {
   thickness?: 'thin' | 'medium' | 'thick'
-  lineStyle?: 'solid' | 'dashed' | 'dotted' | 'double'
-  gradient?: boolean
-  gradientColors?: string[]
-  animated?: boolean
-  animation?: 'pulse' | 'wave' | 'glow' | 'none'
-  animationDuration?: number
-  onAnimationStart?: () => void
-  onAnimationEnd?: () => void
-  theme?: 'light' | 'dark' | 'auto'
-  locale?: string
-  rtl?: boolean
-  accessibility?: {
-    announce?: boolean
-    announceMessage?: string
-    role?: string
-    liveRegion?: 'polite' | 'assertive' | 'off'
-  }
+  lineStyle?: 'solid' | 'dashed' | 'dotted'
 }
 
-export const Separator: React.FC<SeparatorProps> = ({
+export const Separator = React.forwardRef<
+  React.ElementRef<typeof SeparatorPrimitive.Root>,
+  SeparatorProps
+>(({
   className,
   orientation = 'horizontal',
   decorative = true,
+  thickness = 'thin',
+  lineStyle = 'solid',
   ...props
-}) => {
-  const baseClasses = 'shrink-0 bg-border'
-  
-  const orientationClasses = {
-    horizontal: 'h-px w-full',
-    vertical: 'h-full w-px'
+}, ref) => {
+  const thicknessClasses = {
+    thin: orientation === 'horizontal' ? 'h-px' : 'w-px',
+    medium: orientation === 'horizontal' ? 'h-0.5' : 'w-0.5',
+    thick: orientation === 'horizontal' ? 'h-1' : 'w-1',
   }
-  
-  const semanticClasses = decorative ? '' : 'mx-2'
-  
+
+  const styleClasses = {
+    solid: 'bg-zinc-200 dark:bg-zinc-800',
+    dashed: orientation === 'horizontal' ? 'border-b border-dashed border-zinc-200 dark:border-zinc-800 bg-transparent' : 'border-r border-dashed border-zinc-200 dark:border-zinc-800 bg-transparent',
+    dotted: orientation === 'horizontal' ? 'border-b border-dotted border-zinc-200 dark:border-zinc-800 bg-transparent' : 'border-r border-dotted border-zinc-200 dark:border-zinc-800 bg-transparent',
+  }
+
   return (
-    <div
-      role={decorative ? 'none' : 'separator'}
-      aria-orientation={orientation}
+    <SeparatorPrimitive.Root
+      ref={ref}
+      decorative={decorative}
+      orientation={orientation}
       className={cn(
-        baseClasses,
-        orientationClasses[orientation],
-        semanticClasses,
+        'shrink-0',
+        orientation === 'horizontal' ? 'w-full' : 'h-full',
+        thicknessClasses[thickness],
+        styleClasses[lineStyle],
         className
       )}
       {...props}
     />
   )
-}
+})
+Separator.displayName = SeparatorPrimitive.Root.displayName
+
+export default Separator

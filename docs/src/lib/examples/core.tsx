@@ -582,7 +582,7 @@ function InteractiveSliderDemo() {
       </div>
       <Slider 
         value={val} 
-        onChange={(v) => typeof v === 'number' && setVal(v)} 
+        onChange={(v: any) => typeof v === 'number' && setVal(v)} 
         min={0} 
         max={100} 
         step={1} 
@@ -601,8 +601,10 @@ function InteractiveRangeSliderDemo() {
       </div>
       <Slider 
         value={range} 
-        onChange={(v) => Array.isArray(v) && setRange(v)} 
+        onChange={(v: any) => Array.isArray(v) && setRange([v[0] ?? 0, v[1] ?? 100])} 
         range 
+
+
         min={0} 
         max={100} 
       />

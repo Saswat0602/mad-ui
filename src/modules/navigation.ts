@@ -17,7 +17,7 @@ export {
   MenubarLabel, 
   MenubarGroup 
 } from '../components/navigation/menubar'
-export { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator } from '../components/navigation/command'
+export { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator, CommandShortcut, CommandDialog } from '../components/navigation/command'
 export { Combobox } from '../components/navigation/combobox'
 export { Pagination, PaginationItem, PaginationContent, PaginationEllipsis } from '../components/navigation/pagination'
 
