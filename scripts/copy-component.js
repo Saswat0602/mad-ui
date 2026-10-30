@@ -1,127 +1,404 @@
 #!/usr/bin/env node
 
+/**
+ * Mad UI Smart Component Distributor CLI
+ * Usage:
+ *   npx mad-ui-components add <component-name> [--path <dir>] [--overwrite] [--dry-run]
+ *   npx mad-ui-components list
+ *   npx mad-ui-components add --all
+ */
+
 const fs = require('fs');
 const path = require('path');
 
-const componentName = process.argv[2];
+// 55 Core Components mapped to source files
+const COMPONENT_REGISTRY = {
+  // Core
+  'button': { path: 'src/components/core/button.tsx', category: 'Core', description: 'Interactive button with multiple semantic variants and sizes.' },
+  'card': { path: 'src/components/core/card.tsx', category: 'Core', description: 'Structured container for grouping content and actions.' },
+  'input': { path: 'src/components/core/input.tsx', category: 'Core', description: 'Single-line text input field supporting validation and icons.' },
+  'label': { path: 'src/components/core/label.tsx', category: 'Core', description: 'Accessible form field label associated with form controls.' },
+  'checkbox': { path: 'src/components/core/checkbox.tsx', category: 'Core', description: 'Two-state or indeterminate toggle checkbox control.' },
+  'radio': { path: 'src/components/core/radio.tsx', category: 'Core', description: 'Single-selection radio button option.' },
+  'select': { path: 'src/components/core/select.tsx', category: 'Core', description: 'Accessible dropdown select menu.' },
+  'switch': { path: 'src/components/core/switch.tsx', category: 'Core', description: 'Toggle switch control for binary settings.' },
+  'progress': { path: 'src/components/core/progress.tsx', category: 'Core', description: 'Horizontal progress bar indicator with smooth transitions.' },
+  'slider': { path: 'src/components/core/slider.tsx', category: 'Core', description: 'Range slider with single or dual-thumb support.' },
+  'rating': { path: 'src/components/core/rating.tsx', category: 'Core', description: 'Interactive or read-only star rating component.' },
+  'skeleton': { path: 'src/components/core/skeleton.tsx', category: 'Core', description: 'Placeholder loading shimmer effect for content loading.' },
+  'textarea': { path: 'src/components/core/textarea.tsx', category: 'Core', description: 'Multi-line text area supporting validation states.' },
 
-if (!componentName) {
-  console.log('Usage: node copy-component.js <component-name>');
-  console.log('Example: node copy-component.js button');
-  process.exit(1);
-}
+  // Forms
+  'accordion': { path: 'src/components/forms/accordion.tsx', category: 'Forms', description: 'Collapsible content panels with smooth height transitions.' },
+  'breadcrumbs': { path: 'src/components/forms/breadcrumbs.tsx', category: 'Forms', description: 'Navigational trail linking hierarchy levels.' },
+  'calendar': { path: 'src/components/forms/calendar.tsx', category: 'Forms', description: 'Accessible date grid picker with single/range selection.' },
+  'datetime-picker': { path: 'src/components/forms/datetime-picker.tsx', category: 'Forms', description: 'Unified date and time selector popup.' },
+  'input-otp': { path: 'src/components/forms/input-otp.tsx', category: 'Forms', description: 'Multi-slot verification pin and one-time password input.' },
+  'radio-group': { path: 'src/components/forms/radio-group.tsx', category: 'Forms', description: 'Radio button group container with keyboard navigation.' },
+  'form': { path: 'src/components/forms/form.tsx', category: 'Forms', description: 'Composable form context linking labels, controls, and error alerts.' },
+  'tabs': { path: 'src/components/forms/tabs.tsx', category: 'Forms', description: 'Tabbed panel switcher with accessible keyboard roving focus.' },
 
-// Map component names to their source paths
-const componentMap = {
-  'button': 'src/components/core/button.tsx',
-  'card': 'src/components/core/card.tsx',
-  'checkbox': 'src/components/core/checkbox.tsx',
-  'input': 'src/components/core/input.tsx',
-  'label': 'src/components/core/label.tsx',
-  'progress': 'src/components/core/progress.tsx',
-  'radio': 'src/components/core/radio.tsx',
-  'rating': 'src/components/core/rating.tsx',
-  'select': 'src/components/core/select.tsx',
-  'skeleton': 'src/components/core/skeleton.tsx',
-  'slider': 'src/components/core/slider.tsx',
-  'switch': 'src/components/core/switch.tsx',
-  'textarea': 'src/components/core/textarea.tsx',
-  'accordion': 'src/components/forms/accordion.tsx',
-  'breadcrumbs': 'src/components/forms/breadcrumbs.tsx',
-  'calendar': 'src/components/forms/calendar.tsx',
-  'date-picker': 'src/components/forms/date-picker.tsx',
-  'input-otp': 'src/components/forms/input-otp.tsx',
-  'radio-group': 'src/components/forms/radio-group.tsx',
-  'tabs': 'src/components/forms/tabs.tsx',
-  'timepicker': 'src/components/forms/timepicker.tsx',
-  'alert-dialog': 'src/components/overlay/alert-dialog.tsx',
-  'collapsible': 'src/components/overlay/collapsible.tsx',
-  'context-menu': 'src/components/overlay/context-menu.tsx',
-  'dialog': 'src/components/overlay/dialog.tsx',
-  'drawer': 'src/components/overlay/drawer.tsx',
-  'dropdown-menu': 'src/components/overlay/dropdown-menu.tsx',
-  'hover-card': 'src/components/overlay/hover-card.tsx',
-  'modal': 'src/components/layout/modal.tsx',
-  'popover': 'src/components/overlay/popover.tsx',
-  'sheet': 'src/components/layout/sheet.tsx',
-  'tooltip': 'src/components/overlay/tooltip.tsx',
-  'layout': 'src/components/layout/layout.tsx',
-  'navbar': 'src/components/layout/navbar.tsx',
-  'sidebar': 'src/components/layout/sidebar.tsx',
-  'resizable': 'src/components/layout/resizable.tsx',
-  'scroll-area': 'src/components/layout/scroll-area.tsx',
-  'separator': 'src/components/layout/separator.tsx',
-  'toggle': 'src/components/layout/toggle.tsx',
-  'aspect-ratio': 'src/components/media/aspect-ratio.tsx',
-  'avatar': 'src/components/media/avatar.tsx',
-  'badge': 'src/components/media/badge.tsx',
-  'carousel': 'src/components/media/carousel.tsx',
-  'typography': 'src/components/media/typography.tsx',
-  'chart': 'src/components/data/chart.tsx',
-  'combobox': 'src/components/navigation/combobox.tsx',
-  'command': 'src/components/navigation/command.tsx',
-  'data-table': 'src/components/data/data-table.tsx',
-  'menubar': 'src/components/navigation/menubar.tsx',
-  'navigation-menu': 'src/components/navigation/navigation-menu.tsx',
-  'pagination': 'src/components/navigation/pagination.tsx',
-  'table': 'src/components/data/table.tsx',
-  'alert': 'src/components/feedback/alert.tsx',
-  'sonner': 'src/components/feedback/sonner.tsx',
-  'toast': 'src/components/feedback/toast.tsx',
-  'icons': 'src/icons/index.tsx',
-  'utils': 'src/lib/utils.ts',
-  'colors': 'src/lib/colors.ts'
+  // Layout
+  'drawer': { path: 'src/components/layout/drawer.tsx', category: 'Layout', description: 'Edge slide-out sheet modal.' },
+  'layout-shell': { path: 'src/components/layout/layout.tsx', category: 'Layout', description: 'App layout framework with header, sidebar, and content canvas.' },
+  'modal': { path: 'src/components/layout/modal.tsx', category: 'Layout', description: 'Centered dialog modal overlay.' },
+  'navbar': { path: 'src/components/layout/navbar.tsx', category: 'Layout', description: 'Top navigation bar with brand, link list, and actions.' },
+  'popover': { path: 'src/components/layout/popover.tsx', category: 'Layout', description: 'Anchored floating popover card.' },
+  'resizable': { path: 'src/components/layout/resizable.tsx', category: 'Layout', description: 'Draggable resizable split pane layout.' },
+  'scroll-area': { path: 'src/components/layout/scroll-area.tsx', category: 'Layout', description: 'Custom styled scrollable viewport container.' },
+  'sheet': { path: 'src/components/layout/sheet.tsx', category: 'Layout', description: 'Slide-in sheet panel from any viewport edge.' },
+  'sidebar': { path: 'src/components/layout/sidebar.tsx', category: 'Layout', description: 'Collapsible application sidebar with item hierarchy.' },
+
+  // Overlay
+  'dialog': { path: 'src/components/overlay/dialog.tsx', category: 'Overlay', description: 'Accessible modal dialog with backdrop blur.' },
+  'alert-dialog': { path: 'src/components/overlay/alert-dialog.tsx', category: 'Overlay', description: 'Confirmation alert dialog requiring explicit user response.' },
+  'dropdown-menu': { path: 'src/components/overlay/dropdown-menu.tsx', category: 'Overlay', description: 'Dropdown action menu anchored to trigger button.' },
+  'context-menu': { path: 'src/components/overlay/context-menu.tsx', category: 'Overlay', description: 'Right-click contextual menu.' },
+  'hover-card': { path: 'src/components/overlay/hover-card.tsx', category: 'Overlay', description: 'Hover preview popover with configurable delay.' },
+  'tooltip': { path: 'src/components/layout/tooltip.tsx', category: 'Overlay', description: 'Informative hover tooltip bubble.' },
+  'collapsible': { path: 'src/components/overlay/collapsible.tsx', category: 'Overlay', description: 'Expandable/collapsible content disclosure element.' },
+  'separator': { path: 'src/components/overlay/separator.tsx', category: 'Overlay', description: 'Visual dividing rule separating layout elements.' },
+  'toggle': { path: 'src/components/overlay/toggle.tsx', category: 'Overlay', description: 'Two-state interactive button.' },
+
+  // Navigation
+  'combobox': { path: 'src/components/navigation/combobox.tsx', category: 'Navigation', description: 'Autocomplete search combobox.' },
+  'command': { path: 'src/components/navigation/command.tsx', category: 'Navigation', description: 'Command palette with fast keyboard-driven search.' },
+  'menubar': { path: 'src/components/navigation/menubar.tsx', category: 'Navigation', description: 'Desktop application menubar system with submenus.' },
+  'navigation-menu': { path: 'src/components/navigation/navigation-menu.tsx', category: 'Navigation', description: 'Navigation bar with responsive dropdown panels.' },
+  'pagination': { path: 'src/components/navigation/pagination.tsx', category: 'Navigation', description: 'Page navigation controls with sibling pagination.' },
+
+  // Data
+  'table': { path: 'src/components/data/table.tsx', category: 'Data', description: 'Semantic HTML table structure with hover and stripe styles.' },
+  'data-table': { path: 'src/components/data/data-table.tsx', category: 'Data', description: 'Advanced table with multi-sorting, selection, search, and pagination.' },
+  'chart': { path: 'src/components/data/chart.tsx', category: 'Data', description: 'Data visualization chart component.' },
+
+  // Feedback
+  'alert': { path: 'src/components/feedback/alert.tsx', category: 'Feedback', description: 'Callout banner with semantic variants and dismiss.' },
+  'toast': { path: 'src/components/feedback/toast.tsx', category: 'Feedback', description: 'Temporary toast alert notification.' },
+  'sonner': { path: 'src/components/feedback/sonner.tsx', category: 'Feedback', description: 'Stacked toast notification stream.' },
+
+  // Media
+  'avatar': { path: 'src/components/media/avatar.tsx', category: 'Media', description: 'User image avatar with fallback initials.' },
+  'badge': { path: 'src/components/media/badge.tsx', category: 'Media', description: 'Status pill badge with semantic styles.' },
+  'aspect-ratio': { path: 'src/components/media/aspect-ratio.tsx', category: 'Media', description: 'Aspect ratio container maintaining proportional width and height.' },
+  'carousel': { path: 'src/components/media/carousel.tsx', category: 'Media', description: 'Slide carousel with autoplay, touch gestures, and pagination.' },
+  'typography': { path: 'src/components/media/typography.tsx', category: 'Media', description: 'Type scale components with semantic HTML elements.' }
 };
 
-if (!componentMap[componentName]) {
-  console.log(`Component '${componentName}' not found. Available components:`);
-  console.log(Object.keys(componentMap).join(', '));
-  process.exit(1);
-}
+// Aliases for user convenience (e.g. datatable -> data-table)
+const ALIASES = {
+  'inputotp': 'input-otp',
+  'radiogroup': 'radio-group',
+  'datetimepicker': 'datetime-picker',
+  'date-picker': 'datetime-picker',
+  'datepicker': 'datetime-picker',
+  'layout': 'layout-shell',
+  'scrollarea': 'scroll-area',
+  'datatable': 'data-table',
+  'navigationmenu': 'navigation-menu',
+  'alertdialog': 'alert-dialog',
+  'dropdownmenu': 'dropdown-menu',
+  'contextmenu': 'context-menu',
+  'hovercard': 'hover-card',
+  'aspectratio': 'aspect-ratio'
+};
 
-const sourcePath = path.join(__dirname, '..', componentMap[componentName]);
-const targetDir = path.join(process.cwd(), 'components', 'ui', 'mad-ui');
-const targetPath = path.join(targetDir, `${componentName}.tsx`);
-
-// Create target directory if it doesn't exist
-if (!fs.existsSync(targetDir)) {
-  fs.mkdirSync(targetDir, { recursive: true });
-}
-
-// Copy the component file
-try {
-  fs.copyFileSync(sourcePath, targetPath);
-  console.log(`✅ Copied ${componentName} to ${targetPath}`);
-  
-  // Also copy dependencies if they exist
-  const dependencies = getDependencies(sourcePath);
-  dependencies.forEach(dep => {
-    const depPath = path.join(__dirname, '..', dep);
-    const depTargetPath = path.join(targetDir, path.basename(dep));
-    if (fs.existsSync(depPath)) {
-      fs.copyFileSync(depPath, depTargetPath);
-      console.log(`✅ Copied dependency ${path.basename(dep)}`);
-    }
-  });
-  
-  console.log(`\n🎉 Component ${componentName} is now available in your components/ui/mad-ui folder!`);
-  console.log(`\nUsage example:`);
-  console.log(`import { ${componentName.charAt(0).toUpperCase() + componentName.slice(1)} } from '@/components/ui/mad-ui/${componentName}';`);
-  
-} catch (error) {
-  console.error(`❌ Error copying component: ${error.message}`);
-  process.exit(1);
-}
-
-function getDependencies(filePath) {
-  const content = fs.readFileSync(filePath, 'utf8');
-  const dependencies = [];
-  
-  // Check for imports from our icons or utils
-  if (content.includes('../../icons') || content.includes('../../lib/')) {
-    dependencies.push('src/icons/index.tsx');
-    dependencies.push('src/lib/utils.ts');
+function normalizeName(name) {
+  const lower = name.toLowerCase().trim();
+  if (COMPONENT_REGISTRY[lower]) return lower;
+  if (ALIASES[lower]) return ALIASES[lower];
+  const withoutHyphens = lower.replace(/-/g, '');
+  if (ALIASES[withoutHyphens]) return ALIASES[withoutHyphens];
+  for (const key of Object.keys(COMPONENT_REGISTRY)) {
+    if (key.replace(/-/g, '') === withoutHyphens) return key;
   }
-  
+  return null;
+}
+
+function parseArgs() {
+  const args = process.argv.slice(2);
+  const options = {
+    command: null,
+    targetComponent: null,
+    targetDir: path.join(process.cwd(), 'components', 'ui', 'mad-ui'),
+    all: false,
+    dryRun: false,
+    overwrite: false
+  };
+
+  for (let i = 0; i < args.length; i++) {
+    const arg = args[i];
+    if (arg === 'list') {
+      options.command = 'list';
+    } else if (arg === 'add') {
+      options.command = 'add';
+      if (args[i + 1] && !args[i + 1].startsWith('-')) {
+        options.targetComponent = args[++i];
+      }
+    } else if (arg === '--all') {
+      options.all = true;
+    } else if (arg === '--dry-run') {
+      options.dryRun = true;
+    } else if (arg === '--overwrite') {
+      options.overwrite = true;
+    } else if (arg === '--path' || arg === '-p') {
+      if (args[i + 1]) {
+        options.targetDir = path.resolve(process.cwd(), args[++i]);
+      }
+    } else if (!arg.startsWith('-') && !options.targetComponent && !options.command) {
+      options.command = 'add';
+      options.targetComponent = arg;
+    }
+  }
+
+  return options;
+}
+
+function printHelp() {
+  console.log(`
+Mad UI Component CLI (mad-ui-components)
+
+Commands:
+  npx mad-ui-components list                   List all 55 components by category
+  npx mad-ui-components add <component>       Copy component and its dependencies
+  npx mad-ui-components add --all             Copy all 55 components
+
+Options:
+  --path, -p <dir>    Custom destination directory (default: components/ui/mad-ui)
+  --overwrite         Overwrite files if they already exist
+  --dry-run           Preview which files would be copied without writing to disk
+`);
+}
+
+function listComponents() {
+  console.log('\n📦 Mad UI Available Components (55 Total):\n');
+  const categories = {};
+  for (const [name, info] of Object.entries(COMPONENT_REGISTRY)) {
+    if (!categories[info.category]) categories[info.category] = [];
+    categories[info.category].push({ name, desc: info.description });
+  }
+
+  for (const [cat, list] of Object.entries(categories)) {
+    console.log(`  \x1b[1m\x1b[34m${cat}\x1b[0m (${list.length} components):`);
+    for (const item of list) {
+      console.log(`    \x1b[32m${item.name.padEnd(20)}\x1b[0m ${item.desc}`);
+    }
+    console.log('');
+  }
+}
+
+// Inspect a source file and extract internal primitives, hooks, utils dependencies
+function resolveDependencies(sourceFilePath, rootDir) {
+  const content = fs.readFileSync(sourceFilePath, 'utf8');
+  const dependencies = {
+    primitives: new Set(),
+    hooks: new Set(),
+    utils: false,
+    colors: false,
+    icons: false,
+    peerComponents: new Set()
+  };
+
+  // Check primitive imports
+  const primMatches = content.matchAll(/from ['"](?:\.\.\/)+primitives\/([a-z-]+)['"]/g);
+  for (const m of primMatches) dependencies.primitives.add(m[1]);
+
+  // Check hook imports
+  const hookMatches = content.matchAll(/from ['"](?:\.\.\/)+hooks\/([a-z-]+)['"]/g);
+  for (const m of hookMatches) dependencies.hooks.add(m[1]);
+
+  // Check direct hooks module import
+  if (content.includes("from '../../hooks'") || content.includes("from '../hooks'")) {
+    dependencies.hooks.add('use-controllable-state');
+    dependencies.hooks.add('use-id');
+  }
+
+  // Check direct primitives module import
+  if (content.includes("from '../../primitives'") || content.includes("from '../primitives'")) {
+    dependencies.primitives.add('slot');
+  }
+
+  // Check utils / colors
+  if (content.includes('/lib/utils') || content.includes("from '../../lib/utils'")) {
+    dependencies.utils = true;
+  }
+  if (content.includes('/lib/colors')) {
+    dependencies.colors = true;
+  }
+  if (content.includes('/icons')) {
+    dependencies.icons = true;
+  }
+
+  // Check peer component dependencies (e.g., select trigger, table rows)
+  for (const compName of Object.keys(COMPONENT_REGISTRY)) {
+    const regex = new RegExp(`from ['"](?:\\.\\.\\/)+[a-z]+\\/${compName}['"]`, 'g');
+    if (regex.test(content) && path.basename(sourceFilePath, path.extname(sourceFilePath)) !== compName) {
+      dependencies.peerComponents.add(compName);
+    }
+  }
+
   return dependencies;
 }
+
+// Rewrite relative imports so copied component resolves internal files cleanly in targetDir
+function rewriteComponentImports(content) {
+  return content
+    .replace(/from ['"](?:\.\.\/)+primitives\/([a-z-]+)['"]/g, "from './primitives/$1'")
+    .replace(/from ['"](?:\.\.\/)+primitives['"]/g, "from './primitives'")
+    .replace(/from ['"](?:\.\.\/)+hooks\/([a-z-]+)['"]/g, "from './hooks/$1'")
+    .replace(/from ['"](?:\.\.\/)+hooks['"]/g, "from './hooks'")
+    .replace(/from ['"](?:\.\.\/)+lib\/utils['"]/g, "from './lib/utils'")
+    .replace(/from ['"](?:\.\.\/)+lib\/colors['"]/g, "from './lib/colors'")
+    .replace(/from ['"](?:\.\.\/)+icons['"]/g, "from './icons'")
+    .replace(/from ['"](?:\.\.\/)+[a-z]+\/([a-z-]+)['"]/g, "from './$1'");
+}
+
+function copyFileSafe(src, dest, overwrite, dryRun, transform = null) {
+  if (fs.existsSync(dest) && !overwrite) {
+    return { status: 'skipped', reason: 'exists' };
+  }
+
+  if (dryRun) {
+    return { status: 'would_copy' };
+  }
+
+  const dir = path.dirname(dest);
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+  }
+
+  if (transform) {
+    const content = fs.readFileSync(src, 'utf8');
+    const transformed = transform(content);
+    fs.writeFileSync(dest, transformed, 'utf8');
+  } else {
+    fs.copyFileSync(src, dest);
+  }
+
+  return { status: 'copied' };
+}
+
+function main() {
+  const options = parseArgs();
+  const rootDir = path.resolve(__dirname, '..');
+
+  if (options.command === 'list') {
+    listComponents();
+    process.exit(0);
+  }
+
+  if (options.all) {
+    console.log(`\n🚀 Copying all 55 components to ${options.targetDir}...\n`);
+    const components = Object.keys(COMPONENT_REGISTRY);
+    let successCount = 0;
+
+    for (const comp of components) {
+      const result = copyComponentWithDeps(comp, options, rootDir);
+      if (result) successCount++;
+    }
+
+    console.log(`\n🎉 Successfully installed ${successCount} components to ${options.targetDir}!\n`);
+    process.exit(0);
+  }
+
+  if (!options.targetComponent) {
+    printHelp();
+    process.exit(1);
+  }
+
+  const normalized = normalizeName(options.targetComponent);
+  if (!normalized) {
+    console.error(`\n❌ Component "${options.targetComponent}" not found.`);
+    console.log(`Run "npx mad-ui-components list" to view all available components.\n`);
+    process.exit(1);
+  }
+
+  console.log(`\n📦 Installing \x1b[1m${normalized}\x1b[0m to ${options.targetDir}...`);
+  if (options.dryRun) {
+    console.log(`   [DRY RUN MODE — No files will be written]\n`);
+  }
+
+  const success = copyComponentWithDeps(normalized, options, rootDir);
+  if (success) {
+    console.log(`\n🎉 Installation complete!`);
+    console.log(`Usage:`);
+    console.log(`  import { ${capitalize(toCamelCase(normalized))} } from './${path.relative(process.cwd(), options.targetDir)}/${normalized}'\n`);
+  }
+}
+
+function copyComponentWithDeps(componentKey, options, rootDir) {
+  const meta = COMPONENT_REGISTRY[componentKey];
+  const srcPath = path.join(rootDir, meta.path);
+
+  if (!fs.existsSync(srcPath)) {
+    console.error(`❌ Source file missing: ${srcPath}`);
+    return false;
+  }
+
+  const targetFile = path.join(options.targetDir, `${componentKey}.tsx`);
+  const deps = resolveDependencies(srcPath, rootDir);
+
+  // 1. Copy main component
+  const res = copyFileSafe(srcPath, targetFile, options.overwrite, options.dryRun, rewriteComponentImports);
+  if (res.status === 'copied') {
+    console.log(`  ✓ Created ${path.relative(process.cwd(), targetFile)}`);
+  } else if (res.status === 'would_copy') {
+    console.log(`  [dry-run] Would create ${path.relative(process.cwd(), targetFile)}`);
+  } else {
+    console.log(`  - Skipped ${path.relative(process.cwd(), targetFile)} (already exists, use --overwrite)`);
+  }
+
+  // 2. Copy resolved primitives
+  for (const prim of deps.primitives) {
+    const primSrc = path.join(rootDir, 'src', 'primitives', `${prim}.tsx`);
+    const primDest = path.join(options.targetDir, 'primitives', `${prim}.tsx`);
+    if (fs.existsSync(primSrc)) {
+      copyFileSafe(primSrc, primDest, options.overwrite, options.dryRun, (c) => {
+        return c.replace(/from ['"]\.\.\/lib\/utils['"]/g, "from '../lib/utils'");
+      });
+      console.log(`    + Primitive: primitives/${prim}.tsx`);
+    }
+  }
+
+  // 3. Copy resolved hooks
+  for (const hook of deps.hooks) {
+    const hookSrc = path.join(rootDir, 'src', 'hooks', `${hook}.ts`);
+    const hookDest = path.join(options.targetDir, 'hooks', `${hook}.ts`);
+    if (fs.existsSync(hookSrc)) {
+      copyFileSafe(hookSrc, hookDest, options.overwrite, options.dryRun);
+      console.log(`    + Hook: hooks/${hook}.ts`);
+    }
+  }
+
+  // 4. Copy utils if needed
+  if (deps.utils) {
+    const utilsSrc = path.join(rootDir, 'src', 'lib', 'utils.ts');
+    const utilsDest = path.join(options.targetDir, 'lib', 'utils.ts');
+    if (fs.existsSync(utilsSrc)) {
+      copyFileSafe(utilsSrc, utilsDest, options.overwrite, options.dryRun);
+      console.log(`    + Utility: lib/utils.ts`);
+    }
+  }
+
+  // 5. Copy colors if needed
+  if (deps.colors) {
+    const colorsSrc = path.join(rootDir, 'src', 'lib', 'colors.ts');
+    const colorsDest = path.join(options.targetDir, 'lib', 'colors.ts');
+    if (fs.existsSync(colorsSrc)) {
+      copyFileSafe(colorsSrc, colorsDest, options.overwrite, options.dryRun);
+      console.log(`    + Utility: lib/colors.ts`);
+    }
+  }
+
+  return true;
+}
+
+function toCamelCase(str) {
+  return str.replace(/-([a-z])/g, (_, letter) => letter.toUpperCase());
+}
+
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+main();

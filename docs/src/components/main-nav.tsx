@@ -9,6 +9,7 @@ const navigation = [
   { title: "Installation", href: "/docs/installation" },
   { title: "Getting Started", href: "/docs/getting-started" },
   { title: "Examples", href: "/docs/examples" },
+  { title: "Theme Builder", href: "/theme-builder" },
 ]
 
 export function MainNav() {
