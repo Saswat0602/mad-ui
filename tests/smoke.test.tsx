@@ -51,8 +51,20 @@ import {
 
 // Primitives, Hooks & Theme
 import { Slot, Portal, Presence } from '../src/primitives'
-import { useControllableState, useId } from '../src/hooks'
+import { useControllableState, useId, useVirtualizer } from '../src/hooks'
 import { ThemeProvider, useTheme } from '../src/theme'
+
+// Form & Data Table
+import { 
+  Form, 
+  FormField, 
+  FormItem, 
+  FormLabel, 
+  FormControl, 
+  FormDescription, 
+  FormMessage 
+} from '../src/components/forms/form'
+import { DataTable, DataTableColumn } from '../src/components/data/data-table'
 
 
 describe('Smoke & SSR Component Suite', () => {
@@ -364,6 +376,76 @@ describe('Smoke & SSR Component Suite', () => {
       fireEvent.click(getByText('Overview'))
       expect(getByText('Introduction')).toBeDefined()
     })
+
+    it('renders Composable Form with linked IDs and accessible ARIA attributes', () => {
+      const { getByLabelText, getByRole, getByText } = render(
+        <StrictMode>
+          <Form>
+            <FormField name="email" error="Invalid email address">
+              <FormItem>
+                <FormLabel>Email Address</FormLabel>
+                <FormControl>
+                  <Input placeholder="name@domain.com" />
+                </FormControl>
+                <FormDescription>We will never share your email.</FormDescription>
+                <FormMessage />
+              </FormItem>
+            </FormField>
+          </Form>
+        </StrictMode>
+      )
+
+      const input = getByLabelText('Email Address')
+      expect(input).toBeDefined()
+      expect(input.getAttribute('aria-invalid')).toBe('true')
+      expect(input.getAttribute('aria-describedby')).toBeDefined()
+
+      const alert = getByRole('alert')
+      expect(alert.textContent).toBe('Invalid email address')
+      expect(getByText('We will never share your email.')).toBeDefined()
+    })
+
+    it('renders DataTable with sorting, search filtering, and row selection', () => {
+      interface UserRecord {
+        id: string
+        name: string
+        role: string
+      }
+
+      const users: UserRecord[] = [
+        { id: '1', name: 'Alice Smith', role: 'Engineer' },
+        { id: '2', name: 'Bob Jones', role: 'Designer' },
+        { id: '3', name: 'Charlie Brown', role: 'Product' }
+      ]
+
+      const columns: DataTableColumn<UserRecord>[] = [
+        { key: 'name', header: 'Name', sortable: true },
+        { key: 'role', header: 'Role' }
+      ]
+
+      const { getByText, queryByText, getByPlaceholderText, getAllByRole } = render(
+        <StrictMode>
+          <DataTable data={users} columns={columns} selectable searchable pagination />
+        </StrictMode>
+      )
+
+      expect(getByText('Alice Smith')).toBeDefined()
+      expect(getByText('Bob Jones')).toBeDefined()
+      expect(getByText('Charlie Brown')).toBeDefined()
+
+      // Search filtering
+      const searchInput = getByPlaceholderText('Search table...')
+      fireEvent.change(searchInput, { target: { value: 'Alice' } })
+      expect(getByText('Alice Smith')).toBeDefined()
+      expect(queryByText('Bob Jones')).toBeNull()
+
+      // Clear search
+      fireEvent.change(searchInput, { target: { value: ' ' } })
+
+      // Selection check
+      const checkboxes = getAllByRole('checkbox')
+      expect(checkboxes.length).toBeGreaterThan(0)
+    })
   })
 
   describe('Server-Side Rendering (renderToString)', () => {
@@ -525,6 +607,24 @@ describe('Smoke & SSR Component Suite', () => {
       expect(getByTestId('theme-name').textContent).toBe('light')
       fireEvent.click(getByText('Set Dark'))
       expect(getByTestId('theme-name').textContent).toBe('dark')
+    })
+
+    it('useVirtualizer computes virtual totalSize and scroll positions', () => {
+      const mockElement = document.createElement('div')
+      Object.defineProperty(mockElement, 'clientHeight', { value: 400, configurable: true })
+      Object.defineProperty(mockElement, 'scrollTop', { value: 0, configurable: true })
+
+      const { result } = renderHook(() =>
+        useVirtualizer({
+          count: 50,
+          itemHeight: 40,
+          overscan: 2,
+          getScrollElement: () => mockElement,
+        })
+      )
+
+      expect(result.current.totalSize).toBe(50 * 40)
+      expect(typeof result.current.scrollToIndex).toBe('function')
     })
   })
 })

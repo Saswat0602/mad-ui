@@ -1,5 +1,23 @@
 import React, { useState } from 'react'
-import { Accordion, Breadcrumbs, DateTimePicker, InputOTP, RadioGroup, RadioGroupItem, Tabs, Form, FormField, FormItem, FormLabel, FormControl, FormMessage, Calendar as MadCalendar } from 'mad-ui-components'
+import { 
+  Accordion, 
+  Breadcrumbs, 
+  DateTimePicker, 
+  InputOTP, 
+  RadioGroup, 
+  RadioGroupItem, 
+  Tabs, 
+  Form, 
+  FormField, 
+  FormItem, 
+  FormLabel, 
+  FormControl, 
+  FormDescription,
+  FormMessage, 
+  Input,
+  Button,
+  Calendar as MadCalendar 
+} from 'mad-ui-components'
 import { Calendar as CalendarIcon, Clock, Sliders, Palette, CalendarDays, Zap } from 'lucide-react'
 
 // Breadcrumb Designs Demo Component
@@ -627,40 +645,63 @@ export function TabsExample() {
 
   form: [
     {
-      title: 'Basic Form',
-      description: 'A simple form component',
-      code: `import { Form, FormField, FormItem, FormLabel, FormControl, FormMessage } from 'mad-ui-components'
+      title: 'Composable Form System',
+      description: 'Context-driven accessible form fields with automatic ARIA linking and validation feedback',
+      code: `import { 
+  Form, 
+  FormField, 
+  FormItem, 
+  FormLabel, 
+  FormControl, 
+  FormDescription, 
+  FormMessage, 
+  Input, 
+  Button 
+} from 'mad-ui-components'
+import { useState } from 'react'
 
-export function FormExample() {
+export function ProfileForm() {
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [errors, setErrors] = useState<{ username?: string; email?: string }>({})
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const errs: { username?: string; email?: string } = {}
+    if (username.length < 3) errs.username = 'Username must be at least 3 characters.'
+    if (!email.includes('@')) errs.email = 'Please provide a valid corporate email.'
+    setErrors(errs)
+  }
+
   return (
-    <Form>
-      <FormField name="email">
+    <Form onSubmit={handleSubmit} className="space-y-4">
+      <FormField name="username" error={errors.username}>
         <FormItem>
-          <FormLabel>Email</FormLabel>
+          <FormLabel>Username</FormLabel>
           <FormControl>
-            <input type="email" placeholder="Enter your email" />
+            <Input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="alex.chen" />
           </FormControl>
+          <FormDescription>Your public display handle.</FormDescription>
           <FormMessage />
         </FormItem>
       </FormField>
+
+      <FormField name="email" error={errors.email}>
+        <FormItem>
+          <FormLabel>Work Email</FormLabel>
+          <FormControl>
+            <Input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="alex@company.com" />
+          </FormControl>
+          <FormDescription>Used for billing and security alerts.</FormDescription>
+          <FormMessage />
+        </FormItem>
+      </FormField>
+
+      <Button type="submit">Save Changes</Button>
     </Form>
   )
 }`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <Form>
-            <FormField name="email">
-              <FormItem>
-                <FormLabel>Email</FormLabel>
-                <FormControl>
-                  <input type="email" placeholder="Enter your email" className="w-full px-3 py-2 border rounded-md" />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            </FormField>
-          </Form>
-        </div>
-      )
+      preview: <FormDemo />
     }
   ],
 
@@ -693,6 +734,79 @@ function CalendarDemo() {
   return (
     <div className="flex justify-center p-4">
       <MadCalendar value={date} onChange={setDate} />
+    </div>
+  )
+}
+
+function FormDemo() {
+  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
+  const [errors, setErrors] = useState<Record<string, string>>({})
+  const [submitted, setSubmitted] = useState(false)
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    const nextErrors: Record<string, string> = {}
+    if (!username.trim() || username.length < 3) {
+      nextErrors.username = 'Username must be at least 3 characters.'
+    }
+    if (!email.trim() || !email.includes('@')) {
+      nextErrors.email = 'Please provide a valid corporate email.'
+    }
+
+    setErrors(nextErrors)
+    if (Object.keys(nextErrors).length === 0) {
+      setSubmitted(true)
+      setTimeout(() => setSubmitted(false), 3000)
+    }
+  }
+
+  return (
+    <div className="w-full max-w-md p-6 rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-sm">
+      <Form onSubmit={handleSubmit} className="space-y-4">
+        <FormField name="username" error={errors.username}>
+          <FormItem>
+            <FormLabel>Workspace Username</FormLabel>
+            <FormControl>
+              <Input
+                placeholder="alex.developer"
+                value={username}
+                onChange={(e) => {
+                  setUsername(e.target.value)
+                  if (errors.username) setErrors(prev => ({ ...prev, username: '' }))
+                }}
+              />
+            </FormControl>
+            <FormDescription>Your public display handle in this team.</FormDescription>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+
+        <FormField name="email" error={errors.email}>
+          <FormItem>
+            <FormLabel>Work Email</FormLabel>
+            <FormControl>
+              <Input
+                type="email"
+                placeholder="alex@company.com"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value)
+                  if (errors.email) setErrors(prev => ({ ...prev, email: '' }))
+                }}
+              />
+            </FormControl>
+            <FormDescription>Used for billing and security alerts.</FormDescription>
+            <FormMessage />
+          </FormItem>
+        </FormField>
+
+        <div className="pt-2">
+          <Button type="submit" className="w-full">
+            {submitted ? 'Saved Successfully!' : 'Save Profile'}
+          </Button>
+        </div>
+      </Form>
     </div>
   )
 }

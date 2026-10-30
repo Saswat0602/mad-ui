@@ -3,7 +3,6 @@
 /build
 .env
 .npmrc
-.agents
 /ui copy
 
 

@@ -31,8 +31,12 @@ export {
   FormLabel, 
   FormControl, 
   FormDescription, 
-  FormMessage 
-} from './components/forms/react-hook-form'
+  FormMessage,
+  FormError,
+  FormSuccess,
+  FormWarning,
+  useFormField
+} from './components/forms/form'
 
 // Overlay Components
 export { 
@@ -232,8 +236,9 @@ export type {
   FormLabelProps,
   FormControlProps,
   FormDescriptionProps,
-  FormMessageProps
-} from './components/forms/react-hook-form'
+  FormMessageProps,
+  FormFieldError
+} from './components/forms/form'
 
 export type { 
   DialogProps,
@@ -307,7 +312,7 @@ export type { ResizableProps } from './components/layout/resizable'
 export type { ScrollAreaProps } from './components/layout/scroll-area'
 
 export type { TableProps } from './components/data/table'
-export type { DataTableProps } from './components/data/data-table'
+export type { DataTableProps, DataTableColumn, DataTableHeaderProps, DataTableRowProps, DataTablePaginationProps } from './components/data/data-table'
 export type { ChartProps } from './components/data/chart'
 
 export type { AlertProps } from './components/feedback/alert'

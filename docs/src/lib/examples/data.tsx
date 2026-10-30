@@ -1,5 +1,5 @@
 import React from 'react'
-import { Table, DataTable, Chart } from 'mad-ui-components'
+import { Table, DataTable, Chart, Badge } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -228,41 +228,52 @@ export function InteractiveTable() {
 
   'data-table': [
     {
-      title: 'Basic Data Table',
-      description: 'A simple data table component',
-      code: `import { DataTable } from 'mad-ui-components'
+      title: 'Advanced Data Table',
+      description: 'Feature-rich table with global search, column header sorting, checkbox row selection, and pagination',
+      code: `import { DataTable, Badge } from 'mad-ui-components'
 
 export function DataTableExample() {
   const columns = [
-    { key: 'id', header: 'ID' },
-    { key: 'name', header: 'Name' },
-    { key: 'status', header: 'Status' }
+    { key: 'name', header: 'Team Member', sortable: true },
+    { key: 'role', header: 'Role', sortable: true },
+    { 
+      key: 'status', 
+      header: 'Status', 
+      cell: (item: any) => (
+        <Badge variant={item.status === 'Active' ? 'success' : 'secondary'}>
+          {item.status}
+        </Badge>
+      )
+    },
+    { key: 'department', header: 'Department', sortable: true },
+    { key: 'email', header: 'Contact Email' }
   ]
 
   const data = [
-    { id: 1, name: 'Project A', status: 'Active' },
-    { id: 2, name: 'Project B', status: 'Inactive' },
-    { id: 3, name: 'Project C', status: 'Active' }
+    { id: '1', name: 'Alex Johnson', role: 'Staff Engineer', status: 'Active', department: 'Core Infrastructure', email: 'alex@company.com' },
+    { id: '2', name: 'Sarah Chen', role: 'Design Lead', status: 'Active', department: 'Design System', email: 'sarah@company.com' },
+    { id: '3', name: 'Marcus Vance', role: 'Security Architect', status: 'Inactive', department: 'Security & Auth', email: 'marcus@company.com' },
+    { id: '4', name: 'Elena Rostova', role: 'Product Manager', status: 'Active', department: 'Developer Experience', email: 'elena@company.com' },
+    { id: '5', name: 'David Kim', role: 'Frontend Engineer', status: 'Active', department: 'Web Platform', email: 'david@company.com' },
+    { id: '6', name: 'Rachel Green', role: 'QA Lead', status: 'Active', department: 'Test Automation', email: 'rachel@company.com' },
+    { id: '7', name: 'James Wilson', role: 'DevOps Lead', status: 'Inactive', department: 'Cloud Infra', email: 'james@company.com' },
+    { id: '8', name: 'Aaliyah Patel', role: 'Engineering Director', status: 'Active', department: 'Executive', email: 'aaliyah@company.com' }
   ]
 
-  return <DataTable columns={columns} data={data} />
+  return (
+    <DataTable 
+      columns={columns} 
+      data={data} 
+      searchable
+      sortable
+      selectable
+      pagination
+      pageSize={5}
+      pageSizeOptions={[5, 10, 20]}
+    />
+  )
 }`,
-      preview: (
-        <div className="w-full max-w-md">
-          <DataTable 
-            columns={[
-              { key: 'id', header: 'ID' },
-              { key: 'name', header: 'Name' },
-              { key: 'status', header: 'Status' }
-            ]} 
-            data={[
-              { id: 1, name: 'Project A', status: 'Active' },
-              { id: 2, name: 'Project B', status: 'Inactive' },
-              { id: 3, name: 'Project C', status: 'Active' }
-            ]} 
-          />
-        </div>
-      )
+      preview: <DataTableDemo />
     }
   ],
 
@@ -297,4 +308,48 @@ export function ChartExample() {
       )
     }
   ]
+}
+
+function DataTableDemo() {
+  const columns = [
+    { key: 'name', header: 'Team Member', sortable: true },
+    { key: 'role', header: 'Role', sortable: true },
+    { 
+      key: 'status', 
+      header: 'Status', 
+      cell: (item: any) => (
+        <Badge variant={item.status === 'Active' ? 'success' : 'secondary'}>
+          {item.status}
+        </Badge>
+      )
+    },
+    { key: 'department', header: 'Department', sortable: true },
+    { key: 'email', header: 'Contact Email' }
+  ]
+
+  const data = [
+    { id: '1', name: 'Alex Johnson', role: 'Staff Engineer', status: 'Active', department: 'Core Infrastructure', email: 'alex@company.com' },
+    { id: '2', name: 'Sarah Chen', role: 'Design Lead', status: 'Active', department: 'Design System', email: 'sarah@company.com' },
+    { id: '3', name: 'Marcus Vance', role: 'Security Architect', status: 'Inactive', department: 'Security & Auth', email: 'marcus@company.com' },
+    { id: '4', name: 'Elena Rostova', role: 'Product Manager', status: 'Active', department: 'Developer Experience', email: 'elena@company.com' },
+    { id: '5', name: 'David Kim', role: 'Frontend Engineer', status: 'Active', department: 'Web Platform', email: 'david@company.com' },
+    { id: '6', name: 'Rachel Green', role: 'QA Lead', status: 'Active', department: 'Test Automation', email: 'rachel@company.com' },
+    { id: '7', name: 'James Wilson', role: 'DevOps Lead', status: 'Inactive', department: 'Cloud Infra', email: 'james@company.com' },
+    { id: '8', name: 'Aaliyah Patel', role: 'Engineering Director', status: 'Active', department: 'Executive', email: 'aaliyah@company.com' }
+  ]
+
+  return (
+    <div className="w-full">
+      <DataTable 
+        columns={columns} 
+        data={data} 
+        searchable
+        sortable
+        selectable
+        pagination
+        pageSize={5}
+        pageSizeOptions={[5, 10, 20]}
+      />
+    </div>
+  )
 }

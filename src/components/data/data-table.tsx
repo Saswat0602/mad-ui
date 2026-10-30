@@ -1,13 +1,38 @@
-import React, { useState, useMemo } from 'react'
-import { cn } from '../../lib/utils'
-import { Search, ArrowUpDown, ArrowUp, ArrowDown, ChevronLeft, ChevronRight } from 'lucide-react'
+"use client"
+
+import * as React from "react"
+import { cn } from "../../lib/utils"
+import { 
+  Table, 
+  TableHeader, 
+  TableBody, 
+  TableHead, 
+  TableRow, 
+  TableCell 
+} from "./table"
+import { Checkbox } from "../core/checkbox"
+import { Skeleton } from "../core/skeleton"
+import { useVirtualizer } from "../../hooks/use-virtualizer"
+import { 
+  Search, 
+  ArrowUpDown, 
+  ArrowUp, 
+  ArrowDown, 
+  ChevronLeft, 
+  ChevronRight, 
+  ChevronsLeft, 
+  ChevronsRight,
+  SlidersHorizontal
+} from "lucide-react"
 
 export interface DataTableColumn<T> {
-  key: keyof T
+  key: keyof T | string
   header: string
-  cell?: (item: T) => React.ReactNode
+  cell?: (item: T, index: number) => React.ReactNode
   sortable?: boolean
-  width?: string
+  sortFn?: (a: T, b: T) => number
+  width?: string | number
+  className?: string
 }
 
 export interface DataTableProps<T> {
@@ -16,149 +41,361 @@ export interface DataTableProps<T> {
   className?: string
   sortable?: boolean
   searchable?: boolean
+  selectable?: boolean
+  selectedRows?: (string | number)[]
+  onSelectionChange?: (selectedRows: (string | number)[]) => void
+  rowKey?: keyof T | ((item: T, index: number) => string | number)
   pagination?: boolean
   pageSize?: number
+  pageSizeOptions?: number[]
+  virtualized?: boolean
+  rowHeight?: number
+  loading?: boolean
+  emptyMessage?: string
+  emptyState?: React.ReactNode
   onRowClick?: (item: T) => void
+  renderBulkActions?: (selectedRows: (string | number)[]) => React.ReactNode
 }
 
 export interface DataTableHeaderProps<T> {
   columns: DataTableColumn<T>[]
-  sortColumn?: keyof T
-  sortDirection?: 'asc' | 'desc'
-  onSort?: (column: keyof T) => void
+  sortColumn?: keyof T | string
+  sortDirection?: "asc" | "desc"
+  onSort?: (column: keyof T | string) => void
   sortable?: boolean
+  selectable?: boolean
+  isAllSelected?: boolean
+  isPartiallySelected?: boolean
+  onToggleSelectAll?: () => void
 }
 
 export interface DataTableRowProps<T> {
   item: T
+  index: number
   columns: DataTableColumn<T>[]
+  selectable?: boolean
+  isSelected?: boolean
+  onToggleSelect?: () => void
   onClick?: () => void
 }
 
 export interface DataTablePaginationProps {
   currentPage: number
   totalPages: number
+  totalRecords: number
+  pageSize: number
+  pageSizeOptions?: number[]
   onPageChange: (page: number) => void
+  onPageSizeChange?: (size: number) => void
   className?: string
 }
 
-export const DataTable = <T extends Record<string, any>>({
-  data,
-  columns,
+export function DataTable<T extends Record<string, any>>({
+  data = [],
+  columns = [],
   className,
   sortable = true,
   searchable = true,
+  selectable = false,
+  selectedRows: controlledSelectedRows,
+  onSelectionChange,
+  rowKey = "id" as keyof T,
   pagination = true,
-  pageSize = 10,
-  onRowClick
-}: DataTableProps<T>) => {
-  const [sortColumn, setSortColumn] = useState<keyof T | undefined>(undefined)
-  const [sortDirection, setSortDirection] = useState<'asc' | 'desc'>('asc')
-  const [searchTerm, setSearchTerm] = useState('')
-  const [currentPage, setCurrentPage] = useState(1)
+  pageSize: initialPageSize = 10,
+  pageSizeOptions = [10, 20, 50, 100],
+  virtualized = false,
+  rowHeight = 48,
+  loading = false,
+  emptyMessage = "No matching records found.",
+  emptyState,
+  onRowClick,
+  renderBulkActions,
+}: DataTableProps<T>) {
+  const [sortColumn, setSortColumn] = React.useState<keyof T | string | undefined>(undefined)
+  const [sortDirection, setSortDirection] = React.useState<"asc" | "desc">("asc")
+  const [searchTerm, setSearchTerm] = React.useState("")
+  const [currentPage, setCurrentPage] = React.useState(1)
+  const [pageSize, setPageSize] = React.useState(initialPageSize)
+  const [internalSelectedRows, setInternalSelectedRows] = React.useState<(string | number)[]>([])
 
-  const filteredData = useMemo(() => {
-    let filtered = data
+  const selectedRows = controlledSelectedRows ?? internalSelectedRows
 
-    if (searchable && searchTerm) {
-      filtered = data.filter(item =>
-        Object.values(item).some(value =>
-          String(value).toLowerCase().includes(searchTerm.toLowerCase())
-        )
-      )
+  const getRowId = React.useCallback(
+    (item: T, index: number): string | number => {
+      if (typeof rowKey === "function") {
+        return rowKey(item, index)
+      }
+      return item[rowKey] ?? index
+    },
+    [rowKey]
+  )
+
+  const handleSelectionChange = React.useCallback(
+    (newSelected: (string | number)[]) => {
+      if (controlledSelectedRows === undefined) {
+        setInternalSelectedRows(newSelected)
+      }
+      onSelectionChange?.(newSelected)
+    },
+    [controlledSelectedRows, onSelectionChange]
+  )
+
+  // 1. Filtering
+  const filteredData = React.useMemo(() => {
+    if (!searchable || !searchTerm.trim()) {
+      return data
     }
-
-    if (sortable && sortColumn) {
-      filtered = [...filtered].sort((a, b) => {
-        const aVal = a[sortColumn]
-        const bVal = b[sortColumn]
-
-        if (aVal < bVal) return sortDirection === 'asc' ? -1 : 1
-        if (aVal > bVal) return sortDirection === 'asc' ? 1 : -1
-        return 0
+    const lower = searchTerm.toLowerCase().trim()
+    return data.filter((item) =>
+      Object.values(item).some((val) => {
+        if (val === null || val === undefined) return false
+        return String(val).toLowerCase().includes(lower)
       })
-    }
+    )
+  }, [data, searchable, searchTerm])
 
-    return filtered
-  }, [data, searchTerm, sortColumn, sortDirection, sortable, searchable])
+  // 2. Sorting
+  const sortedData = React.useMemo(() => {
+    if (!sortable || !sortColumn) return filteredData
 
-  const paginatedData = useMemo(() => {
-    if (!pagination) return filteredData
+    const colDef = columns.find((c) => c.key === sortColumn)
 
+    return [...filteredData].sort((a, b) => {
+      if (colDef?.sortFn) {
+        const res = colDef.sortFn(a, b)
+        return sortDirection === "asc" ? res : -res
+      }
+
+      const aVal = a[sortColumn as keyof T]
+      const bVal = b[sortColumn as keyof T]
+
+      if (aVal === bVal) return 0
+      if (aVal === null || aVal === undefined) return 1
+      if (bVal === null || bVal === undefined) return -1
+
+      if (typeof aVal === "number" && typeof bVal === "number") {
+        return sortDirection === "asc" ? aVal - bVal : bVal - aVal
+      }
+
+      const aStr = String(aVal).toLowerCase()
+      const bStr = String(bVal).toLowerCase()
+      if (aStr < bStr) return sortDirection === "asc" ? -1 : 1
+      if (aStr > bStr) return sortDirection === "asc" ? 1 : -1
+      return 0
+    })
+  }, [filteredData, sortable, sortColumn, sortDirection, columns])
+
+  // 3. Pagination
+  const totalPages = Math.max(1, Math.ceil(sortedData.length / pageSize))
+
+  const paginatedData = React.useMemo(() => {
+    if (!pagination || virtualized) return sortedData
     const startIndex = (currentPage - 1) * pageSize
-    return filteredData.slice(startIndex, startIndex + pageSize)
-  }, [filteredData, currentPage, pageSize, pagination])
+    return sortedData.slice(startIndex, startIndex + pageSize)
+  }, [sortedData, pagination, virtualized, currentPage, pageSize])
 
-  const totalPages = Math.max(1, Math.ceil(filteredData.length / pageSize))
+  // Virtualizer setup
+  const scrollContainerRef = React.useRef<HTMLDivElement | null>(null)
+  const virtualizer = useVirtualizer({
+    count: sortedData.length,
+    itemHeight: rowHeight,
+    overscan: 5,
+    getScrollElement: () => scrollContainerRef.current,
+  })
 
-  const handleSort = (column: keyof T) => {
+  // Selection handlers
+  const currentItemIds = React.useMemo(
+    () => paginatedData.map((item, idx) => getRowId(item, idx)),
+    [paginatedData, getRowId]
+  )
+
+  const isAllSelected =
+    currentItemIds.length > 0 && currentItemIds.every((id) => selectedRows.includes(id))
+
+  const isPartiallySelected =
+    currentItemIds.some((id) => selectedRows.includes(id)) && !isAllSelected
+
+  const handleToggleSelectAll = () => {
+    if (isAllSelected) {
+      handleSelectionChange(selectedRows.filter((id) => !currentItemIds.includes(id)))
+    } else {
+      const combined = Array.from(new Set([...selectedRows, ...currentItemIds]))
+      handleSelectionChange(combined)
+    }
+  }
+
+  const handleToggleRow = (id: string | number) => {
+    if (selectedRows.includes(id)) {
+      handleSelectionChange(selectedRows.filter((r) => r !== id))
+    } else {
+      handleSelectionChange([...selectedRows, id])
+    }
+  }
+
+  const handleSort = (column: keyof T | string) => {
     if (!sortable) return
-
     if (sortColumn === column) {
-      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc')
+      if (sortDirection === "asc") {
+        setSortDirection("desc")
+      } else {
+        setSortColumn(undefined)
+        setSortDirection("asc")
+      }
     } else {
       setSortColumn(column)
-      setSortDirection('asc')
+      setSortDirection("asc")
     }
     setCurrentPage(1)
-  }
-
-  const handleSearch = (value: string) => {
-    setSearchTerm(value)
-    setCurrentPage(1)
-  }
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page)
   }
 
   return (
-    <div className={cn('w-full space-y-3', className)}>
-      {searchable && (
-        <div className="relative max-w-sm">
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-400 dark:text-zinc-500 pointer-events-none" />
-          <input
-            type="text"
-            placeholder="Search records..."
-            value={searchTerm}
-            onChange={(e) => handleSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-500 transition-all shadow-2xs"
-          />
-        </div>
-      )}
-
-      <div className="rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900/60 overflow-hidden shadow-2xs">
-        <DataTableHeader
-          columns={columns}
-          sortColumn={sortColumn}
-          sortDirection={sortDirection}
-          onSort={handleSort}
-          sortable={sortable}
-        />
-        <div className="divide-y divide-zinc-100 dark:divide-zinc-800">
-          {paginatedData.length > 0 ? (
-            paginatedData.map((item, index) => (
-              <DataTableRow
-                key={index}
-                item={item}
-                columns={columns}
-                onClick={onRowClick ? () => onRowClick(item) : undefined}
+    <div className={cn("w-full space-y-3", className)}>
+      {/* Table Toolbar */}
+      {(searchable || (selectable && selectedRows.length > 0)) && (
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          {searchable && (
+            <div className="relative w-full max-w-xs sm:w-72">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500 pointer-events-none" />
+              <input
+                type="text"
+                placeholder="Search table..."
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value)
+                  setCurrentPage(1)
+                }}
+                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-2xs"
               />
-            ))
-          ) : (
-            <div className="px-4 py-8 text-center text-xs text-zinc-500 dark:text-zinc-400">
-              No matching records found.
+            </div>
+          )}
+
+          {selectable && selectedRows.length > 0 && (
+            <div className="flex items-center gap-2 text-xs text-zinc-600 dark:text-zinc-400 ml-auto">
+              <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                {selectedRows.length} selected
+              </span>
+              {renderBulkActions?.(selectedRows)}
             </div>
           )}
         </div>
+      )}
+
+      {/* Main Table Container */}
+      <div
+        ref={virtualized ? scrollContainerRef : undefined}
+        className={cn(
+          "rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-2xs overflow-hidden",
+          virtualized && "max-h-[480px] overflow-auto relative"
+        )}
+      >
+        <Table>
+          <DataTableHeader
+            columns={columns}
+            sortColumn={sortColumn}
+            sortDirection={sortDirection}
+            onSort={handleSort}
+            sortable={sortable}
+            selectable={selectable}
+            isAllSelected={isAllSelected}
+            isPartiallySelected={isPartiallySelected}
+            onToggleSelectAll={handleToggleSelectAll}
+          />
+
+          <TableBody>
+            {loading ? (
+              Array.from({ length: 5 }).map((_, rIdx) => (
+                <TableRow key={`skeleton-${rIdx}`}>
+                  {selectable && (
+                    <TableCell className="w-10">
+                      <Skeleton className="h-4 w-4 rounded" />
+                    </TableCell>
+                  )}
+                  {columns.map((col, cIdx) => (
+                    <TableCell key={`skeleton-col-${cIdx}`}>
+                      <Skeleton className="h-4 w-full max-w-[120px] rounded" />
+                    </TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : sortedData.length === 0 ? (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length + (selectable ? 1 : 0)}
+                  className="h-32 text-center"
+                >
+                  {emptyState || (
+                    <div className="flex flex-col items-center justify-center space-y-1 text-zinc-500 dark:text-zinc-400 py-6">
+                      <SlidersHorizontal className="h-5 w-5 opacity-40 mb-1" />
+                      <p className="text-xs font-medium">{emptyMessage}</p>
+                    </div>
+                  )}
+                </TableCell>
+              </TableRow>
+            ) : virtualized ? (
+              <>
+                <tr style={{ height: `${virtualizer.virtualItems[0]?.start ?? 0}px` }} />
+                {virtualizer.virtualItems.map((virtualRow) => {
+                  const item = sortedData[virtualRow.index]
+                  const id = getRowId(item, virtualRow.index)
+                  const isSelected = selectedRows.includes(id)
+                  return (
+                    <DataTableRow
+                      key={id}
+                      item={item}
+                      index={virtualRow.index}
+                      columns={columns}
+                      selectable={selectable}
+                      isSelected={isSelected}
+                      onToggleSelect={() => handleToggleRow(id)}
+                      onClick={onRowClick ? () => onRowClick(item) : undefined}
+                    />
+                  )
+                })}
+                <tr
+                  style={{
+                    height: `${
+                      virtualizer.totalSize -
+                      (virtualizer.virtualItems[virtualizer.virtualItems.length - 1]?.start ?? 0) -
+                      rowHeight
+                    }px`,
+                  }}
+                />
+              </>
+            ) : (
+              paginatedData.map((item, index) => {
+                const id = getRowId(item, index)
+                const isSelected = selectedRows.includes(id)
+                return (
+                  <DataTableRow
+                    key={id}
+                    item={item}
+                    index={index}
+                    columns={columns}
+                    selectable={selectable}
+                    isSelected={isSelected}
+                    onToggleSelect={() => handleToggleRow(id)}
+                    onClick={onRowClick ? () => onRowClick(item) : undefined}
+                  />
+                )
+              })
+            )}
+          </TableBody>
+        </Table>
       </div>
 
-      {pagination && totalPages > 1 && (
+      {/* Pagination Controls */}
+      {pagination && !virtualized && sortedData.length > 0 && (
         <DataTablePagination
           currentPage={currentPage}
           totalPages={totalPages}
-          onPageChange={handlePageChange}
-          className="pt-1"
+          totalRecords={sortedData.length}
+          pageSize={pageSize}
+          pageSizeOptions={pageSizeOptions}
+          onPageChange={setCurrentPage}
+          onPageSizeChange={(newSize) => {
+            setPageSize(newSize)
+            setCurrentPage(1)
+          }}
         />
       )}
     </div>
@@ -170,105 +407,196 @@ export const DataTableHeader = <T extends Record<string, any>>({
   sortColumn,
   sortDirection,
   onSort,
-  sortable
+  sortable = true,
+  selectable = false,
+  isAllSelected = false,
+  isPartiallySelected = false,
+  onToggleSelectAll,
 }: DataTableHeaderProps<T>) => {
   return (
-    <div className="bg-zinc-50/80 dark:bg-zinc-900/90 border-b border-zinc-200 dark:border-zinc-800">
-      <div className="grid grid-cols-12 gap-4 px-4 py-3 text-left text-xs font-semibold text-zinc-600 dark:text-zinc-300">
-        {columns.map((column) => (
-          <div
-            key={String(column.key)}
-            className={cn(
-              'flex items-center',
-              column.width ? column.width : 'col-span-1'
-            )}
-          >
-            {sortable && column.sortable !== false ? (
-              <button
-                onClick={() => onSort?.(column.key)}
-                className="flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors group cursor-pointer"
-              >
-                <span>{column.header}</span>
-                {sortColumn === column.key ? (
-                  sortDirection === 'desc' ? (
-                    <ArrowDown className="h-3 w-3 text-blue-500" />
+    <TableHeader>
+      <TableRow className="hover:bg-transparent">
+        {selectable && (
+          <TableHead className="w-10 px-4">
+            <Checkbox
+              checked={isAllSelected}
+              aria-label="Select all rows"
+              onChange={onToggleSelectAll}
+              className={cn(isPartiallySelected && "opacity-70")}
+            />
+          </TableHead>
+        )}
+        {columns.map((column) => {
+          const isSorted = sortColumn === column.key
+          const canSort = sortable && column.sortable !== false
+
+          return (
+            <TableHead
+              key={String(column.key)}
+              style={column.width ? { width: column.width } : undefined}
+              className={cn("text-xs font-semibold select-none", column.className)}
+            >
+              {canSort ? (
+                <button
+                  type="button"
+                  onClick={() => onSort?.(column.key)}
+                  className="group inline-flex items-center gap-1.5 hover:text-zinc-900 dark:hover:text-zinc-100 transition-colors cursor-pointer"
+                >
+                  <span>{column.header}</span>
+                  {isSorted ? (
+                    sortDirection === "asc" ? (
+                      <ArrowUp className="h-3 w-3 text-blue-500" />
+                    ) : (
+                      <ArrowDown className="h-3 w-3 text-blue-500" />
+                    )
                   ) : (
-                    <ArrowUp className="h-3 w-3 text-blue-500" />
-                  )
-                ) : (
-                  <ArrowUpDown className="h-3 w-3 opacity-0 group-hover:opacity-60 transition-opacity" />
-                )}
-              </button>
-            ) : (
-              <span>{column.header}</span>
-            )}
-          </div>
-        ))}
-      </div>
-    </div>
+                    <ArrowUpDown className="h-3 w-3 opacity-0 group-hover:opacity-60 transition-opacity" />
+                  )}
+                </button>
+              ) : (
+                <span>{column.header}</span>
+              )}
+            </TableHead>
+          )
+        })}
+      </TableRow>
+    </TableHeader>
   )
 }
 
 export const DataTableRow = <T extends Record<string, any>>({
   item,
+  index,
   columns,
-  onClick
+  selectable = false,
+  isSelected = false,
+  onToggleSelect,
+  onClick,
 }: DataTableRowProps<T>) => {
   return (
-    <div
+    <TableRow
+      data-state={isSelected ? "selected" : undefined}
       className={cn(
-        'grid grid-cols-12 gap-4 px-4 py-3 text-xs text-zinc-800 dark:text-zinc-200 hover:bg-zinc-50 dark:hover:bg-zinc-800/40 transition-colors items-center',
-        onClick && 'cursor-pointer'
+        "cursor-default transition-colors",
+        isSelected && "bg-blue-50/40 dark:bg-blue-950/20",
+        onClick && "cursor-pointer"
       )}
       onClick={onClick}
     >
-      {columns.map((column) => (
-        <div
-          key={String(column.key)}
-          className={cn(
-            'flex items-center min-w-0 break-words',
-            column.width ? column.width : 'col-span-1'
-          )}
+      {selectable && (
+        <TableCell
+          className="w-10 px-4"
+          onClick={(e) => {
+            e.stopPropagation()
+            onToggleSelect?.()
+          }}
         >
-          {column.cell ? column.cell(item) : String(item[column.key] || '')}
-        </div>
-      ))}
-    </div>
+          <Checkbox
+            checked={isSelected}
+            aria-label={`Select row ${index + 1}`}
+            onChange={() => onToggleSelect?.()}
+          />
+        </TableCell>
+      )}
+      {columns.map((column) => {
+        const val = item[column.key as keyof T]
+        return (
+          <TableCell key={String(column.key)} className={cn("text-xs", column.className)}>
+            {column.cell ? column.cell(item, index) : String(val ?? "")}
+          </TableCell>
+        )
+      })}
+    </TableRow>
   )
 }
 
 export const DataTablePagination: React.FC<DataTablePaginationProps> = ({
   currentPage,
   totalPages,
+  totalRecords,
+  pageSize,
+  pageSizeOptions = [10, 20, 50, 100],
   onPageChange,
-  className
+  onPageSizeChange,
+  className,
 }) => {
+  const startRecord = (currentPage - 1) * pageSize + 1
+  const endRecord = Math.min(currentPage * pageSize, totalRecords)
+
   return (
-    <div className={cn('flex items-center justify-between text-xs', className)}>
-      <div className="text-zinc-500 dark:text-zinc-400">
-        Page <span className="font-semibold text-zinc-900 dark:text-zinc-100">{currentPage}</span> of{' '}
-        <span className="font-semibold text-zinc-900 dark:text-zinc-100">{totalPages}</span>
+    <div
+      className={cn(
+        "flex flex-wrap items-center justify-between gap-3 text-xs text-zinc-600 dark:text-zinc-400 px-1",
+        className
+      )}
+    >
+      <div className="flex items-center gap-2">
+        <span>
+          Showing <span className="font-medium text-zinc-900 dark:text-zinc-100">{startRecord}</span> to{" "}
+          <span className="font-medium text-zinc-900 dark:text-zinc-100">{endRecord}</span> of{" "}
+          <span className="font-medium text-zinc-900 dark:text-zinc-100">{totalRecords}</span> records
+        </span>
+        {onPageSizeChange && (
+          <div className="flex items-center gap-1.5 ml-3">
+            <span className="text-zinc-400">Rows:</span>
+            <select
+              value={pageSize}
+              onChange={(e) => onPageSizeChange(Number(e.target.value))}
+              className="px-2 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+            >
+              {pageSizeOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
       </div>
-      <div className="flex items-center gap-1.5">
+
+      <div className="flex items-center space-x-1 ml-auto">
         <button
+          type="button"
+          onClick={() => onPageChange(1)}
+          disabled={currentPage <= 1}
+          aria-label="First page"
+          className="p-1 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-850 disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
+        >
+          <ChevronsLeft className="h-3.5 w-3.5" />
+        </button>
+        <button
+          type="button"
           onClick={() => onPageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          disabled={currentPage <= 1}
+          aria-label="Previous page"
+          className="p-1 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-850 disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
         >
           <ChevronLeft className="h-3.5 w-3.5" />
-          <span>Previous</span>
         </button>
 
+        <span className="px-2.5 py-0.5 text-xs font-mono font-medium text-zinc-900 dark:text-zinc-100">
+          {currentPage} / {totalPages}
+        </span>
+
         <button
+          type="button"
           onClick={() => onPageChange(currentPage + 1)}
           disabled={currentPage >= totalPages}
-          className="inline-flex items-center gap-1 px-2.5 py-1 text-xs rounded-md border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-300 disabled:opacity-40 disabled:cursor-not-allowed transition-colors cursor-pointer"
+          aria-label="Next page"
+          className="p-1 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-850 disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
         >
-          <span>Next</span>
           <ChevronRight className="h-3.5 w-3.5" />
+        </button>
+        <button
+          type="button"
+          onClick={() => onPageChange(totalPages)}
+          disabled={currentPage >= totalPages}
+          aria-label="Last page"
+          className="p-1 rounded-md border border-zinc-200 dark:border-zinc-800 hover:bg-zinc-100 dark:hover:bg-zinc-850 disabled:opacity-40 disabled:pointer-events-none transition-colors cursor-pointer"
+        >
+          <ChevronsRight className="h-3.5 w-3.5" />
         </button>
       </div>
     </div>
   )
 }
-

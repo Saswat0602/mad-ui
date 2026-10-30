@@ -3,7 +3,7 @@
 > **Current Version**: `2.16.0`  
 > **Repository**: [mad-ui](https://github.com/Saswat0602/mad-ui) (`mad-ui-components`)  
 > **Last Updated**: October 2026  
-> **Status**: **Phase 0 (100% Completed)** · **Phase 1 (100% Completed)**  
+> **Status**: **Phase 0 (100% Completed)** · **Phase 1 (100% Completed)** · **Phase 2 (100% Completed)** · **Phase 3 (100% Completed)**  
 
 ---
 
@@ -11,8 +11,8 @@
 | :--- | :--- | :--- | :---: | :---: |
 | **Phase 0** | **Stop the Bleeding** | P0 bug fixes, `"use client"`, packaging exports, docs preview, hygiene | 🟢 **COMPLETED** | **100%** |
 | **Phase 1** | **Foundation Infrastructure** | Vitest testing, axe a11y, Changesets, tokens, manifest, root ESLint, CI, zinc migration | 🟢 **COMPLETED** | **100%** |
-| **Phase 2** | **Primitives & Headless Rewrite** | Radix headless foundation, unified motion system, keyboard a11y maps | 🟢 **COMPLETED** | **100%** |
-| **Phase 3** | **Advanced Components & Forms** | Composable forms (zod + react-hook-form), virtualized DataTable | ⚪ **UPCOMING** | 0% |
+| **Phase 2** | **Primitives & Headless Rewrite** | Standalone headless primitives, unified motion system, keyboard a11y maps | 🟢 **COMPLETED** | **100%** |
+| **Phase 3** | **Advanced Components & Forms** | Composable form system (zod + react-hook-form compatible), advanced virtualized DataTable | 🟢 **COMPLETED** | **100%** |
 | **Phase 4** | **Showcase Platform & DX** | Interactive theme builder, CLI component adder, props documentation | ⚪ **UPCOMING** | 0% |
 | **Phase 5** | **Release & Community** | NPM 3.0 release, migration guides, automated release provenance | ⚪ **UPCOMING** | 0% |
 
@@ -146,10 +146,34 @@
 
 ---
 
-## ⚪ Phase 3 — Advanced Components & Forms (Weeks 10–16) — [UPCOMING]
+## 🟢 Phase 3 — Advanced Components & Forms (Weeks 10–16) — [COMPLETED]
 
-- [ ] **Composable Form System**: `Form`, `FormField`, `FormItem`, `FormLabel`, `FormControl`, `FormMessage` with `react-hook-form` and `zod`.
-- [ ] **Data Presentation**: Virtualized `DataTable` with column sorting, filtering, and row selection.
+**Goal**: Deliver an accessible context-driven Composable Form System (supporting both native standalone React and `react-hook-form` + `zod` schemas) and an advanced interactive `DataTable` (semantic table foundation, multi-column sorting, search filtering, row selection, pagination, and high-performance virtualization).
+
+### Completed Milestones
+- [x] **Composable Form System (`src/components/forms/form.tsx`)**:
+  - Implemented `Form`, `FormField`, `FormItem`, `FormLabel`, `FormControl`, `FormDescription`, `FormMessage`, and `useFormField()`.
+  - Automatic accessibility linking: `FormLabel[htmlFor]` automatically matches `FormControl[id]`.
+  - Automatic ARIA descriptors: `FormControl` receives `aria-describedby` referencing both description and error IDs, plus `aria-invalid={true}` on error.
+  - Error announcements: `FormMessage` renders with `role="alert"` and auto-extracts error strings from context.
+  - Dual Mode compatibility: Works completely zero-dependency standalone, and seamlessly integrates with `react-hook-form` `control` and `zod` resolvers.
+  - Backward compatibility: `src/components/forms/react-hook-form.tsx` re-exports all modern form components.
+- [x] **Zero-Dependency Virtual Scroll Hook (`src/hooks/use-virtualizer.ts`)**:
+  - Authored lightweight virtual scrolling calculation hook for 60fps rendering of thousands of records without external dependencies.
+- [x] **Advanced Semantic DataTable (`src/components/data/data-table.tsx`)**:
+  - Built on semantic `Table`, `TableHeader`, `TableBody`, `TableHead`, `TableRow`, `TableCell` components.
+  - Checkbox multi-selection with indeterminate "Select All" header state, selected row counter, and customizable bulk action triggers.
+  - Multi-column sorting with interactive direction indicators (`ArrowUp`, `ArrowDown`, `ArrowUpDown`).
+  - Global text search across columns with real-time filtering.
+  - Flexible pagination controls with page size selector (`10`, `20`, `50`, `100`), jump buttons, and range indicators.
+  - Integrated `virtualized?: boolean` mode using `useVirtualizer`.
+  - Polished loading skeleton rows and minimal empty-state graphics.
+- [x] **Agent Skills Updates & Authoring (`.agents/skills/`)**:
+  - Updated `mad-ui-component/SKILL.md`: Purged obsolete `@radix-ui/*` references and established the **Architecture-by-Layer** pattern.
+  - Authored new `mad-ui-forms/SKILL.md`: Comprehensive guide for composable forms, dual-mode usage, ARIA ID wiring, and custom input controls.
+- [x] **Documentation Showcases (`docs/src/lib/examples/`)**:
+  - Upgraded `forms.tsx` with an interactive Profile Settings Form featuring real-time validation and helper descriptions.
+  - Upgraded `data.tsx` with a live enterprise Team Members DataTable featuring search, sorting, checkbox row selection, status badges, and pagination.
 
 ---
 
@@ -166,12 +190,12 @@
 | Check / Tool | Target | Status | Result |
 | :--- | :--- | :---: | :--- |
 | **TypeScript Typecheck** | `tsc --noEmit` | ✅ Passing | 0 errors |
-| **Unit & Smoke Tests** | `vitest run` (`tests/smoke.test.tsx`) | ✅ Passing | 41 / 41 tests passing |
+| **Unit & Smoke Tests** | `vitest run` (`tests/smoke.test.tsx`) | ✅ Passing | 44 / 44 tests passing |
 | **Accessibility Audits** | `vitest-axe` (`axe-core`) | ✅ Passing | 0 violations (Checkbox, Switch, Tabs, Avatar, Button, Card) |
 | **Package Linter** | `publint` (`npm run check:pkg`) | ✅ Passing | 64 / 64 subpaths valid |
 | **Manifest Audit** | `node scripts/verify-manifest.js` | ✅ Passing | 55 / 55 components verified |
 | **Root Linter** | `eslint src tests` | ✅ Passing | 0 errors |
-| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 67 bundles + 68.01 KB CSS |
+| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 67 bundles + 67.65 KB CSS |
 | **Documentation Build** | `next build` (Next.js 16.4.3 Turbopack) | ✅ Passing | 64 / 64 static pages generated |
 | **Documentation Linter** | `npm --prefix docs run lint` | ✅ Passing | 0 errors, 0 warnings |
 

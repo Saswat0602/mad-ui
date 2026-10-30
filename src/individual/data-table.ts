@@ -5,6 +5,7 @@ export {
   DataTablePagination 
 } from '../components/data/data-table'
 export type { 
+  DataTableColumn,
   DataTableProps, 
   DataTableHeaderProps, 
   DataTableRowProps, 

@@ -5,8 +5,15 @@ export {
   FormLabel,
   FormControl,
   FormDescription,
-  FormMessage
-} from '../components/forms/react-hook-form'
+  FormMessage,
+  FormError,
+  FormSuccess,
+  FormWarning,
+  useFormField,
+  FormContext,
+  FormFieldContext,
+  FormItemContext
+} from '../components/forms/form'
 
 export type {
   FormProps,
@@ -15,5 +22,9 @@ export type {
   FormLabelProps,
   FormControlProps,
   FormDescriptionProps,
-  FormMessageProps
-} from '../components/forms/react-hook-form'
+  FormMessageProps,
+  FormFieldError,
+  FormContextValue,
+  FormFieldContextValue,
+  FormItemContextValue
+} from '../components/forms/form'
