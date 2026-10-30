@@ -7,22 +7,26 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3%20%7C%204-38bdf8.svg?style=flat-square)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-An enterprise-grade, accessible, and themeable React UI component library built with **TypeScript** and **Tailwind CSS**. Features **57+ components and modules** with 3-tier import architecture, full keyboard accessibility, dark mode support, and zero runtime baggage.
+An enterprise-grade, accessible, and themeable React UI component library built with **TypeScript** and **Tailwind CSS**. Features **55+ standalone components and modules** with **zero external UI runtime dependencies**, Architecture-by-Layer, full keyboard accessibility, interactive theme builder, and smart CLI distribution.
 
 - 🌐 **Documentation & Live Showcase:** [mad-ui.vercel.app](https://mad-ui.vercel.app)
+- 🎨 **Interactive Theme Builder:** [mad-ui.vercel.app/theme-builder](https://mad-ui.vercel.app/theme-builder)
 - 📦 **npm Package:** [npmjs.com/package/mad-ui-components](https://www.npmjs.com/package/mad-ui-components)
 - 💻 **GitHub Repository:** [github.com/Saswat0602/mad-ui](https://github.com/Saswat0602/mad-ui)
+- 🚀 **v3 Migration Guide:** [MIGRATION_V2_TO_V3.md](./MIGRATION_V2_TO_V3.md)
 
 ---
 
 ## ✨ Features
 
-- 🚀 **57+ Components & Modules** — From core inputs and buttons to complex data tables, date-time pickers, and navigation bars.
-- ⚡ **3-Tier Import Architecture** — Full library, categorized subpath modules (`/core`, `/forms`, `/layout`), or individual components (`/button`, `/drawer`) for optimal tree-shaking.
-- 🎨 **Tailwind CSS Native** — Seamlessly integrates with your existing Tailwind CSS setup and design tokens.
+- 🛡️ **Zero External UI Runtime Dependencies** — 100% native React primitives (`Slot`, `Portal`, `Presence`, `FocusTrap`) with zero `@radix-ui/*` bloat.
+- 🚀 **55+ Enterprise Components** — From core inputs, buttons, and composable forms to semantic data tables, date-time pickers, and navigation systems.
+- ⚡ **Architecture-by-Layer** — Import via full package, categorized modules (`/forms`, `/layout`), headless primitives (`/primitives`), hooks (`/hooks`), or individual tree-shaken components (`/button`, `/dialog`).
+- 🛠️ **Smart CLI Component Distribution** — Prefer local component ownership? Run `npx mad-ui-components add <component>` to scaffold components with all dependencies auto-resolved.
+- 🎨 **Tailwind CSS Native & Theme Builder** — Seamlessly integrates with Tailwind CSS tokens and provides a real-time live preview theme builder with 1-click CSS variable export.
 - 🌙 **First-Class Dark Mode** — Clean CSS variables and semantic color tokens with smooth theme switching.
-- ♿ **Accessible by Design** — Built according to WAI-ARIA authoring practices with keyboard navigation and focus management.
-- 📦 **Universal React Support** — Engineered to work smoothly across both React 18 consumers and React 19 / Next.js 15+ applications.
+- ♿ **Accessible by Design** — Built according to WAI-ARIA authoring practices with automated `aria-describedby` wiring and keyboard navigation.
+- 📦 **Universal React Support** — Engineered to work smoothly across both React 18 consumers and React 19 / Next.js 16+ Turbopack applications.
 
 ---
 
@@ -44,6 +48,21 @@ yarn add mad-ui-components
 
 # bun
 bun add mad-ui-components
+```
+
+### Alternative: Direct CLI Component Addition (shadcn-style)
+
+If you prefer copying components directly into your codebase:
+
+```bash
+# Add components with all primitives and hooks auto-resolved:
+npx mad-ui-components add button
+npx mad-ui-components add dialog
+npx mad-ui-components add data-table
+npx mad-ui-components add form
+
+# Explore the complete 55-component catalog:
+npx mad-ui-components list
 ```
 
 ### 2. Configure Tailwind CSS

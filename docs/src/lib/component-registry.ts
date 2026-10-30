@@ -7,7 +7,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Button',
     description: 'Accessible, customizable button component with multiple variants, sizes, and states',
-    version: '2.12.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'action', 'interactive', 'enterprise', 'accessibility']
   },
@@ -15,7 +15,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Input',
     description: 'Versatile text input component with support for custom prefixes, suffixes, and states',
-    version: '2.12.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'input', 'text', 'enterprise', 'validation']
   },
@@ -23,7 +23,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Label',
     description: 'A label component for form elements and accessibility',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'label', 'accessibility']
   },
@@ -31,7 +31,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Card',
     description: 'Flexible card container for organizing content with header, content, and footer sections',
-    version: '2.12.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['layout', 'content', 'container', 'enterprise', 'interactive']
   },
@@ -39,7 +39,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Checkbox',
     description: 'A checkbox component for boolean input',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'checkbox', 'boolean']
   },
@@ -47,7 +47,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Radio',
     description: 'A radio button component for single selection',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'radio', 'selection']
   },
@@ -55,7 +55,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Select',
     description: 'A select dropdown component for choosing from options',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'select', 'dropdown']
   },
@@ -63,7 +63,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Switch',
     description: 'A toggle switch component for boolean input',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'switch', 'toggle']
   },
@@ -71,7 +71,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Progress',
     description: 'Linear progress indicator with custom color, size, and animation support',
-    version: '2.12.3',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['feedback', 'progress', 'status', 'enterprise', 'accessibility']
   },
@@ -79,7 +79,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Slider',
     description: 'Range slider component supporting keyboard navigation, custom steps, and tooltips',
-    version: '2.12.3',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'slider', 'range', 'enterprise', 'accessibility']
   },
@@ -87,15 +87,15 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Rating',
     description: 'A rating component for displaying and selecting ratings',
-    version: '1.0.0',
-    status: 'beta' as const,
+    version: '3.0.0',
+    status: 'stable' as const,
     tags: ['form', 'rating', 'stars']
   },
   'skeleton': {
     category: 'Core' as ComponentCategory,
     title: 'Skeleton',
     description: 'A skeleton loading component for content placeholders',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['feedback', 'loading', 'placeholder']
   },
@@ -103,7 +103,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Core' as ComponentCategory,
     title: 'Textarea',
     description: 'Enterprise-level textarea component with character counting, auto-resize, validation, and enterprise features',
-    version: '2.12.3',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'textarea', 'multiline', 'enterprise', 'accessibility']
   },
@@ -121,7 +121,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Form' as ComponentCategory,
     title: 'Breadcrumbs',
     description: 'A breadcrumb navigation component',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['navigation', 'breadcrumbs', 'path']
   },
@@ -129,7 +129,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Form' as ComponentCategory,
     title: 'DateTime Picker',
     description: 'Beautiful, modern date and time picker with horizontal time selection and custom Select components - choose date, time, or both together',
-    version: '2.15.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'datetime', 'date', 'time', 'picker', 'calendar']
   },
@@ -137,15 +137,15 @@ export const COMPONENT_REGISTRY = {
     category: 'Form' as ComponentCategory,
     title: 'Input OTP',
     description: 'An OTP input component for verification codes',
-    version: '1.0.0',
-    status: 'beta' as const,
+    version: '3.0.0',
+    status: 'stable' as const,
     tags: ['form', 'otp', 'verification']
   },
   'radiogroup': {
     category: 'Form' as ComponentCategory,
     title: 'Radio Group',
     description: 'A radio group component for managing multiple radio buttons',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'radiogroup', 'selection']
   },
@@ -153,7 +153,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Form' as ComponentCategory,
     title: 'Tabs',
     description: 'A tabs component for organizing content into panels',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'tabs', 'panels']
   },
@@ -161,7 +161,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Form' as ComponentCategory,
     title: 'Calendar',
     description: 'A responsive calendar component supporting single and range date selection, month navigation, and custom date constraints.',
-    version: '2.16.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'calendar', 'date', 'picker', 'schedule']
   },
@@ -169,7 +169,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Form' as ComponentCategory,
     title: 'Form',
     description: 'Composable form components with React Hook Form integration, validation messages, and accessible field labels.',
-    version: '2.16.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'validation', 'input', 'field', 'react-hook-form']
   },
@@ -179,7 +179,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Layout' as ComponentCategory,
     title: 'Layout',
     description: 'A main layout component for page structure',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['layout', 'structure', 'container']
   },
@@ -187,7 +187,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Layout' as ComponentCategory,
     title: 'Modal',
     description: 'Modal dialog overlay for focused user tasks and notifications',
-    version: '2.12.2',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['layout', 'modal', 'overlay', 'enterprise', 'accessibility']
   },
@@ -195,7 +195,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Layout' as ComponentCategory,
     title: 'Popover',
     description: 'A popover component for contextual information',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['layout', 'popover', 'tooltip']
   },
@@ -203,7 +203,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Layout' as ComponentCategory,
     title: 'Tooltip',
     description: 'Informative tooltip popup on hover and focus with directional alignment',
-    version: '2.12.2',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['layout', 'tooltip', 'help', 'enterprise', 'accessibility']
   },
@@ -219,7 +219,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Layout' as ComponentCategory,
     title: 'Sheet',
     description: 'A sheet component for overlay content',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['layout', 'sheet', 'overlay']
   },
@@ -227,7 +227,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Layout' as ComponentCategory,
     title: 'Resizable',
     description: 'A resizable component for adjustable panels',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['layout', 'resizable', 'panels']
   },
@@ -235,7 +235,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Layout' as ComponentCategory,
     title: 'Scroll Area',
     description: 'A scroll area component with custom styling',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['layout', 'scroll', 'area']
   },
@@ -245,7 +245,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Data Display' as ComponentCategory,
     title: 'Data Table',
     description: 'An advanced data table with sorting, filtering, and pagination',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['data', 'datatable', 'advanced']
   },
@@ -253,7 +253,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Data Display' as ComponentCategory,
     title: 'Chart',
     description: 'A chart component for data visualization',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['data', 'chart', 'visualization']
   },
@@ -265,7 +265,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Navigation' as ComponentCategory,
     title: 'Navigation Menu',
     description: 'A navigation menu component with dropdowns',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['navigation', 'menu', 'dropdown']
   },
@@ -273,7 +273,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Navigation' as ComponentCategory,
     title: 'Menu Bar',
     description: 'A menu bar component for application menus',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['navigation', 'menubar', 'menu']
   },
@@ -281,7 +281,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Navigation' as ComponentCategory,
     title: 'Command',
     description: 'A command palette component for quick actions',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['navigation', 'command', 'palette']
   },
@@ -289,7 +289,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Navigation' as ComponentCategory,
     title: 'Combobox',
     description: 'A combobox component with search and selection',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['navigation', 'combobox', 'search']
   },
@@ -297,7 +297,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Navigation' as ComponentCategory,
     title: 'Pagination',
     description: 'A pagination component for navigating through pages',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['navigation', 'pagination', 'pages']
   },
@@ -307,7 +307,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Overlay' as ComponentCategory,
     title: 'Dialog',
     description: 'A dialog component for modal interactions',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['overlay', 'dialog', 'modal']
   },
@@ -315,7 +315,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Overlay' as ComponentCategory,
     title: 'Alert Dialog',
     description: 'An alert dialog component for confirmations',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['overlay', 'alertdialog', 'confirmation']
   },
@@ -323,7 +323,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Overlay' as ComponentCategory,
     title: 'Dropdown Menu',
     description: 'A dropdown menu component for actions',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['overlay', 'dropdown', 'menu']
   },
@@ -331,7 +331,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Overlay' as ComponentCategory,
     title: 'Context Menu',
     description: 'A context menu component for right-click actions',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['overlay', 'contextmenu', 'rightclick']
   },
@@ -339,7 +339,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Overlay' as ComponentCategory,
     title: 'Hover Card',
     description: 'A hover card component for additional information',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['overlay', 'hovercard', 'information']
   },
@@ -347,7 +347,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Overlay' as ComponentCategory,
     title: 'Separator',
     description: 'A separator component for dividing content',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['overlay', 'separator', 'divider']
   },
@@ -355,7 +355,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Overlay' as ComponentCategory,
     title: 'Toggle',
     description: 'A toggle component for switching states',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['overlay', 'toggle', 'switch']
   },
@@ -363,7 +363,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Overlay' as ComponentCategory,
     title: 'Collapsible',
     description: 'Collapsible disclosure component with smooth expand and collapse transitions',
-    version: '2.12.3',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['overlay', 'collapsible', 'expand', 'enterprise', 'accessibility']
   },
@@ -373,7 +373,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Media' as ComponentCategory,
     title: 'Avatar',
     description: 'An avatar component for user profiles',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['media', 'avatar', 'profile']
   },
@@ -381,7 +381,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Media' as ComponentCategory,
     title: 'Badge',
     description: 'A badge component for labels and status',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['media', 'badge', 'label']
   },
@@ -389,7 +389,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Media' as ComponentCategory,
     title: 'Aspect Ratio',
     description: 'An aspect ratio component for maintaining proportions',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['media', 'aspectratio', 'proportions']
   },
@@ -397,7 +397,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Media' as ComponentCategory,
     title: 'Carousel',
     description: 'Responsive carousel slider with autoplay, arrow navigation, and dot indicators',
-    version: '2.12.3',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['media', 'carousel', 'gallery', 'enterprise', 'accessibility']
   },
@@ -405,7 +405,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Media' as ComponentCategory,
     title: 'Typography',
     description: 'Typography components for text styling',
-    version: '1.0.0',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['media', 'typography', 'text']
   },
@@ -415,8 +415,8 @@ export const COMPONENT_REGISTRY = {
     category: 'Navigation' as ComponentCategory,
     title: 'Navbar',
     description: 'Responsive navigation bar with brand branding, links, search input, and mobile menu',
-    version: '2.12.3',
-    status: 'beta' as const,
+    version: '3.0.0',
+    status: 'stable' as const,
     tags: ['navbar', 'navigation', 'header', 'mobile', 'responsive', 'enterprise', 'accessibility']
   },
 
@@ -424,8 +424,8 @@ export const COMPONENT_REGISTRY = {
     category: 'Navigation' as ComponentCategory,
     title: 'Sidebar',
     description: 'A collapsible sidebar navigation component with persistent state, multiple variants, and enterprise features for building modern web applications.',
-    version: '2.12.3',
-    status: 'beta' as const,
+    version: '3.0.0',
+    status: 'stable' as const,
     tags: ['sidebar', 'navigation', 'collapsible', 'persistent', 'enterprise', 'accessibility']
   },
 
@@ -435,8 +435,8 @@ export const COMPONENT_REGISTRY = {
     category: 'Data' as ComponentCategory,
     title: 'Table',
     description: 'A powerful data table component with sorting, selection, pagination, and enterprise features for displaying and managing large datasets.',
-    version: '2.12.3',
-    status: 'beta' as const,
+    version: '3.0.0',
+    status: 'stable' as const,
     tags: ['table', 'data', 'sorting', 'pagination', 'selection', 'enterprise', 'accessibility']
   },
 
@@ -445,7 +445,7 @@ export const COMPONENT_REGISTRY = {
     category: 'Feedback' as ComponentCategory,
     title: 'Alert',
     description: 'A flexible alert component for displaying important messages with multiple variants, dismissible options, and enterprise features.',
-    version: '2.12.3',
+    version: '3.0.0',
     status: 'stable' as const,
     tags: ['alert', 'notification', 'message', 'dismissible', 'enterprise', 'accessibility']
   },
@@ -454,8 +454,8 @@ export const COMPONENT_REGISTRY = {
     category: 'Feedback' as ComponentCategory,
     title: 'Toast',
     description: 'A toast notification component for displaying temporary messages with customizable positioning, duration, and enterprise features.',
-    version: '2.12.3',
-    status: 'beta' as const,
+    version: '3.0.0',
+    status: 'stable' as const,
     tags: ['toast', 'notification', 'message', 'temporary', 'enterprise', 'accessibility']
   },
 
@@ -463,8 +463,8 @@ export const COMPONENT_REGISTRY = {
     category: 'Feedback' as ComponentCategory,
     title: 'Sonner',
     description: 'Modern toast notification system with support for promises, custom actions, and themes',
-    version: '2.12.3',
-    status: 'alpha' as const,
+    version: '3.0.0',
+    status: 'stable' as const,
     tags: ['sonner', 'toast', 'notification', 'modern', 'enterprise', 'accessibility']
   }
 } as const

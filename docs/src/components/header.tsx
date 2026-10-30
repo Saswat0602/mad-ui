@@ -70,8 +70,8 @@ export function Header() {
               className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-xs font-medium"
               title="View on npm (mad-ui-components)"
             >
-              <span className="bold text-red-500 text-xs tracking-tighter">npm</span>
-              <span className="hidden xl:inline text-[11px] text-muted-foreground/80">v2.16.0</span>
+              <span className="font-bold text-red-500 text-xs tracking-tighter">npm</span>
+              <span className="hidden xl:inline text-[11px] text-muted-foreground/80">v3.0.0</span>
             </a>
 
             {/* GitHub Link */}

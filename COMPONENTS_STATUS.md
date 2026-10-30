@@ -34,7 +34,7 @@ This document provides a comprehensive audit of all **55+ components** in `mad-u
 | **Switch** | `src/components/core/switch.tsx` | `mad-ui-components/switch` | 🟢 100% Stable | Accessible toggle switch with animated thumb and keyboard tab support. |
 | **Progress** | `src/components/core/progress.tsx` | `mad-ui-components/progress` | 🟢 100% Stable | Deterministic and indeterminate progress bar with custom colors. |
 | **Slider** | `src/components/core/slider.tsx` | `mad-ui-components/slider` | 🟢 100% Stable | Single/dual thumb range slider, marks support, touch/keyboard accessible. |
-| **Rating** | `src/components/core/rating.tsx` | `mad-ui-components/rating` | 🟡 100% Beta | Star rating input with hover feedback, fractional ratings, read-only mode. |
+| **Rating** | `src/components/core/rating.tsx` | `mad-ui-components/rating` | 🟢 100% Stable | Star rating input with hover feedback, fractional ratings, read-only mode. |
 | **Skeleton** | `src/components/core/skeleton.tsx` | `mad-ui-components/skeleton` | 🟢 100% Stable | Pulse and shimmer placeholder loading skeletons with custom dimensions. |
 | **Textarea** | `src/components/core/textarea.tsx` | `mad-ui-components/textarea` | 🟢 100% Stable | Multi-line text input with auto-resize and character limit indicator. |
 
