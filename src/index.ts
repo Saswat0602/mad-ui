@@ -338,6 +338,22 @@ export type {
   TypographyMutedProps 
 } from './components/media/typography'
 
+// Primitives & Headless Layer
+export * from './primitives'
+
+// Reusable Hooks
+export * from './hooks'
+
+// Theming & Tokens
+export * from './theme'
+
 // Utilities
-export * from './lib/utils'
+export {
+  cn,
+  createVariants,
+  isReactNative,
+  getPlatformClassName,
+  composeRefs,
+  type PlatformProps,
+} from './lib/utils'
 export * from './lib/colors'

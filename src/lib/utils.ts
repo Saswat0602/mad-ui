@@ -64,12 +64,8 @@ export function composeRefs<T>(...refs: (React.Ref<T> | undefined)[]) {
   }
 }
 
-// Generate unique IDs for accessibility
-let idCounter = 0
-export function useId(prefix: string = 'mad-ui'): string {
-  const [id] = React.useState(() => `${prefix}-${++idCounter}`)
-  return id
-}
+// Re-export useId from hooks
+export { useId } from '../hooks/use-id'
 
 // React import for hooks
 import * as React from 'react'

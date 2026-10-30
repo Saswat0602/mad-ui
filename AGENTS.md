@@ -44,9 +44,12 @@ mad-ui/
 │   │   └── feedback/          # Alert, Toast, Sonner
 │   ├── modules/               # Sub-bundle entry points (forms.ts, layout.ts, etc.)
 │   ├── individual/            # Individual entry points for tree-shaking
+│   ├── primitives/            # Headless foundation primitives (slot, portal, focus-trap, presence)
+│   ├── hooks/                 # Reusable custom hooks (useControllableState, useClickOutside, etc.)
+│   ├── theme/                 # Design tokens, ColorScheme, and ThemeProvider
 │   ├── lib/
 │   │   ├── utils.ts           # clsx + tailwind-merge (cn helper)
-│   │   └── colors.ts          # Color utilities and token helpers
+│   │   └── compose-event-handlers.ts # Event handler composition helper
 │   └── icons/                 # Shared icon components
 └── docs/                      # Next.js 16 showcase & documentation site
     ├── package.json           # Docs dependencies (Next.js, React 19, Lucide, Framer Motion)

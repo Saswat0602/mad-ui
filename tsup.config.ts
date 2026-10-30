@@ -49,6 +49,15 @@ export default defineConfig([
       'src/modules/media.ts',
     ],
   },
+  // Architecture Layer: Primitives, Hooks, and Theme
+  {
+    ...sharedOptions,
+    entry: {
+      primitives: 'src/primitives/index.ts',
+      hooks: 'src/hooks/index.ts',
+      theme: 'src/theme/index.ts',
+    },
+  },
   // Individual components — batch 1: core inputs
   {
     ...sharedOptions,

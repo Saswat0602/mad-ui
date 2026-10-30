@@ -68,6 +68,21 @@
       "import": "./dist/overlay.mjs",
       "default": "./dist/overlay.mjs"
     },
+    "./primitives": {
+      "types": "./dist/primitives.d.mts",
+      "import": "./dist/primitives.mjs",
+      "default": "./dist/primitives.mjs"
+    },
+    "./hooks": {
+      "types": "./dist/hooks.d.mts",
+      "import": "./dist/hooks.mjs",
+      "default": "./dist/hooks.mjs"
+    },
+    "./theme": {
+      "types": "./dist/theme.d.mts",
+      "import": "./dist/theme.mjs",
+      "default": "./dist/theme.mjs"
+    },
     "./button": {
       "types": "./dist/button.d.mts",
       "import": "./dist/button.mjs",
