@@ -18,7 +18,6 @@ export function useFocusTrap(
     const focusableElements = container.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR)
 
     const firstElement = focusableElements[0]
-    const lastElement = focusableElements[focusableElements.length - 1]
 
     const handleTabKey = (e: KeyboardEvent) => {
       if (e.key !== 'Tab') return
@@ -87,3 +86,4 @@ export function focusLast(container: HTMLElement) {
   const elements = getFocusableElements(container)
   elements[elements.length - 1]?.focus()
 }
+

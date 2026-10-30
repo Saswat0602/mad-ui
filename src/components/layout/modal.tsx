@@ -3,6 +3,7 @@
 import * as React from "react"
 import { cn } from "../../lib/utils"
 import { Portal } from "../../lib/portal"
+import { Presence } from "../../primitives/presence"
 import { useFocusTrap } from "../../lib/focus"
 import { X } from "lucide-react"
 
@@ -102,88 +103,92 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
       return () => window.removeEventListener("keydown", handleKeyDown)
     }, [isOpen, closeOnEscape, onClose])
 
-    if (!isOpen) return null
-
     return (
-      <Portal>
-        {/* Overlay */}
-        <div
-          onClick={() => {
-            if (closeOnOverlayClick) onClose()
-          }}
-          className={cn(
-            "fixed inset-0 bg-black/60 duration-200 animate-in fade-in-0",
-            overlayBlur ? "backdrop-blur-xs" : ""
-          )}
-          style={{
-            zIndex,
-            backgroundColor: overlayColor || undefined,
-          }}
-        />
+      <Presence present={isOpen}>
+        <Portal>
+          {/* Overlay */}
+          <div
+            onClick={() => {
+              if (closeOnOverlayClick) onClose()
+            }}
+            data-state={isOpen ? "open" : "closed"}
+            className={cn(
+              "fixed inset-0 bg-black/60 duration-200",
+              "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
+              overlayBlur ? "backdrop-blur-xs" : ""
+            )}
+            style={{
+              zIndex,
+              backgroundColor: overlayColor || undefined,
+            }}
+          />
 
-        {/* Modal Dialog Content */}
-        <div
-          ref={(node) => {
-            contentRef.current = node
-            if (typeof ref === "function") ref(node)
-            else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
-          }}
-          role="dialog"
-          aria-modal="true"
-          className={cn(
-            "fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full rounded-2xl border duration-200 animate-in fade-in-0 zoom-in-95",
-            "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100",
-            sizeClasses[size],
-            shadowClasses[shadow],
-            fullWidth && "w-full",
-            fullHeight && "h-full",
-            className
-          )}
-          style={{
-            zIndex: zIndex + 1,
-            borderRadius,
-            ...(backgroundColor || color ? { backgroundColor: backgroundColor || color } : {}),
-            ...(borderColor ? { borderColor } : {}),
-            ...(textColor ? { color: textColor } : {}),
-            ...style,
-          }}
-          {...props}
-        >
-          {/* Header */}
-          {(title || showCloseButton) && (
-            <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
-              {title ? (
-                <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 leading-none">
-                  {title}
-                </h2>
-              ) : (
-                <div />
-              )}
+          {/* Modal Dialog Content */}
+          <div
+            ref={(node) => {
+              contentRef.current = node
+              if (typeof ref === "function") ref(node)
+              else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
+            }}
+            role="dialog"
+            aria-modal="true"
+            data-state={isOpen ? "open" : "closed"}
+            className={cn(
+              "fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full rounded-2xl border duration-200",
+              "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
+              "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100",
+              sizeClasses[size],
+              shadowClasses[shadow],
+              fullWidth && "w-full",
+              fullHeight && "h-full",
+              className
+            )}
+            style={{
+              zIndex: zIndex + 1,
+              borderRadius,
+              ...(backgroundColor || color ? { backgroundColor: backgroundColor || color } : {}),
+              ...(borderColor ? { borderColor } : {}),
+              ...(textColor ? { color: textColor } : {}),
+              ...style,
+            }}
+            {...props}
+          >
+            {/* Header */}
+            {(title || showCloseButton) && (
+              <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
+                {title ? (
+                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 leading-none">
+                    {title}
+                  </h2>
+                ) : (
+                  <div />
+                )}
 
-              {showCloseButton && (
-                <button
-                  type="button"
-                  aria-label="Close modal"
-                  onClick={onClose}
-                  className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <X className="h-4 w-4" />
-                </button>
-              )}
-            </div>
-          )}
+                {showCloseButton && (
+                  <button
+                    type="button"
+                    aria-label="Close modal"
+                    onClick={onClose}
+                    className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                )}
+              </div>
+            )}
 
-          {/* Content */}
-          <div className="p-6">{children}</div>
+            {/* Content */}
+            <div className="p-6">{children}</div>
 
-          {/* Optional Footer */}
-          {footer && (
-            <div className="px-6 py-3.5 border-t border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 rounded-b-2xl flex items-center justify-end gap-2">
-              {footer}
-            </div>
-          )}
-        </div>
-      </Portal>
+            {/* Optional Footer */}
+            {footer && (
+              <div className="px-6 py-3.5 border-t border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 rounded-b-2xl flex items-center justify-end gap-2">
+                {footer}
+              </div>
+            )}
+          </div>
+        </Portal>
+      </Presence>
     )
   }
 )

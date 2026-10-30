@@ -124,6 +124,7 @@
   - `Tabs`: Native tablist with roving keyboard navigation and dual compound + `items` API.
   - `Accordion`: Native animated collapsible panels with single/multiple modes and dual compound + `items` API.
   - `Collapsible`: Standalone collapsible section with smooth grid transitions.
+  - `NavigationMenu`: Full native context architecture supporting sibling `NavigationMenuTrigger` & `NavigationMenuContent` in `NavigationMenuItem`, hover intent delays, keyboard navigation, and `asChild` support.
 - [x] **Group 6 — Form Controls**:
   - `Checkbox`: Accessible `role="checkbox"` with checked/unchecked/indeterminate states and label association.
   - `Switch`: Accessible `role="switch"` with sliding thumb animation and synthetic event support.
@@ -135,8 +136,11 @@
   - `Separator`: Accessible separator with orientation and decorative modes.
   - `Avatar`: Standalone avatar with image error detection and fallback initials.
   - `AspectRatio`: Ratio-preserving container with `forwardRef`.
+- [x] **Animated Unmounting Transitions (`Presence`)**:
+  - Integrated `Presence` primitive with exit transition delays into `Dialog`, `AlertDialog`, `Sheet`, `Drawer`, and `Modal`.
+  - Added `data-state="open"|"closed"` driven GPU-accelerated CSS exit animations (`animate-out`, `fade-out-0`, `zoom-out-95`, `slide-out-to-*`).
 - [x] **Automated Testing & Accessibility Expansion**:
-  - All 34 tests passing in `tests/smoke.test.tsx` (StrictMode, SSR renderToString, axe-core audits).
+  - Expanded test suite to 41 comprehensive tests in `tests/smoke.test.tsx` (StrictMode, SSR renderToString, axe-core audits, and Standalone Headless Primitives & Hooks suite).
   - Next.js 16.4.3 documentation build verified across all 64 static routes with 0 errors.
   - Package manifest and `publint` audits verified.
 
@@ -162,12 +166,12 @@
 | Check / Tool | Target | Status | Result |
 | :--- | :--- | :---: | :--- |
 | **TypeScript Typecheck** | `tsc --noEmit` | ✅ Passing | 0 errors |
-| **Unit & Smoke Tests** | `vitest run` (`tests/smoke.test.tsx`) | ✅ Passing | 34 / 34 tests passing |
+| **Unit & Smoke Tests** | `vitest run` (`tests/smoke.test.tsx`) | ✅ Passing | 41 / 41 tests passing |
 | **Accessibility Audits** | `vitest-axe` (`axe-core`) | ✅ Passing | 0 violations (Checkbox, Switch, Tabs, Avatar, Button, Card) |
 | **Package Linter** | `publint` (`npm run check:pkg`) | ✅ Passing | 64 / 64 subpaths valid |
 | **Manifest Audit** | `node scripts/verify-manifest.js` | ✅ Passing | 55 / 55 components verified |
 | **Root Linter** | `eslint src tests` | ✅ Passing | 0 errors |
-| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 64 bundles + 74.54 KB CSS |
+| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 67 bundles + 68.01 KB CSS |
 | **Documentation Build** | `next build` (Next.js 16.4.3 Turbopack) | ✅ Passing | 64 / 64 static pages generated |
 | **Documentation Linter** | `npm --prefix docs run lint` | ✅ Passing | 0 errors, 0 warnings |
 

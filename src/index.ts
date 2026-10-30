@@ -155,7 +155,10 @@ export {
   NavigationMenuItem, 
   NavigationMenuTrigger, 
   NavigationMenuContent, 
-  NavigationMenuLink 
+  NavigationMenuLink,
+  NavigationMenuViewport,
+  NavigationMenuIndicator,
+  navigationMenuTriggerStyle
 } from './components/navigation/navigation-menu'
 export { 
   Menubar, 

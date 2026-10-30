@@ -5,6 +5,7 @@ import { X } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { Portal } from "../../lib/portal"
 import { Slot } from "../../lib/slot"
+import { Presence } from "../../primitives/presence"
 import { useFocusTrap } from "../../lib/focus"
 import { useControllableState } from "../../lib/use-controllable-state"
 
@@ -85,15 +86,18 @@ export interface DialogPortalProps {
 
 export const DialogPortal: React.FC<DialogPortalProps> = ({ children }) => {
   const { open } = useDialogContext()
-  if (!open) return null
-  return <Portal>{children}</Portal>
+  return (
+    <Presence present={open}>
+      <Portal>{children}</Portal>
+    </Presence>
+  )
 }
 
 export interface DialogOverlayProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps>(
   ({ className, onClick, ...props }, ref) => {
-    const { setOpen } = useDialogContext()
+    const { open, setOpen } = useDialogContext()
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
       onClick?.(e)
@@ -106,8 +110,10 @@ export const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps
       <div
         ref={ref}
         onClick={handleClick}
+        data-state={open ? "open" : "closed"}
         className={cn(
-          "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs duration-200 animate-in fade-in-0",
+          "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs duration-200",
+          "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
           className
         )}
         {...props}
@@ -193,8 +199,10 @@ export const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps
           }}
           role="dialog"
           aria-modal="true"
+          data-state={open ? "open" : "closed"}
           className={cn(
-            "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-zinc-900 dark:text-zinc-100 shadow-2xl duration-200 animate-in fade-in-0 zoom-in-95 rounded-2xl",
+            "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 text-zinc-900 dark:text-zinc-100 shadow-2xl duration-200 rounded-2xl",
+            "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
             className
           )}
           {...props}

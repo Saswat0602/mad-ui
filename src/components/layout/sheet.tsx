@@ -5,6 +5,7 @@ import { X } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { Portal } from "../../lib/portal"
 import { Slot } from "../../lib/slot"
+import { Presence } from "../../primitives/presence"
 import { useFocusTrap } from "../../lib/focus"
 import { useControllableState } from "../../lib/use-controllable-state"
 
@@ -85,15 +86,18 @@ export interface SheetPortalProps {
 
 export const SheetPortal: React.FC<SheetPortalProps> = ({ children }) => {
   const { open } = useSheetContext()
-  if (!open) return null
-  return <Portal>{children}</Portal>
+  return (
+    <Presence present={open}>
+      <Portal>{children}</Portal>
+    </Presence>
+  )
 }
 
 export interface SheetOverlayProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const SheetOverlay = React.forwardRef<HTMLDivElement, SheetOverlayProps>(
   ({ className, onClick, ...props }, ref) => {
-    const { setOpen } = useSheetContext()
+    const { open, setOpen } = useSheetContext()
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
       onClick?.(e)
@@ -106,8 +110,10 @@ export const SheetOverlay = React.forwardRef<HTMLDivElement, SheetOverlayProps>(
       <div
         ref={ref}
         onClick={handleClick}
+        data-state={open ? "open" : "closed"}
         className={cn(
-          "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs duration-200 animate-in fade-in-0",
+          "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs duration-300",
+          "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
           className
         )}
         {...props}
@@ -148,12 +154,12 @@ export const SheetClose = React.forwardRef<HTMLButtonElement, SheetCloseProps>(
 SheetClose.displayName = "SheetClose"
 
 const sheetVariants = {
-  top: "inset-x-0 top-0 border-b border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-top-full",
+  top: "inset-x-0 top-0 border-b border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=open]:slide-in-from-top-full data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top-full",
   bottom:
-    "inset-x-0 bottom-0 border-t border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-bottom-full",
-  left: "inset-y-0 left-0 h-full w-3/4 border-r border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-left-full sm:max-w-sm",
+    "inset-x-0 bottom-0 border-t border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-full data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-full",
+  left: "inset-y-0 left-0 h-full w-3/4 border-r border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=open]:slide-in-from-left-full data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left-full sm:max-w-sm",
   right:
-    "inset-y-0 right-0 h-full w-3/4 border-l border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-right-full sm:max-w-sm",
+    "inset-y-0 right-0 h-full w-3/4 border-l border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=open]:slide-in-from-right-full data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right-full sm:max-w-sm",
 }
 
 export interface SheetContentProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -203,6 +209,7 @@ export const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
           }}
           role="dialog"
           aria-modal="true"
+          data-state={open ? "open" : "closed"}
           className={cn(
             "fixed z-50 gap-4 bg-white dark:bg-zinc-900 p-6 shadow-2xl transition ease-in-out duration-300",
             sheetVariants[side],

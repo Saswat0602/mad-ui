@@ -4,7 +4,10 @@ export {
   NavigationMenuItem, 
   NavigationMenuTrigger, 
   NavigationMenuContent, 
-  NavigationMenuLink 
+  NavigationMenuLink,
+  NavigationMenuViewport,
+  NavigationMenuIndicator,
+  navigationMenuTriggerStyle
 } from '../components/navigation/navigation-menu'
 export type { 
   NavigationMenuProps, 
@@ -12,5 +15,7 @@ export type {
   NavigationMenuItemProps, 
   NavigationMenuTriggerProps, 
   NavigationMenuContentProps, 
-  NavigationMenuLinkProps 
+  NavigationMenuLinkProps,
+  NavigationMenuViewportProps,
+  NavigationMenuIndicatorProps
 } from '../components/navigation/navigation-menu'

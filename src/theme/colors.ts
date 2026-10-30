@@ -228,3 +228,4 @@ export function generateCssVariables(isDark = false): Record<string, string> {
   
   return variables;
 }
+

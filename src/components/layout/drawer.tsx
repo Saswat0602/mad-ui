@@ -4,6 +4,7 @@ import * as React from "react"
 import { X } from "lucide-react"
 import { cn } from "../../lib/utils"
 import { Portal } from "../../lib/portal"
+import { Presence } from "../../primitives/presence"
 import { useFocusTrap } from "../../lib/focus"
 
 export interface DrawerProps {
@@ -39,13 +40,13 @@ export interface DrawerProps {
 
 const positionVariants = {
   right:
-    "inset-y-0 right-0 h-full border-l border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-right-full",
+    "inset-y-0 right-0 h-full border-l border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=open]:slide-in-from-right-full data-[state=closed]:animate-out data-[state=closed]:slide-out-to-right-full",
   left:
-    "inset-y-0 left-0 h-full border-r border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-left-full",
+    "inset-y-0 left-0 h-full border-r border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=open]:slide-in-from-left-full data-[state=closed]:animate-out data-[state=closed]:slide-out-to-left-full",
   top:
-    "inset-x-0 top-0 w-full border-b border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-top-full",
+    "inset-x-0 top-0 w-full border-b border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=open]:slide-in-from-top-full data-[state=closed]:animate-out data-[state=closed]:slide-out-to-top-full",
   bottom:
-    "inset-x-0 bottom-0 w-full border-t border-zinc-200 dark:border-zinc-800 animate-in slide-in-from-bottom-full",
+    "inset-x-0 bottom-0 w-full border-t border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-full data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-full",
 }
 
 export const Drawer: React.FC<DrawerProps> = ({
@@ -93,8 +94,6 @@ export const Drawer: React.FC<DrawerProps> = ({
     return () => window.removeEventListener("keydown", handleKeyDown)
   }, [isOpen, closeOnEscape, onClose])
 
-  if (!isOpen) return null
-
   const getSizeClasses = () => {
     if (width && (position === "left" || position === "right")) {
       return { width: typeof width === "number" ? `${width}px` : width }
@@ -115,49 +114,54 @@ export const Drawer: React.FC<DrawerProps> = ({
   const sizeProps = getSizeClasses()
 
   return (
-    <Portal>
-      {overlay && (
+    <Presence present={isOpen}>
+      <Portal>
+        {overlay && (
+          <div
+            onClick={() => {
+              if (closeOnOverlayClick) onClose?.()
+            }}
+            data-state={isOpen ? "open" : "closed"}
+            className={cn(
+              "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs duration-300",
+              "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
+              overlayClassName
+            )}
+          />
+        )}
         <div
-          onClick={() => {
-            if (closeOnOverlayClick) onClose?.()
-          }}
+          ref={contentRef}
+          role="dialog"
+          aria-modal="true"
+          data-state={isOpen ? "open" : "closed"}
           className={cn(
-            "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs duration-300 animate-in fade-in-0",
-            overlayClassName
+            "fixed z-50 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 shadow-2xl flex flex-col transition ease-in-out duration-300",
+            positionVariants[position],
+            sizeProps.className,
+            className
           )}
-        />
-      )}
-      <div
-        ref={contentRef}
-        role="dialog"
-        aria-modal="true"
-        className={cn(
-          "fixed z-50 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 shadow-2xl flex flex-col transition ease-in-out duration-300",
-          positionVariants[position],
-          sizeProps.className,
-          className
-        )}
-        style={{
-          ...sizeProps,
-          ...style,
-        }}
-        {...props}
-      >
-        {showCloseButton && (
-          <button
-            type="button"
-            onClick={onClose}
-            aria-label="Close drawer"
-            className="absolute top-4 right-4 p-2 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer z-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <X className="h-4 w-4" />
-          </button>
-        )}
-        <div className={cn("p-6 h-full overflow-y-auto", showCloseButton ? "pt-14" : "")}>
-          {children}
+          style={{
+            ...sizeProps,
+            ...style,
+          }}
+          {...props}
+        >
+          {showCloseButton && (
+            <button
+              type="button"
+              onClick={onClose}
+              aria-label="Close drawer"
+              className="absolute top-4 right-4 p-2 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer z-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <X className="h-4 w-4" />
+            </button>
+          )}
+          <div className={cn("p-6 h-full overflow-y-auto", showCloseButton ? "pt-14" : "")}>
+            {children}
+          </div>
         </div>
-      </div>
-    </Portal>
+      </Portal>
+    </Presence>
   )
 }
 
