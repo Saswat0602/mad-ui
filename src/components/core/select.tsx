@@ -178,7 +178,7 @@ export const SelectTrigger = React.forwardRef<HTMLButtonElement, SelectTriggerPr
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={cn(
-          "flex h-9 w-full items-center justify-between rounded-lg border border-zinc-200 dark:border-zinc-800 bg-background px-3 py-2 text-xs shadow-2xs placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 cursor-pointer",
+          "flex h-9 w-full items-center justify-between rounded-lg border border-zinc-200 dark:border-zinc-800 bg-background px-3 py-2 text-xs shadow-2xs placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-blue-500 aria-invalid:border-red-500 dark:aria-invalid:border-red-500 aria-invalid:focus:ring-red-500/20 disabled:cursor-not-allowed disabled:opacity-50 [&>span]:line-clamp-1 cursor-pointer",
           className
         )}
         {...props}

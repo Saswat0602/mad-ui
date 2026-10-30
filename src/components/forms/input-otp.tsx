@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
 import { cn } from '../../lib/utils'
 
-export interface InputOTPProps {
+export interface InputOTPProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: string
   onChange: (value: string) => void
   length?: number
@@ -24,21 +24,26 @@ export interface InputOTPSlotProps {
   children?: React.ReactNode
 }
 
-export const InputOTP: React.FC<InputOTPProps> = ({
-  value,
-  onChange,
-  length = 6,
-  disabled = false,
-  className,
-  placeholder = '0',
-  type = 'text'
-}) => {
-  const [activeIndex, setActiveIndex] = useState(0)
-  const inputRefs = useRef<(HTMLInputElement | null)[]>([])
+export const InputOTP = React.forwardRef<HTMLDivElement, InputOTPProps>(
+  (
+    {
+      value,
+      onChange,
+      length = 6,
+      disabled = false,
+      className,
+      placeholder = '0',
+      type = 'text',
+      ...props
+    },
+    ref
+  ) => {
+    const [activeIndex, setActiveIndex] = useState(0)
+    const inputRefs = useRef<(HTMLInputElement | null)[]>([])
 
-  useEffect(() => {
-    inputRefs.current = inputRefs.current.slice(0, length)
-  }, [length])
+    useEffect(() => {
+      inputRefs.current = inputRefs.current.slice(0, length)
+    }, [length])
 
   const handleChange = (index: number, char: string) => {
     if (disabled) return
@@ -98,7 +103,7 @@ export const InputOTP: React.FC<InputOTPProps> = ({
   }
 
   return (
-    <div className={cn('flex items-center justify-center gap-2', className)}>
+    <div ref={ref} className={cn('flex items-center justify-center gap-2', className)} {...props}>
       {Array.from({ length }).map((_, index) => (
         <InputOTPSlot
           key={index}
@@ -126,6 +131,8 @@ export const InputOTP: React.FC<InputOTPProps> = ({
     </div>
   )
 }
+)
+InputOTP.displayName = "InputOTP"
 
 export const InputOTPGroup: React.FC<InputOTPGroupProps> = ({
   children,

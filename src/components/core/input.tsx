@@ -25,7 +25,8 @@ const inputVariants = createVariants({
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, error, success, leftIcon, rightIcon, fullWidth = true, ...props }, ref) => {
-    const state = error ? "error" : success ? "success" : "default"
+    const isError = error || props["aria-invalid"] === true || props["aria-invalid"] === "true"
+    const state = isError ? "error" : success ? "success" : "default"
 
     if (leftIcon || rightIcon) {
       return (

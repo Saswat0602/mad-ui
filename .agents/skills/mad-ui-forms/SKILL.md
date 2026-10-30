@@ -188,3 +188,4 @@ When authoring or modifying form components:
 3. **SSR & StrictMode**:
    - ID generation via `useId()` must not mismatch during SSR hydration.
    - Mount and unmount cleanly under React 19 `<React.StrictMode>`.
+
