@@ -311,3 +311,55 @@ export function TeamAccessPanel() {
     </Card>
   )
 }`
+
+export const dashboard = `import React from 'react'
+import { Card, CardHeader, CardTitle, CardDescription, CardContent, Badge, DataTable, DataTableColumn } from 'mad-ui-components'
+
+interface ServiceRecord {
+  id: string
+  name: string
+  region: string
+  status: 'operational' | 'degraded' | 'maintenance'
+  latency: string
+  uptime: string
+}
+
+const services: ServiceRecord[] = [
+  { id: '1', name: 'Authentication API', region: 'us-east-1', status: 'operational', latency: '18ms', uptime: '99.99%' },
+  { id: '2', name: 'PostgreSQL Primary', region: 'us-east-1', status: 'operational', latency: '4ms', uptime: '100%' },
+  { id: '3', name: 'Edge CDN Workers', region: 'global', status: 'operational', latency: '12ms', uptime: '99.95%' },
+  { id: '4', name: 'Background Job Queue', region: 'eu-west-1', status: 'degraded', latency: '142ms', uptime: '98.50%' },
+  { id: '5', name: 'Analytics Pipeline', region: 'us-west-2', status: 'maintenance', latency: '—', uptime: '99.20%' },
+]
+
+export function OperationsDashboard() {
+  const columns: DataTableColumn<ServiceRecord>[] = [
+    { key: 'name', header: 'Service', sortable: true },
+    { key: 'region', header: 'Region', sortable: true },
+    { 
+      key: 'status', 
+      header: 'Health', 
+      cell: (row) => (
+        <Badge variant={row.status === 'operational' ? 'success' : row.status === 'degraded' ? 'warning' : 'outline'}>
+          {row.status}
+        </Badge>
+      )
+    },
+    { key: 'latency', header: 'Latency', sortable: true },
+    { key: 'uptime', header: 'Uptime (30d)', sortable: true }
+  ]
+
+  return (
+    <div className="space-y-6">
+      <Card>
+        <CardHeader>
+          <CardTitle>Cluster Infrastructure</CardTitle>
+          <CardDescription>Live health metrics across distributed nodes.</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <DataTable data={services} columns={columns} searchable selectable pagination />
+        </CardContent>
+      </Card>
+    </div>
+  )
+}`

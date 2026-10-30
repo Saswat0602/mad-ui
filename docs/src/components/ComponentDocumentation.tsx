@@ -249,6 +249,14 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
                       />
                     </div>
                   )}
+
+                  <div className="space-y-1.5">
+                    <h4 className="text-xs font-semibold text-foreground">3. CLI Direct Source Copy (shadcn-style)</h4>
+                    <CodeBlock 
+                      language="bash" 
+                      code={`npx mad-ui-components add ${slug}`} 
+                    />
+                  </div>
                 </div>
               </div>
               

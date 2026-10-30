@@ -104,3 +104,17 @@ cd ..
 - **Unescaped JSX Entities**: Use `&apos;` for `'`, `&quot;` for `"`, and `&amp;` for `&` in JSX text.
 - **Client vs Server**: Mark interactive preview components with `'use client';` at the top of the file.
 - **Stale Previews**: If changes do not appear in `docs`, run `npm run build` at the root directory.
+
+---
+
+## 5. Theme Builder & CLI Integration
+
+### A. Theme Builder (`/theme-builder`)
+- **Route**: `docs/src/app/theme-builder/page.tsx`
+- **Features**: Live component canvas responding dynamically to 6 curated enterprise color presets (Zinc, Indigo, Emerald, Rose, Ocean, Violet) and border-radius sliders.
+- **Export**: Generates clean zero-runtime `:root` / `.dark` CSS custom properties or Tailwind CSS configuration snippets.
+
+### B. CLI Component Distribution (`npx mad-ui-components`)
+- **CLI Adder**: `npx mad-ui-components add <component>` copies component source code along with required primitives (`primitives/`), hooks (`hooks/`), and utilities (`lib/utils.ts`) automatically resolved.
+- **Listing**: `npx mad-ui-components list` shows all 55 components by domain.
+- **Custom Dir**: Supports `--path <dir>` (default: `components/ui/mad-ui`).

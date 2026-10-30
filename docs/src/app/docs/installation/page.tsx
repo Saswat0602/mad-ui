@@ -394,6 +394,43 @@ export default function InstallationPage() {
         </div>
       </section>
 
+      {/* Step 5: Direct CLI Component Distribution (shadcn-style) */}
+      <section className="rounded-2xl border border-border/50 bg-card/30 p-6 sm:p-8 backdrop-blur-xs shadow-xs space-y-6">
+        <div className="flex items-center gap-3.5">
+          <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold text-xs shrink-0">
+            5
+          </div>
+          <div>
+            <h2 className="text-xl font-bold tracking-tight text-foreground flex items-center gap-2">
+              <Terminal className="h-5 w-5 text-primary" />
+              Direct CLI Distribution (Optional)
+            </h2>
+            <p className="text-xs text-muted-foreground mt-0.5">
+              Prefer full local ownership over your component code? Use our built-in CLI to copy source components with all required primitives and hooks automatically resolved.
+            </p>
+          </div>
+        </div>
+
+        <div className="space-y-4">
+          <div className="space-y-1.5">
+            <span className="text-xs font-semibold text-foreground">Add components with dependencies:</span>
+            <CodeBlock 
+              language="bash" 
+              code={`# Add individual components (primitives and hooks bundled automatically)
+npx mad-ui-components add button
+npx mad-ui-components add dialog
+npx mad-ui-components add data-table
+
+# Specify custom target directory
+npx mad-ui-components add form --path src/components/ui
+
+# Explore all available components
+npx mad-ui-components list`} 
+            />
+          </div>
+        </div>
+      </section>
+
       {/* Next Steps CTA */}
       <div className="border-t border-border/40 pt-6 flex items-center justify-between">
         <Link 

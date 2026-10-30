@@ -20,7 +20,9 @@ import {
   Rating, 
   Textarea,
   Avatar,
-  Select
+  Select,
+  DataTable,
+  type DataTableColumn
 } from 'mad-ui-components'
 import { 
   Copy, 
@@ -51,14 +53,14 @@ import { CodeBlock } from '@/components/CodeBlock'
 interface ExamplePattern {
   id: string
   title: string
-  category: 'auth' | 'settings' | 'billing' | 'team'
+  category: 'dashboard' | 'auth' | 'settings' | 'billing' | 'team'
   description: string
   code: string
   component: React.ReactNode
 }
 
 export default function ExamplesPage() {
-  const [activeTab, setActiveTab] = useState<'all' | 'auth' | 'settings' | 'billing' | 'team'>('all')
+  const [activeTab, setActiveTab] = useState<'all' | 'dashboard' | 'auth' | 'settings' | 'billing' | 'team'>('all')
   const [viewModes, setViewModes] = useState<Record<string, 'preview' | 'code'>>({})
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
@@ -96,6 +98,73 @@ export default function ExamplesPage() {
   }
 
   const examples: ExamplePattern[] = [
+    {
+      id: 'cluster-dashboard',
+      title: 'Infrastructure & Service Health Dashboard',
+      category: 'dashboard',
+      description: 'Mission-critical distributed operations view with real-time health stats, sorting, search filtering, and paginated incident logs.',
+      code: snippets.dashboard,
+      component: (
+        <div className="space-y-5 w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+            <Card className="p-4 border-border/80">
+              <span className="text-xs font-medium text-muted-foreground">Cluster Health</span>
+              <p className="text-2xl font-bold text-emerald-500 mt-1">99.98%</p>
+              <span className="text-[11px] text-muted-foreground">30-day trailing uptime</span>
+            </Card>
+            <Card className="p-4 border-border/80">
+              <span className="text-xs font-medium text-muted-foreground">Average Latency</span>
+              <p className="text-2xl font-bold text-foreground mt-1">18ms</p>
+              <span className="text-[11px] text-muted-foreground">Across 48 edge nodes</span>
+            </Card>
+            <Card className="p-4 border-border/80">
+              <span className="text-xs font-medium text-muted-foreground">Active Workloads</span>
+              <p className="text-2xl font-bold text-blue-500 mt-1">342</p>
+              <span className="text-[11px] text-muted-foreground">Kubernetes deployments</span>
+            </Card>
+          </div>
+
+          <Card className="shadow-xs border-border/80">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-base font-semibold">Service Health Matrix</CardTitle>
+              <CardDescription className="text-xs">
+                Real-time latency metrics and deployment states across production regions.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <DataTable
+                data={[
+                  { id: '1', name: 'Authentication API', region: 'us-east-1', status: 'operational', latency: '18ms', uptime: '99.99%' },
+                  { id: '2', name: 'PostgreSQL Primary', region: 'us-east-1', status: 'operational', latency: '4ms', uptime: '100%' },
+                  { id: '3', name: 'Edge CDN Workers', region: 'global', status: 'operational', latency: '12ms', uptime: '99.95%' },
+                  { id: '4', name: 'Background Job Queue', region: 'eu-west-1', status: 'degraded', latency: '142ms', uptime: '98.50%' },
+                  { id: '5', name: 'Analytics Pipeline', region: 'us-west-2', status: 'maintenance', latency: '—', uptime: '99.20%' },
+                ]}
+                columns={[
+                  { key: 'name', header: 'Service', sortable: true },
+                  { key: 'region', header: 'Region', sortable: true },
+                  { 
+                    key: 'status', 
+                    header: 'Health', 
+                    cell: (row: any) => (
+                      <Badge variant={row.status === 'operational' ? 'success' : row.status === 'degraded' ? 'warning' : 'outline'} className="text-[10px]">
+                        {row.status}
+                      </Badge>
+                    )
+                  },
+                  { key: 'latency', header: 'Latency', sortable: true },
+                  { key: 'uptime', header: 'Uptime', sortable: true }
+                ]}
+                searchable
+                selectable
+                pagination
+                pageSize={5}
+              />
+            </CardContent>
+          </Card>
+        </div>
+      )
+    },
     {
       id: 'auth-login',
       title: 'Enterprise Authentication & SSO',
@@ -426,6 +495,7 @@ export default function ExamplesPage() {
         <div className="flex flex-wrap items-center gap-2 mt-6">
           {[
             { id: 'all', label: 'All Patterns' },
+            { id: 'dashboard', label: 'Operations & Analytics' },
             { id: 'auth', label: 'Authentication' },
             { id: 'settings', label: 'Security & Preferences' },
             { id: 'billing', label: 'Billing & Payments' },
