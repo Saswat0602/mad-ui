@@ -102,10 +102,10 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={cn(
-          'peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-zinc-950 disabled:cursor-not-allowed disabled:opacity-50 select-none',
+          'peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 select-none',
           checked
-            ? 'bg-blue-600 dark:bg-blue-600'
-            : 'bg-zinc-200 dark:bg-zinc-700',
+            ? 'bg-primary'
+            : 'bg-input',
           rootSizes[size],
           className
         )}
@@ -114,7 +114,7 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
         <span
           data-state={checked ? 'checked' : 'unchecked'}
           className={cn(
-            'pointer-events-none block rounded-full bg-white shadow-md ring-0 transition-transform duration-200 ease-in-out',
+            'pointer-events-none block rounded-full bg-background shadow-md ring-0 transition-transform duration-200 ease-in-out',
             thumbSizes[size],
             translateClasses[size]
           )}

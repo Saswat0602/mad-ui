@@ -41,7 +41,7 @@ export const InputGroupAddon = React.forwardRef<HTMLDivElement, InputGroupAddonP
       <div
         ref={ref}
         className={cn(
-          "inline-flex items-center px-3 text-sm text-zinc-500 dark:text-zinc-400 bg-zinc-100 dark:bg-zinc-800/80 border border-zinc-300 dark:border-zinc-700 whitespace-nowrap select-none",
+          "inline-flex items-center px-3 text-sm text-muted-foreground bg-muted border border-input whitespace-nowrap select-none",
           className
         )}
         {...props}

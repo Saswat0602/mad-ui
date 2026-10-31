@@ -15,21 +15,21 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const buttonVariants = createVariants({
-  base: "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50 focus-visible:ring-offset-2 dark:focus-visible:ring-offset-zinc-950 disabled:pointer-events-none disabled:opacity-50 select-none active:scale-[0.98] cursor-pointer",
+  base: "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-lg text-sm font-medium transition-all duration-150 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background disabled:pointer-events-none disabled:opacity-50 select-none active:scale-[0.98] cursor-pointer",
   variants: {
     variant: {
       default:
-        "bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-600 dark:hover:bg-blue-500 shadow-xs hover:shadow-sm",
+        "bg-primary text-primary-foreground shadow-xs hover:bg-primary/90",
       destructive:
-        "bg-red-600 hover:bg-red-700 text-white dark:bg-red-600 dark:hover:bg-red-500 shadow-xs hover:shadow-sm",
+        "bg-destructive text-destructive-foreground shadow-xs hover:bg-destructive/90",
       outline:
-        "border border-zinc-300 dark:border-zinc-700 bg-background hover:bg-zinc-100 dark:hover:bg-zinc-800/80 text-zinc-900 dark:text-zinc-100 shadow-2xs hover:shadow-xs",
+        "border border-input bg-background hover:bg-accent hover:text-accent-foreground text-foreground shadow-2xs hover:shadow-xs",
       secondary:
-        "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 hover:bg-zinc-200/80 dark:hover:bg-zinc-700/80 shadow-2xs",
+        "bg-secondary text-secondary-foreground hover:bg-secondary/80 shadow-2xs",
       ghost:
-        "text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100",
+        "hover:bg-accent hover:text-accent-foreground text-foreground",
       link:
-        "text-blue-600 dark:text-blue-400 underline-offset-4 hover:underline p-0 h-auto font-normal shadow-none active:scale-100",
+        "text-primary underline-offset-4 hover:underline p-0 h-auto font-normal shadow-none active:scale-100",
     },
     size: {
       default: "h-9 px-4 py-2 text-sm",

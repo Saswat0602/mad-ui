@@ -34,10 +34,10 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
     }
 
     const variantClasses = {
-      default: "bg-blue-600 dark:bg-blue-500",
+      default: "bg-primary",
       success: "bg-emerald-600 dark:bg-emerald-500",
       warning: "bg-amber-500 dark:bg-amber-500",
-      destructive: "bg-red-600 dark:bg-red-500"
+      destructive: "bg-destructive"
     }
 
     return (
@@ -52,7 +52,7 @@ const Progress = React.forwardRef<HTMLDivElement, ProgressProps>(
         <div
           ref={ref}
           className={cn(
-            "relative overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800",
+            "relative overflow-hidden rounded-full bg-secondary",
             sizeClasses[size],
             className
           )}

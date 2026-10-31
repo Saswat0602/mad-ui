@@ -107,9 +107,9 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={cn(
-          'peer shrink-0 flex items-center justify-center border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/20 disabled:cursor-not-allowed disabled:opacity-50 select-none cursor-pointer',
-          (isChecked || isIndeterminate) && 'bg-blue-600 border-blue-600 text-white dark:bg-blue-600 dark:border-blue-600',
-          (error || props["aria-invalid"] === true || props["aria-invalid"] === "true") && 'border-red-500 dark:border-red-500',
+          'peer shrink-0 flex items-center justify-center border border-input bg-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 select-none cursor-pointer',
+          (isChecked || isIndeterminate) && 'bg-primary border-primary text-primary-foreground',
+          (error || props["aria-invalid"] === true || props["aria-invalid"] === "true") && 'border-destructive',
           sizeClasses[size],
           className
         )}

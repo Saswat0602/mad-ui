@@ -10,11 +10,11 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> 
 }
 
 const inputVariants = createVariants({
-  base: "flex h-9 w-full rounded-lg border bg-background px-3 py-1.5 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus-visible:outline-none focus-visible:ring-2 disabled:cursor-not-allowed disabled:opacity-50 transition-all shadow-2xs",
+  base: "flex h-9 w-full rounded-lg border bg-background px-3 py-1.5 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 disabled:cursor-not-allowed disabled:opacity-50 transition-all shadow-2xs",
   variants: {
     state: {
-      default: "border-zinc-300 dark:border-zinc-700 focus-visible:border-blue-500 focus-visible:ring-blue-500/20",
-      error: "border-red-500 text-red-900 dark:text-red-100 focus-visible:border-red-500 focus-visible:ring-red-500/20",
+      default: "border-input focus-visible:border-ring focus-visible:ring-ring",
+      error: "border-destructive text-destructive focus-visible:border-destructive focus-visible:ring-destructive/30",
       success: "border-emerald-500 text-emerald-900 dark:text-emerald-100 focus-visible:border-emerald-500 focus-visible:ring-emerald-500/20",
     },
   },

@@ -192,7 +192,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
           {/* Track background */}
           <div
             className={cn(
-              'relative grow overflow-hidden rounded-full bg-zinc-200 dark:bg-zinc-800 transition-colors',
+              'relative grow overflow-hidden rounded-full bg-secondary transition-colors',
               orientation === 'horizontal'
                 ? trackSizes[size as 'sm' | 'md' | 'lg' || 'md']
                 : 'w-1.5'
@@ -200,7 +200,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
           >
             {/* Active Range */}
             <div
-              className="absolute h-full bg-blue-600 dark:bg-blue-500 rounded-full"
+              className="absolute h-full bg-primary rounded-full"
               style={{
                 left: `${rangeLeft}%`,
                 width: `${rangeWidth}%`,
@@ -227,8 +227,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
                   transform: 'translateX(-50%)',
                 }}
                 className={cn(
-                  'absolute top-1/2 -translate-y-1/2 block rounded-full border border-blue-600/40 bg-white dark:bg-zinc-100 shadow-md transition-colors',
-                  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/40 focus-visible:ring-offset-2',
+                  'absolute top-1/2 -translate-y-1/2 block rounded-full border-2 border-primary bg-background shadow-md transition-colors ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                   'cursor-grab active:cursor-grabbing',
                   disabled && 'pointer-events-none',
                   thumbSizes[size as 'sm' | 'md' | 'lg' || 'md']
