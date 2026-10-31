@@ -31,17 +31,17 @@ export default function GettingStartedPage() {
           It gives you accessible, themeable, high-performance UI primitives ready for production.
         </p>
 
-        <div className="flex items-center gap-4 mt-6 text-xs text-muted-foreground">
+        <div className="flex flex-wrap items-center gap-4 mt-6 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
-            <Check className="h-4 w-4 text-emerald-500" />
+            <Check className="h-4 w-4 text-emerald-500 shrink-0" />
             <span>75+ Components</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Check className="h-4 w-4 text-emerald-500" />
+            <Check className="h-4 w-4 text-emerald-500 shrink-0" />
             <span>React 18 &amp; 19 Ready</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <Check className="h-4 w-4 text-emerald-500" />
+            <Check className="h-4 w-4 text-emerald-500 shrink-0" />
             <span>TypeScript First</span>
           </div>
         </div>

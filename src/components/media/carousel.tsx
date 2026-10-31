@@ -89,7 +89,14 @@ export const Carousel: React.FC<CarouselProps> = ({
   autoPlay = false,
   interval = 5000,
   showArrows = true,
-  showDots = true
+  showDots = true,
+  analyticsId,
+  analyticsEvent,
+  analyticsData,
+  ariaLabel,
+  dataTestId,
+  onAnalytics,
+  ...props
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(autoPlay)
@@ -143,6 +150,9 @@ export const Carousel: React.FC<CarouselProps> = ({
   return (
     <div
       className={cn('relative w-full', className)}
+      role={(props as any).role || 'region'}
+      aria-label={ariaLabel || (props as any)['aria-label'] || 'carousel'}
+      data-testid={dataTestId || (props as any)['data-testid']}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >

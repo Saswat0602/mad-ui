@@ -47,19 +47,19 @@ export function CodeBlock({
             <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f] opacity-80 hover:opacity-100 transition-opacity inline-block" />
           </div>
 
-          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#1e1e1e] border border-zinc-800 text-[11px] font-mono text-zinc-300">
+          <div className="flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-[#1e1e1e] border border-zinc-800 text-[11px] font-mono text-zinc-300 max-w-[140px] sm:max-w-[240px] truncate">
             {isBash ? (
-              <Terminal className="w-3 h-3 text-zinc-400" />
+              <Terminal className="w-3 h-3 text-zinc-400 shrink-0" />
             ) : (
-              <FileCode className="w-3 h-3 text-blue-400" />
+              <FileCode className="w-3 h-3 text-blue-400 shrink-0" />
             )}
-            <span>{displayTitle}</span>
+            <span className="truncate">{displayTitle}</span>
           </div>
         </div>
 
         {/* Right: Language tag & Copy button */}
         <div className="flex items-center gap-2">
-          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500">
+          <span className="text-[10px] font-mono uppercase tracking-wider text-zinc-500 hidden sm:inline">
             {language}
           </span>
           <button

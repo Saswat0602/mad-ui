@@ -177,8 +177,8 @@ export default function HomePage() {
                 </button>
               ))}
             </div>
-            <div className="flex items-center gap-2 pr-1">
-              <span className="text-zinc-300 hidden sm:inline">{snippets.installCommands[activePm]}</span>
+            <div className="flex items-center gap-2 pr-1 min-w-0">
+              <span className="text-zinc-300 truncate max-w-[160px] sm:max-w-none text-[11px] sm:text-xs">{snippets.installCommands[activePm]}</span>
               <button
                 onClick={() => copyToClipboard(snippets.installCommands[activePm], 'hero-install')}
                 className="p-1.5 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 transition-colors cursor-pointer"
@@ -375,7 +375,7 @@ export default function HomePage() {
 
               <Link href="/docs/components" className="block pt-1">
                 <Button variant="outline" size="sm" className="w-full text-xs">
-                  <span>Explore all 57+ components</span>
+                  <span>Explore all 75+ components</span>
                   <ArrowRight className="h-3.5 w-3.5 ml-1.5" />
                 </Button>
               </Link>
@@ -396,7 +396,7 @@ export default function HomePage() {
         </div>
 
         {/* Framework Selector Tabs */}
-        <div className="flex justify-center gap-2">
+        <div className="flex flex-wrap justify-center gap-2">
           {[
             { id: 'nextjs', label: 'Next.js App Router', icon: FileCode },
             { id: 'vite', label: 'Vite (React + TS)', icon: Zap },
@@ -431,14 +431,14 @@ export default function HomePage() {
                 <span className="w-3 h-3 rounded-full bg-emerald-500/80 inline-block" />
               </div>
               <span className="text-zinc-600 pl-2">|</span>
-              <span className="font-mono text-[11px] text-zinc-300 flex items-center gap-1.5 pl-1">
-                <FileCode className="h-3.5 w-3.5 text-blue-400" />
-                {activeFw === 'nextjs' ? 'app/page.tsx' : activeFw === 'vite' ? 'src/App.tsx' : 'src/index.tsx'}
+              <span className="font-mono text-[11px] text-zinc-300 flex items-center gap-1.5 pl-1 truncate max-w-[150px] sm:max-w-none">
+                <FileCode className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+                <span className="truncate">{activeFw === 'nextjs' ? 'app/page.tsx' : activeFw === 'vite' ? 'src/App.tsx' : 'src/index.tsx'}</span>
               </span>
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="text-[10px] text-zinc-500 uppercase font-mono tracking-wider">React 18 &amp; 19</span>
+              <span className="text-[10px] text-zinc-500 uppercase font-mono tracking-wider hidden sm:inline">React 18 &amp; 19</span>
               <button
                 onClick={() => copyToClipboard(snippets.rawCodeString[activeFw], 'framework-code')}
                 className="inline-flex items-center gap-1 px-2 py-1 rounded bg-zinc-800 hover:bg-zinc-700 text-zinc-300 text-[11px] transition-colors cursor-pointer"
@@ -526,7 +526,7 @@ export default function HomePage() {
             <span>Complete Component Ecosystem</span>
           </Badge>
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
-            Explore 57+ Components by Category
+            Explore 75+ Components by Category
           </h2>
           <p className="text-sm text-muted-foreground">
             Direct subpath module imports and tree-shaking for every category.
@@ -633,7 +633,7 @@ export default function HomePage() {
             Start Building with Mad UI Today
           </h2>
           <p className="text-sm text-muted-foreground max-w-lg mx-auto">
-            Discover all 57+ components with comprehensive interactive previews, props tables, and code snippets.
+            Discover all 75+ components with comprehensive interactive previews, props tables, and code snippets.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
             <Link href="/docs/components">

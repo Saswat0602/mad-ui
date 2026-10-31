@@ -74,7 +74,7 @@ export default function RootLayout({
             </div>
             
             <Header />
-            <main className="flex-1 relative pt-16">
+            <main className="flex-1 relative pt-14">
               {children}
             </main>
             

@@ -103,41 +103,42 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
         </p>
 
         {/* Quick copy snippet strip */}
-        <div className="flex flex-wrap gap-2 pt-2">
+        <div className="flex flex-wrap items-center gap-2 pt-2 max-w-full">
           <button
             onClick={handleCopyInstall}
-            className="group flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md bg-muted/40 hover:bg-muted border border-border/40 text-foreground transition-colors"
+            className="group inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md bg-muted/40 hover:bg-muted border border-border/40 text-foreground transition-colors shrink-0 cursor-pointer"
             title="Copy npm install command"
           >
             <span className="text-muted-foreground">$</span>
             <span>npm i mad-ui-components</span>
             {copiedInstall ? (
-              <Check className="h-3.5 w-3.5 text-emerald-500 ml-1" />
+              <Check className="h-3.5 w-3.5 text-emerald-500 ml-1 shrink-0" />
             ) : (
-              <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground ml-1" />
+              <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground ml-1 shrink-0" />
             )}
           </button>
 
           <button
             onClick={handleCopyImport}
-            className="group flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md bg-muted/40 hover:bg-muted border border-border/40 text-foreground transition-colors"
+            className="group inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md bg-muted/40 hover:bg-muted border border-border/40 text-foreground transition-colors max-w-full overflow-hidden cursor-pointer"
             title="Copy import statement"
           >
-            <span className="text-muted-foreground">import</span>
-            <span>&#123; {exportName} &#125;</span>
-            <span className="text-muted-foreground">from &apos;mad-ui-components&apos;</span>
+            <span className="text-muted-foreground shrink-0">import</span>
+            <span className="truncate">&#123; {exportName} &#125;</span>
+            <span className="text-muted-foreground shrink-0 hidden sm:inline">from &apos;mad-ui-components&apos;</span>
+            <span className="text-muted-foreground shrink-0 sm:hidden">from &apos;mad-ui...&apos;</span>
             {copiedImport ? (
-              <Check className="h-3.5 w-3.5 text-emerald-500 ml-1" />
+              <Check className="h-3.5 w-3.5 text-emerald-500 ml-1 shrink-0" />
             ) : (
-              <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground ml-1" />
+              <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground ml-1 shrink-0" />
             )}
           </button>
         </div>
       </div>
 
       {/* Sleek Segmented Navigation Tabs */}
-      <div className="flex items-center overflow-x-auto pb-1 scrollbar-none">
-        <div className="inline-flex items-center p-1 rounded-xl bg-muted/50 border border-border/40 text-xs sm:text-sm">
+      <div className="w-full overflow-x-auto pb-1.5 scrollbar-none -mx-1 px-1">
+        <div className="inline-flex items-center p-1 rounded-xl bg-muted/50 border border-border/40 text-xs sm:text-sm min-w-max">
           {[
             { id: 'examples', label: 'Live Preview', icon: Eye },
             { id: 'props', label: 'API Reference', icon: Code2 },

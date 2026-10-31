@@ -563,7 +563,7 @@ export function AIAssistantPattern() {
         </p>
 
         {/* Category Filters */}
-        <div className="flex flex-wrap items-center gap-2 mt-6">
+        <div className="flex items-center gap-2 mt-6 overflow-x-auto pb-1.5 scrollbar-none sm:flex-wrap">
           {[
             { id: 'all', label: 'All Patterns' },
             { id: 'dashboard', label: 'Operations & Analytics' },
@@ -576,7 +576,7 @@ export function AIAssistantPattern() {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id as typeof activeTab)}
-              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all cursor-pointer ${
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all whitespace-nowrap cursor-pointer ${
                 activeTab === tab.id
                   ? 'bg-foreground text-background font-semibold shadow-xs'
                   : 'bg-muted/40 text-muted-foreground hover:text-foreground hover:bg-muted'
@@ -596,7 +596,7 @@ export function AIAssistantPattern() {
           return (
             <div key={ex.id} className="rounded-2xl border border-border/70 bg-card/40 overflow-hidden shadow-xs">
               {/* Pattern Header Bar */}
-              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-6 py-4 border-b border-border/60 bg-muted/20">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 px-4 sm:px-6 py-3.5 sm:py-4 border-b border-border/60 bg-muted/20">
                 <div className="space-y-0.5">
                   <div className="flex items-center gap-2">
                     <h3 className="font-semibold text-base text-foreground">{ex.title}</h3>
@@ -606,7 +606,7 @@ export function AIAssistantPattern() {
                 </div>
 
                 {/* Segmented Controls: Preview vs Code */}
-                <div className="flex items-center gap-2 shrink-0">
+                <div className="flex items-center gap-2 shrink-0 self-start sm:self-auto">
                   <div className="inline-flex rounded-lg border border-border/60 bg-muted/40 p-0.5 text-xs">
                     <button
                       onClick={() => toggleViewMode(ex.id, 'preview')}
@@ -653,9 +653,9 @@ export function AIAssistantPattern() {
               </div>
 
               {/* Pattern Body: Live Preview Canvas or Monaco Code Box */}
-              <div className="p-6 sm:p-10 bg-zinc-50/50 dark:bg-[#0c0d12]/60">
+              <div className="p-4 sm:p-6 md:p-10 bg-zinc-50/50 dark:bg-[#0c0d12]/60 overflow-x-auto">
                 {currentMode === 'preview' ? (
-                  <div className="w-full flex items-center justify-center">
+                  <div className="w-full flex items-center justify-center overflow-x-auto">
                     {ex.component}
                   </div>
                 ) : (

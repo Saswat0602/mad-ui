@@ -173,6 +173,20 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       defaultValue,
       onValueChange,
       children,
+      // Filter out non-DOM props to prevent React warnings
+      analyticsId,
+      analyticsEvent,
+      analyticsData,
+      ariaLabel,
+      dataTestId,
+      onAnalytics,
+      variant,
+      size,
+      searchable,
+      searchPlaceholder,
+      onSearch,
+      onToggle,
+      keyboardNavigation,
       ...props
     },
     ref
@@ -247,6 +261,8 @@ export const Accordion = forwardRef<HTMLDivElement, AccordionProps>(
       <AccordionContext.Provider value={{ isOpen, toggle }}>
         <div
           ref={ref}
+          aria-label={ariaLabel || props['aria-label']}
+          data-testid={dataTestId || props['data-testid']}
           className={cn(
             'rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 overflow-hidden divide-y divide-zinc-200 dark:divide-zinc-800 shadow-sm',
             className

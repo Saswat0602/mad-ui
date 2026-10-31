@@ -284,8 +284,8 @@ export function DataTable<T extends Record<string, any>>({
       <div
         ref={virtualized ? scrollContainerRef : undefined}
         className={cn(
-          "rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-2xs overflow-hidden",
-          virtualized && "max-h-[480px] overflow-auto relative"
+          "rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 shadow-2xs overflow-x-auto w-full",
+          virtualized ? "max-h-[480px] overflow-auto relative" : ""
         )}
       >
         <Table>

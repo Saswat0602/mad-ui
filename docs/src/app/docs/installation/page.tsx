@@ -90,7 +90,7 @@ export default function InstallationPage() {
       </div>
 
       {/* Step 1: Package Manager Quick Install */}
-      <section className="rounded-2xl border border-border/50 bg-card/30 p-6 sm:p-8 backdrop-blur-xs shadow-xs space-y-6">
+      <section className="rounded-2xl border border-border/50 bg-card/30 p-4 sm:p-6 md:p-8 backdrop-blur-xs shadow-xs space-y-6">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <div className="flex items-center gap-3.5">
             <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold text-xs shrink-0">
@@ -107,7 +107,7 @@ export default function InstallationPage() {
           </div>
 
           {/* Segmented Pill Selector for Package Managers */}
-          <div className="inline-flex items-center p-1 rounded-xl bg-muted/60 border border-border/40 text-xs font-mono self-start sm:self-auto">
+          <div className="inline-flex flex-wrap items-center p-1 rounded-xl bg-muted/60 border border-border/40 text-xs font-mono self-start sm:self-auto">
             {(["npm", "pnpm", "yarn", "bun"] as const).map((pm) => (
               <button
                 key={pm}
@@ -134,7 +134,7 @@ export default function InstallationPage() {
       </section>
 
       {/* Step 2: Framework Integration Section */}
-      <section className="rounded-2xl border border-border/50 bg-card/30 p-6 sm:p-8 backdrop-blur-xs shadow-xs space-y-8">
+      <section className="rounded-2xl border border-border/50 bg-card/30 p-4 sm:p-6 md:p-8 backdrop-blur-xs shadow-xs space-y-8">
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-border/40 pb-6">
           <div className="flex items-center gap-3.5">
             <div className="w-8 h-8 rounded-lg bg-primary/10 text-primary border border-primary/20 flex items-center justify-center font-bold text-xs shrink-0">

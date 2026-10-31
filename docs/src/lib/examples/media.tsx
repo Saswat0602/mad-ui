@@ -157,53 +157,52 @@ export function EnterpriseCarousel() {
 
   return (
     <Carousel
-      items={items}
-      autoplay={true}
-      autoplayInterval={4000}
-      loop={true}
       showDots={true}
       showArrows={true}
-      orientation="horizontal"
-      analyticsId="hero-carousel"
-      analyticsEvent="carousel_interaction"
-      analyticsData={{ section: 'hero' }}
-      ariaLabel="Hero carousel with platform features"
-      dataTestId="hero-carousel"
-      onSlideChange={(index) => console.log('Slide changed to:', index)}
-      onAnalytics={(event, data) => {
-        console.log('Carousel analytics:', event, data)
-      }}
-    />
+      autoPlay={true}
+      interval={4000}
+      aria-label="Hero carousel with platform features"
+    >
+      <div className="flex items-center justify-center h-64 bg-zinc-100 dark:bg-zinc-800 rounded-lg">
+        <div className="text-center p-6">
+          <h3 className="text-lg font-semibold text-foreground">Welcome to Our Platform</h3>
+          <p className="text-sm text-muted-foreground mt-1">Discover amazing features and capabilities</p>
+        </div>
+      </div>
+      <div className="flex items-center justify-center h-64 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
+        <div className="text-center p-6">
+          <h3 className="text-lg font-semibold text-foreground">Advanced Analytics</h3>
+          <p className="text-sm text-muted-foreground mt-1">Get insights with our powerful analytics tools</p>
+        </div>
+      </div>
+    </Carousel>
   )
 }`,
       preview: (
         <div className="w-full max-w-md">
           <Carousel
-            analyticsId="hero-carousel"
-            analyticsEvent="carousel_interaction"
-            analyticsData={{ section: 'hero' }}
-            ariaLabel="Hero carousel with platform features"
-            dataTestId="hero-carousel"
-            onAnalytics={(event, data) => {
-              console.log('Carousel analytics:', event, data)
-            }}
+            showDots={true}
+            showArrows={true}
+            autoPlay={true}
+            interval={4000}
+            aria-label="Hero carousel with platform features"
           >
-            <div className="flex items-center justify-center h-64 bg-gray-100 rounded-lg">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold">Welcome to Our Platform</h3>
-                <p className="text-sm text-gray-600">Discover amazing features and capabilities</p>
+            <div className="flex items-center justify-center h-64 bg-zinc-100 dark:bg-zinc-800 rounded-lg">
+              <div className="text-center p-6">
+                <h3 className="text-lg font-semibold text-foreground">Welcome to Our Platform</h3>
+                <p className="text-sm text-muted-foreground mt-1">Discover amazing features and capabilities</p>
               </div>
             </div>
-            <div className="flex items-center justify-center h-64 bg-gray-200 rounded-lg">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold">Advanced Analytics</h3>
-                <p className="text-sm text-gray-600">Get insights with our powerful analytics tools</p>
+            <div className="flex items-center justify-center h-64 bg-zinc-200 dark:bg-zinc-700 rounded-lg">
+              <div className="text-center p-6">
+                <h3 className="text-lg font-semibold text-foreground">Advanced Analytics</h3>
+                <p className="text-sm text-muted-foreground mt-1">Get insights with our powerful analytics tools</p>
               </div>
             </div>
-            <div className="flex items-center justify-center h-64 bg-gray-300 rounded-lg">
-              <div className="text-center">
-                <h3 className="text-lg font-semibold">Enterprise Security</h3>
-                <p className="text-sm text-gray-600">Bank-grade security for your data and applications</p>
+            <div className="flex items-center justify-center h-64 bg-zinc-300 dark:bg-zinc-600 rounded-lg">
+              <div className="text-center p-6">
+                <h3 className="text-lg font-semibold text-foreground">Enterprise Security</h3>
+                <p className="text-sm text-muted-foreground mt-1">Bank-grade security for your data and applications</p>
               </div>
             </div>
           </Carousel>

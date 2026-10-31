@@ -389,7 +389,7 @@ module.exports = {
                 
                 {/* Enterprise Dashboard Card */}
                 <Card className="shadow-xs border-border/80">
-                  <CardHeader className="flex flex-row items-start justify-between pb-4">
+                  <CardHeader className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 pb-4">
                     <div>
                       <div className="flex items-center gap-2">
                         <CardTitle className="text-lg">Workspace Preferences</CardTitle>
@@ -401,7 +401,7 @@ module.exports = {
                         Configure deployment policies and notification hooks for this cluster.
                       </CardDescription>
                     </div>
-                    <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-2 self-start sm:self-auto">
                       <Button variant="outline" size="sm" className="text-xs">
                         Audit Logs
                       </Button>
@@ -491,12 +491,12 @@ module.exports = {
 
                   </CardContent>
 
-                  <CardFooter className="flex items-center justify-between border-t border-border/60 pt-4 text-xs text-muted-foreground">
+                  <CardFooter className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2 border-t border-border/60 pt-4 text-xs text-muted-foreground">
                     <span className="flex items-center gap-1.5">
-                      <ShieldCheck className="h-4 w-4 text-emerald-500" />
-                      Zero-runtime design tokens compiled directly into CSS custom properties
+                      <ShieldCheck className="h-4 w-4 text-emerald-500 shrink-0" />
+                      <span>Zero-runtime design tokens compiled directly into CSS custom properties</span>
                     </span>
-                    <Badge variant="secondary" className="text-[10px]">
+                    <Badge variant="secondary" className="text-[10px] shrink-0">
                       React 19 Native
                     </Badge>
                   </CardFooter>

@@ -24,24 +24,31 @@ export function ComponentSearch({ onClose }: ComponentSearchProps) {
   }, [query, components])
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm">
-      <div className="fixed left-1/2 top-1/2 w-full max-w-lg -translate-x-1/2 -translate-y-1/2 transform">
-        <div className="rounded-lg border bg-background p-4 shadow-lg">
+    <div 
+      className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-in fade-in duration-150"
+      onClick={onClose}
+    >
+      <div 
+        className="w-full max-w-lg animate-in zoom-in-95 duration-150"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="rounded-xl border border-border/80 bg-background p-4 shadow-2xl">
           {/* Search Input */}
-          <div className="relative mb-4">
+          <div className="relative mb-3">
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <input
               type="text"
-              placeholder="Search components..."
+              placeholder="Search components (e.g. Button, Dialog, Form)..."
               value={query}
               onChange={(e) => setQuery(e.target.value)}
-              className="w-full rounded-md border border-input bg-background px-10 py-2 text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring"
+              className="w-full rounded-lg border border-border/60 bg-muted/30 px-9 py-2.5 text-xs sm:text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-primary focus:border-primary transition-colors"
               autoFocus
             />
             {onClose && (
               <button
                 onClick={onClose}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground cursor-pointer p-1"
+                aria-label="Close search"
               >
                 <X className="h-4 w-4" />
               </button>

@@ -253,8 +253,8 @@ export function ResponsiveView() {
         </p>
 
         {/* Subpath import callout */}
-        <div className="mt-6 p-3 rounded-lg border border-border/60 bg-muted/30 flex items-center justify-between text-xs font-mono">
-          <div className="flex items-center gap-2 text-muted-foreground">
+        <div className="mt-6 p-3 rounded-lg border border-border/60 bg-muted/30 flex items-center justify-between text-xs font-mono overflow-x-auto">
+          <div className="flex items-center gap-2 text-muted-foreground whitespace-nowrap">
             <span className="text-primary font-bold">import</span>
             <span>&#123; useClipboard, useHotkeys, useDebounce &#125;</span>
             <span className="text-primary font-bold">from</span>

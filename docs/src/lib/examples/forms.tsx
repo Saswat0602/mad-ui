@@ -387,21 +387,8 @@ export function EnterpriseAccordion() {
     <Accordion
       items={items}
       allowMultiple={true}
-      variant="outlined"
-      size="md"
-      searchable={true}
-      searchPlaceholder="Search documentation..."
-      keyboardNavigation={true}
-      analyticsId="docs-accordion"
-      analyticsEvent="accordion_interaction"
-      analyticsData={{ section: 'documentation' }}
-      ariaLabel="Documentation sections"
-      dataTestId="docs-accordion"
-      onSearch={(query) => console.log('Search:', query)}
-      onToggle={(itemId, isOpen) => console.log('Toggle:', itemId, isOpen)}
-      onAnalytics={(event, data) => {
-        console.log('Analytics:', event, data)
-      }}
+      type="multiple"
+      aria-label="Documentation sections"
     />
   )
 }`,
@@ -425,16 +412,8 @@ export function EnterpriseAccordion() {
                 content: 'Complete API documentation and examples.'
               }
             ]}
-            variant="default"
-            size="md"
-            analyticsId="docs-accordion"
-            analyticsEvent="accordion_interaction"
-            analyticsData={{ section: 'documentation' }}
-            ariaLabel="Documentation sections"
-            dataTestId="docs-accordion"
-            onAnalytics={(event: string, data?: Record<string, unknown>) => {
-              console.log('Analytics:', event, data)
-            }}
+            type="multiple"
+            aria-label="Documentation sections"
           />
         </div>
       )
