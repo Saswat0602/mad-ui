@@ -92,6 +92,12 @@ import { useHotkeys } from '../src/hooks/use-hotkeys'
 import { useDebounce } from '../src/hooks/use-debounce'
 import { useLocalStorage } from '../src/hooks/use-local-storage'
 
+// Phase 4 AI Interface Kit
+import { PromptInput } from '../src/components/forms/prompt-input'
+import { MessageBubble } from '../src/components/feedback/message-bubble'
+import { ReasoningDisclosure } from '../src/components/feedback/reasoning-disclosure'
+import { ToolCallCard } from '../src/components/feedback/tool-call-card'
+
 
 describe('Smoke & SSR Component Suite', () => {
   describe('Client Rendering in StrictMode', () => {
@@ -1142,6 +1148,144 @@ describe('Smoke & SSR Component Suite', () => {
         storageResult.current[1]('updated-token')
       })
       expect(storageResult.current[0]).toBe('updated-token')
+    })
+
+    it('renders PromptInput correctly with submit and stop actions', async () => {
+      let submittedText = ''
+      let stopped = false
+      const { container, getByPlaceholderText, getByRole, rerender } = render(
+        <StrictMode>
+          <PromptInput
+            placeholder="Ask AI anything..."
+            onSubmit={(text) => { submittedText = text }}
+            onStop={() => { stopped = true }}
+            value="Analyze system performance"
+            onChange={() => {}}
+          />
+        </StrictMode>
+      )
+
+      expect(getByPlaceholderText('Ask AI anything...')).toBeDefined()
+      const submitBtn = getByRole('button', { name: /send prompt/i })
+      expect(submitBtn).toBeDefined()
+      fireEvent.click(submitBtn)
+      expect(submittedText).toBe('Analyze system performance')
+
+      // Switch to loading state
+      rerender(
+        <StrictMode>
+          <PromptInput
+            placeholder="Ask AI anything..."
+            loading={true}
+            onStop={() => { stopped = true }}
+          />
+        </StrictMode>
+      )
+      const stopBtn = getByRole('button', { name: /stop generating/i })
+      expect(stopBtn).toBeDefined()
+      fireEvent.click(stopBtn)
+      expect(stopped).toBe(true)
+
+      // SSR test
+      const ssr = renderToString(
+        <PromptInput placeholder="Type query" />
+      )
+      expect(ssr).toContain('Type query')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders MessageBubble correctly with user and assistant roles', async () => {
+      const { container, getByText, getAllByRole } = render(
+        <StrictMode>
+          <MessageBubble
+            role="user"
+            content="What is Mad UI?"
+            timestamp="12:00 PM"
+          />
+          <MessageBubble
+            role="assistant"
+            content="Mad UI is an enterprise React component library."
+            timestamp="12:01 PM"
+            copyable
+          />
+        </StrictMode>
+      )
+
+      expect(getByText('What is Mad UI?')).toBeDefined()
+      expect(getByText('Mad UI is an enterprise React component library.')).toBeDefined()
+      expect(getAllByRole('button', { name: /copy message/i })[0]).toBeDefined()
+
+      // SSR test
+      const ssr = renderToString(
+        <MessageBubble role="assistant" content="Server rendered answer" />
+      )
+      expect(ssr).toContain('Server rendered answer')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders ReasoningDisclosure correctly with collapse/expand', async () => {
+      const { container, getByText, getByRole } = render(
+        <StrictMode>
+          <ReasoningDisclosure duration={3.8} defaultOpen={false}>
+            <span>Evaluating telemetry logs</span>
+          </ReasoningDisclosure>
+        </StrictMode>
+      )
+
+      expect(getByText(/reasoning process/i)).toBeDefined()
+      expect(getByText('3.8s')).toBeDefined()
+      const toggleBtn = getByRole('button')
+      expect(toggleBtn.getAttribute('aria-expanded')).toBe('false')
+      fireEvent.click(toggleBtn)
+      expect(toggleBtn.getAttribute('aria-expanded')).toBe('true')
+
+      // SSR test
+      const ssr = renderToString(
+        <ReasoningDisclosure duration={1.2} defaultOpen={true}>
+          <span>SSR Reasoning Steps</span>
+        </ReasoningDisclosure>
+      )
+      expect(ssr).toContain('SSR Reasoning Steps')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders ToolCallCard correctly with arguments and result inspect', async () => {
+      const { container, getByText, getByRole } = render(
+        <StrictMode>
+          <ToolCallCard
+            toolName="query_service_health"
+            status="completed"
+            duration="84ms"
+            args={{ cluster: 'prod-us' }}
+            result={{ healthy: true, nodes: 48 }}
+          />
+        </StrictMode>
+      )
+
+      expect(getByText('query_service_health')).toBeDefined()
+      expect(getByText('84ms')).toBeDefined()
+      expect(getByText(/completed/i)).toBeDefined()
+
+      // Toggle arguments/result collapse
+      const triggerBtn = getByRole('button')
+      expect(triggerBtn.getAttribute('aria-expanded')).toBe('false')
+      fireEvent.click(triggerBtn)
+      expect(triggerBtn.getAttribute('aria-expanded')).toBe('true')
+
+      // SSR test
+      const ssr = renderToString(
+        <ToolCallCard toolName="database_backup" status="executing" />
+      )
+      expect(ssr).toContain('database_backup')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
     })
   })
 })

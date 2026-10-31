@@ -2270,6 +2270,160 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       required: false,
       description: 'Unique key to persist dismissed state across page reloads in localStorage'
     }
+  ],
+  'prompt-input': [
+    {
+      name: 'value',
+      type: 'string',
+      required: false,
+      description: 'Controlled string value of the prompt textarea'
+    },
+    {
+      name: 'placeholder',
+      type: 'string',
+      required: false,
+      default: 'Ask anything or type a prompt...',
+      description: 'Placeholder guidance text inside textarea'
+    },
+    {
+      name: 'onSubmit',
+      type: '(value: string) => void',
+      required: false,
+      description: 'Callback fired on Enter key or Send button click'
+    },
+    {
+      name: 'onStop',
+      type: '() => void',
+      required: false,
+      description: 'Callback fired when clicking the Stop generating square button'
+    },
+    {
+      name: 'loading',
+      type: 'boolean',
+      required: false,
+      default: false,
+      description: 'Toggles between Send arrow and Stop generation button'
+    },
+    {
+      name: 'startActions',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Left-aligned action button slots (e.g. file attachment, model dropdown)'
+    },
+    {
+      name: 'endActions',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Right-aligned action slots preceding the send trigger'
+    }
+  ],
+  'message-bubble': [
+    {
+      name: 'role',
+      type: "'user' | 'assistant' | 'system'",
+      required: false,
+      default: 'user',
+      description: 'Message author role determining alignment, background colors, and avatar style'
+    },
+    {
+      name: 'avatar',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Custom avatar component or image node'
+    },
+    {
+      name: 'author',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Display name of user or AI model'
+    },
+    {
+      name: 'timestamp',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Timestamp or relative time string'
+    },
+    {
+      name: 'copyable',
+      type: 'boolean',
+      required: false,
+      default: true,
+      description: 'Shows quick 1-click copy action button'
+    },
+    {
+      name: 'isStreaming',
+      type: 'boolean',
+      required: false,
+      default: false,
+      description: 'Renders animated trailing blinking cursor during active token generation'
+    }
+  ],
+  'reasoning-disclosure': [
+    {
+      name: 'title',
+      type: 'React.ReactNode',
+      required: false,
+      default: 'Reasoning Process',
+      description: 'Heading label for thought process trigger'
+    },
+    {
+      name: 'summary',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Collapsed single-line preview snippet'
+    },
+    {
+      name: 'duration',
+      type: 'string | number',
+      required: false,
+      description: 'Elapsed thinking duration (e.g. 3.2s or 3200)'
+    },
+    {
+      name: 'open',
+      type: 'boolean',
+      required: false,
+      description: 'Controlled expansion state'
+    },
+    {
+      name: 'isStreaming',
+      type: 'boolean',
+      required: false,
+      default: false,
+      description: 'Displays pulsing thinking indicator and sparkles icon'
+    }
+  ],
+  'tool-call-card': [
+    {
+      name: 'name',
+      type: 'string',
+      required: true,
+      description: 'Identifier of the executed tool or agent action (e.g. search_web)'
+    },
+    {
+      name: 'status',
+      type: "'pending' | 'running' | 'success' | 'error'",
+      required: false,
+      default: 'success',
+      description: 'Current execution status badge'
+    },
+    {
+      name: 'args',
+      type: 'Record<string, any> | string',
+      required: false,
+      description: 'Parameters or JSON payload passed into tool'
+    },
+    {
+      name: 'result',
+      type: 'any',
+      required: false,
+      description: 'Output or returned payload from tool'
+    },
+    {
+      name: 'duration',
+      type: 'string | number',
+      required: false,
+      description: 'Execution duration formatted with units'
+    }
   ]
 }
 
@@ -2298,6 +2452,10 @@ const ALIAS_MAP: Record<string, string> = {
   fileupload: 'file-upload',
   statcard: 'stat-card',
   treeview: 'tree-view',
+  promptinput: 'prompt-input',
+  messagebubble: 'message-bubble',
+  reasoningdisclosure: 'reasoning-disclosure',
+  toolcallcard: 'tool-call-card',
   'date-picker': 'datetime-picker',
   datepicker: 'datetime-picker'
 }

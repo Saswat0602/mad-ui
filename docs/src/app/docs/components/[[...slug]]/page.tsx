@@ -135,7 +135,7 @@ export async function generateMetadata({
   if (!slug) {
     return {
       title: 'Components - Mad UI',
-      description: 'Explore all 57+ production-ready React components in the Mad UI library.',
+      description: 'Explore all 75+ production-ready React components in the Mad UI library.',
     }
   }
 

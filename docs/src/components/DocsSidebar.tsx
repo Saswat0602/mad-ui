@@ -4,7 +4,7 @@ import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { cn } from '@/lib/utils'
-import { Search, BookOpen, Layers, Download, Sparkles, Palette, X } from 'lucide-react'
+import { Search, BookOpen, Layers, Download, Sparkles, Palette, Sliders, X } from 'lucide-react'
 import { getAllComponents } from '@/lib/component-registry'
 import { ComponentCategory } from '@/types/component'
 
@@ -82,6 +82,7 @@ export function DocsSidebar({ onItemClick }: DocsSidebarProps) {
                 { title: "Introduction", href: "/docs/getting-started", icon: BookOpen },
                 { title: "Installation", href: "/docs/installation", icon: Download },
                 { title: "All Components", href: "/docs/components", icon: Layers },
+                { title: "Headless Hooks", href: "/docs/hooks", icon: Sliders },
                 { title: "Examples", href: "/docs/examples", icon: Sparkles },
                 { title: "Theme Builder", href: "/theme-builder", icon: Palette },
               ].map((link) => {

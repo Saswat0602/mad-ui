@@ -149,7 +149,7 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['form', 'datetime', 'date', 'time', 'picker', 'calendar']
   },
-  'inputotp': {
+  'input-otp': {
     category: 'Form' as ComponentCategory,
     title: 'Input OTP',
     description: 'An OTP input component for verification codes',
@@ -157,7 +157,7 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['form', 'otp', 'verification']
   },
-  'radiogroup': {
+  'radio-group': {
     category: 'Form' as ComponentCategory,
     title: 'Radio Group',
     description: 'A radio group component for managing multiple radio buttons',
@@ -237,15 +237,23 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['form', 'upload', 'files']
   },
-
-  // Layout Components
-  'layout': {
-    category: 'Layout' as ComponentCategory,
-    title: 'Layout',
-    description: 'A main layout component for page structure',
+  'prompt-input': {
+    category: 'Form' as ComponentCategory,
+    title: 'Prompt Input',
+    description: 'AI prompt input box with auto-expanding textarea, attachments, token counters, and cancel actions',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['layout', 'structure', 'container']
+    tags: ['form', 'ai', 'prompt', 'chat']
+  },
+
+  // Layout Components
+  'layout-shell': {
+    category: 'Layout' as ComponentCategory,
+    title: 'Layout Shell',
+    description: 'Responsive enterprise application shell with collapsible sidebar, sticky topbar, and main container',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['layout', 'shell', 'sidebar', 'structure']
   },
   'modal': {
     category: 'Layout' as ComponentCategory,
@@ -295,7 +303,7 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['layout', 'resizable', 'panels']
   },
-  'scrollarea': {
+  'scroll-area': {
     category: 'Layout' as ComponentCategory,
     title: 'Scroll Area',
     description: 'A scroll area component with custom styling',
@@ -305,7 +313,7 @@ export const COMPONENT_REGISTRY = {
   },
 
   // Data Components
-  'datatable': {
+  'data-table': {
     category: 'Data Display' as ComponentCategory,
     title: 'Data Table',
     description: 'An advanced data table with sorting, filtering, and pagination',
@@ -325,7 +333,7 @@ export const COMPONENT_REGISTRY = {
   // Feedback Components
 
   // Navigation Components
-  'navigationmenu': {
+  'navigation-menu': {
     category: 'Navigation' as ComponentCategory,
     title: 'Navigation Menu',
     description: 'A navigation menu component with dropdowns',
@@ -375,7 +383,7 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['overlay', 'dialog', 'modal']
   },
-  'alertdialog': {
+  'alert-dialog': {
     category: 'Overlay' as ComponentCategory,
     title: 'Alert Dialog',
     description: 'An alert dialog component for confirmations',
@@ -383,7 +391,7 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['overlay', 'alertdialog', 'confirmation']
   },
-  'dropdownmenu': {
+  'dropdown-menu': {
     category: 'Overlay' as ComponentCategory,
     title: 'Dropdown Menu',
     description: 'A dropdown menu component for actions',
@@ -391,7 +399,7 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['overlay', 'dropdown', 'menu']
   },
-  'contextmenu': {
+  'context-menu': {
     category: 'Overlay' as ComponentCategory,
     title: 'Context Menu',
     description: 'A context menu component for right-click actions',
@@ -399,7 +407,7 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['overlay', 'contextmenu', 'rightclick']
   },
-  'hovercard': {
+  'hover-card': {
     category: 'Overlay' as ComponentCategory,
     title: 'Hover Card',
     description: 'A hover card component for additional information',
@@ -449,7 +457,7 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['media', 'badge', 'label']
   },
-  'aspectratio': {
+  'aspect-ratio': {
     category: 'Media' as ComponentCategory,
     title: 'Aspect Ratio',
     description: 'An aspect ratio component for maintaining proportions',
@@ -594,13 +602,53 @@ export const COMPONENT_REGISTRY = {
     version: '3.0.0',
     status: 'stable' as const,
     tags: ['feedback', 'banner', 'announcement', 'alert']
+  },
+  'message-bubble': {
+    category: 'Feedback' as ComponentCategory,
+    title: 'Message Bubble',
+    description: 'Chat message bubble for user and AI agent responses with formatted content and copy actions',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['feedback', 'ai', 'chat', 'message']
+  },
+  'reasoning-disclosure': {
+    category: 'Feedback' as ComponentCategory,
+    title: 'Reasoning Disclosure',
+    description: 'Collapsible chain-of-thought disclosure card showing AI model thinking steps and duration',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['feedback', 'ai', 'reasoning', 'disclosure']
+  },
+  'tool-call-card': {
+    category: 'Feedback' as ComponentCategory,
+    title: 'Tool Call Card',
+    description: 'Structured card displaying AI agent tool invocations, arguments, execution status, and results',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['feedback', 'ai', 'agent', 'tool']
   }
 } as const
 
 export type ComponentSlug = keyof typeof COMPONENT_REGISTRY
 
+const REGISTRY_ALIASES: Record<string, ComponentSlug> = {
+  inputotp: 'input-otp',
+  radiogroup: 'radio-group',
+  scrollarea: 'scroll-area',
+  datatable: 'data-table',
+  navigationmenu: 'navigation-menu',
+  alertdialog: 'alert-dialog',
+  dropdownmenu: 'dropdown-menu',
+  contextmenu: 'context-menu',
+  hovercard: 'hover-card',
+  aspectratio: 'aspect-ratio',
+  layout: 'layout-shell',
+  breadcrumb: 'breadcrumbs',
+}
+
 export function getComponentBySlug(slug: string) {
-  return COMPONENT_REGISTRY[slug as ComponentSlug] || null
+  const canonical = REGISTRY_ALIASES[slug] || (slug as ComponentSlug)
+  return COMPONENT_REGISTRY[canonical] || null
 }
 
 export function getAllComponents() {

@@ -1,5 +1,15 @@
-import React from 'react'
-import { Alert, Toast, Spinner, EmptyState, Banner, Button } from 'mad-ui-components'
+import React, { useState } from 'react'
+import { 
+  Alert, 
+  Toast, 
+  Spinner, 
+  EmptyState, 
+  Banner, 
+  Button,
+  MessageBubble,
+  ReasoningDisclosure,
+  ToolCallCard
+} from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -236,8 +246,159 @@ export function BannerExample() {
             title="Release v3.0.0 is live!"
             dismissible
           >
-            All 71 enterprise components compiled with zero external dependencies.
+            All 75 enterprise components compiled with zero external dependencies.
           </Banner>
+        </div>
+      )
+    }
+  ],
+
+  'message-bubble': [
+    {
+      title: 'AI Chat Message Thread',
+      description: 'Conversational message bubbles for user queries and AI assistant answers with markdown/code blocks and copy action',
+      code: `import { MessageBubble } from 'mad-ui-components'
+
+export function MessageBubbleExample() {
+  return (
+    <div className="w-full max-w-xl space-y-4">
+      <MessageBubble
+        role="user"
+        content="How do I configure tree-shaking for individual components in Mad UI?"
+        timestamp="Just now"
+      />
+      
+      <MessageBubble
+        role="assistant"
+        content="You can import directly from individual subpaths like \`mad-ui-components/button\` or \`mad-ui-components/dialog\`. Each component bundle includes its required primitives and hooks automatically with zero overhead."
+        timestamp="1s ago"
+        copyable
+      />
+    </div>
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-xl space-y-4">
+          <MessageBubble
+            role="user"
+            content="How do I configure tree-shaking for individual components in Mad UI?"
+            timestamp="Just now"
+          />
+          <MessageBubble
+            role="assistant"
+            content="You can import directly from individual subpaths like `mad-ui-components/button` or `mad-ui-components/dialog`. Each component bundle includes its required primitives and hooks automatically with zero overhead."
+            timestamp="1s ago"
+            copyable
+          />
+        </div>
+      )
+    }
+  ],
+
+  'reasoning-disclosure': [
+    {
+      title: 'AI Reasoning & Chain-of-Thought',
+      description: 'Collapsible thinking disclosure displaying internal model reasoning steps, duration badge, and streaming animation',
+      code: `import { ReasoningDisclosure } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function ReasoningDisclosureExample() {
+  const [open, setOpen] = useState(true)
+
+  return (
+    <div className="w-full max-w-xl">
+      <ReasoningDisclosure
+        duration={4.2}
+        open={open}
+        onOpenChange={setOpen}
+      >
+        <div className="space-y-1.5 text-xs text-zinc-600 dark:text-zinc-400">
+          <p>1. Analyzing microservices request trace across us-east-1.</p>
+          <p>2. Detected 82ms bottleneck in PostgreSQL connection pool sizing.</p>
+          <p>3. Synthesizing recommendations for connection pool scaling.</p>
+        </div>
+      </ReasoningDisclosure>
+    </div>
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-xl">
+          <ReasoningDisclosure
+            duration={4.2}
+            defaultOpen={true}
+          >
+            <div className="space-y-1.5 text-xs text-zinc-600 dark:text-zinc-400 font-mono">
+              <p>1. Analyzing microservices request trace across us-east-1.</p>
+              <p>2. Detected 82ms bottleneck in PostgreSQL connection pool sizing.</p>
+              <p>3. Synthesizing recommendations for connection pool scaling.</p>
+            </div>
+          </ReasoningDisclosure>
+        </div>
+      )
+    }
+  ],
+
+  'tool-call-card': [
+    {
+      title: 'AI Agent Tool Call Card',
+      description: 'Structured execution card for AI agent tool invocations, showing arguments, runtime duration, status badges, and output data',
+      code: `import { ToolCallCard } from 'mad-ui-components'
+
+export function ToolCallCardExample() {
+  return (
+    <div className="w-full max-w-xl space-y-3">
+      <ToolCallCard
+        toolName="query_telemetry_metrics"
+        status="completed"
+        duration="142ms"
+        args={{
+          service: 'auth-gateway',
+          metric: 'p99_latency',
+          timeRange: '1h'
+        }}
+        result={{
+          p99_latency_ms: 18.4,
+          sample_count: 48920,
+          status: 'healthy'
+        }}
+      />
+
+      <ToolCallCard
+        toolName="restart_kubernetes_pod"
+        status="executing"
+        args={{
+          cluster: 'prod-us-east',
+          pod: 'worker-queue-84df'
+        }}
+      />
+    </div>
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-xl space-y-3">
+          <ToolCallCard
+            toolName="query_telemetry_metrics"
+            status="completed"
+            duration="142ms"
+            args={{
+              service: 'auth-gateway',
+              metric: 'p99_latency',
+              timeRange: '1h'
+            }}
+            result={{
+              p99_latency_ms: 18.4,
+              sample_count: 48920,
+              status: 'healthy'
+            }}
+          />
+          <ToolCallCard
+            toolName="restart_kubernetes_pod"
+            status="executing"
+            args={{
+              cluster: 'prod-us-east',
+              pod: 'worker-queue-84df'
+            }}
+          />
         </div>
       )
     }

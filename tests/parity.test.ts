@@ -6,7 +6,7 @@ import { COMPONENT_PROPS, getComponentProps } from '../docs/src/lib/component-pr
 
 describe('Component & Documentation Parity Test Suite', () => {
   it('ensures all manifest components have documented props tables', () => {
-    expect(componentManifest.length).toBe(71)
+    expect(componentManifest.length).toBe(75)
 
     const missingProps: string[] = []
 
@@ -39,7 +39,7 @@ describe('Component & Documentation Parity Test Suite', () => {
 
     // Extract all mapped component paths
     const matches = [...cliContent.matchAll(/path:\s*['"]([^'"]+)['"]/g)]
-    expect(matches.length).toBe(71)
+    expect(matches.length).toBe(75)
 
     for (const match of matches) {
       const relativePath = match[1]
@@ -66,7 +66,7 @@ describe('Component & Documentation Parity Test Suite', () => {
   it('executes CLI list and dry-run copy commands successfully', async () => {
     const { execSync } = await import('child_process')
     const listOutput = execSync('node scripts/copy-component.js list', { encoding: 'utf8' })
-    expect(listOutput).toContain('Mad UI Available Components (55 Total)')
+    expect(listOutput).toContain('Mad UI Available Components (75 Total)')
     expect(listOutput).toContain('button')
     expect(listOutput).toContain('data-table')
     expect(listOutput).toContain('dialog')

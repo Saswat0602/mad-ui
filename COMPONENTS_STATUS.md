@@ -1,6 +1,6 @@
 # 📋 Mad UI Component Implementation & Status Audit
 
-This document provides a comprehensive audit of all **71 components** in `mad-ui-components`, detailing implementation status, export availability, TypeScript declaration support, and documentation status.
+This document provides a comprehensive audit of all **75 components** in `mad-ui-components`, detailing implementation status, export availability, TypeScript declaration support, and documentation status.
 
 ---
 
@@ -9,14 +9,14 @@ This document provides a comprehensive audit of all **71 components** in `mad-ui
 | Category | Components Count | Build Status | TypeScript Support | Documentation Status |
 | :--- | :---: | :---: | :---: | :---: |
 | **Core** | 15 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Forms** | 14 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
+| **Forms** | 15 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Layout** | 10 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Overlay** | 8 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Navigation** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Data Display** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Feedback** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
+| **Feedback** | 9 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Media** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Total** | **71** | **100% Compiled** | **Universal** | **All Documented** |
+| **Total** | **75** | **100% Compiled** | **Universal** | **All Documented** |
 
 ---
 
@@ -60,6 +60,7 @@ This document provides a comprehensive audit of all **71 components** in `mad-ui
 | **DateRangePicker** | `src/components/forms/date-range-picker.tsx` | `mad-ui-components/date-range-picker` | 🟢 100% Stable | Dual-calendar date range picker with fast preset ranges and constraint validation. |
 | **TimePicker** | `src/components/forms/time-picker.tsx` | `mad-ui-components/time-picker` | 🟢 100% Stable | Segmented time selector supporting 12h/24h formats and minute step controls. |
 | **FileUpload** | `src/components/forms/file-upload.tsx` | `mad-ui-components/file-upload` | 🟢 100% Stable | Drag-and-drop file upload dropzone with preview cards, size limits, and removal. |
+| **PromptInput** | `src/components/forms/prompt-input.tsx` | `mad-ui-components/prompt-input` | 🟢 100% Stable | AI prompt input box with auto-expanding textarea, attachments, and submit/cancel controls. |
 
 ---
 
@@ -121,7 +122,7 @@ This document provides a comprehensive audit of all **71 components** in `mad-ui
 
 ---
 
-## 7. Feedback Components (6 Components)
+## 7. Feedback Components (9 Components)
 
 | Component | Source Path | Subpath Export | Status | Features & Notes |
 | :--- | :--- | :--- | :---: | :--- |
@@ -131,6 +132,9 @@ This document provides a comprehensive audit of all **71 components** in `mad-ui
 | **Spinner** | `src/components/feedback/spinner.tsx` | `mad-ui-components/spinner` | 🟢 100% Stable | Accessible indeterminate loading indicator with screen reader support. |
 | **EmptyState** | `src/components/feedback/empty-state.tsx` | `mad-ui-components/empty-state` | 🟢 100% Stable | Zero-data placeholder graphic and action container for empty views. |
 | **Banner** | `src/components/feedback/banner.tsx` | `mad-ui-components/banner` | 🟢 100% Stable | Full-width announcement banner with action links and persistent dismiss. |
+| **MessageBubble** | `src/components/feedback/message-bubble.tsx` | `mad-ui-components/message-bubble` | 🟢 100% Stable | Chat message bubble for user and AI agent responses with formatted content and copy actions. |
+| **ReasoningDisclosure** | `src/components/feedback/reasoning-disclosure.tsx` | `mad-ui-components/reasoning-disclosure` | 🟢 100% Stable | Collapsible chain-of-thought disclosure card showing AI model thinking steps and duration. |
+| **ToolCallCard** | `src/components/feedback/tool-call-card.tsx` | `mad-ui-components/tool-call-card` | 🟢 100% Stable | Structured card displaying AI agent tool invocations, arguments, execution status, and results. |
 
 ---
 
@@ -152,7 +156,7 @@ This document provides a comprehensive audit of all **71 components** in `mad-ui
 | Test Criteria | Status | Details |
 | :--- | :---: | :--- |
 | **Root Build (`tsup`)** | ✅ Passing | Generates 142+ `.mjs` and `.d.mts` files in `dist/`. |
-| **Documentation Build (`next build`)** | ✅ Passing | Generates 81/81 static pages cleanly without type or ESLint errors. |
+| **Documentation Build (`next build`)** | ✅ Passing | Generates 86/86 static pages cleanly without type or ESLint errors. |
 | **ESLint (`eslint`)** | ✅ Passing | 0 errors across entire workspace. |
 | **React Compatibility** | ✅ Verified | Works seamlessly across React 18 consumers and React 19 Next.js apps. |
 | **Tailwind Compatibility** | ✅ Verified | Tested with both Tailwind CSS v3 and Tailwind CSS v4. |

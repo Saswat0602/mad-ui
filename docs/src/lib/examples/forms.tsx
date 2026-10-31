@@ -22,6 +22,7 @@ import {
   DateRangePicker,
   TimePicker,
   FileUpload,
+  PromptInput,
   type DateRange,
   type MultiSelectOption,
   Calendar as MadCalendar 
@@ -900,6 +901,45 @@ export function FileUploadExample() {
 }`,
       preview: <FileUploadDemo />
     }
+  ],
+
+  'prompt-input': [
+    {
+      title: 'AI Prompt Input Box',
+      description: 'Auto-expanding multi-line textarea with submit and stop actions, loading states, and keyboard Enter shortcuts',
+      code: `import { PromptInput } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function PromptInputExample() {
+  const [prompt, setPrompt] = useState('')
+  const [loading, setLoading] = useState(false)
+
+  const handleSubmit = (text: string) => {
+    if (!text.trim()) return
+    setLoading(true)
+    setTimeout(() => {
+      setLoading(false)
+      setPrompt('')
+    }, 2000)
+  }
+
+  return (
+    <div className="w-full max-w-xl space-y-3">
+      <PromptInput
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        onSubmit={handleSubmit}
+        loading={loading}
+        onStop={() => setLoading(false)}
+        placeholder="Ask anything or generate code with AI..."
+        showAttachButton
+        maxRows={6}
+      />
+    </div>
+  )
+}`,
+      preview: <PromptInputDemo />
+    }
   ]
 }
 
@@ -1088,6 +1128,48 @@ function FileUploadDemo() {
         title="Upload passport or national ID"
         description="PDF, PNG, JPG up to 10MB"
       />
+    </div>
+  )
+}
+
+function PromptInputDemo() {
+  const [prompt, setPrompt] = useState('Analyze our cloud microservices telemetry and suggest latency optimizations.')
+  const [loading, setLoading] = useState(false)
+  const [statusText, setStatusText] = useState('')
+
+  const handleSubmit = (text: string) => {
+    if (!text.trim()) return
+    setLoading(true)
+    setStatusText('Model is generating response...')
+    setTimeout(() => {
+      setLoading(false)
+      setStatusText('Response generated successfully.')
+      setTimeout(() => setStatusText(''), 3000)
+    }, 2500)
+  }
+
+  const handleStop = () => {
+    setLoading(false)
+    setStatusText('Generation stopped by user.')
+    setTimeout(() => setStatusText(''), 3000)
+  }
+
+  return (
+    <div className="w-full max-w-xl space-y-3">
+      <PromptInput
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        onSubmit={handleSubmit}
+        loading={loading}
+        onStop={handleStop}
+        placeholder="Type a prompt for the AI assistant... (Shift+Enter for newline)"
+        maxRows={6}
+      />
+      {statusText && (
+        <p className="text-xs text-blue-600 dark:text-blue-400 font-medium animate-pulse">
+          {statusText}
+        </p>
+      )}
     </div>
   )
 }

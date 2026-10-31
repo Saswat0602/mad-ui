@@ -45,6 +45,7 @@ const COMPONENT_REGISTRY = {
   'date-range-picker': { path: 'src/components/forms/date-range-picker.tsx', category: 'Forms', description: 'Dual-calendar date range picker with fast preset ranges.' },
   'time-picker': { path: 'src/components/forms/time-picker.tsx', category: 'Forms', description: 'Segmented time selector with 12h/24h and arrow step controls.' },
   'file-upload': { path: 'src/components/forms/file-upload.tsx', category: 'Forms', description: 'Drag-and-drop file upload dropzone with preview cards and size validation.' },
+  'prompt-input': { path: 'src/components/forms/prompt-input.tsx', category: 'Forms', description: 'Auto-resizing chat prompt input with action slots, submit triggers, and stop buttons.' },
 
   // Layout
   'drawer': { path: 'src/components/layout/drawer.tsx', category: 'Layout', description: 'Edge slide-out sheet modal.' },
@@ -91,6 +92,9 @@ const COMPONENT_REGISTRY = {
   'spinner': { path: 'src/components/feedback/spinner.tsx', category: 'Feedback', description: 'Animated indeterminate loading spinner.' },
   'empty-state': { path: 'src/components/feedback/empty-state.tsx', category: 'Feedback', description: 'Zero-data placeholder graphic and action container.' },
   'banner': { path: 'src/components/feedback/banner.tsx', category: 'Feedback', description: 'Full-width top-level announcement banner with action and dismiss controls.' },
+  'message-bubble': { path: 'src/components/feedback/message-bubble.tsx', category: 'Feedback', description: 'Conversational chat message card with avatar, author, timestamp, and copy action.' },
+  'reasoning-disclosure': { path: 'src/components/feedback/reasoning-disclosure.tsx', category: 'Feedback', description: 'Collapsible AI thinking and reasoning trace widget with streaming pulse indicators.' },
+  'tool-call-card': { path: 'src/components/feedback/tool-call-card.tsx', category: 'Feedback', description: 'Interactive agent tool execution card with parameter inspection and status badges.' },
 
   // Media
   'avatar': { path: 'src/components/media/avatar.tsx', category: 'Media', description: 'User image avatar with fallback initials.' },
@@ -127,7 +131,11 @@ const ALIASES = {
   'timepicker': 'time-picker',
   'fileupload': 'file-upload',
   'statcard': 'stat-card',
-  'treeview': 'tree-view'
+  'treeview': 'tree-view',
+  'promptinput': 'prompt-input',
+  'messagebubble': 'message-bubble',
+  'reasoningdisclosure': 'reasoning-disclosure',
+  'toolcallcard': 'tool-call-card'
 };
 
 function normalizeName(name) {
@@ -186,9 +194,9 @@ function printHelp() {
 Mad UI Component CLI (mad-ui-components)
 
 Commands:
-  npx mad-ui-components list                   List all 55 components by category
+  npx mad-ui-components list                   List all 75 components by category
   npx mad-ui-components add <component>       Copy component and its dependencies
-  npx mad-ui-components add --all             Copy all 55 components
+  npx mad-ui-components add --all             Copy all 75 components
 
 Options:
   --path, -p <dir>    Custom destination directory (default: components/ui/mad-ui)
@@ -198,7 +206,7 @@ Options:
 }
 
 function listComponents() {
-  console.log('\n📦 Mad UI Available Components (55 Total):\n');
+  console.log('\n📦 Mad UI Available Components (75 Total):\n');
   const categories = {};
   for (const [name, info] of Object.entries(COMPONENT_REGISTRY)) {
     if (!categories[info.category]) categories[info.category] = [];

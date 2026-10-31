@@ -41,6 +41,7 @@ const SLUG_ALIASES: Record<string, string> = {
   hovercard: 'hover-card',
   aspectratio: 'aspect-ratio',
   breadcrumb: 'breadcrumbs',
+  'layout-shell': 'layout',
 }
 
 export function getComponentExamples(slug: string): ComponentExample[] {

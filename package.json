@@ -437,6 +437,26 @@
       "types": "./dist/banner.d.mts",
       "import": "./dist/banner.mjs",
       "default": "./dist/banner.mjs"
+    },
+    "./prompt-input": {
+      "types": "./dist/prompt-input.d.mts",
+      "import": "./dist/prompt-input.mjs",
+      "default": "./dist/prompt-input.mjs"
+    },
+    "./message-bubble": {
+      "types": "./dist/message-bubble.d.mts",
+      "import": "./dist/message-bubble.mjs",
+      "default": "./dist/message-bubble.mjs"
+    },
+    "./reasoning-disclosure": {
+      "types": "./dist/reasoning-disclosure.d.mts",
+      "import": "./dist/reasoning-disclosure.mjs",
+      "default": "./dist/reasoning-disclosure.mjs"
+    },
+    "./tool-call-card": {
+      "types": "./dist/tool-call-card.d.mts",
+      "import": "./dist/tool-call-card.mjs",
+      "default": "./dist/tool-call-card.mjs"
     }
   },
   "files": [

@@ -443,7 +443,7 @@ npx mad-ui-components list`}
           href="/docs/components"
           className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline"
         >
-          <span>Explore All 57+ Components</span>
+          <span>Explore All 75+ Components</span>
           <ArrowRight className="h-3.5 w-3.5" />
         </Link>
       </div>

@@ -56,59 +56,59 @@ export default function HomePage() {
   const categories = [
     {
       name: 'Core',
-      count: '12 components',
-      description: 'Foundational primitives including buttons, cards, inputs, and toggles.',
+      count: '15 components',
+      description: 'Foundational primitives including buttons, cards, inputs, groups, and toggles.',
       slug: 'button',
-      tags: ['Button', 'Card', 'Input', 'Slider', 'Switch', 'Checkbox']
+      tags: ['Button', 'Card', 'Input', 'ButtonGroup', 'InputGroup', 'Slider']
     },
     {
       name: 'Forms',
-      count: '9 components',
-      description: 'Comprehensive inputs, calendars, datepickers, tabs, and breadcrumbs.',
-      slug: 'accordion',
-      tags: ['Accordion', 'Calendar', 'Tabs', 'InputOTP', 'RadioGroup']
+      count: '15 components',
+      description: 'Comprehensive inputs, calendars, datepickers, multi-select, and AI prompt input.',
+      slug: 'prompt-input',
+      tags: ['PromptInput', 'MultiSelect', 'DateRangePicker', 'FileUpload', 'Form']
     },
     {
       name: 'Layout',
-      count: '8 components',
-      description: 'Structural systems including responsive navbars, sidebars, and sheets.',
+      count: '10 components',
+      description: 'Structural systems including responsive navbars, sidebars, shells, and sheets.',
       slug: 'navbar',
-      tags: ['Navbar', 'Sidebar', 'Modal', 'Drawer', 'Sheet', 'Resizable']
+      tags: ['Navbar', 'Sidebar', 'LayoutShell', 'Modal', 'Drawer', 'Sheet']
     },
     {
       name: 'Overlay',
-      count: '7 components',
-      description: 'Contextual layers, modal dialogs, tooltips, and popovers.',
+      count: '8 components',
+      description: 'Contextual layers, modal dialogs, context menus, tooltips, and popovers.',
       slug: 'dialog',
-      tags: ['Dialog', 'AlertDialog', 'DropdownMenu', 'Tooltip', 'Popover']
+      tags: ['Dialog', 'AlertDialog', 'DropdownMenu', 'ContextMenu', 'HoverCard']
     },
     {
       name: 'Navigation',
       count: '6 components',
-      description: 'Multi-level navigation bars, command palettes, and paginations.',
+      description: 'Multi-level navigation bars, command palettes, steppers, and paginations.',
       slug: 'command',
-      tags: ['Command', 'Combobox', 'NavigationMenu', 'Menubar', 'Pagination']
+      tags: ['Command', 'Combobox', 'NavigationMenu', 'Menubar', 'Stepper']
     },
     {
       name: 'Data',
-      count: '3 components',
-      description: 'Data tables, responsive data grids, and high-performance charts.',
-      slug: 'table',
-      tags: ['Table', 'DataTable', 'Chart']
+      count: '6 components',
+      description: 'Data tables, stat cards, interactive timelines, tree views, and charts.',
+      slug: 'data-table',
+      tags: ['DataTable', 'StatCard', 'Timeline', 'TreeView', 'Chart']
     },
     {
       name: 'Media',
-      count: '7 components',
-      description: 'Typography, status badges, carousels, and responsive avatars.',
+      count: '6 components',
+      description: 'Typography, status badges, carousels, keyboard keys, and responsive avatars.',
       slug: 'avatar',
-      tags: ['Avatar', 'Badge', 'Carousel', 'AspectRatio', 'Typography']
+      tags: ['Avatar', 'Badge', 'Carousel', 'AspectRatio', 'Kbd']
     },
     {
       name: 'Feedback',
-      count: '3 components',
-      description: 'Toasts, sonner notifications, and contextual status banners.',
-      slug: 'alert',
-      tags: ['Alert', 'Toast', 'Sonner']
+      count: '9 components',
+      description: 'AI message bubbles, reasoning disclosures, tool cards, toasts, and status banners.',
+      slug: 'message-bubble',
+      tags: ['MessageBubble', 'ReasoningDisclosure', 'ToolCallCard', 'Banner', 'Alert']
     }
   ]
 
@@ -119,9 +119,9 @@ export default function HomePage() {
         {/* Release Pill using authentic Mad UI Badge */}
         <Badge variant="outline" className="inline-flex items-center gap-2 px-3 py-1 text-xs font-medium border-border/60 bg-muted/30 text-muted-foreground hover:border-primary/40 transition-colors cursor-default">
           <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
-          <span className="font-semibold text-foreground">Mad UI v2.15.15</span>
+          <span className="font-semibold text-foreground">Mad UI v3.0.0</span>
           <span className="text-muted-foreground/60">•</span>
-          <span>57+ Production Components</span>
+          <span>75+ Production Components</span>
           <ArrowRight className="h-3 w-3 text-primary ml-0.5" />
         </Badge>
 
@@ -197,12 +197,12 @@ export default function HomePage() {
         {/* Stats Strip */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-8 border-t border-border/30 max-w-4xl mx-auto">
           <div className="p-3 space-y-0.5">
-            <div className="text-2xl font-bold tracking-tight text-foreground">57+</div>
+            <div className="text-2xl font-bold tracking-tight text-foreground">75+</div>
             <div className="text-xs text-muted-foreground">Components &amp; Modules</div>
           </div>
           <div className="p-3 space-y-0.5">
-            <div className="text-2xl font-bold tracking-tight text-foreground">100%</div>
-            <div className="text-xs text-muted-foreground">TypeScript First</div>
+            <div className="text-2xl font-bold tracking-tight text-foreground">10</div>
+            <div className="text-xs text-muted-foreground">Headless Custom Hooks</div>
           </div>
           <div className="p-3 space-y-0.5">
             <div className="text-2xl font-bold tracking-tight text-foreground">18 &amp; 19</div>

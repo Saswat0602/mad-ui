@@ -96,6 +96,7 @@ export default defineConfig([
       'src/individual/date-range-picker.ts',
       'src/individual/time-picker.ts',
       'src/individual/file-upload.ts',
+      'src/individual/prompt-input.ts',
     ],
   },
   // Individual components — batch 3: overlays
@@ -164,6 +165,9 @@ export default defineConfig([
       'src/individual/spinner.ts',
       'src/individual/empty-state.ts',
       'src/individual/banner.ts',
+      'src/individual/message-bubble.ts',
+      'src/individual/reasoning-disclosure.ts',
+      'src/individual/tool-call-card.ts',
       'src/individual/kbd.ts',
     ],
   },

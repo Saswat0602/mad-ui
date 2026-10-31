@@ -34,7 +34,7 @@ export default function GettingStartedPage() {
         <div className="flex items-center gap-4 mt-6 text-xs text-muted-foreground">
           <div className="flex items-center gap-1.5">
             <Check className="h-4 w-4 text-emerald-500" />
-            <span>57+ Components</span>
+            <span>75+ Components</span>
           </div>
           <div className="flex items-center gap-1.5">
             <Check className="h-4 w-4 text-emerald-500" />

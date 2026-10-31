@@ -303,6 +303,16 @@ export const componentManifest: ComponentMeta[] = [
     exports: ['FileUpload', 'FileUploadProps', 'formatBytes'],
     description: 'Drag-and-drop file upload dropzone with preview cards, size limits, and removal.'
   },
+  {
+    name: 'prompt-input',
+    title: 'Prompt Input',
+    category: 'forms',
+    status: 'stable',
+    subpath: './prompt-input',
+    sourceFile: 'src/components/forms/prompt-input.tsx',
+    exports: ['PromptInput', 'PromptInputProps'],
+    description: 'Auto-resizing chat prompt input with action slots, submit triggers, and stop buttons.'
+  },
 
   // Layout
   {
@@ -672,6 +682,36 @@ export const componentManifest: ComponentMeta[] = [
     sourceFile: 'src/components/feedback/banner.tsx',
     exports: ['Banner', 'BannerProps', 'BannerVariant'],
     description: 'Full-width top-level announcement banner with action and dismiss controls.'
+  },
+  {
+    name: 'message-bubble',
+    title: 'Message Bubble',
+    category: 'feedback',
+    status: 'stable',
+    subpath: './message-bubble',
+    sourceFile: 'src/components/feedback/message-bubble.tsx',
+    exports: ['MessageBubble', 'MessageBubbleProps', 'MessageRole'],
+    description: 'Conversational chat message card with avatar, author, timestamp, and copy action.'
+  },
+  {
+    name: 'reasoning-disclosure',
+    title: 'Reasoning Disclosure',
+    category: 'feedback',
+    status: 'stable',
+    subpath: './reasoning-disclosure',
+    sourceFile: 'src/components/feedback/reasoning-disclosure.tsx',
+    exports: ['ReasoningDisclosure', 'ReasoningDisclosureProps'],
+    description: 'Collapsible AI thinking and reasoning trace widget with streaming pulse indicators.'
+  },
+  {
+    name: 'tool-call-card',
+    title: 'Tool Call Card',
+    category: 'feedback',
+    status: 'stable',
+    subpath: './tool-call-card',
+    sourceFile: 'src/components/feedback/tool-call-card.tsx',
+    exports: ['ToolCallCard', 'ToolCallCardProps', 'ToolCallStatus'],
+    description: 'Interactive agent tool execution card with parameter inspection and status badges.'
   },
 
   // Media

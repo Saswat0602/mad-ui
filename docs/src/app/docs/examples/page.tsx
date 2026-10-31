@@ -22,7 +22,11 @@ import {
   Avatar,
   Select,
   DataTable,
-  type DataTableColumn
+  type DataTableColumn,
+  PromptInput,
+  MessageBubble,
+  ReasoningDisclosure,
+  ToolCallCard
 } from 'mad-ui-components'
 import { 
   Copy, 
@@ -53,14 +57,14 @@ import { CodeBlock } from '@/components/CodeBlock'
 interface ExamplePattern {
   id: string
   title: string
-  category: 'dashboard' | 'auth' | 'settings' | 'billing' | 'team'
+  category: 'dashboard' | 'auth' | 'settings' | 'billing' | 'team' | 'ai'
   description: string
   code: string
   component: React.ReactNode
 }
 
 export default function ExamplesPage() {
-  const [activeTab, setActiveTab] = useState<'all' | 'dashboard' | 'auth' | 'settings' | 'billing' | 'team'>('all')
+  const [activeTab, setActiveTab] = useState<'all' | 'dashboard' | 'auth' | 'settings' | 'billing' | 'team' | 'ai'>('all')
   const [viewModes, setViewModes] = useState<Record<string, 'preview' | 'code'>>({})
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
@@ -468,6 +472,73 @@ export default function ExamplesPage() {
           </CardContent>
         </Card>
       )
+    },
+    {
+      id: 'ai-agent',
+      title: 'Autonomous AI Agent & Conversational Assistant',
+      category: 'ai',
+      description: 'Production AI conversational workflow featuring PromptInput, reasoning disclosures, agent tool call cards, and responsive message bubbles.',
+      code: `import { 
+  PromptInput, 
+  MessageBubble, 
+  ReasoningDisclosure, 
+  ToolCallCard 
+} from 'mad-ui-components'
+import { useState } from 'react'
+
+export function AIAssistantPattern() {
+  const [prompt, setPrompt] = useState('')
+  const [streaming, setStreaming] = useState(false)
+
+  return (
+    <div className="w-full max-w-2xl mx-auto space-y-4">
+      <MessageBubble
+        role="user"
+        content="Diagnose why cluster eu-west-1 had p99 latency spikes during the 14:00 deployment."
+        timestamp="14:02"
+      />
+
+      <ReasoningDisclosure duration={3.4} defaultOpen>
+        <div className="space-y-1 text-xs font-mono text-muted-foreground">
+          <p>1. Ingesting telemetry traces from ingress-gateway pods.</p>
+          <p>2. Cross-referencing connection pool metrics in Redis replica.</p>
+          <p>3. Detected TCP socket exhaustion during rolling restart.</p>
+        </div>
+      </ReasoningDisclosure>
+
+      <ToolCallCard
+        toolName="query_cluster_telemetry"
+        status="completed"
+        duration="142ms"
+        args={{ region: 'eu-west-1', metric: 'p99_latency_ms', window: '30m' }}
+        result={{ peak_latency_ms: 184.2, baseline_ms: 12.1, anomalous_pods: 3 }}
+      />
+
+      <MessageBubble
+        role="assistant"
+        content="The p99 latency spike was caused by temporary TCP socket exhaustion during the rolling deployment. Three worker pods failed health checks due to Redis connection pool starvation. Recommended action: Increase connection pool limits from 50 to 150."
+        timestamp="14:03"
+        copyable
+      />
+
+      <PromptInput
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        onSubmit={(text) => {
+          setStreaming(true)
+          setTimeout(() => {
+            setStreaming(false)
+            setPrompt('')
+          }, 1500)
+        }}
+        loading={streaming}
+        onStop={() => setStreaming(false)}
+        placeholder="Reply to AI assistant or ask a follow-up question..."
+      />
+    </div>
+  )
+}`,
+      component: <AIAssistantDemo />
     }
   ]
 
@@ -500,6 +571,7 @@ export default function ExamplesPage() {
             { id: 'settings', label: 'Security & Preferences' },
             { id: 'billing', label: 'Billing & Payments' },
             { id: 'team', label: 'Team Collaboration' },
+            { id: 'ai', label: 'AI Agent & Chat' },
           ].map((tab) => (
             <button
               key={tab.id}
@@ -605,7 +677,7 @@ export default function ExamplesPage() {
       <section className="rounded-2xl border border-border/60 bg-gradient-to-b from-card/80 to-muted/20 p-8 text-center space-y-4">
         <h3 className="text-xl font-bold text-foreground">Ready to Build Your Application?</h3>
         <p className="text-xs text-muted-foreground max-w-md mx-auto">
-          Explore all 57+ components or review framework-specific setup guides.
+          Explore all 75+ components or review framework-specific setup guides.
         </p>
         <div className="flex flex-wrap items-center justify-center gap-3 pt-1">
           <Link href="/docs/components">
@@ -621,6 +693,88 @@ export default function ExamplesPage() {
           </Link>
         </div>
       </section>
+    </div>
+  )
+}
+
+function AIAssistantDemo() {
+  const [prompt, setPrompt] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [messages, setMessages] = useState<Array<{ role: 'user' | 'assistant'; content: string; time: string }>>([
+    {
+      role: 'user',
+      content: 'Diagnose why cluster eu-west-1 had p99 latency spikes during the 14:00 deployment.',
+      time: '14:02'
+    },
+    {
+      role: 'assistant',
+      content: 'The p99 latency spike was caused by temporary TCP socket exhaustion during the rolling deployment. Three worker pods failed health checks due to Redis connection pool starvation. Recommended action: Increase connection pool limits from 50 to 150.',
+      time: '14:03'
+    }
+  ])
+
+  const handleSend = (text: string) => {
+    if (!text.trim()) return
+    const userMsg = { role: 'user' as const, content: text, time: 'Just now' }
+    setMessages(prev => [...prev, userMsg])
+    setPrompt('')
+    setLoading(true)
+
+    setTimeout(() => {
+      setLoading(false)
+      setMessages(prev => [
+        ...prev,
+        {
+          role: 'assistant' as const,
+          content: `Analysis complete for: "${text}". All worker pods are now responding within baseline latency thresholds.`,
+          time: 'Just now'
+        }
+      ])
+    }, 1800)
+  }
+
+  return (
+    <div className="w-full max-w-2xl mx-auto space-y-4">
+      <MessageBubble
+        role={messages[0].role}
+        content={messages[0].content}
+        timestamp={messages[0].time}
+      />
+
+      <ReasoningDisclosure duration={3.4} defaultOpen>
+        <div className="space-y-1 text-xs font-mono text-muted-foreground">
+          <p>1. Ingesting telemetry traces from ingress-gateway pods.</p>
+          <p>2. Cross-referencing connection pool metrics in Redis replica.</p>
+          <p>3. Detected TCP socket exhaustion during rolling restart.</p>
+        </div>
+      </ReasoningDisclosure>
+
+      <ToolCallCard
+        toolName="query_cluster_telemetry"
+        status="completed"
+        duration="142ms"
+        args={{ region: 'eu-west-1', metric: 'p99_latency_ms', window: '30m' }}
+        result={{ peak_latency_ms: 184.2, baseline_ms: 12.1, anomalous_pods: 3 }}
+      />
+
+      {messages.slice(1).map((msg, i) => (
+        <MessageBubble
+          key={i}
+          role={msg.role}
+          content={msg.content}
+          timestamp={msg.time}
+          copyable={msg.role === 'assistant'}
+        />
+      ))}
+
+      <PromptInput
+        value={prompt}
+        onChange={(e) => setPrompt(e.target.value)}
+        onSubmit={handleSend}
+        loading={loading}
+        onStop={() => setLoading(false)}
+        placeholder="Reply or ask the AI assistant a follow-up question..."
+      />
     </div>
   )
 }
