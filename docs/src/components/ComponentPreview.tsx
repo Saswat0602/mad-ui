@@ -101,7 +101,7 @@ export function ComponentPreview({
 
       {/* Content Stage */}
       {!showCode ? (
-        <div className="p-4 sm:p-6 md:p-10 min-h-[160px] flex items-center justify-center bg-zinc-50/80 dark:bg-[#0c0d12] bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] dark:bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:20px_20px] transition-colors overflow-x-auto">
+        <div className="p-3 sm:p-6 md:p-8 min-h-[140px] flex items-center justify-center bg-zinc-50/80 dark:bg-[#0c0d12] bg-[radial-gradient(#d4d4d8_1px,transparent_1px)] dark:bg-[radial-gradient(#27272a_1px,transparent_1px)] [background-size:20px_20px] transition-colors overflow-x-auto">
           <div className="w-full max-w-full flex items-center justify-center overflow-x-auto py-2">
             {children}
           </div>
@@ -114,15 +114,15 @@ export function ComponentPreview({
             showLineNumbers={true}
             customStyle={{
               margin: 0,
-              padding: '1.25rem',
+              padding: '1rem',
               background: 'transparent',
               fontSize: '0.8125rem',
               lineHeight: '1.65',
               fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace',
             }}
             lineNumberStyle={{
-              minWidth: '2.25em',
-              paddingRight: '1em',
+              minWidth: '2em',
+              paddingRight: '0.75em',
               color: '#6e7681',
               textAlign: 'right',
               userSelect: 'none',

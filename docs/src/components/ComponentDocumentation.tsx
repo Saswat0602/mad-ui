@@ -7,10 +7,10 @@ import { ComponentPreview } from './ComponentPreview'
 import { PropsTable } from './PropsTable'
 import { CodeBlock } from './CodeBlock'
 import Link from 'next/link'
-import { Copy, Check, Eye, Code2, Terminal, BookOpen, ExternalLink, Github } from 'lucide-react'
+import { Copy, Check, Eye, Code2, Terminal, BookOpen, ExternalLink, Github, ChevronLeft, ChevronRight } from 'lucide-react'
 import { getComponentExamples } from '@/lib/component-examples'
 import { getComponentProps } from '@/lib/component-props'
-import { getComponentBySlug } from '@/lib/component-registry'
+import { getComponentBySlug, getAllComponents } from '@/lib/component-registry'
 import { UsageGuide } from './UsageGuide'
 
 interface ComponentDocumentationProps {
@@ -34,6 +34,12 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
   const examples = getComponentExamples(slug)
   const props = getComponentProps(slug)
 
+  // Previous & Next navigation
+  const allComponents = getAllComponents()
+  const currentIndex = allComponents.findIndex((c) => c.slug === slug)
+  const prevComponent = currentIndex > 0 ? allComponents[currentIndex - 1] : null
+  const nextComponent = currentIndex < allComponents.length - 1 ? allComponents[currentIndex + 1] : null
+
   const exportName = (component as any).exportName || component.title.replace(/\s+/g, '')
   const defaultImport = `import { ${exportName} } from 'mad-ui-components'`
 
@@ -50,9 +56,9 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
   }
 
   return (
-    <div className="space-y-10 w-full">
+    <div className="space-y-8 sm:space-y-10 w-full">
       {/* Breadcrumb */}
-      <nav className="flex items-center space-x-1.5 text-xs text-muted-foreground">
+      <nav className="flex flex-wrap items-center gap-1.5 text-xs text-muted-foreground">
         <Link href="/docs/components" className="hover:text-foreground transition-colors">
           Components
         </Link>
@@ -63,16 +69,14 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
       </nav>
 
       {/* Component Title & Header */}
-      <div className="space-y-4 border-b border-border/40 pb-6">
-        <div className="flex flex-wrap items-center justify-between gap-4">
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-foreground">
-              {component.title}
-            </h1>
-          </div>
+      <div className="space-y-3 sm:space-y-4 border-b border-border/40 pb-6">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold tracking-tight text-foreground">
+            {component.title}
+          </h1>
 
           {/* Quick links to npm & GitHub */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 self-start sm:self-auto">
             <a
               href="https://www.npmjs.com/package/mad-ui-components"
               target="_blank"
@@ -81,7 +85,7 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
               title="npm package"
             >
               <span className="font-bold text-red-500">npm</span>
-              <span>mad-ui-components</span>
+              <span className="hidden sm:inline">mad-ui-components</span>
               <ExternalLink className="h-3 w-3 opacity-60" />
             </a>
             <a
@@ -98,46 +102,50 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
           </div>
         </div>
 
-        <p className="text-base text-muted-foreground leading-relaxed max-w-3xl">
+        <p className="text-sm sm:text-base text-muted-foreground leading-relaxed max-w-3xl">
           {component.description}
         </p>
 
         {/* Quick copy snippet strip */}
-        <div className="flex flex-wrap items-center gap-2 pt-2 max-w-full">
+        <div className="flex flex-col sm:flex-row sm:items-center gap-2 pt-1 max-w-full">
           <button
             onClick={handleCopyInstall}
-            className="group inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md bg-muted/40 hover:bg-muted border border-border/40 text-foreground transition-colors shrink-0 cursor-pointer"
+            className="group inline-flex items-center justify-between sm:justify-start gap-2 px-3 py-1.5 text-xs font-mono rounded-md bg-muted/40 hover:bg-muted border border-border/40 text-foreground transition-colors cursor-pointer w-full sm:w-auto"
             title="Copy npm install command"
           >
-            <span className="text-muted-foreground">$</span>
-            <span>npm i mad-ui-components</span>
+            <div className="flex items-center gap-1.5 truncate">
+              <span className="text-muted-foreground">$</span>
+              <span className="truncate">npm i mad-ui-components</span>
+            </div>
             {copiedInstall ? (
-              <Check className="h-3.5 w-3.5 text-emerald-500 ml-1 shrink-0" />
+              <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0 ml-1" />
             ) : (
-              <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground ml-1 shrink-0" />
+              <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground shrink-0 ml-1" />
             )}
           </button>
 
           <button
             onClick={handleCopyImport}
-            className="group inline-flex items-center gap-2 px-3 py-1.5 text-xs font-mono rounded-md bg-muted/40 hover:bg-muted border border-border/40 text-foreground transition-colors max-w-full overflow-hidden cursor-pointer"
+            className="group inline-flex items-center justify-between sm:justify-start gap-2 px-3 py-1.5 text-xs font-mono rounded-md bg-muted/40 hover:bg-muted border border-border/40 text-foreground transition-colors cursor-pointer w-full sm:w-auto overflow-hidden"
             title="Copy import statement"
           >
-            <span className="text-muted-foreground shrink-0">import</span>
-            <span className="truncate">&#123; {exportName} &#125;</span>
-            <span className="text-muted-foreground shrink-0 hidden sm:inline">from &apos;mad-ui-components&apos;</span>
-            <span className="text-muted-foreground shrink-0 sm:hidden">from &apos;mad-ui...&apos;</span>
+            <div className="flex items-center gap-1.5 truncate">
+              <span className="text-muted-foreground shrink-0">import</span>
+              <span className="truncate">&#123; {exportName} &#125;</span>
+              <span className="text-muted-foreground shrink-0 hidden sm:inline">from &apos;mad-ui-components&apos;</span>
+              <span className="text-muted-foreground shrink-0 sm:hidden">from &apos;mad-ui...&apos;</span>
+            </div>
             {copiedImport ? (
-              <Check className="h-3.5 w-3.5 text-emerald-500 ml-1 shrink-0" />
+              <Check className="h-3.5 w-3.5 text-emerald-500 shrink-0 ml-1" />
             ) : (
-              <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground ml-1 shrink-0" />
+              <Copy className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground shrink-0 ml-1" />
             )}
           </button>
         </div>
       </div>
 
-      {/* Sleek Segmented Navigation Tabs */}
-      <div className="w-full overflow-x-auto pb-1.5 scrollbar-none -mx-1 px-1">
+      {/* Sleek Segmented Navigation Tabs (Edge-to-edge swipe on mobile) */}
+      <div className="w-full overflow-x-auto pb-1 scrollbar-none -mx-4 px-4 sm:mx-0 sm:px-0">
         <div className="inline-flex items-center p-1 rounded-xl bg-muted/50 border border-border/40 text-xs sm:text-sm min-w-max">
           {[
             { id: 'examples', label: 'Live Preview', icon: Eye },
@@ -151,9 +159,9 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id as 'examples' | 'props' | 'usage' | 'guide')}
-                className={`flex items-center gap-2 py-2 px-3.5 rounded-lg font-medium text-xs sm:text-sm transition-all whitespace-nowrap ${
+                className={`flex items-center gap-2 py-2 px-3.5 rounded-lg font-medium text-xs sm:text-sm transition-all whitespace-nowrap cursor-pointer ${
                   isActive
-                    ? 'bg-background text-foreground shadow-xs font-semibold'
+                    ? 'bg-background text-foreground shadow-2xs font-semibold'
                     : 'text-muted-foreground hover:text-foreground hover:bg-muted/40'
                 }`}
               >
@@ -303,6 +311,41 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
             </div>
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Bottom Component Pagination (< Previous | Next >) */}
+      <div className="pt-8 sm:pt-10 border-t border-border/40 flex items-center justify-between gap-3 sm:gap-4">
+        {prevComponent ? (
+          <Link
+            href={`/docs/components/${prevComponent.slug}`}
+            className="group flex flex-col items-start gap-1 p-2.5 sm:p-3 rounded-lg border border-border/40 hover:border-primary/50 hover:bg-muted/30 transition-all max-w-[48%]"
+          >
+            <span className="text-[11px] text-muted-foreground flex items-center gap-1 font-mono">
+              <ChevronLeft className="h-3 w-3" />
+              <span>Previous</span>
+            </span>
+            <span className="text-xs sm:text-sm font-semibold text-foreground group-hover:text-primary transition-colors truncate w-full">
+              {prevComponent.title}
+            </span>
+          </Link>
+        ) : (
+          <div />
+        )}
+
+        {nextComponent ? (
+          <Link
+            href={`/docs/components/${nextComponent.slug}`}
+            className="group flex flex-col items-end gap-1 p-2.5 sm:p-3 rounded-lg border border-border/40 hover:border-primary/50 hover:bg-muted/30 transition-all max-w-[48%] ml-auto text-right"
+          >
+            <span className="text-[11px] text-muted-foreground flex items-center gap-1 font-mono">
+              <span>Next</span>
+              <ChevronRight className="h-3 w-3" />
+            </span>
+            <span className="text-xs sm:text-sm font-semibold text-foreground group-hover:text-primary transition-colors truncate w-full">
+              {nextComponent.title}
+            </span>
+          </Link>
+        ) : null}
       </div>
     </div>
   )
