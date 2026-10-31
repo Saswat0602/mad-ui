@@ -169,7 +169,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
                     type="button"
                     aria-label="Close modal"
                     onClick={onClose}
-                    className="p-1 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="p-1 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring"
                   >
                     <X className="h-4 w-4" />
                   </button>

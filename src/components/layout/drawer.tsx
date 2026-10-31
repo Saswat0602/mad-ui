@@ -151,7 +151,7 @@ export const Drawer: React.FC<DrawerProps> = ({
               type="button"
               onClick={onClose}
               aria-label="Close drawer"
-              className="absolute top-4 right-4 p-2 rounded-lg text-zinc-500 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors cursor-pointer z-10 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="absolute top-4 right-4 p-2 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer z-10 focus:outline-none focus:ring-2 focus:ring-ring"
             >
               <X className="h-4 w-4" />
             </button>

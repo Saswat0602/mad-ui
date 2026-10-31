@@ -13,7 +13,8 @@ const primaryColorMap: Record<string, {
   glow: string;
   ring: string;
 }> = {
-  blue: { activeDark: "bg-blue-600", activeLight: "bg-blue-500 text-white", badge: "bg-blue-500 text-white", glow: "hover:shadow-blue-500/25", ring: "focus:ring-blue-500" },
+  zinc: { activeDark: "bg-accent text-accent-foreground font-medium", activeLight: "bg-accent text-accent-foreground font-medium", badge: "bg-primary text-primary-foreground", glow: "", ring: "focus:ring-ring" },
+  blue: { activeDark: "bg-accent text-accent-foreground font-medium", activeLight: "bg-accent text-accent-foreground font-medium", badge: "bg-primary text-primary-foreground", glow: "", ring: "focus:ring-ring" },
   indigo: { activeDark: "bg-indigo-600", activeLight: "bg-indigo-500 text-white", badge: "bg-indigo-500 text-white", glow: "hover:shadow-indigo-500/25", ring: "focus:ring-indigo-500" },
   purple: { activeDark: "bg-purple-600", activeLight: "bg-purple-500 text-white", badge: "bg-purple-500 text-white", glow: "hover:shadow-purple-500/25", ring: "focus:ring-purple-500" },
   green: { activeDark: "bg-green-600", activeLight: "bg-green-500 text-white", badge: "bg-green-500 text-white", glow: "hover:shadow-green-500/25", ring: "focus:ring-green-500" },
@@ -129,7 +130,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
     backgroundColor = "",
     gradient = "from-zinc-900 via-zinc-800 to-zinc-900",
     textColor = "",
-    primaryColor = "blue",
+    primaryColor = "zinc",
     borderRadius = "rounded-xl",
     shadow = "shadow-2xl",
     
@@ -429,7 +430,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
           {/* User Avatar Section */}
           {showAvatar && !isCollapsed && (
             <div className={cn("flex items-center space-x-3 p-3 rounded-lg", currentTheme.hover, "mb-4")}>
-              <div className="w-10 h-10 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
                 {avatarUrl ? (
                   <img src={avatarUrl} alt="User" className="w-full h-full rounded-full object-cover" />
                 ) : (

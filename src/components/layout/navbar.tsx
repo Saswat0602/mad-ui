@@ -14,7 +14,8 @@ const primaryColorMap: Record<string, {
   button: string;
   buttonHover: string;
 }> = {
-  blue: { bgLight: "bg-blue-100", text: "text-blue-600", badge: "bg-blue-500 text-white", ring: "focus:ring-blue-500", button: "bg-blue-600", buttonHover: "hover:bg-blue-700" },
+  zinc: { bgLight: "bg-muted", text: "text-foreground", badge: "bg-primary text-primary-foreground", ring: "focus:ring-ring", button: "bg-primary text-primary-foreground", buttonHover: "hover:bg-primary/90" },
+  blue: { bgLight: "bg-muted", text: "text-foreground", badge: "bg-primary text-primary-foreground", ring: "focus:ring-ring", button: "bg-primary text-primary-foreground", buttonHover: "hover:bg-primary/90" },
   indigo: { bgLight: "bg-indigo-100", text: "text-indigo-600", badge: "bg-indigo-500 text-white", ring: "focus:ring-indigo-500", button: "bg-indigo-600", buttonHover: "hover:bg-indigo-700" },
   purple: { bgLight: "bg-purple-100", text: "text-purple-600", badge: "bg-purple-500 text-white", ring: "focus:ring-purple-500", button: "bg-purple-600", buttonHover: "hover:bg-purple-700" },
   green: { bgLight: "bg-green-100", text: "text-green-600", badge: "bg-green-500 text-white", ring: "focus:ring-green-500", button: "bg-green-600", buttonHover: "hover:bg-green-700" },
@@ -146,8 +147,8 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
     height = "h-16",
     backgroundColor = "",
     textColor = "",
-    primaryColor = "blue",
-    gradient = "from-blue-600 to-purple-600",
+    primaryColor = "zinc",
+    gradient = "from-zinc-900 to-zinc-700",
     blur = true,
     shadow = "shadow-lg",
     borderRadius = "",
@@ -210,7 +211,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
         bg: blur ? "bg-white/80 backdrop-blur-xl" : "bg-white",
         text: "text-zinc-900",
         textSecondary: "text-zinc-600",
-        hover: "hover:text-blue-600 hover:bg-zinc-100",
+        hover: "hover:text-foreground hover:bg-accent",
         border: "border-zinc-200",
         dropdown: "bg-white border-zinc-200 shadow-xl"
       },
@@ -218,7 +219,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
         bg: blur ? "bg-zinc-900/80 backdrop-blur-xl" : "bg-zinc-900",
         text: "text-white",
         textSecondary: "text-zinc-400",
-        hover: "hover:text-blue-400 hover:bg-zinc-800",
+        hover: "hover:text-foreground hover:bg-accent",
         border: "border-zinc-800",
         dropdown: "bg-zinc-800 border-zinc-700 shadow-xl"
       },
@@ -526,7 +527,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                                   <div className="flex items-start space-x-3">
                                     <div className={cn(
                                       "w-2 h-2 rounded-full mt-2",
-                                      notification.unread ? 'bg-blue-500' : 'bg-zinc-300 dark:bg-zinc-600'
+                                      notification.unread ? 'bg-primary' : 'bg-muted-foreground/30'
                                     )}></div>
                                     <div className="flex-1">
                                       <p className="font-medium text-sm">{notification.title}</p>
@@ -578,7 +579,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                           "group"
                         )}
                       >
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold flex items-center justify-center group-hover:scale-105 transition-transform text-xs">
                           {profileImage ? (
                             <img src={profileImage} alt="Profile" className="w-full h-full rounded-full object-cover" />
                           ) : (

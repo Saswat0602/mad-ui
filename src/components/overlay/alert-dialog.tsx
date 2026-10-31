@@ -250,7 +250,7 @@ export const AlertDialogAction = React.forwardRef<HTMLButtonElement, AlertDialog
         type={asChild ? undefined : "button"}
         onClick={handleClick}
         className={cn(
-          "inline-flex h-9 items-center justify-center rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white shadow-xs hover:bg-blue-700 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer disabled:pointer-events-none",
+          "inline-flex h-9 items-center justify-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-primary-foreground shadow-xs hover:bg-primary/90 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ring-offset-background cursor-pointer disabled:pointer-events-none",
           className
         )}
         {...props}
@@ -284,7 +284,7 @@ export const AlertDialogCancel = React.forwardRef<HTMLButtonElement, AlertDialog
         type={asChild ? undefined : "button"}
         onClick={handleClick}
         className={cn(
-          "inline-flex h-9 items-center justify-center rounded-lg border border-zinc-200 dark:border-zinc-800 bg-background px-4 py-2 text-sm font-medium text-zinc-900 dark:text-zinc-100 shadow-2xs hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 cursor-pointer disabled:pointer-events-none",
+          "inline-flex h-9 items-center justify-center rounded-lg border border-input bg-background px-4 py-2 text-sm font-medium text-foreground shadow-2xs hover:bg-accent hover:text-accent-foreground transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 ring-offset-background cursor-pointer disabled:pointer-events-none",
           className
         )}
         {...props}

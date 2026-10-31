@@ -73,8 +73,8 @@ export const Combobox: React.FC<ComboboxProps> = ({
           aria-expanded={open}
           disabled={disabled}
           className={cn(
-            "flex h-9 w-full items-center justify-between rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 transition-colors shadow-2xs cursor-pointer",
-            "focus:outline-none focus:ring-2 focus:ring-blue-500",
+            "flex h-9 w-full items-center justify-between rounded-lg border border-input bg-background px-3 py-2 text-xs text-foreground transition-colors shadow-2xs cursor-pointer",
+            "focus:outline-none focus:ring-1 focus:ring-ring",
             disabled && "cursor-not-allowed opacity-50",
             className
           )}
@@ -118,14 +118,14 @@ export const Combobox: React.FC<ComboboxProps> = ({
                   className={cn(
                     "relative flex w-full cursor-pointer select-none items-center justify-between rounded-lg px-2.5 py-1.5 text-xs outline-none transition-colors",
                     isSelected
-                      ? "bg-blue-50 dark:bg-blue-950/40 text-blue-600 dark:text-blue-400 font-medium"
-                      : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200",
+                      ? "bg-accent text-accent-foreground font-medium"
+                      : "hover:bg-accent hover:text-accent-foreground text-foreground",
                     option.disabled && "pointer-events-none opacity-40"
                   )}
                   onClick={() => handleSelect(option.value)}
                 >
                   <span className="truncate">{option.label}</span>
-                  {isSelected && <Check className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400 shrink-0 ml-2" />}
+                  {isSelected && <Check className="h-3.5 w-3.5 text-primary shrink-0 ml-2" />}
                 </button>
               )
             })

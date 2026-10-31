@@ -102,9 +102,9 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                     <div
                       className={cn(
                         "flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-xs font-semibold transition-all duration-200",
-                        status === "completed" && "bg-blue-600 text-white",
-                        status === "current" && "border-2 border-blue-600 text-blue-600 dark:text-blue-400 bg-background shadow-xs",
-                        status === "upcoming" && "border border-zinc-300 dark:border-zinc-700 text-zinc-400 bg-zinc-50 dark:bg-zinc-900"
+                        status === "completed" && "bg-primary text-primary-foreground",
+                        status === "current" && "border-2 border-primary text-primary bg-background shadow-xs",
+                        status === "upcoming" && "border border-input text-muted-foreground bg-muted/40"
                       )}
                       aria-current={status === "current" ? "step" : undefined}
                     >
@@ -120,16 +120,16 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                         className={cn(
                           "text-xs font-medium tracking-tight",
                           status === "current"
-                            ? "text-zinc-900 dark:text-zinc-100 font-semibold"
+                            ? "text-foreground font-semibold"
                             : status === "completed"
-                            ? "text-zinc-700 dark:text-zinc-300"
-                            : "text-zinc-400 dark:text-zinc-500"
+                            ? "text-foreground"
+                            : "text-muted-foreground"
                         )}
                       >
                         {s.title}
                       </span>
                       {s.description && (
-                        <span className="text-[11px] text-zinc-400 dark:text-zinc-500">
+                        <span className="text-[11px] text-muted-foreground">
                           {s.description}
                         </span>
                       )}
@@ -140,8 +140,8 @@ export const Stepper = React.forwardRef<HTMLDivElement, StepperProps>(
                         className={cn(
                           "h-[2px] flex-1 mx-3 transition-colors",
                           idx < (activeStep ?? 0)
-                            ? "bg-blue-600"
-                            : "bg-zinc-200 dark:bg-zinc-800"
+                            ? "bg-primary"
+                            : "bg-muted"
                         )}
                       />
                     )}
