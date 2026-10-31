@@ -44,8 +44,17 @@ export function Header() {
     <header className="fixed top-0 left-0 right-0 z-50 w-full bg-background/80 backdrop-blur-md border-b border-border/40">
       <div className="w-full px-4 sm:px-6 lg:px-8 xl:px-12">
         <div className="flex items-center justify-between h-14">
-          {/* Logo & Desktop Nav */}
-          <div className="flex items-center space-x-6">
+          {/* Logo & Desktop Nav & Mobile Menu Trigger */}
+          <div className="flex items-center space-x-2.5 sm:space-x-4">
+            {/* Mobile Hamburger Menu (< lg) on far left like shadcn */}
+            <button
+              onClick={() => setIsMobileMenuOpen(true)}
+              className="lg:hidden p-2 -ml-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+              aria-label="Open documentation navigation"
+            >
+              <Menu className="h-5 w-5" />
+            </button>
+
             <Link href="/" className="flex items-center space-x-2.5 group">
               <div className="w-7 h-7 rounded-md bg-zinc-900 border border-zinc-700/60 dark:border-zinc-800 flex items-center justify-center transition-transform group-hover:scale-105">
                 <span className="font-bold text-xs bg-gradient-to-br from-blue-400 to-indigo-400 bg-clip-text text-transparent">M</span>
@@ -56,31 +65,31 @@ export function Header() {
             </Link>
 
             {/* Desktop Navigation */}
-            <div className="hidden lg:flex items-center">
+            <div className="hidden lg:flex items-center pl-2">
               <MainNav />
             </div>
           </div>
 
-          {/* Right Side Actions (Desktop) */}
-          <div className="hidden md:flex items-center space-x-2">
+          {/* Right Side Actions */}
+          <div className="flex items-center space-x-1 sm:space-x-2">
             <button
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center space-x-2 px-3 py-1.5 rounded-md bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-xs font-medium border border-border/40 cursor-pointer"
+              className="flex items-center space-x-2 px-2.5 sm:px-3 py-1.5 rounded-md bg-muted/40 hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-xs font-medium border border-border/40 cursor-pointer"
               title="Search components (⌘K)"
             >
               <Search className="h-3.5 w-3.5" />
-              <span>Search docs...</span>
-              <kbd className="pointer-events-none hidden h-4 select-none items-center gap-0.5 rounded border border-border/60 bg-muted px-1 font-mono text-[9px] font-medium sm:flex">
+              <span className="hidden sm:inline">Search docs...</span>
+              <kbd className="pointer-events-none hidden sm:inline-flex h-4 select-none items-center gap-0.5 rounded border border-border/60 bg-muted px-1 font-mono text-[9px] font-medium">
                 <span>⌘</span>K
               </kbd>
             </button>
 
-            {/* npm Link */}
+            {/* npm Link (Desktop) */}
             <a 
               href="https://www.npmjs.com/package/mad-ui-components" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-xs font-medium"
+              className="hidden sm:flex items-center space-x-1.5 px-2.5 py-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors text-xs font-medium"
               title="View on npm (mad-ui-components)"
             >
               <span className="font-bold text-red-500 text-xs tracking-tighter">npm</span>
@@ -92,33 +101,14 @@ export function Header() {
               href="https://github.com/Saswat0602/mad-ui" 
               target="_blank" 
               rel="noopener noreferrer"
-              className="p-1.5 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
+              className="p-1.5 sm:p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
               title="View source on GitHub"
             >
               <Github className="h-4 w-4" />
             </a>
             
-            <div className="w-px h-4 bg-border/60 mx-1"></div>
+            <div className="hidden sm:block w-px h-4 bg-border/60 mx-0.5" />
             <ThemeToggle />
-          </div>
-
-          {/* Mobile Actions (< md / < lg) */}
-          <div className="flex lg:hidden items-center space-x-1">
-            <button
-              onClick={() => setIsSearchOpen(true)}
-              className="p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
-              aria-label="Search documentation"
-            >
-              <Search className="h-4 w-4" />
-            </button>
-            <ThemeToggle />
-            <button
-              onClick={() => setIsMobileMenuOpen(true)}
-              className="p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors cursor-pointer ml-1"
-              aria-label="Open navigation menu"
-            >
-              <Menu className="h-4 w-4" />
-            </button>
           </div>
         </div>
 
@@ -154,25 +144,6 @@ export function Header() {
                   aria-label="Close navigation menu"
                 >
                   <X className="h-4 w-4" />
-                </button>
-              </div>
-
-              {/* Quick Search Button inside Drawer */}
-              <div className="p-3 border-b border-border/40">
-                <button
-                  onClick={() => {
-                    setIsMobileMenuOpen(false)
-                    setIsSearchOpen(true)
-                  }}
-                  className="w-full flex items-center justify-between px-3 py-2 rounded-md bg-muted/40 hover:bg-muted text-muted-foreground text-xs font-medium border border-border/50 cursor-pointer"
-                >
-                  <div className="flex items-center gap-2">
-                    <Search className="h-3.5 w-3.5" />
-                    <span>Search components...</span>
-                  </div>
-                  <kbd className="h-4 select-none items-center gap-0.5 rounded border border-border/60 bg-muted px-1 font-mono text-[9px] font-medium flex">
-                    <span>⌘</span>K
-                  </kbd>
                 </button>
               </div>
 
