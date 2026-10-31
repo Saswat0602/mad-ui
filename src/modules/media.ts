@@ -29,8 +29,15 @@ export {
 
 // Media Types
 export type { AspectRatioProps } from '../components/media/aspect-ratio'
-export type { CarouselProps } from '../components/media/carousel'
-export type { AvatarProps } from '../components/media/avatar'
+export type { 
+  CarouselProps, 
+  CarouselContentProps, 
+  CarouselItemProps, 
+  CarouselPreviousProps, 
+  CarouselNextProps, 
+  CarouselIndicatorProps 
+} from '../components/media/carousel'
+export type { AvatarProps, AvatarImageProps, AvatarFallbackProps, AvatarGroupProps } from '../components/media/avatar'
 export type { BadgeProps } from '../components/media/badge'
 export type { 
   TypographyProps,

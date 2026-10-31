@@ -1,0 +1,56 @@
+name: 🐛 Bug Report
+description: Create a report to help us reproduce and fix a bug
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report an issue! Please fill out the sections below.
+  - type: input
+    id: version
+    attributes:
+      label: Mad UI Version
+      description: What version of `mad-ui-components` are you using?
+      placeholder: "3.0.0"
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Framework & Environment
+      description: e.g., Next.js 16 (App Router), React 19 / 18, Vite 6, Tailwind CSS v4 / v3
+      placeholder: "Next.js 16.4, React 19, Tailwind CSS v4, Chrome 124"
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the Bug
+      description: A clear and concise description of what the bug is.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to Reproduce
+      description: Step-by-step instructions or a minimal CodeSandbox/StackBlitz reproduction link.
+      placeholder: |
+        1. Import `Button` or `Dialog`
+        2. Render with props `...`
+        3. Trigger click
+        4. See error
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console Logs / Stack Traces
+      description: Any relevant console errors or terminal logs.
+      render: shell

@@ -17,7 +17,10 @@ export {
   FormError,
   FormSuccess,
   FormWarning,
-  useFormField
+  useFormField,
+  FormFieldContext,
+  FormItemContext,
+  FormContext
 } from '../components/forms/form'
 
 // Forms Types
@@ -25,10 +28,10 @@ export type { RadioGroupProps, RadioGroupItemProps } from '../components/forms/r
 export type { AccordionProps, AccordionItemData, AccordionItemProps, AccordionTriggerProps, AccordionContentProps } from '../components/forms/accordion'
 
 export type { CalendarProps } from '../components/forms/calendar'
-export type { DateTimePickerProps } from '../components/forms/datetime-picker'
+export type { DateTimePickerProps, DateTimeMode, TimeFormat } from '../components/forms/datetime-picker'
 export type { InputOTPProps, InputOTPGroupProps, InputOTPSlotProps } from '../components/forms/input-otp'
-export type { BreadcrumbsProps } from '../components/forms/breadcrumbs'
-export type { TabsProps, TabItem } from '../components/forms/tabs'
+export type { BreadcrumbsProps, BreadcrumbItem } from '../components/forms/breadcrumbs'
+export type { TabsProps, TabItem, TabsListProps, TabsTriggerProps, TabsContentProps } from '../components/forms/tabs'
 export type { 
   FormProps,
   FormFieldProps,
@@ -37,5 +40,8 @@ export type {
   FormControlProps,
   FormDescriptionProps,
   FormMessageProps,
-  FormFieldError
+  FormFieldError,
+  FormFieldContextValue,
+  FormItemContextValue,
+  FormContextValue
 } from '../components/forms/form'

@@ -179,6 +179,16 @@ For AI agents and human contributors, see [AGENTS.md](./AGENTS.md) for architect
 
 ---
 
+## 🤝 Community & Contributing
+
+We welcome contributions of all kinds! Please see our community guides before submitting an issue or pull request:
+
+- **[Contributing Guidelines](./CONTRIBUTING.md)**: Development setup, branch etiquette, and pull request checklist.
+- **[Code of Conduct](./CODE_OF_CONDUCT.md)**: Community pledge and standards adapted from Contributor Covenant v2.1.
+- **[Security Policy](./SECURITY.md)**: Supported versions and vulnerability disclosure process.
+
+---
+
 ## 📄 License
 
 MIT © [Saswat Ranjan Mohanty](https://github.com/Saswat0602). Free for commercial and personal use.

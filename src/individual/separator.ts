@@ -1,2 +1,1 @@
-export { Separator } from '../components/overlay/separator'
-export type { SeparatorProps } from '../components/overlay/separator'
+export * from "../components/overlay/separator"

@@ -16,6 +16,7 @@ export { Modal } from '../components/layout/modal'
 export { 
   Popover, 
   PopoverTrigger, 
+  PopoverAnchor,
   PopoverContent, 
   PopoverClose,
   usePopover
@@ -30,6 +31,8 @@ export {
 export { 
   Sheet, 
   SheetTrigger, 
+  SheetPortal,
+  SheetOverlay,
   SheetContent, 
   SheetHeader, 
   SheetFooter, 
@@ -47,9 +50,20 @@ export type { LayoutProps } from '../components/layout/layout'
 export type { NavbarProps } from '../components/layout/navbar'
 export type { SidebarProps } from '../components/layout/sidebar'
 export type { ModalProps } from '../components/layout/modal'
-export type { PopoverProps, PopoverTriggerProps, PopoverContentProps, PopoverCloseProps } from '../components/layout/popover'
+export type { PopoverProps, PopoverTriggerProps, PopoverAnchorProps, PopoverContentProps, PopoverCloseProps } from '../components/layout/popover'
 export type { TooltipProps, TooltipTriggerProps, TooltipContentProps, TooltipProviderProps } from '../components/layout/tooltip'
-export type { SheetProps, SheetTriggerProps, SheetContentProps, SheetHeaderProps, SheetFooterProps, SheetTitleProps, SheetDescriptionProps, SheetCloseProps } from '../components/layout/sheet'
+export type { 
+  SheetProps, 
+  SheetTriggerProps, 
+  SheetPortalProps,
+  SheetOverlayProps,
+  SheetContentProps, 
+  SheetHeaderProps, 
+  SheetFooterProps, 
+  SheetTitleProps, 
+  SheetDescriptionProps, 
+  SheetCloseProps 
+} from '../components/layout/sheet'
 export type { DrawerProps } from '../components/layout/drawer'
 export type { ResizableProps, ResizableHandleProps, ResizablePanelProps } from '../components/layout/resizable'
 export type { ScrollAreaProps, ScrollBarProps } from '../components/layout/scroll-area'

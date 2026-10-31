@@ -2,13 +2,24 @@
 // This exports everything from all modules
 
 // Core Components
-export { Button } from './components/core/button'
+export { Button, buttonVariants } from './components/core/button'
 export { Input } from './components/core/input'
 export { Label } from './components/core/label'
 export { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from './components/core/card'
 export { Checkbox } from './components/core/checkbox'
 export { Radio } from './components/core/radio'
-export { Select, SelectContent, SelectItem, SelectTrigger, SelectValue, SelectGroup, SelectLabel } from './components/core/select'
+export { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue, 
+  SelectGroup, 
+  SelectLabel,
+  SelectSeparator,
+  SelectScrollUpButton,
+  SelectScrollDownButton
+} from './components/core/select'
 export { Switch } from './components/core/switch'
 export { Progress } from './components/core/progress'
 export { Slider } from './components/core/slider'
@@ -35,13 +46,18 @@ export {
   FormError,
   FormSuccess,
   FormWarning,
-  useFormField
+  useFormField,
+  FormFieldContext,
+  FormItemContext,
+  FormContext
 } from './components/forms/form'
 
 // Overlay Components
 export { 
   Dialog,
   DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
   DialogContent,
   DialogHeader,
   DialogFooter,
@@ -53,6 +69,8 @@ export {
 export { 
   AlertDialog,
   AlertDialogTrigger,
+  AlertDialogPortal,
+  AlertDialogOverlay,
   AlertDialogContent,
   AlertDialogHeader,
   AlertDialogFooter,
@@ -75,11 +93,19 @@ export {
 export { 
   ContextMenu,
   ContextMenuTrigger,
+  ContextMenuPortal,
   ContextMenuContent,
   ContextMenuItem,
-  ContextMenuSeparator,
+  ContextMenuCheckboxItem,
+  ContextMenuRadioGroup,
+  ContextMenuRadioItem,
   ContextMenuLabel,
-  ContextMenuGroup
+  ContextMenuSeparator,
+  ContextMenuShortcut,
+  ContextMenuGroup,
+  ContextMenuSub,
+  ContextMenuSubTrigger,
+  ContextMenuSubContent
 } from './components/overlay/context-menu'
 export { 
   DropdownMenu,
@@ -116,11 +142,13 @@ export {
   SidebarMenuButton 
 } from './components/layout/sidebar'
 export { Modal } from './components/layout/modal'
-export { Popover, PopoverTrigger, PopoverContent, PopoverClose, usePopover } from './components/layout/popover'
+export { Popover, PopoverTrigger, PopoverAnchor, PopoverContent, PopoverClose, usePopover } from './components/layout/popover'
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider, useTooltip } from './components/layout/tooltip'
 export { 
   Sheet, 
   SheetTrigger, 
+  SheetPortal,
+  SheetOverlay,
   SheetContent, 
   SheetHeader, 
   SheetFooter, 
@@ -168,11 +196,19 @@ export {
   Menubar, 
   MenubarMenu, 
   MenubarTrigger, 
+  MenubarPortal,
   MenubarContent, 
   MenubarItem, 
-  MenubarSeparator, 
+  MenubarCheckboxItem,
+  MenubarRadioGroup,
+  MenubarRadioItem,
   MenubarLabel, 
-  MenubarGroup 
+  MenubarSeparator, 
+  MenubarShortcut, 
+  MenubarGroup,
+  MenubarSub,
+  MenubarSubTrigger,
+  MenubarSubContent
 } from './components/navigation/menubar'
 export { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator, CommandShortcut, CommandDialog } from './components/navigation/command'
 export { Combobox } from './components/navigation/combobox'
@@ -212,9 +248,18 @@ export type { ButtonProps } from './components/core/button'
 export type { InputProps } from './components/core/input'
 export type { LabelProps } from './components/core/label'
 export type { CardProps, CardHeaderProps, CardTitleProps, CardDescriptionProps, CardContentProps, CardFooterProps } from './components/core/card'
-export type { CheckboxProps } from './components/core/checkbox'
+export type { CheckboxProps, CheckedState } from './components/core/checkbox'
 export type { RadioProps } from './components/core/radio'
-export type { SelectProps, SelectContentProps, SelectItemProps, SelectTriggerProps, SelectValueProps, SelectGroupProps, SelectLabelProps } from './components/core/select'
+export type { 
+  SelectProps, 
+  SelectContentProps, 
+  SelectItemProps, 
+  SelectTriggerProps, 
+  SelectValueProps, 
+  SelectGroupProps, 
+  SelectLabelProps,
+  SelectSeparatorProps 
+} from './components/core/select'
 export type { SwitchProps } from './components/core/switch'
 export type { ProgressProps } from './components/core/progress'
 export type { SliderProps } from './components/core/slider'
@@ -225,10 +270,10 @@ export type { TextareaProps } from './components/core/textarea'
 export type { RadioGroupProps, RadioGroupItemProps } from './components/forms/radio-group'
 export type { AccordionProps, AccordionItemData, AccordionItemProps, AccordionTriggerProps, AccordionContentProps } from './components/forms/accordion'
 export type { CalendarProps } from './components/forms/calendar'
-export type { DateTimePickerProps } from './components/forms/datetime-picker'
+export type { DateTimePickerProps, DateTimeMode, TimeFormat } from './components/forms/datetime-picker'
 export type { InputOTPProps, InputOTPGroupProps, InputOTPSlotProps } from './components/forms/input-otp'
-export type { BreadcrumbsProps } from './components/forms/breadcrumbs'
-export type { TabsProps, TabItem } from './components/forms/tabs'
+export type { BreadcrumbsProps, BreadcrumbItem } from './components/forms/breadcrumbs'
+export type { TabsProps, TabItem, TabsListProps, TabsTriggerProps, TabsContentProps } from './components/forms/tabs'
 export type { 
   FormProps,
   FormFieldProps,
@@ -237,12 +282,17 @@ export type {
   FormControlProps,
   FormDescriptionProps,
   FormMessageProps,
-  FormFieldError
+  FormFieldError,
+  FormFieldContextValue,
+  FormItemContextValue,
+  FormContextValue
 } from './components/forms/form'
 
 export type { 
   DialogProps,
   DialogTriggerProps,
+  DialogPortalProps,
+  DialogOverlayProps,
   DialogContentProps,
   DialogHeaderProps,
   DialogFooterProps,
@@ -253,6 +303,8 @@ export type {
 export type { 
   AlertDialogProps,
   AlertDialogTriggerProps,
+  AlertDialogPortalProps,
+  AlertDialogOverlayProps,
   AlertDialogContentProps,
   AlertDialogHeaderProps,
   AlertDialogFooterProps,
@@ -274,11 +326,19 @@ export type {
 export type { 
   ContextMenuProps,
   ContextMenuTriggerProps,
+  ContextMenuPortalProps,
   ContextMenuContentProps,
   ContextMenuItemProps,
-  ContextMenuSeparatorProps,
+  ContextMenuCheckboxItemProps,
+  ContextMenuRadioItemProps,
   ContextMenuLabelProps,
-  ContextMenuGroupProps
+  ContextMenuSeparatorProps,
+  ContextMenuShortcutProps,
+  ContextMenuGroupProps,
+  ContextMenuSubProps,
+  ContextMenuSubTriggerProps,
+  ContextMenuSubContentProps,
+  ContextMenuRadioGroupProps
 } from './components/overlay/context-menu'
 export type { 
   DropdownMenuProps,
@@ -304,31 +364,96 @@ export type { LayoutProps } from './components/layout/layout'
 export type { NavbarProps } from './components/layout/navbar'
 export type { SidebarProps } from './components/layout/sidebar'
 export type { ModalProps } from './components/layout/modal'
-export type { PopoverProps } from './components/layout/popover'
-export type { TooltipProps } from './components/layout/tooltip'
-export type { SheetProps } from './components/layout/sheet'
+export type { 
+  PopoverProps, 
+  PopoverTriggerProps, 
+  PopoverAnchorProps, 
+  PopoverCloseProps, 
+  PopoverContentProps 
+} from './components/layout/popover'
+export type { 
+  TooltipProps, 
+  TooltipProviderProps, 
+  TooltipTriggerProps, 
+  TooltipContentProps 
+} from './components/layout/tooltip'
+export type { 
+  SheetProps, 
+  SheetTriggerProps, 
+  SheetPortalProps, 
+  SheetOverlayProps, 
+  SheetCloseProps, 
+  SheetContentProps, 
+  SheetHeaderProps, 
+  SheetFooterProps, 
+  SheetTitleProps, 
+  SheetDescriptionProps 
+} from './components/layout/sheet'
 export type { DrawerProps } from './components/layout/drawer'
-export type { ResizableProps } from './components/layout/resizable'
-export type { ScrollAreaProps } from './components/layout/scroll-area'
+export type { ResizableProps, ResizableHandleProps, ResizablePanelProps } from './components/layout/resizable'
+export type { ScrollAreaProps, ScrollBarProps } from './components/layout/scroll-area'
 
-export type { TableProps } from './components/data/table'
+export type { TableProps, TableColumn } from './components/data/table'
 export type { DataTableProps, DataTableColumn, DataTableHeaderProps, DataTableRowProps, DataTablePaginationProps } from './components/data/data-table'
-export type { ChartProps } from './components/data/chart'
+export type { ChartProps, ChartData, BarChartProps, LineChartProps, PieChartProps } from './components/data/chart'
 
-export type { AlertProps } from './components/feedback/alert'
-export type { SonnerProps } from './components/feedback/sonner'
-export type { ToastProps } from './components/feedback/toast'
+export type { AlertProps, AlertType, AlertVariant } from './components/feedback/alert'
+export type { SonnerProps, ToastItem } from './components/feedback/sonner'
+export type { ToastProps, ToastProviderProps } from './components/feedback/toast'
 
-export type { NavigationMenuProps } from './components/navigation/navigation-menu'
-export type { MenubarProps } from './components/navigation/menubar'
-export type { CommandProps } from './components/navigation/command'
-export type { ComboboxProps } from './components/navigation/combobox'
-export type { PaginationProps } from './components/navigation/pagination'
+export type { 
+  NavigationMenuProps,
+  NavigationMenuListProps,
+  NavigationMenuItemProps,
+  NavigationMenuTriggerProps,
+  NavigationMenuContentProps,
+  NavigationMenuLinkProps,
+  NavigationMenuViewportProps,
+  NavigationMenuIndicatorProps
+} from './components/navigation/navigation-menu'
+export type { 
+  MenubarProps,
+  MenubarMenuProps,
+  MenubarTriggerProps,
+  MenubarPortalProps,
+  MenubarContentProps,
+  MenubarItemProps,
+  MenubarCheckboxItemProps,
+  MenubarRadioItemProps,
+  MenubarLabelProps,
+  MenubarSeparatorProps,
+  MenubarShortcutProps,
+  MenubarGroupProps,
+  MenubarSubProps,
+  MenubarSubTriggerProps,
+  MenubarSubContentProps,
+  MenubarRadioGroupProps
+} from './components/navigation/menubar'
+export type { 
+  CommandProps, 
+  CommandInputProps, 
+  CommandListProps, 
+  CommandEmptyProps, 
+  CommandGroupProps, 
+  CommandItemProps, 
+  CommandSeparatorProps, 
+  CommandShortcutProps, 
+  CommandDialogProps 
+} from './components/navigation/command'
+export type { ComboboxProps, ComboboxOption } from './components/navigation/combobox'
+export type { PaginationProps, PaginationItemProps } from './components/navigation/pagination'
 
-export type { AvatarProps } from './components/media/avatar'
+export type { AvatarProps, AvatarImageProps, AvatarFallbackProps, AvatarGroupProps } from './components/media/avatar'
 export type { BadgeProps } from './components/media/badge'
 export type { AspectRatioProps } from './components/media/aspect-ratio'
-export type { CarouselProps } from './components/media/carousel'
+export type { 
+  CarouselProps, 
+  CarouselContentProps, 
+  CarouselItemProps, 
+  CarouselPreviousProps, 
+  CarouselNextProps, 
+  CarouselIndicatorProps 
+} from './components/media/carousel'
 export type { 
   TypographyProps,
   TypographyH1Props, 

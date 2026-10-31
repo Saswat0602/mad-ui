@@ -190,3 +190,4 @@ npx mad-ui-components list
 
 - **Documentation & Theme Builder**: [mad-ui.vercel.app](https://mad-ui.vercel.app)
 - **GitHub Issues**: [github.com/Saswat0602/mad-ui/issues](https://github.com/Saswat0602/mad-ui/issues)
+
