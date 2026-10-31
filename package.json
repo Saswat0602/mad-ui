@@ -388,7 +388,7 @@
     "@types/react-dom": "^18.2.0",
     "autoprefixer": "^10.6.2",
     "eslint": "10.13.0",
-    "jsdom": "30.1.3",
+    "jsdom": "^26.1.0",
     "postcss": "^8.5.32",
     "publint": "0.3.25",
     "react": "^18.2.0",
