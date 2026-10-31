@@ -54,3 +54,4 @@ body:
       label: Console Logs / Stack Traces
       description: Any relevant console errors or terminal logs.
       render: shell
+
