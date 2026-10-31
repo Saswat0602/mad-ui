@@ -92,9 +92,9 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           return <AlertTriangle className="h-4 w-4 shrink-0 text-amber-600 dark:text-amber-400" />
         case "info":
         case "primary":
-          return <Info className="h-4 w-4 shrink-0 text-blue-600 dark:text-blue-400" />
+          return <Info className="h-4 w-4 shrink-0 text-foreground" />
         default:
-          return <Bell className="h-4 w-4 shrink-0 text-zinc-600 dark:text-zinc-400" />
+          return <Bell className="h-4 w-4 shrink-0 text-muted-foreground" />
       }
     }
 
@@ -106,14 +106,14 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             return "bg-emerald-600 text-white border-transparent"
           case "destructive":
           case "error":
-            return "bg-red-600 text-white border-transparent"
+            return "bg-destructive text-destructive-foreground border-transparent"
           case "warning":
             return "bg-amber-600 text-white border-transparent"
           case "info":
           case "primary":
-            return "bg-blue-600 text-white border-transparent"
+            return "bg-primary text-primary-foreground border-transparent"
           default:
-            return "bg-zinc-900 text-zinc-50 dark:bg-zinc-100 dark:text-zinc-900 border-transparent"
+            return "bg-primary text-primary-foreground border-transparent"
         }
       }
 
@@ -123,14 +123,14 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
             return "bg-transparent text-emerald-700 dark:text-emerald-400 border-emerald-500/40"
           case "destructive":
           case "error":
-            return "bg-transparent text-red-700 dark:text-red-400 border-red-500/40"
+            return "bg-transparent text-destructive border-destructive/40"
           case "warning":
             return "bg-transparent text-amber-700 dark:text-amber-400 border-amber-500/40"
           case "info":
           case "primary":
-            return "bg-transparent text-blue-700 dark:text-blue-400 border-blue-500/40"
+            return "bg-transparent text-foreground border-border"
           default:
-            return "bg-transparent text-zinc-800 dark:text-zinc-200 border-zinc-300 dark:border-zinc-700"
+            return "bg-transparent text-foreground border-border"
         }
       }
 
@@ -140,14 +140,14 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(
           return "bg-emerald-500/10 text-emerald-900 dark:text-emerald-200 border-emerald-500/20 dark:border-emerald-500/30"
         case "destructive":
         case "error":
-          return "bg-red-500/10 text-red-900 dark:text-red-200 border-red-500/20 dark:border-red-500/30"
+          return "bg-destructive/10 text-destructive border-destructive/20 dark:border-destructive/30"
         case "warning":
           return "bg-amber-500/10 text-amber-900 dark:text-amber-200 border-amber-500/20 dark:border-amber-500/30"
         case "info":
         case "primary":
-          return "bg-blue-500/10 text-blue-900 dark:text-blue-200 border-blue-500/20 dark:border-blue-500/30"
+          return "bg-muted text-foreground border-border"
         default:
-          return "bg-zinc-50 dark:bg-zinc-900/60 text-zinc-900 dark:text-zinc-100 border-zinc-200 dark:border-zinc-800"
+          return "bg-card text-card-foreground border-border"
       }
     }
 

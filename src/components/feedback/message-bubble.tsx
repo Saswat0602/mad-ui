@@ -55,7 +55,7 @@ export const MessageBubble = React.forwardRef<HTMLDivElement, MessageBubbleProps
         </div>
       ),
       assistant: (
-        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-blue-600 text-white dark:bg-blue-500 text-xs font-semibold shrink-0">
+        <div className="flex h-7 w-7 items-center justify-center rounded-full bg-primary text-primary-foreground text-xs font-semibold shrink-0">
           <Bot className="h-4 w-4" />
         </div>
       ),
@@ -109,8 +109,8 @@ export const MessageBubble = React.forwardRef<HTMLDivElement, MessageBubbleProps
             className={cn(
               "rounded-2xl px-4 py-2.5 text-sm leading-relaxed max-w-[85%] break-words",
               isUser
-                ? "bg-blue-600 text-white dark:bg-blue-600 dark:text-white rounded-br-xs"
-                : "bg-zinc-100 text-zinc-900 dark:bg-zinc-800/80 dark:text-zinc-100 border border-zinc-200/60 dark:border-zinc-700/50 rounded-bl-xs"
+                ? "bg-primary text-primary-foreground rounded-br-xs shadow-xs"
+                : "bg-muted text-foreground border border-border/60 rounded-bl-xs"
             )}
           >
             {body}

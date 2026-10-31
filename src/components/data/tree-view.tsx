@@ -71,12 +71,12 @@ export const TreeView = React.forwardRef<HTMLDivElement, TreeViewProps>(
 
       const defaultIcon = hasChildren ? (
         expandedNode ? (
-          <FolderOpen className="h-4 w-4 text-blue-500 shrink-0" />
+          <FolderOpen className="h-4 w-4 text-foreground shrink-0" />
         ) : (
-          <Folder className="h-4 w-4 text-zinc-400 dark:text-zinc-500 shrink-0" />
+          <Folder className="h-4 w-4 text-muted-foreground shrink-0" />
         )
       ) : (
-        <FileText className="h-4 w-4 text-zinc-400 dark:text-zinc-500 shrink-0" />
+        <FileText className="h-4 w-4 text-muted-foreground shrink-0" />
       )
 
       return (
@@ -110,8 +110,8 @@ export const TreeView = React.forwardRef<HTMLDivElement, TreeViewProps>(
             className={cn(
               "flex items-center gap-1.5 py-1.5 pr-2 rounded-md text-xs font-medium cursor-pointer select-none transition-colors outline-none",
               selected
-                ? "bg-blue-50 text-blue-900 dark:bg-blue-950/60 dark:text-blue-200 font-semibold"
-                : "text-zinc-700 hover:bg-zinc-100 dark:text-zinc-300 dark:hover:bg-zinc-800/60",
+                ? "bg-accent text-accent-foreground font-semibold"
+                : "text-muted-foreground hover:bg-accent hover:text-foreground",
               node.disabled && "opacity-50 cursor-not-allowed"
             )}
           >

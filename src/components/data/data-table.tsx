@@ -264,7 +264,7 @@ export function DataTable<T extends Record<string, any>>({
                   setSearchTerm(e.target.value)
                   setCurrentPage(1)
                 }}
-                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all shadow-2xs"
+                className="w-full pl-9 pr-3 py-1.5 text-xs rounded-lg border border-input bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring focus:border-ring transition-all shadow-2xs"
               />
             </div>
           )}
@@ -445,9 +445,9 @@ export const DataTableHeader = <T extends Record<string, any>>({
                   <span>{column.header}</span>
                   {isSorted ? (
                     sortDirection === "asc" ? (
-                      <ArrowUp className="h-3 w-3 text-blue-500" />
+                      <ArrowUp className="h-3 w-3 text-foreground" />
                     ) : (
-                      <ArrowDown className="h-3 w-3 text-blue-500" />
+                      <ArrowDown className="h-3 w-3 text-foreground" />
                     )
                   ) : (
                     <ArrowUpDown className="h-3 w-3 opacity-0 group-hover:opacity-60 transition-opacity" />
@@ -478,7 +478,7 @@ export const DataTableRow = <T extends Record<string, any>>({
       data-state={isSelected ? "selected" : undefined}
       className={cn(
         "cursor-default transition-colors",
-        isSelected && "bg-blue-50/40 dark:bg-blue-950/20",
+        isSelected && "bg-muted/60",
         onClick && "cursor-pointer"
       )}
       onClick={onClick}
@@ -543,7 +543,7 @@ export const DataTablePagination: React.FC<DataTablePaginationProps> = ({
               aria-label="Rows per page"
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
-              className="px-2 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
+              className="px-2 py-0.5 rounded border border-input bg-background text-foreground text-xs focus:outline-none focus:ring-1 focus:ring-ring"
             >
               {pageSizeOptions.map((opt) => (
                 <option key={opt} value={opt}>

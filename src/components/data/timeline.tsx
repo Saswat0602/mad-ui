@@ -85,11 +85,11 @@ export const TimelineNode = React.forwardRef<HTMLDivElement, TimelineNodeProps>(
   ({ className, status = "completed", icon, isLast, ...props }, ref) => {
     const statusClasses = {
       completed:
-        "bg-blue-600 text-white border-blue-600 dark:bg-blue-500 dark:border-blue-500 ring-4 ring-blue-50 dark:ring-blue-950/40",
+        "bg-primary text-primary-foreground border-primary ring-4 ring-muted",
       current:
-        "bg-background text-blue-600 border-blue-600 ring-4 ring-blue-100 dark:ring-blue-950/80 animate-pulse",
+        "bg-background text-primary border-primary ring-4 ring-muted animate-pulse",
       upcoming:
-        "bg-zinc-100 text-zinc-400 border-zinc-300 dark:bg-zinc-800 dark:text-zinc-500 dark:border-zinc-700",
+        "bg-muted text-muted-foreground border-input",
       error:
         "bg-rose-600 text-white border-rose-600 ring-4 ring-rose-50 dark:ring-rose-950/40",
     }[status]

@@ -14,9 +14,9 @@ const spinnerVariants = createVariants({
   base: "inline-flex items-center justify-center animate-spin text-current",
   variants: {
     variant: {
-      default: "text-zinc-600 dark:text-zinc-400",
-      primary: "text-blue-600 dark:text-blue-400",
-      secondary: "text-zinc-900 dark:text-zinc-100",
+      default: "text-muted-foreground",
+      primary: "text-primary",
+      secondary: "text-foreground",
       muted: "text-zinc-400 dark:text-zinc-600",
       white: "text-white",
     },

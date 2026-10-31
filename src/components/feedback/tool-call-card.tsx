@@ -56,7 +56,7 @@ export const ToolCallCard = React.forwardRef<HTMLDivElement, ToolCallCardProps>(
         </span>
       ),
       running: (
-        <span className="inline-flex items-center gap-1 rounded-md bg-blue-50 px-2 py-0.5 text-[11px] font-medium text-blue-700 dark:bg-blue-950/40 dark:text-blue-300">
+        <span className="inline-flex items-center gap-1 rounded-md bg-accent px-2 py-0.5 text-[11px] font-medium text-accent-foreground">
           <Loader2 className="h-3 w-3 animate-spin" />
           Running
         </span>

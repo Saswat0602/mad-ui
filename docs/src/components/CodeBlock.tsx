@@ -51,7 +51,7 @@ export function CodeBlock({
             {isBash ? (
               <Terminal className="w-3 h-3 text-zinc-400 shrink-0" />
             ) : (
-              <FileCode className="w-3 h-3 text-blue-400 shrink-0" />
+              <FileCode className="w-3 h-3 text-zinc-400 shrink-0" />
             )}
             <span className="truncate">{displayTitle}</span>
           </div>
@@ -83,7 +83,7 @@ export function CodeBlock({
       </div>
 
       {/* Code Editor Body */}
-      <div className="overflow-x-auto text-[13px] leading-[1.65] font-mono selection:bg-blue-500/30">
+      <div className="overflow-x-auto text-[13px] leading-[1.65] font-mono selection:bg-primary/20">
         <SyntaxHighlighter
           language={language}
           style={vscDarkPlus}

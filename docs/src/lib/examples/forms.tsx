@@ -52,8 +52,8 @@ function BreadcrumbDesignsDemo() {
             onClick={() => setSelectedVariant(variant)}
             className={`px-3 py-1 text-sm rounded-md transition-colors ${
               selectedVariant === variant 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                ? 'bg-primary text-primary-foreground' 
+                : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
             {variant}
@@ -62,7 +62,7 @@ function BreadcrumbDesignsDemo() {
       </div>
 
       {/* Breadcrumb Display */}
-      <div className="p-4 bg-gray-50 rounded-lg">
+      <div className="p-4 bg-muted/30 border border-border rounded-lg">
         <Breadcrumbs 
           items={items} 
           variant={selectedVariant as 'default' | 'minimal' | 'outlined' | 'modern' | 'card' | 'pill' | 'gradient' | 'steps'}
@@ -80,19 +80,19 @@ function DateTimePickerDemo() {
   const [bothValue, setBothValue] = useState<Date | null>(new Date())
 
   return (
-    <div className="min-h-[600px] bg-gradient-to-br from-blue-50 to-indigo-100 p-6 rounded-xl">
+    <div className="min-h-[500px] bg-card p-6 rounded-xl border border-border">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-10">
-          <h1 className="text-3xl font-bold text-gray-900 mb-3">Modern DateTime Picker</h1>
-          <p className="text-base text-gray-600 max-w-2xl mx-auto">
+          <h1 className="text-3xl font-bold text-foreground mb-3">Modern DateTime Picker</h1>
+          <p className="text-base text-muted-foreground max-w-2xl mx-auto">
             A highly reusable, modern DateTime picker component with excellent UI/UX, multiple modes, and full user control.
           </p>
         </div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <CalendarIcon className="mr-2 text-blue-600" size={20} />
+          <div className="bg-card p-6 rounded-xl border border-border shadow-xs">
+            <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center">
+              <CalendarIcon className="mr-2 text-primary" size={20} />
               Date Only
             </h3>
             <div className="max-w-sm">
@@ -111,9 +111,9 @@ function DateTimePickerDemo() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <Clock className="mr-2 text-green-600" size={20} />
+          <div className="bg-card p-6 rounded-xl border border-border shadow-xs">
+            <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center">
+              <Clock className="mr-2 text-primary" size={20} />
               Time Only (12hr)
             </h3>
             <div className="max-w-sm">
@@ -135,11 +135,11 @@ function DateTimePickerDemo() {
             </div>
           </div>
 
-          <div className="bg-white p-6 rounded-xl shadow-lg md:col-span-2 lg:col-span-1">
-            <h3 className="text-lg font-semibold text-gray-800 mb-4 flex items-center">
-              <CalendarIcon className="mr-1 text-purple-600" size={20} />
-              <Clock className="mr-2 text-purple-600" size={20} />
-              Date & Time
+          <div className="bg-card p-6 rounded-xl border border-border shadow-xs md:col-span-2 lg:col-span-1">
+            <h3 className="text-lg font-semibold text-foreground mb-4 flex items-center">
+              <CalendarIcon className="mr-1 text-primary" size={20} />
+              <Clock className="mr-2 text-primary" size={20} />
+              Date &amp; Time
             </h3>
             <div className="max-w-sm">
               <DateTimePicker
@@ -449,8 +449,8 @@ export function BreadcrumbDesignsDemo() {
             onClick={() => setSelectedVariant(variant)}
             className={\`px-3 py-1 text-sm rounded-md transition-colors \${
               selectedVariant === variant 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                ? 'bg-primary text-primary-foreground' 
+                : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }\`}
           >
             {variant}
@@ -496,8 +496,8 @@ export function DateTimePickerDemo() {
             onClick={() => setSelectedMode(mode)}
             className={\`px-4 py-2 text-sm rounded-md transition-colors \${
               selectedMode === mode 
-                ? 'bg-blue-600 text-white' 
-                : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                ? 'bg-primary text-primary-foreground' 
+                : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }\`}
           >
             {mode.charAt(0).toUpperCase() + mode.slice(1)}
@@ -517,8 +517,8 @@ export function DateTimePickerDemo() {
 
       {/* Selected Value Display */}
       {selectedDate && (
-        <div className="p-3 bg-blue-50 rounded-md">
-          <p className="text-sm text-blue-800">
+        <div className="p-3 bg-muted rounded-md border border-border">
+          <p className="text-sm text-foreground">
             <strong>Selected:</strong> {selectedDate.toLocaleString()}
           </p>
         </div>
@@ -1145,7 +1145,7 @@ function PromptInputDemo() {
         maxRows={6}
       />
       {statusText && (
-        <p className="text-xs text-blue-600 dark:text-blue-400 font-medium animate-pulse">
+        <p className="text-xs text-primary font-medium animate-pulse">
           {statusText}
         </p>
       )}

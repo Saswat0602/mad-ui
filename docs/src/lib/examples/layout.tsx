@@ -51,7 +51,7 @@ function InteractiveDrawerDemo() {
             key={pos}
             onClick={() => setPosition(pos)}
             className={`px-3 py-1 text-sm rounded-md transition-colors ${
-              position === pos ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              position === pos ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
             {pos}
@@ -121,7 +121,7 @@ function InteractiveDrawerDemo() {
       {/* Open Button */}
       <button 
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+        className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
       >
         Open {position} Drawer ({useCustomDimensions ? 'custom' : size})
       </button>
@@ -134,9 +134,9 @@ function InteractiveDrawerDemo() {
         size={useCustomDimensions ? undefined : size}
         width={useCustomDimensions && (position === 'left' || position === 'right') ? customWidth : undefined}
         height={useCustomDimensions && (position === 'top' || position === 'bottom') ? customHeight : undefined}
-        className="bg-gradient-to-br from-blue-50 to-white"
+        className="bg-card border-border"
       >
-        <h3 className="text-xl font-bold mb-4 text-blue-800">Custom Drawer</h3>
+        <h3 className="text-xl font-bold mb-4 text-foreground">Custom Drawer</h3>
         <p className="text-gray-700 mb-4">
           This drawer is positioned from the <strong>{position}</strong> with{' '}
           {useCustomDimensions ? (
@@ -198,7 +198,7 @@ export function InteractiveDrawerDemo() {
             key={pos}
             onClick={() => setPosition(pos)}
             className={\`px-3 py-1 text-sm rounded-md transition-colors \${
-              position === pos ? 'bg-blue-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              position === pos ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }\`}
           >
             {pos}
@@ -213,7 +213,7 @@ export function InteractiveDrawerDemo() {
             key={s}
             onClick={() => setSize(s)}
             className={\`px-3 py-1 text-sm rounded-md transition-colors \${
-              size === s ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+              size === s ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }\`}
           >
             {s}
@@ -268,7 +268,7 @@ export function InteractiveDrawerDemo() {
       {/* Open Button */}
       <button 
         onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
+        className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
       >
         Open {position} Drawer ({useCustomDimensions ? 'custom' : size})
       </button>
@@ -281,9 +281,9 @@ export function InteractiveDrawerDemo() {
         size={useCustomDimensions ? undefined : size}
         width={useCustomDimensions && (position === 'left' || position === 'right') ? customWidth : undefined}
         height={useCustomDimensions && (position === 'top' || position === 'bottom') ? customHeight : undefined}
-        className="bg-gradient-to-br from-blue-50 to-white"
+        className="bg-card border-border"
       >
-        <h3 className="text-xl font-bold mb-4 text-blue-800">Custom Drawer</h3>
+        <h3 className="text-xl font-bold mb-4 text-foreground">Custom Drawer</h3>
         <p className="text-gray-700 mb-4">
           This drawer supports custom dimensions! You can specify:
         </p>
@@ -581,7 +581,7 @@ export function DarkNavbarExample() {
   return (
     <Navbar
       brand="Dashboard"
-      brandLogo={<Zap className="w-full h-full text-blue-400" />}
+      brandLogo={<Zap className="w-full h-full text-primary" />}
       navItems={navItems}
       theme="dark"
       primaryColor="blue"
@@ -600,7 +600,7 @@ export function DarkNavbarExample() {
         <div className="w-full max-w-4xl bg-slate-900 p-4 rounded-lg">
           <Navbar
             brand="Dashboard"
-            brandLogo={<Zap className="w-full h-full text-blue-400" />}
+            brandLogo={<Zap className="w-full h-full text-primary" />}
             navItems={[
               {
                 id: 'dashboard',
@@ -1127,7 +1127,7 @@ export function LightSidebarExample() {
         userName="Admin User"
         userRole="Administrator"
         showSearch={true}
-        logo={<Zap className="w-full h-full text-blue-600" />}
+        logo={<Zap className="w-full h-full text-primary" />}
         customClasses="border-r"
       />
     </div>
@@ -1174,7 +1174,7 @@ export function LightSidebarExample() {
               userName="Admin User"
               userRole="Administrator"
               showSearch={true}
-              logo={<Zap className="w-full h-full text-blue-600" />}
+              logo={<Zap className="w-full h-full text-primary" />}
               customClasses="border-r"
             />
           </div>

@@ -84,7 +84,7 @@ export function UsageGuide({
       {examples.length > 0 && (
         <section className="space-y-3">
           <h3 className="text-base sm:text-lg font-semibold tracking-tight text-foreground flex items-center gap-2">
-            <Info className="h-4 w-4 text-blue-500 shrink-0" />
+            <Info className="h-4 w-4 text-primary shrink-0" />
             <span>Usage Examples</span>
           </h3>
           <div className="space-y-4">

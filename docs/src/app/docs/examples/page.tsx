@@ -123,7 +123,7 @@ export default function ExamplesPage() {
             </Card>
             <Card className="p-4 border-border/80">
               <span className="text-xs font-medium text-muted-foreground">Active Workloads</span>
-              <p className="text-2xl font-bold text-blue-500 mt-1">342</p>
+              <p className="text-2xl font-bold text-foreground mt-1">342</p>
               <span className="text-[11px] text-muted-foreground">Kubernetes deployments</span>
             </Card>
           </div>

@@ -114,16 +114,16 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
       minimal: 'text-amber-700 dark:text-amber-400'
     },
     info: {
-      default: 'border-blue-200 dark:border-blue-900/60 bg-blue-50/60 dark:bg-blue-950/20 text-blue-950 dark:text-blue-100',
-      filled: 'bg-blue-600 text-white',
-      outlined: 'border-blue-500 text-blue-700 dark:text-blue-300',
-      minimal: 'text-blue-700 dark:text-blue-400'
+      default: 'border-border bg-background text-foreground',
+      filled: 'bg-primary text-primary-foreground',
+      outlined: 'border-border text-foreground',
+      minimal: 'text-foreground'
     },
     default: {
-      default: 'border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100',
-      filled: 'bg-zinc-800 text-white',
-      outlined: 'border-zinc-400 text-zinc-800 dark:text-zinc-200',
-      minimal: 'text-zinc-700 dark:text-zinc-300'
+      default: 'border-border bg-background text-foreground',
+      filled: 'bg-primary text-primary-foreground',
+      outlined: 'border-border text-foreground',
+      minimal: 'text-foreground'
     }
   }
 
@@ -154,7 +154,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
       case 'warning':
         return <AlertTriangle className={cn(iconClasses, 'text-amber-600 dark:text-amber-400')} />
       case 'info':
-        return <Info className={cn(iconClasses, 'text-blue-600 dark:text-blue-400')} />
+        return <Info className={cn(iconClasses, 'text-foreground')} />
       default:
         return null
     }
@@ -205,7 +205,7 @@ const Toast = forwardRef<HTMLDivElement, ToastProps>(({
           <button
             onClick={handleClose}
             aria-label="Close notification"
-            className="shrink-0 p-1 rounded-md text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:bg-black/5 dark:hover:bg-white/10 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="shrink-0 p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors focus:outline-none focus:ring-2 focus:ring-ring"
           >
             <X className="w-3.5 h-3.5" />
           </button>

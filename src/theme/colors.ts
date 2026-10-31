@@ -80,7 +80,7 @@ export const lightColors: ColorScheme = {
   'info': '#18181b',
 };
 
-// Default dark theme colors
+// Default dark theme colors (shadcn zinc monochrome)
 export const darkColors: ColorScheme = {
   // Backgrounds
   'bg-primary': '#09090b',
@@ -118,8 +118,31 @@ export const darkColors: ColorScheme = {
   'success': '#34d399',
   'warning': '#fbbf24',
   'error': '#f87171',
-  'info': '#22d3ee',
+  'info': '#fafafa',
 };
+
+// Normal light theme colors (vibrant blue)
+export const normalLightColors: ColorScheme = {
+  ...lightColors,
+  'accent-primary': '#2563eb',
+  'accent-secondary': '#1d4ed8',
+  'border-focus': '#2563eb',
+  'accent-info': '#2563eb',
+  'info': '#2563eb',
+};
+
+// Normal dark theme colors (vibrant blue)
+export const normalDarkColors: ColorScheme = {
+  ...darkColors,
+  'accent-primary': '#3b82f6',
+  'accent-secondary': '#60a5fa',
+  'border-focus': '#3b82f6',
+  'accent-info': '#3b82f6',
+  'info': '#3b82f6',
+};
+
+export const monochromeLightColors = lightColors;
+export const monochromeDarkColors = darkColors;
 
 // Component-specific color definitions
 export const componentColors = {

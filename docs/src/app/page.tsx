@@ -233,7 +233,7 @@ export default function HomePage() {
             <CardHeader className="pb-4">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
-                  <Avatar fallback="JD" className="h-9 w-9 bg-blue-600 text-white font-medium text-xs" />
+                  <Avatar fallback="JD" className="h-9 w-9 bg-primary text-primary-foreground font-medium text-xs" />
                   <div>
                     <CardTitle className="text-sm font-semibold">Jane Doe</CardTitle>
                     <CardDescription className="text-xs">jane@enterprise.io</CardDescription>
@@ -366,7 +366,7 @@ export default function HomePage() {
                 </div>
                 <div className="p-2.5 rounded-md border border-border/40 bg-muted/10 space-y-1">
                   <div className="flex items-center gap-1.5 text-muted-foreground text-[11px]">
-                    <Cpu className="h-3 w-3 text-blue-500" />
+                    <Cpu className="h-3 w-3 text-primary" />
                     <span>Bundle Size</span>
                   </div>
                   <div className="font-bold text-foreground font-mono">&lt; 25 kB</div>
@@ -432,7 +432,7 @@ export default function HomePage() {
               </div>
               <span className="text-zinc-600 pl-2">|</span>
               <span className="font-mono text-[11px] text-zinc-300 flex items-center gap-1.5 pl-1 truncate max-w-[150px] sm:max-w-none">
-                <FileCode className="h-3.5 w-3.5 text-blue-400 shrink-0" />
+                <FileCode className="h-3.5 w-3.5 text-zinc-400 shrink-0" />
                 <span className="truncate">{activeFw === 'nextjs' ? 'app/page.tsx' : activeFw === 'vite' ? 'src/App.tsx' : 'src/index.tsx'}</span>
               </span>
             </div>

@@ -85,8 +85,8 @@ export default function RootLayout({
                   {/* Brand Section */}
                   <div className="md:col-span-1 space-y-4">
                     <div className="flex items-center space-x-2.5">
-                      <div className="w-8 h-8 rounded-lg bg-zinc-900 border border-zinc-700/60 flex items-center justify-center">
-                        <span className="font-bold text-sm bg-gradient-to-br from-blue-400 to-indigo-400 bg-clip-text text-transparent">M</span>
+                      <div className="w-8 h-8 rounded-lg bg-primary text-primary-foreground flex items-center justify-center font-bold text-sm shadow-xs">
+                        M
                       </div>
                       <span className="font-semibold text-lg tracking-tight text-foreground">
                         Mad UI

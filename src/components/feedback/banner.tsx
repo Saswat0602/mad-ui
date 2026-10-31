@@ -61,7 +61,7 @@ export const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
       default:
         "bg-zinc-100 text-zinc-900 border-zinc-200 dark:bg-zinc-900 dark:text-zinc-100 dark:border-zinc-800",
       info:
-        "bg-blue-50 text-blue-900 border-blue-200 dark:bg-blue-950/40 dark:text-blue-100 dark:border-blue-900/50",
+        "bg-muted text-foreground border-border",
       success:
         "bg-emerald-50 text-emerald-900 border-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-100 dark:border-emerald-900/50",
       warning:
@@ -72,7 +72,7 @@ export const Banner = React.forwardRef<HTMLDivElement, BannerProps>(
 
     const defaultIcons = {
       default: null,
-      info: <Info className="h-4 w-4 text-blue-600 dark:text-blue-400 shrink-0" />,
+      info: <Info className="h-4 w-4 text-foreground shrink-0" />,
       success: <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400 shrink-0" />,
       warning: <AlertTriangle className="h-4 w-4 text-amber-600 dark:text-amber-400 shrink-0" />,
       destructive: <AlertCircle className="h-4 w-4 text-rose-600 dark:text-rose-400 shrink-0" />,

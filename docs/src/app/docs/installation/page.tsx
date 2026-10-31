@@ -359,35 +359,35 @@ export default function InstallationPage() {
         </div>
 
         <div className="grid gap-4 sm:grid-cols-3">
-          <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 space-y-2">
+          <div className="p-4 rounded-xl border border-border bg-card space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Level 1: Full</span>
-              <Package className="h-4 w-4 text-zinc-400" />
+              <span className="text-xs font-semibold text-foreground uppercase tracking-wider">Level 1: Full</span>
+              <Package className="h-4 w-4 text-muted-foreground" />
             </div>
             <p className="text-xs text-muted-foreground">Convenient single package import</p>
-            <div className="text-[11px] font-mono text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-950 p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
+            <div className="text-[11px] font-mono text-foreground bg-muted/60 p-2.5 rounded-lg border border-border">
               import &#123; Button &#125; from &apos;mad-ui-components&apos;
             </div>
           </div>
 
-          <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 space-y-2">
+          <div className="p-4 rounded-xl border border-border bg-card space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Level 2: Category</span>
-              <Layers className="h-4 w-4 text-zinc-400" />
+              <span className="text-xs font-semibold text-foreground uppercase tracking-wider">Level 2: Category</span>
+              <Layers className="h-4 w-4 text-muted-foreground" />
             </div>
             <p className="text-xs text-muted-foreground">Grouped subpath module</p>
-            <div className="text-[11px] font-mono text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-950 p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
+            <div className="text-[11px] font-mono text-foreground bg-muted/60 p-2.5 rounded-lg border border-border">
               import &#123; Button &#125; from &apos;mad-ui-components/core&apos;
             </div>
           </div>
 
-          <div className="p-4 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50/50 dark:bg-zinc-900/30 space-y-2">
+          <div className="p-4 rounded-xl border border-border bg-card space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold text-blue-600 dark:text-blue-400 uppercase tracking-wider">Level 3: Component</span>
-              <Cpu className="h-4 w-4 text-zinc-400" />
+              <span className="text-xs font-semibold text-foreground uppercase tracking-wider">Level 3: Component</span>
+              <Cpu className="h-4 w-4 text-muted-foreground" />
             </div>
             <p className="text-xs text-muted-foreground">Maximum tree-shaking efficiency</p>
-            <div className="text-[11px] font-mono text-zinc-800 dark:text-zinc-200 bg-white dark:bg-zinc-950 p-2.5 rounded-lg border border-zinc-200 dark:border-zinc-800">
+            <div className="text-[11px] font-mono text-foreground bg-muted/60 p-2.5 rounded-lg border border-border">
               import &#123; Button &#125; from &apos;mad-ui-components/button&apos;
             </div>
           </div>

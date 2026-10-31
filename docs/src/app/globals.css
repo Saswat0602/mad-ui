@@ -76,6 +76,46 @@ html {
   --ring: #d4d4d8;
 }
 
+/* Style Preset: Normal (Vibrant Blue) */
+:root[data-style="normal"],
+[data-style="normal"] {
+  --primary: #2563eb;
+  --primary-foreground: #ffffff;
+  --ring: #2563eb;
+  --accent: #eff6ff;
+  --accent-foreground: #1d4ed8;
+}
+
+.dark[data-style="normal"],
+[data-style="normal"].dark,
+[data-style="normal"] .dark {
+  --primary: #3b82f6;
+  --primary-foreground: #ffffff;
+  --ring: #3b82f6;
+  --accent: #1e293b;
+  --accent-foreground: #93c5fd;
+}
+
+/* Style Preset: Monochrome / Dark-White (Shadcn Zinc) */
+:root[data-style="monochrome"],
+[data-style="monochrome"] {
+  --primary: #18181b;
+  --primary-foreground: #fafafa;
+  --ring: #18181b;
+  --accent: #f4f4f5;
+  --accent-foreground: #18181b;
+}
+
+.dark[data-style="monochrome"],
+[data-style="monochrome"].dark,
+[data-style="monochrome"] .dark {
+  --primary: #fafafa;
+  --primary-foreground: #18181b;
+  --ring: #d4d4d8;
+  --accent: #18181b;
+  --accent-foreground: #fafafa;
+}
+
 @layer base {
   * {
     border-color: var(--border);

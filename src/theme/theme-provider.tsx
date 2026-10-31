@@ -3,19 +3,24 @@
 import * as React from 'react'
 
 export type Theme = 'light' | 'dark' | 'system'
+export type ThemeStyle = 'monochrome' | 'normal'
 
 export interface ThemeProviderProps {
   children: React.ReactNode
   defaultTheme?: Theme
+  defaultStyle?: ThemeStyle
   storageKey?: string
+  styleStorageKey?: string
   attribute?: string
   enableSystem?: boolean
 }
 
-interface ThemeContextValue {
+export interface ThemeContextValue {
   theme: Theme
   setTheme: (theme: Theme) => void
   resolvedTheme: 'light' | 'dark'
+  style: ThemeStyle
+  setStyle: (style: ThemeStyle) => void
 }
 
 const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefined)
@@ -23,7 +28,9 @@ const ThemeContext = React.createContext<ThemeContextValue | undefined>(undefine
 export function ThemeProvider({
   children,
   defaultTheme = 'system',
+  defaultStyle = 'monochrome',
   storageKey = 'mad-ui-theme',
+  styleStorageKey = 'mad-ui-style',
   attribute = 'class',
   enableSystem = true,
 }: ThemeProviderProps) {
@@ -34,6 +41,16 @@ export function ThemeProvider({
       return stored || defaultTheme
     } catch {
       return defaultTheme
+    }
+  })
+
+  const [style, setStyleState] = React.useState<ThemeStyle>(() => {
+    if (typeof window === 'undefined') return defaultStyle
+    try {
+      const stored = localStorage.getItem(styleStorageKey) as ThemeStyle | null
+      return stored || defaultStyle
+    } catch {
+      return defaultStyle
     }
   })
 
@@ -68,6 +85,11 @@ export function ThemeProvider({
     }
   }, [theme, attribute, enableSystem])
 
+  React.useEffect(() => {
+    const root = window.document.documentElement
+    root.setAttribute('data-style', style)
+  }, [style])
+
   const setTheme = React.useCallback(
     (newTheme: Theme) => {
       try {
@@ -80,8 +102,20 @@ export function ThemeProvider({
     [storageKey]
   )
 
+  const setStyle = React.useCallback(
+    (newStyle: ThemeStyle) => {
+      try {
+        localStorage.setItem(styleStorageKey, newStyle)
+      } catch {
+        // ignore localstorage write failures
+      }
+      setStyleState(newStyle)
+    },
+    [styleStorageKey]
+  )
+
   return (
-    <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme }}>
+    <ThemeContext.Provider value={{ theme, setTheme, resolvedTheme, style, setStyle }}>
       {children}
     </ThemeContext.Provider>
   )

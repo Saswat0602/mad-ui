@@ -70,7 +70,7 @@ export function ComponentPreview({
         <div className="flex items-center gap-2">
           {showCode ? (
             <div className="hidden sm:flex items-center gap-1.5 px-2 py-0.5 rounded-md bg-muted/60 border border-border/40 text-[11px] font-mono text-muted-foreground">
-              <FileCode className="w-3 h-3 text-blue-400" />
+              <FileCode className="w-3 h-3 text-muted-foreground" />
               <span>example.tsx</span>
             </div>
           ) : (
@@ -107,7 +107,7 @@ export function ComponentPreview({
           </div>
         </div>
       ) : (
-        <div className="overflow-x-auto text-[13px] leading-[1.65] font-mono selection:bg-blue-500/30">
+        <div className="overflow-x-auto text-[13px] leading-[1.65] font-mono selection:bg-primary/20">
           <SyntaxHighlighter
             language="tsx"
             style={vscDarkPlus}

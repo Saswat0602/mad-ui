@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { MainNav } from "./main-nav"
 import { ThemeToggle } from "./ThemeToggle"
+import { StyleSwitcher } from "./StyleSwitcher"
 import { Menu, X, Search, ExternalLink, Github } from "lucide-react"
 import { useState, useEffect } from "react"
 import { ComponentSearch } from "./ComponentSearch"
@@ -56,8 +57,8 @@ export function Header() {
             </button>
 
             <Link href="/" className="flex items-center space-x-2.5 group">
-              <div className="w-7 h-7 rounded-md bg-zinc-900 border border-zinc-700/60 dark:border-zinc-800 flex items-center justify-center transition-transform group-hover:scale-105">
-                <span className="font-bold text-xs bg-gradient-to-br from-blue-400 to-indigo-400 bg-clip-text text-transparent">M</span>
+              <div className="w-7 h-7 rounded-md bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs shadow-sm transition-transform group-hover:scale-105">
+                M
               </div>
               <span className="font-bold text-base tracking-tight text-foreground">
                 Mad UI
@@ -108,6 +109,8 @@ export function Header() {
             </a>
             
             <div className="hidden sm:block w-px h-4 bg-border/60 mx-0.5" />
+            <StyleSwitcher />
+            <div className="hidden sm:block w-px h-4 bg-border/60 mx-0.5" />
             <ThemeToggle />
           </div>
         </div>
@@ -130,8 +133,8 @@ export function Header() {
                   onClick={() => setIsMobileMenuOpen(false)}
                   className="flex items-center space-x-2.5"
                 >
-                  <div className="w-7 h-7 rounded-md bg-zinc-900 border border-zinc-700/60 dark:border-zinc-800 flex items-center justify-center">
-                    <span className="font-bold text-xs bg-gradient-to-br from-blue-400 to-indigo-400 bg-clip-text text-transparent">M</span>
+                  <div className="w-7 h-7 rounded-md bg-primary text-primary-foreground flex items-center justify-center font-bold text-xs shadow-sm">
+                    M
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="font-bold text-sm tracking-tight text-foreground">Mad UI</span>
@@ -145,6 +148,15 @@ export function Header() {
                 >
                   <X className="h-4 w-4" />
                 </button>
+              </div>
+
+              {/* Style & Theme Selectors for Mobile */}
+              <div className="p-3 border-b border-border/40 bg-muted/10 space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider">Style &amp; Theme</span>
+                  <ThemeToggle />
+                </div>
+                <StyleSwitcher variant="full" />
               </div>
 
               {/* Scrollable Navigation Tree */}

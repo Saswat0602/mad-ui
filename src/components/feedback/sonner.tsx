@@ -94,19 +94,19 @@ export const ToastItem: React.FC<ToastProps> = ({
   }
 
   const typeClasses = {
-    default: 'bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100',
-    success: 'bg-white dark:bg-zinc-900 border-emerald-500/30 text-zinc-900 dark:text-zinc-100',
-    error: 'bg-white dark:bg-zinc-900 border-red-500/30 text-zinc-900 dark:text-zinc-100',
-    warning: 'bg-white dark:bg-zinc-900 border-amber-500/30 text-zinc-900 dark:text-zinc-100',
-    info: 'bg-white dark:bg-zinc-900 border-blue-500/30 text-zinc-900 dark:text-zinc-100'
+    default: 'bg-popover border-border text-popover-foreground',
+    success: 'bg-popover border-emerald-500/30 text-popover-foreground',
+    error: 'bg-popover border-destructive/30 text-popover-foreground',
+    warning: 'bg-popover border-amber-500/30 text-popover-foreground',
+    info: 'bg-popover border-border text-popover-foreground'
   }
 
   const typeIcons = {
     default: null,
     success: <CheckCircle2 className="h-4 w-4 text-emerald-500 shrink-0" />,
-    error: <AlertCircle className="h-4 w-4 text-red-500 shrink-0" />,
+    error: <AlertCircle className="h-4 w-4 text-destructive shrink-0" />,
     warning: <AlertTriangle className="h-4 w-4 text-amber-500 shrink-0" />,
-    info: <Info className="h-4 w-4 text-blue-500 shrink-0" />
+    info: <Info className="h-4 w-4 text-foreground shrink-0" />
   }
 
   return (
