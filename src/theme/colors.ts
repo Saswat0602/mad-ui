@@ -43,29 +43,29 @@ export interface ColorScheme {
 export const lightColors: ColorScheme = {
   // Backgrounds
   'bg-primary': '#ffffff',
-  'bg-secondary': '#f8fafc',
-  'bg-tertiary': '#f1f5f9',
+  'bg-secondary': '#f4f4f5',
+  'bg-tertiary': '#ececee',
   'bg-card': '#ffffff',
   'bg-overlay': 'rgba(0, 0, 0, 0.5)',
   
   // Text
-  'text-primary': '#0f172a',
-  'text-secondary': '#475569',
-  'text-muted': '#64748b',
+  'text-primary': '#09090b',
+  'text-secondary': '#52525b',
+  'text-muted': '#71717a',
   'text-inverse': '#ffffff',
   
   // Borders
-  'border-primary': '#e2e8f0',
-  'border-secondary': '#cbd5e1',
-  'border-focus': '#3b82f6',
+  'border-primary': '#e4e4e7',
+  'border-secondary': '#d4d4d8',
+  'border-focus': '#18181b',
   
   // Accents
-  'accent-primary': '#3b82f6',
-  'accent-secondary': '#2563eb',
+  'accent-primary': '#18181b',
+  'accent-secondary': '#27272a',
   'accent-success': '#10b981',
   'accent-warning': '#f59e0b',
   'accent-error': '#ef4444',
-  'accent-info': '#06b6d4',
+  'accent-info': '#18181b',
   
   // Shadows
   'shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.05)',
@@ -77,36 +77,36 @@ export const lightColors: ColorScheme = {
   'success': '#10b981',
   'warning': '#f59e0b',
   'error': '#ef4444',
-  'info': '#06b6d4',
+  'info': '#18181b',
 };
 
 // Default dark theme colors
 export const darkColors: ColorScheme = {
   // Backgrounds
-  'bg-primary': '#0f172a',
-  'bg-secondary': '#1e293b',
-  'bg-tertiary': '#334155',
-  'bg-card': '#1e293b',
+  'bg-primary': '#09090b',
+  'bg-secondary': '#18181b',
+  'bg-tertiary': '#27272a',
+  'bg-card': '#09090b',
   'bg-overlay': 'rgba(0, 0, 0, 0.7)',
   
   // Text
-  'text-primary': '#f8fafc',
-  'text-secondary': '#cbd5e1',
-  'text-muted': '#94a3b8',
-  'text-inverse': '#0f172a',
+  'text-primary': '#fafafa',
+  'text-secondary': '#a1a1aa',
+  'text-muted': '#71717a',
+  'text-inverse': '#09090b',
   
   // Borders
-  'border-primary': '#334155',
-  'border-secondary': '#475569',
-  'border-focus': '#60a5fa',
+  'border-primary': '#27272a',
+  'border-secondary': '#3f3f46',
+  'border-focus': '#d4d4d8',
   
   // Accents
-  'accent-primary': '#60a5fa',
-  'accent-secondary': '#3b82f6',
+  'accent-primary': '#fafafa',
+  'accent-secondary': '#e4e4e7',
   'accent-success': '#34d399',
   'accent-warning': '#fbbf24',
   'accent-error': '#f87171',
-  'accent-info': '#22d3ee',
+  'accent-info': '#fafafa',
   
   // Shadows
   'shadow-sm': '0 1px 2px 0 rgba(0, 0, 0, 0.3)',
