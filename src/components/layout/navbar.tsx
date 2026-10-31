@@ -288,7 +288,7 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
     const profileItems = profileMenuItems.length > 0 ? profileMenuItems : defaultProfileItems;
 
     return (
-      <nav ref={ref} className={navbarClasses} {...props}>
+      <nav ref={ref} aria-label={props['aria-label'] || "Main navigation"} className={navbarClasses} {...props}>
         <div className={cn(container, padding, "h-full")}>
           <div className={cn("flex items-center", alignment, "h-full")}>
             

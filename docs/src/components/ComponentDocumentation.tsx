@@ -307,51 +307,10 @@ export function ComponentDocumentation({ slug, component }: ComponentDocumentati
   )
 }
 
-function getIndividualImportCommand(slug: string): string | null {
-  const componentMap: Record<string, string> = {
-    button: 'button',
-    input: 'input',
-    label: 'label',
-    card: 'card',
-    checkbox: 'checkbox',
-    radio: 'radio',
-    select: 'select',
-    switch: 'switch',
-    progress: 'progress',
-    slider: 'slider',
-    rating: 'rating',
-    textarea: 'textarea',
-    accordion: 'accordion',
-    breadcrumbs: 'breadcrumbs',
-    calendar: 'calendar',
-    datepicker: 'date-picker',
-    timepicker: 'timepicker',
-    inputotp: 'input-otp',
-    radiogroup: 'radio-group',
-    tabs: 'tabs',
-    modal: 'modal',
-    tooltip: 'tooltip',
-    drawer: 'drawer',
-    popover: 'popover',
-    navbar: 'navbar',
-    sidebar: 'sidebar',
-    table: 'table',
-    alert: 'alert',
-    toast: 'toast',
-    sonner: 'sonner',
-    avatar: 'avatar',
-    badge: 'badge',
-    carousel: 'carousel',
-    skeleton: 'skeleton'
-  }
-  
-  const exportName = componentMap[slug]
-  if (!exportName) return null
-  
+function getIndividualImportCommand(slug: string): string {
   const component = getComponentBySlug(slug)
-  const componentName = component?.title || slug
-  
-  return `import { ${componentName} } from 'mad-ui-components/${exportName}'`
+  const componentName = (component as any)?.exportName || component?.title.replace(/\s+/g, '') || slug
+  return `import { ${componentName} } from 'mad-ui-components/${slug}'`
 }
 
 function getBestPractices(slug: string): string[] {

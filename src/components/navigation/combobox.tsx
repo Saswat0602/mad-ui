@@ -69,6 +69,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
         <button
           type="button"
           role="combobox"
+          aria-label={selectedOption ? selectedOption.label : placeholder}
           aria-expanded={open}
           disabled={disabled}
           className={cn(

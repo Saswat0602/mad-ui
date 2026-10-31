@@ -215,6 +215,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
               <div
                 key={idx}
                 role="slider"
+                aria-label={props['aria-label'] || (values.length > 1 ? (idx === 0 ? 'Minimum' : 'Maximum') : 'Value')}
                 tabIndex={disabled ? -1 : 0}
                 aria-valuenow={val}
                 aria-valuemin={min}

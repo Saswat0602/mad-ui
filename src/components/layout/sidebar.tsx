@@ -472,7 +472,7 @@ const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
         </div>
 
         {/* Navigation Items */}
-        <nav className="flex-1 overflow-y-auto custom-scrollbar">
+        <nav aria-label="Sidebar navigation" className="flex-1 overflow-y-auto custom-scrollbar">
           {sections.length > 0 ? (
             // Render sections
             <div className="space-y-6">

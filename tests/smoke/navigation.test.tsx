@@ -1,0 +1,133 @@
+import React, { StrictMode } from 'react'
+import { render, fireEvent } from '@testing-library/react'
+import { renderToString } from 'react-dom/server'
+import { describe, it, expect } from 'vitest'
+import { axe } from 'vitest-axe'
+
+import { Combobox } from '../../src/components/navigation/combobox'
+import { 
+  Command, 
+  CommandInput, 
+  CommandList, 
+  CommandItem, 
+  CommandGroup 
+} from '../../src/components/navigation/command'
+import { 
+  Menubar, 
+  MenubarMenu, 
+  MenubarTrigger, 
+  MenubarContent, 
+  MenubarItem 
+} from '../../src/components/navigation/menubar'
+import { 
+  NavigationMenu, 
+  NavigationMenuList, 
+  NavigationMenuItem, 
+  NavigationMenuTrigger, 
+  NavigationMenuContent 
+} from '../../src/components/navigation/navigation-menu'
+import { Pagination } from '../../src/components/navigation/pagination'
+import { Stepper } from '../../src/components/navigation/stepper'
+
+describe('Navigation Domain Smoke & Accessibility Suite', () => {
+  it('renders NavigationMenu and Menubar', async () => {
+    const { container, getByText } = render(
+      <StrictMode>
+        <NavigationMenu>
+          <NavigationMenuList>
+            <NavigationMenuItem>
+              <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+              <NavigationMenuContent>
+                <div>Product catalog links</div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenuList>
+        </NavigationMenu>
+
+        <Menubar>
+          <MenubarMenu>
+            <MenubarTrigger>File</MenubarTrigger>
+            <MenubarContent>
+              <MenubarItem>New Window</MenubarItem>
+            </MenubarContent>
+          </MenubarMenu>
+        </Menubar>
+      </StrictMode>
+    )
+    expect(getByText('Products')).toBeDefined()
+    expect(getByText('File')).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+
+  it('renders Combobox and Command palette', async () => {
+    const { container, getByPlaceholderText } = render(
+      <StrictMode>
+        <Combobox
+          options={[
+            { label: 'United States', value: 'us' },
+            { label: 'Canada', value: 'ca' }
+          ]}
+          placeholder="Select country"
+        />
+
+        <Command>
+          <CommandInput placeholder="Type a command or search..." />
+          <CommandList>
+            <CommandGroup heading="Suggestions">
+              <CommandItem>Calendar</CommandItem>
+              <CommandItem>Settings</CommandItem>
+            </CommandGroup>
+          </CommandList>
+        </Command>
+      </StrictMode>
+    )
+    expect(getByPlaceholderText('Type a command or search...')).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+
+  it('renders Pagination controls', async () => {
+    const { container } = render(
+      <StrictMode>
+        <Pagination
+          currentPage={2}
+          totalPages={10}
+          onPageChange={() => {}}
+        />
+      </StrictMode>
+    )
+    expect(container.firstChild).toBeDefined()
+
+    const ssr = renderToString(
+      <Pagination currentPage={1} totalPages={5} onPageChange={() => {}} />
+    )
+    expect(ssr).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+
+  it('renders Stepper with active and completed steps', async () => {
+    const { container, getByText } = render(
+      <StrictMode>
+        <Stepper
+          steps={[
+            { title: 'Project Details', description: 'Name and repository' },
+            { title: 'Environment', description: 'Configure cloud region' },
+            { title: 'Review', description: 'Verify setup' }
+          ]}
+          activeStep={1}
+        />
+      </StrictMode>
+    )
+    expect(getByText('Project Details')).toBeDefined()
+    expect(getByText('Environment')).toBeDefined()
+    expect(getByText('Review')).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+})

@@ -1,0 +1,159 @@
+import React, { StrictMode } from 'react'
+import { render, fireEvent } from '@testing-library/react'
+import { describe, it, expect } from 'vitest'
+import { axe } from 'vitest-axe'
+
+import { Drawer } from '../../src/components/layout/drawer'
+import { Layout } from '../../src/components/layout/layout'
+import { Modal } from '../../src/components/layout/modal'
+import { Navbar } from '../../src/components/layout/navbar'
+import { Popover } from '../../src/components/layout/popover'
+import { Resizable, ResizablePanel, ResizableHandle } from '../../src/components/layout/resizable'
+import { ScrollArea } from '../../src/components/layout/scroll-area'
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from '../../src/components/layout/sheet'
+import { Sidebar } from '../../src/components/layout/sidebar'
+import { Tooltip, TooltipProvider } from '../../src/components/layout/tooltip'
+import { Button } from '../../src/components/core/button'
+
+describe('Layout Domain Smoke & Accessibility Suite', () => {
+  it('renders Layout with header, sidebar, and content', async () => {
+    const { container, getByText } = render(
+      <StrictMode>
+        <Layout
+          navbar={{ brand: 'Mad UI' }}
+          sidebar={{
+            items: [{ label: 'Overview' }]
+          }}
+        >
+          <div>Main Application Canvas</div>
+        </Layout>
+      </StrictMode>
+    )
+    expect(getByText('Mad UI')).toBeDefined()
+    expect(getByText('Overview')).toBeDefined()
+    expect(getByText('Main Application Canvas')).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+
+  it('renders Navbar with logo and navigation links', async () => {
+    const { container, getByText, getAllByText } = render(
+      <StrictMode>
+        <Navbar
+          brand="Mad UI"
+          navItems={[
+            { id: '1', label: 'Documentation' },
+            { id: '2', label: 'Components' }
+          ]}
+        />
+      </StrictMode>
+    )
+    expect(getByText('Mad UI')).toBeDefined()
+    expect(getAllByText('Documentation')[0]).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+
+  it('renders Sidebar with items', async () => {
+    const { container, getByText } = render(
+      <StrictMode>
+        <Sidebar
+          title="Platform"
+          items={[
+            { label: 'Overview' },
+            { label: 'Deployments' }
+          ]}
+        />
+      </StrictMode>
+    )
+    expect(getByText('Platform')).toBeDefined()
+    expect(getByText('Overview')).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+
+  it('renders Modal and Drawer overlays', async () => {
+    const { container, getByText } = render(
+      <StrictMode>
+        <Modal isOpen={true} onClose={() => {}} title="Cluster Details">
+          <div>Modal body content</div>
+        </Modal>
+
+        <Drawer isOpen={true} onClose={() => {}} position="right">
+          <div>Quick Drawer Content</div>
+        </Drawer>
+      </StrictMode>
+    )
+    expect(getByText('Cluster Details')).toBeDefined()
+    expect(getByText('Quick Drawer Content')).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+
+  it('renders Sheet and Resizable split panels', async () => {
+    const { container, getByText } = render(
+      <StrictMode>
+        <Sheet open={true}>
+          <SheetContent>
+            <SheetHeader>
+              <SheetTitle>Environment Variables</SheetTitle>
+            </SheetHeader>
+            <div>Sheet body</div>
+          </SheetContent>
+        </Sheet>
+
+        <Resizable>
+          <ResizablePanel>Panel Left</ResizablePanel>
+          <ResizableHandle />
+          <ResizablePanel>Panel Right</ResizablePanel>
+        </Resizable>
+      </StrictMode>
+    )
+    expect(getByText('Environment Variables')).toBeDefined()
+    expect(getByText('Panel Left')).toBeDefined()
+    expect(getByText('Panel Right')).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+
+  it('renders ScrollArea and Tooltip', async () => {
+    const { container, getByText } = render(
+      <StrictMode>
+        <ScrollArea className="h-40 w-48">
+          <div>Long scrollable content list</div>
+        </ScrollArea>
+
+        <TooltipProvider>
+          <Tooltip content="Helpful tooltip text">
+            <Button variant="outline">Hover trigger</Button>
+          </Tooltip>
+        </TooltipProvider>
+      </StrictMode>
+    )
+    expect(getByText('Long scrollable content list')).toBeDefined()
+    expect(getByText('Hover trigger')).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+
+  it('renders Popover floating element', async () => {
+    const { container, getByText } = render(
+      <StrictMode>
+        <Popover
+          trigger={<Button variant="outline">Open Popover</Button>}
+          content={<div>Floating popover card</div>}
+        />
+      </StrictMode>
+    )
+    expect(getByText('Open Popover')).toBeDefined()
+
+    const results = await axe(container)
+    expect(results.violations).toEqual([])
+  })
+})

@@ -540,6 +540,7 @@ export const DataTablePagination: React.FC<DataTablePaginationProps> = ({
           <div className="flex items-center gap-1.5 ml-3">
             <span className="text-zinc-400">Rows:</span>
             <select
+              aria-label="Rows per page"
               value={pageSize}
               onChange={(e) => onPageSizeChange(Number(e.target.value))}
               className="px-2 py-0.5 rounded border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 text-xs focus:outline-none focus:ring-1 focus:ring-blue-500"
