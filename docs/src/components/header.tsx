@@ -125,6 +125,13 @@ export function Header() {
                 Components
               </Link>
               <Link 
+                href="/docs/hooks" 
+                onClick={() => setIsMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-md text-sm font-medium hover:bg-muted text-foreground"
+              >
+                Hooks
+              </Link>
+              <Link 
                 href="/docs/installation" 
                 onClick={() => setIsMobileMenuOpen(false)}
                 className="px-3 py-2 rounded-md text-sm font-medium hover:bg-muted text-foreground"

@@ -1,6 +1,7 @@
 'use client'
 
 import React, { useState } from 'react'
+import Link from 'next/link'
 import { Drawer, Accordion, Card, Badge, Button } from 'mad-ui-components'
 import { Menu, Layers, ChevronRight, Check } from 'lucide-react'
 import { CodeBlock } from '@/components/CodeBlock'
@@ -53,6 +54,15 @@ export default function ComponentsDemo() {
           <p className="text-base text-muted-foreground max-w-2xl mx-auto">
             Experience smooth transitions, accessible keyboard interactions, and responsive layouts built with Mad UI.
           </p>
+          <div className="pt-1 flex justify-center">
+            <Link 
+              href="/docs/components" 
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-lg border border-border/60 bg-muted/40 hover:bg-muted text-foreground transition-colors"
+            >
+              <span>Explore all 75 components in the documentation</span>
+              <ChevronRight className="h-3.5 w-3.5 text-primary" />
+            </Link>
+          </div>
         </div>
 
         {/* Live Interactive Demos */}
