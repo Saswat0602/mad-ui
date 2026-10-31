@@ -23,6 +23,8 @@ export {
   SelectScrollUpButton,
   SelectScrollDownButton
 } from '../components/core/select'
+export { ButtonGroup } from '../components/core/button-group'
+export { InputGroup, InputGroupAddon } from '../components/core/input-group'
 
 // Core Types
 export type { ButtonProps } from '../components/core/button'
@@ -47,4 +49,6 @@ export type {
   SelectLabelProps,
   SelectSeparatorProps
 } from '../components/core/select'
+export type { ButtonGroupProps } from '../components/core/button-group'
+export type { InputGroupProps, InputGroupAddonProps } from '../components/core/input-group'
 

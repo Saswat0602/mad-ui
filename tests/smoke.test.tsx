@@ -66,6 +66,15 @@ import {
 } from '../src/components/forms/form'
 import { DataTable, DataTableColumn } from '../src/components/data/data-table'
 
+// Phase 1 Essential Micro-Components & Core Inputs
+import { ButtonGroup } from '../src/components/core/button-group'
+import { InputGroup, InputGroupAddon } from '../src/components/core/input-group'
+import { PasswordInput } from '../src/components/forms/password-input'
+import { NumberInput } from '../src/components/forms/number-input'
+import { Spinner } from '../src/components/feedback/spinner'
+import { EmptyState } from '../src/components/feedback/empty-state'
+import { Kbd } from '../src/components/media/kbd'
+
 
 describe('Smoke & SSR Component Suite', () => {
   describe('Client Rendering in StrictMode', () => {
@@ -625,6 +634,161 @@ describe('Smoke & SSR Component Suite', () => {
 
       expect(result.current.totalSize).toBe(50 * 40)
       expect(typeof result.current.scrollToIndex).toBe('function')
+    })
+  })
+
+  describe('Phase 1: Essential Micro-Components & Core Inputs', () => {
+    it('renders Kbd with formatted symbols and passes a11y', async () => {
+      const { container, getByText } = render(
+        <StrictMode>
+          <div aria-label="Keyboard shortcuts">
+            <Kbd keys={['cmd', 'shift', 'k']} />
+            <Kbd>Enter</Kbd>
+          </div>
+        </StrictMode>
+      )
+      expect(getByText('⌘')).toBeDefined()
+      expect(getByText('⇧')).toBeDefined()
+      expect(getByText('↵')).toBeDefined()
+
+      const ssr = renderToString(<Kbd keys={['cmd', 's']} />)
+      expect(ssr).toContain('⌘')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders Spinner with accessible label and passes a11y', async () => {
+      const { container, getByRole, getByText } = render(
+        <StrictMode>
+          <Spinner size="md" label="Loading data..." />
+        </StrictMode>
+      )
+      expect(getByRole('status')).toBeDefined()
+      expect(getByText('Loading data...')).toBeDefined()
+
+      const ssr = renderToString(<Spinner size="lg" />)
+      expect(ssr).toContain('role="status"')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders PasswordInput with visibility toggle and passes a11y', async () => {
+      const { container, getByLabelText, getByPlaceholderText } = render(
+        <StrictMode>
+          <PasswordInput
+            aria-label="User password"
+            placeholder="Enter password"
+            strengthMeter
+            strengthScore={3}
+          />
+        </StrictMode>
+      )
+      const input = getByPlaceholderText('Enter password') as HTMLInputElement
+      expect(input.type).toBe('password')
+
+      const toggleButton = getByLabelText('Show password')
+      fireEvent.click(toggleButton)
+      expect(input.type).toBe('text')
+      expect(getByLabelText('Hide password')).toBeDefined()
+
+      fireEvent.click(getByLabelText('Hide password'))
+      expect(input.type).toBe('password')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders NumberInput with steppers and clamps bounds', async () => {
+      let changedVal: number | undefined
+      const { container, getByRole, getByLabelText } = render(
+        <StrictMode>
+          <NumberInput
+            aria-label="Item quantity"
+            min={1}
+            max={10}
+            step={1}
+            defaultValue={5}
+            onChange={(val) => { changedVal = val }}
+          />
+        </StrictMode>
+      )
+      const input = getByRole('spinbutton') as HTMLInputElement
+      expect(input.value).toBe('5')
+
+      const incrementBtn = getByLabelText('Increment value')
+      fireEvent.pointerDown(incrementBtn)
+      fireEvent.pointerUp(incrementBtn)
+      expect(input.value).toBe('6')
+      expect(changedVal).toBe(6)
+
+      const decrementBtn = getByLabelText('Decrement value')
+      fireEvent.pointerDown(decrementBtn)
+      fireEvent.pointerUp(decrementBtn)
+      expect(input.value).toBe('5')
+
+      // Keyboard arrow stepping
+      fireEvent.keyDown(input, { key: 'ArrowUp' })
+      expect(input.value).toBe('6')
+
+      fireEvent.keyDown(input, { key: 'ArrowDown' })
+      expect(input.value).toBe('5')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders ButtonGroup and InputGroup with seamless borders and passes a11y', async () => {
+      const { container, getByRole, getByText } = render(
+        <StrictMode>
+          <div>
+            <ButtonGroup orientation="horizontal" attached>
+              <Button>First</Button>
+              <Button>Middle</Button>
+              <Button>Last</Button>
+            </ButtonGroup>
+
+            <InputGroup className="mt-4">
+              <InputGroupAddon>https://</InputGroupAddon>
+              <Input aria-label="Domain name" placeholder="example.com" />
+              <InputGroupAddon>.org</InputGroupAddon>
+            </InputGroup>
+          </div>
+        </StrictMode>
+      )
+      expect(getByRole('group')).toBeDefined()
+      expect(getByText('First')).toBeDefined()
+      expect(getByText('https://')).toBeDefined()
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders EmptyState with icon, title, description and actions', async () => {
+      const { container, getByText } = render(
+        <StrictMode>
+          <EmptyState
+            title="No projects found"
+            description="Your search did not match any active projects."
+            action={<Button size="sm">Create New Project</Button>}
+          />
+        </StrictMode>
+      )
+      expect(getByText('No projects found')).toBeDefined()
+      expect(getByText('Your search did not match any active projects.')).toBeDefined()
+      expect(getByText('Create New Project')).toBeDefined()
+
+      const ssr = renderToString(
+        <EmptyState
+          title="SSR Title"
+          description="SSR Description"
+        />
+      )
+      expect(ssr).toContain('SSR Title')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
     })
   })
 })

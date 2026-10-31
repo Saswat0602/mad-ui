@@ -16,6 +16,8 @@ import {
   FormMessage, 
   Input,
   Button,
+  PasswordInput,
+  NumberInput,
   Calendar as MadCalendar 
 } from 'mad-ui-components'
 import { Calendar as CalendarIcon, Clock, Sliders, Palette, CalendarDays, Zap } from 'lucide-react'
@@ -726,7 +728,88 @@ export function CalendarExample() {
 }`,
       preview: <CalendarDemo />
     }
+  ],
+
+  'password-input': [
+    {
+      title: 'Password with Reveal & Strength Meter',
+      description: 'Security password input with visibility toggle button and score meter',
+      code: `import { PasswordInput } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function PasswordInputExample() {
+  const [password, setPassword] = useState('')
+  return (
+    <div className="w-full max-w-sm space-y-3">
+      <PasswordInput
+        placeholder="Enter master password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        strengthMeter
+        strengthScore={Math.min(4, Math.floor(password.length / 3))}
+      />
+    </div>
+  )
+}`,
+      preview: <PasswordInputDemo />
+    }
+  ],
+
+  'number-input': [
+    {
+      title: 'Number Stepper with Clamp Bounds',
+      description: 'Numeric stepper with step buttons, keyboard arrow controls, and clamp validation',
+      code: `import { NumberInput } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function NumberInputExample() {
+  const [qty, setQty] = useState<number | undefined>(3)
+  return (
+    <div className="w-full max-w-xs space-y-2">
+      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Seat Quantity</label>
+      <NumberInput
+        min={1}
+        max={50}
+        step={1}
+        value={qty}
+        onChange={setQty}
+      />
+    </div>
+  )
+}`,
+      preview: <NumberInputDemo />
+    }
   ]
+}
+
+function PasswordInputDemo() {
+  const [password, setPassword] = useState('SecretKey123!')
+  return (
+    <div className="w-full max-w-sm p-4">
+      <PasswordInput
+        placeholder="Enter master password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        strengthMeter
+        strengthScore={3}
+      />
+    </div>
+  )
+}
+
+function NumberInputDemo() {
+  const [qty, setQty] = useState<number | undefined>(5)
+  return (
+    <div className="w-full max-w-xs p-4">
+      <NumberInput
+        min={1}
+        max={20}
+        step={1}
+        value={qty}
+        onChange={setQty}
+      />
+    </div>
+  )
 }
 
 function CalendarDemo() {

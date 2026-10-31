@@ -13,6 +13,8 @@ export default ts.config(
       '*.config.*',
       'vitest.config.mts',
       'reports/**',
+      'tests/polyfill.cjs',
+      '**/*.cjs',
     ],
   },
   {

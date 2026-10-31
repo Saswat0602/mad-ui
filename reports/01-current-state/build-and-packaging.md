@@ -1,5 +1,8 @@
 # Build and Packaging Audit
 
+> **Status: 100% Resolved in v3.0.0**  
+> All P0 and P1 packaging defects below have been fixed. All 64 subpath exports resolve and pass `publint` with 0 errors, `"use client";` banners are injected into all distribution bundles, theme CSS is exported, and `tsc --noEmit` passes with 0 errors.
+
 Scope: [package.json](../../package.json), [tsup.config.ts](../../tsup.config.ts), [tsconfig.json](../../tsconfig.json), the four export surfaces under `src/`, and the published tarball (`npm pack --dry-run`).
 
 Verdict: the build exits 0, but the published package has broken entry points, no React Server Components boundary, no shipped theme, and export surfaces that disagree with each other. These are consumer-facing failures, not style issues.

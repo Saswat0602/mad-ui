@@ -107,6 +107,22 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['form', 'textarea', 'multiline', 'enterprise', 'accessibility']
   },
+  'button-group': {
+    category: 'Core' as ComponentCategory,
+    title: 'Button Group',
+    description: 'Container for grouping adjacent buttons with seamless border merging and focus rings',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['button', 'group', 'toolbar', 'action']
+  },
+  'input-group': {
+    category: 'Core' as ComponentCategory,
+    title: 'Input Group',
+    description: 'Composite input wrapper with text addons and prefix/suffix action slots',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['input', 'group', 'addon', 'prefix', 'suffix']
+  },
 
   // Form Components
   'accordion': {
@@ -172,6 +188,22 @@ export const COMPONENT_REGISTRY = {
     version: '3.0.0',
     status: 'stable' as const,
     tags: ['form', 'validation', 'input', 'field', 'react-hook-form']
+  },
+  'password-input': {
+    category: 'Form' as ComponentCategory,
+    title: 'Password Input',
+    description: 'Password field with integrated reveal toggle, strength meter, and caps-lock detection',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['form', 'password', 'security', 'input']
+  },
+  'number-input': {
+    category: 'Form' as ComponentCategory,
+    title: 'Number Input',
+    description: 'Numeric stepper input with increment buttons, clamp bounds, and arrow key support',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['form', 'number', 'stepper', 'input']
   },
 
   // Layout Components
@@ -409,6 +441,14 @@ export const COMPONENT_REGISTRY = {
     status: 'stable' as const,
     tags: ['media', 'typography', 'text']
   },
+  'kbd': {
+    category: 'Media' as ComponentCategory,
+    title: 'Kbd',
+    description: 'Keyboard shortcut indicator badge with cross-platform key normalization',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['media', 'kbd', 'keyboard', 'shortcut']
+  },
 
   // Navigation Components
   'navbar': {
@@ -466,6 +506,22 @@ export const COMPONENT_REGISTRY = {
     version: '3.0.0',
     status: 'stable' as const,
     tags: ['sonner', 'toast', 'notification', 'modern', 'enterprise', 'accessibility']
+  },
+  'spinner': {
+    category: 'Feedback' as ComponentCategory,
+    title: 'Spinner',
+    description: 'Accessible animated indeterminate loading indicator with screen reader support',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['feedback', 'loading', 'spinner', 'status']
+  },
+  'empty-state': {
+    category: 'Feedback' as ComponentCategory,
+    title: 'Empty State',
+    description: 'Clean zero-data placeholder graphic and action container for empty views',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['feedback', 'empty', 'state', 'placeholder']
   }
 } as const
 

@@ -20,7 +20,10 @@ import {
   Skeleton,
   Textarea,
   Radio,
-  Label
+  Label,
+  ButtonGroup,
+  InputGroup,
+  InputGroupAddon
 } from 'mad-ui-components'
 import { Mail, Search, Download, Upload, Check, User, ArrowRight, Heart, ShoppingCart } from 'lucide-react'
 import * as snippets from '@/data/core-snippets'
@@ -568,6 +571,90 @@ export const coreExamples: Record<string, ComponentExample[]> = {
       description: 'Dual-thumb slider for selecting lower and upper bound ranges.',
       code: snippets.slider.range,
       preview: <InteractiveRangeSliderDemo />
+    }
+  ],
+
+  'button-group': [
+    {
+      title: 'Horizontal Attached Button Group',
+      description: 'Connected buttons with shared borders and focus ring hierarchy',
+      code: `import { ButtonGroup, Button } from 'mad-ui-components'
+
+export function ButtonGroupExample() {
+  return (
+    <div className="flex flex-col gap-4">
+      <ButtonGroup orientation="horizontal" attached>
+        <Button variant="outline">Day</Button>
+        <Button variant="outline">Week</Button>
+        <Button variant="outline">Month</Button>
+        <Button variant="outline">Year</Button>
+      </ButtonGroup>
+
+      <ButtonGroup orientation="horizontal" attached>
+        <Button variant="secondary">Left</Button>
+        <Button variant="secondary">Center</Button>
+        <Button variant="secondary">Right</Button>
+      </ButtonGroup>
+    </div>
+  )
+}`,
+      preview: (
+        <div className="flex flex-col gap-4 p-4">
+          <ButtonGroup orientation="horizontal" attached>
+            <Button variant="outline">Day</Button>
+            <Button variant="outline">Week</Button>
+            <Button variant="outline">Month</Button>
+            <Button variant="outline">Year</Button>
+          </ButtonGroup>
+
+          <ButtonGroup orientation="horizontal" attached>
+            <Button variant="secondary">Left</Button>
+            <Button variant="secondary">Center</Button>
+            <Button variant="secondary">Right</Button>
+          </ButtonGroup>
+        </div>
+      )
+    }
+  ],
+
+  'input-group': [
+    {
+      title: 'Input Group with Addons',
+      description: 'Text inputs with prefix and suffix addons for currencies, protocols, and domains',
+      code: `import { InputGroup, InputGroupAddon, Input, Button } from 'mad-ui-components'
+
+export function InputGroupExample() {
+  return (
+    <div className="flex flex-col gap-4 max-w-sm">
+      <InputGroup>
+        <InputGroupAddon>https://</InputGroupAddon>
+        <Input placeholder="example" />
+        <InputGroupAddon>.com</InputGroupAddon>
+      </InputGroup>
+
+      <InputGroup>
+        <InputGroupAddon>$</InputGroupAddon>
+        <Input placeholder="0.00" />
+        <InputGroupAddon>USD</InputGroupAddon>
+      </InputGroup>
+    </div>
+  )
+}`,
+      preview: (
+        <div className="flex flex-col gap-4 max-w-sm p-4">
+          <InputGroup>
+            <InputGroupAddon>https://</InputGroupAddon>
+            <Input placeholder="example" />
+            <InputGroupAddon>.com</InputGroupAddon>
+          </InputGroup>
+
+          <InputGroup>
+            <InputGroupAddon>$</InputGroupAddon>
+            <Input placeholder="0.00" />
+            <InputGroupAddon>USD</InputGroupAddon>
+          </InputGroup>
+        </div>
+      )
     }
   ]
 }

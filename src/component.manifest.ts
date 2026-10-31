@@ -141,6 +141,26 @@ export const componentManifest: ComponentMeta[] = [
     exports: ['Textarea', 'TextareaProps'],
     description: 'Multi-line text input with auto-resize and validation.'
   },
+  {
+    name: 'button-group',
+    title: 'Button Group',
+    category: 'core',
+    status: 'stable',
+    subpath: './button-group',
+    sourceFile: 'src/components/core/button-group.tsx',
+    exports: ['ButtonGroup', 'ButtonGroupProps'],
+    description: 'Container for grouping adjacent buttons with seamless border merging.'
+  },
+  {
+    name: 'input-group',
+    title: 'Input Group',
+    category: 'core',
+    status: 'stable',
+    subpath: './input-group',
+    sourceFile: 'src/components/core/input-group.tsx',
+    exports: ['InputGroup', 'InputGroupAddon', 'InputGroupProps', 'InputGroupAddonProps'],
+    description: 'Composite input wrapper with text addons and prefix/suffix action slots.'
+  },
 
   // Forms
   {
@@ -222,6 +242,26 @@ export const componentManifest: ComponentMeta[] = [
     sourceFile: 'src/components/forms/tabs.tsx',
     exports: ['Tabs', 'TabsProps', 'TabItem'],
     description: 'Layered panels of content displaying one view at a time.'
+  },
+  {
+    name: 'password-input',
+    title: 'Password Input',
+    category: 'forms',
+    status: 'stable',
+    subpath: './password-input',
+    sourceFile: 'src/components/forms/password-input.tsx',
+    exports: ['PasswordInput', 'PasswordInputProps'],
+    description: 'Password input with integrated reveal toggle, strength meter, and caps-lock detection.'
+  },
+  {
+    name: 'number-input',
+    title: 'Number Input',
+    category: 'forms',
+    status: 'stable',
+    subpath: './number-input',
+    sourceFile: 'src/components/forms/number-input.tsx',
+    exports: ['NumberInput', 'NumberInputProps'],
+    description: 'Numeric stepper input with increment buttons, clamp bounds, and arrow key support.'
   },
 
   // Layout
@@ -523,6 +563,26 @@ export const componentManifest: ComponentMeta[] = [
     exports: ['Toaster', 'toast', 'SonnerProps'],
     description: 'Opinionated stacked toast manager with swipe dismiss gestures.'
   },
+  {
+    name: 'spinner',
+    title: 'Spinner',
+    category: 'feedback',
+    status: 'stable',
+    subpath: './spinner',
+    sourceFile: 'src/components/feedback/spinner.tsx',
+    exports: ['Spinner', 'SpinnerProps'],
+    description: 'Accessible animated indeterminate loading indicator with screen reader support.'
+  },
+  {
+    name: 'empty-state',
+    title: 'Empty State',
+    category: 'feedback',
+    status: 'stable',
+    subpath: './empty-state',
+    sourceFile: 'src/components/feedback/empty-state.tsx',
+    exports: ['EmptyState', 'EmptyStateIcon', 'EmptyStateTitle', 'EmptyStateDescription', 'EmptyStateActions', 'EmptyStateProps'],
+    description: 'Clean zero-data graphic container for empty lists, search results, and tables.'
+  },
 
   // Media
   {
@@ -574,5 +634,15 @@ export const componentManifest: ComponentMeta[] = [
     sourceFile: 'src/components/media/typography.tsx',
     exports: ['TypographyH1', 'TypographyH2', 'TypographyH3', 'TypographyH4', 'TypographyP', 'TypographyBlockquote', 'TypographyCode', 'TypographyLead', 'TypographyProps'],
     description: 'Semantic text elements styled with consistent typography scale.'
+  },
+  {
+    name: 'kbd',
+    title: 'Kbd',
+    category: 'media',
+    status: 'stable',
+    subpath: './kbd',
+    sourceFile: 'src/components/media/kbd.tsx',
+    exports: ['Kbd', 'KbdProps', 'formatKeySymbol'],
+    description: 'Keyboard key and shortcut indicator badge with platform normalization.'
   }
 ]

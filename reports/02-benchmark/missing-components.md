@@ -1,80 +1,67 @@
-# Missing Components and Capabilities
+# Missing Components and Expansion Opportunities
 
-Mad UI ships 55 component files. Coverage by name is reasonable. The gap that matters first is quality (see [../01-current-state/component-audit/README.md](../01-current-state/component-audit/README.md)). This page lists what is missing entirely, ranked by how often real product teams need it.
+> **Audit Update (v3.0.0)**: The foundational gaps identified during the initial audit—including the **Composable Form System** (`Field`, `FormItem`, auto ARIA IDs), **Headless Primitives** (`Slot`, `Portal`, `FocusScope`, `Presence`), **Virtualization** (`useVirtualizer`), and **Server Components** (`"use client"`)—have been **100% completed**.
 
-For the complete catalog (advanced inputs, dates, charts, AI interfaces, motion components, hooks, blocks and templates, with priority and complexity), see [component-catalog-expansion.md](component-catalog-expansion.md).
+This report now tracks the remaining high-impact component additions prioritized for `v3.1+`.
 
-## Tier 1: expected from any "advanced" library
+---
 
-| Component | Seen in | Why it matters |
-| --- | --- | --- |
-| Field (Label, Control, Description, Error with auto ids) | shadcn, Mantine, Base UI | Fixes `aria-invalid` and `aria-describedby` for every input at once |
-| Form with real react-hook-form integration | shadcn | The current `Form` is a styled wrapper with no form logic |
-| DatePicker (Popover plus Calendar) | shadcn, MUI X, Mantine | The current Calendar is a picker and DateTimePicker is broken |
-| DateRangePicker | MUI X, Mantine | Every analytics dashboard needs it |
-| TimePicker | MUI X, Mantine | Advertised in `package.json` exports, never built |
-| Inline Calendar (single, multiple, range) | shadcn (react-day-picker), Mantine | Foundation for the three pickers above |
-| MultiSelect / TagsInput | MUI Autocomplete, Mantine | Filters, assignees, labels |
-| NumberInput | Mantine, Chakra | Quantities, prices, with step and clamp |
-| PasswordInput | Mantine | Show and hide toggle with correct labeling |
-| Spinner | shadcn, Mantine, Chakra | Loading states outside buttons |
-| Kbd | shadcn, Mantine | Keyboard shortcut hints in menus and command palette |
-| Empty state | shadcn | Tables, lists and search with no results |
-| ButtonGroup, InputGroup | shadcn, MUI | Toolbars, inputs with addons |
-| Stepper | MUI, Mantine | Onboarding and checkout flows |
-| FileUpload / Dropzone | Mantine | Uploads with drag and drop and progress |
-| Stack, Grid, Container | MUI, Mantine, Chakra | Layout primitives without hand-written flex classes |
-| VisuallyHidden, Portal, Slot, FocusScope (public) | Radix, MUI | Building blocks consumers need for their own components |
-| ThemeProvider (optional), DirectionProvider | MUI, Mantine, Radix | Theme persistence without flash, RTL |
+## 🎯 Tier 1: High-Frequency Enterprise Primitives (Ready to Build)
 
-## Tier 2: strong differentiators
+Essential components widely expected by enterprise product teams:
 
-| Component | Seen in | Note |
-| --- | --- | --- |
-| Tree / TreeView | MUI X, Mantine, Ark | File browsers, permission scopes |
-| Timeline | MUI Lab, Mantine | Audit logs, activity feeds |
-| SegmentedControl | Mantine | View switchers |
-| Chip (selectable, removable) | MUI, Mantine | Filters |
-| CircularProgress / RingProgress | MUI, Mantine | Usage meters |
-| Stat / KPI card | Tremor, Chakra | Dashboards |
-| ColorPicker / ColorInput | Mantine, Chakra | Theme editors, labels |
-| Virtualized List | MUI X, TanStack Virtual | Long lists in Combobox, Command, DataTable |
-| Drawer as mobile bottom sheet with drag | shadcn (Vaul) | Today Drawer duplicates Sheet |
-| Banner / Announcement bar | Many | System notices |
-| Sidebar primitives with provider | shadcn | Replace the 572-line Sidebar mega-component |
+| Component | Target Domain | Why It Matters | Implementation Approach |
+| :--- | :--- | :--- | :--- |
+| **Kbd** | `media` / `data` | Displays keyboard shortcuts inside menus, tooltips, and command dialogs. Platform-aware (`⌘` on macOS, `Ctrl` on Windows/Linux). | In-house HTML `<kbd>` primitive with badge styling and modifier keys helper. |
+| **Spinner** | `feedback` | Dedicated circular loading indicator for buttons, card overlays, and async page boundaries. | In-house SVG animated circle with `role="status"` and accessible label. |
+| **PasswordInput** | `forms` | Single-click password reveal/mask toggle with accessible labels, caps-lock warning, and strength indicator. | Built on top of `Input` + `Button` with Lucide `Eye`/`EyeOff`. |
+| **NumberInput** | `forms` | Numeric input with step up/down buttons, min/max clamp, keyboard arrow support, and decimal precision. | Built on top of `Input` with Pointer Event stepping. |
+| **ButtonGroup** | `core` | Connects adjacent buttons with unified borders, consolidated active states, and seamless focus rings. | CSS flex container applying negative margin border collapse. |
+| **InputGroup** | `core` | Prefixes and suffixes for inputs (currency signs, URL protocols, inline action buttons). | Compound container applying unified focus and border states. |
+| **EmptyState** | `feedback` | Clean zero-data placeholder for empty tables, search results, and notification inboxes. | Minimal icon container with title, description, and action button slot. |
+| **MultiSelect / TagsInput** | `forms` | Multi-value selector rendering removable chips, with search filtering, tag limit counters, and keyboard delete. | Built on native `Popover` and `Command` primitives. |
+| **Stepper** | `navigation` | Multi-step process wizard for checkout flows, multi-stage forms, and onboarding steps. | Horizontal and vertical layout states with completion tracking. |
+| **FileUpload / Dropzone** | `forms` | Drag-and-drop file upload zone with mime-type filters, file size limits, progress indicator, and file preview cards. | Pure Pointer Events and Drag-and-Drop API with accessible file input fallback. |
 
-## Tier 3: nice to have
+---
 
-Masonry, Marquee, Spoiler, Highlight, Transfer list, Rich text editor (Tiptap wrapper), Code block with highlighting, Image with lightbox, Calendar scheduler, Kanban (as a block).
+## 🚀 Tier 2: Strong Differentiators & Advanced Pickers
 
-## Hooks package
+Components that elevate Mad UI into a top-tier design system:
 
-Mantine's hooks are a large part of its appeal. A `mad-ui-components/hooks` entry would expose what components already need internally:
+| Component | Target Domain | Key Feature Set |
+| :--- | :--- | :--- |
+| **DateRangePicker** | `forms` | Dual-month calendar popover with preset shortcuts ("Last 7 Days", "This Quarter", "Year to Date"). |
+| **TimePicker** | `forms` | Segmented time selector with hour/minute stepping and 12/24 hour format toggle. |
+| **StatCard / KPICard** | `data` | Enterprise dashboard metric card with percentage delta badges, trend direction arrows, and mini sparkline. |
+| **Timeline** | `data` | Chronological activity feed component with status markers, connector lines, and expandable audit details. |
+| **Banner / Callout** | `feedback` | System-wide dismissible notice or inline contextual tip banner. |
+| **Unified Toast Engine** | `feedback` | Consolidate `Toast` and `Sonner` into a single reactive external store `toast()` API. |
+| **Tree / TreeView** | `data` | Hierarchical file tree or category browser with expand/collapse and keyboard roving focus. |
 
-- `useControllableState`, `useDisclosure`, `useMediaQuery`, `useClickOutside`, `useHotkeys`, `useDebouncedValue`, `useLocalStorage`, `useClipboard`, `useIsomorphicLayoutEffect`, `useResizeObserver`, `useIntersection`, `useReducedMotion`.
+---
 
-## Capabilities missing across the board
+## 🤖 Tier 3: AI-Native Interface Kit
 
-| Capability | Status |
-| --- | --- |
-| RTL support | None |
-| Locale and i18n for built-in strings and dates | None (hardcoded English) |
-| Density modes | None |
-| Reduced motion | None |
-| Server Components support | None (no `"use client"` in dist) |
-| Form submission for custom controls (hidden inputs, `name`) | None (Select, Switch, Slider, InputOTP, RadioGroup) |
-| Virtualization | None |
-| Exit animations | None |
+Modern interactive components tailored for generative AI products:
 
-## What to remove or merge instead of adding
+| Component | Description |
+| :--- | :--- |
+| **PromptInput** | Auto-expanding chat prompt textarea with file attachments button, token counter, and send shortcut (`Cmd+Enter`). |
+| **MessageBubble** | User and AI response bubbles with markdown rendering, streaming cursor indicator, and action buttons (copy, retry). |
+| **ReasoningDisclosure** | Collapsible reasoning drawer ("Thinking...") with pulse animation and token timing. |
+| **ToolCallCard** | Card showing tool name, input arguments JSON, and execution status (`running` / `success` / `error`). |
 
-| Current | Action |
-| --- | --- |
-| Modal | Alias of Dialog, deprecate |
-| Drawer (side panel) | Merge into Sheet, rebuild Drawer as bottom sheet |
-| Toast and Sonner | Replace both with one `toast()` system |
-| Radio (standalone) | Keep only RadioGroup and RadioGroupItem |
-| Calendar (picker behavior) | Becomes DatePicker. Calendar becomes the inline grid |
-| Navbar, Layout, Sidebar mega-components | Move to registry blocks |
-| `lib/colors.ts` public exports | Remove in 3.0 |
-| Custom `useId` export | Remove, use `React.useId` |
+---
+
+## 📦 Cross-Cutting Capabilities Backlog
+
+| Capability | Current Status in v3.0.0 | Target Iteration |
+| :--- | :---: | :---: |
+| **Server Components ("use client")** | ✅ Shipped in all 67 bundles | Completed |
+| **Standalone Native Primitives** | ✅ Shipped with 0 external UI dependencies | Completed |
+| **Composable Form ARIA Linking** | ✅ Fully automated IDs and validation states | Completed |
+| **Virtual Scrolling** | ✅ Shipped in `DataTable` via `useVirtualizer` | Completed |
+| **Tailwind v4 Native Preset** | ⚠️ Partial (Tailwind v4 `@source` supported) | v3.1 |
+| **RTL Layout Support** | ⏳ Pending (`DirectionProvider`) | v3.3 |
+| **Visual Regression Testing** | ⏳ Pending (Ladle / Playwright) | v3.4 |

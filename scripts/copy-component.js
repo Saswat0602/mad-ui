@@ -27,6 +27,8 @@ const COMPONENT_REGISTRY = {
   'rating': { path: 'src/components/core/rating.tsx', category: 'Core', description: 'Interactive or read-only star rating component.' },
   'skeleton': { path: 'src/components/core/skeleton.tsx', category: 'Core', description: 'Placeholder loading shimmer effect for content loading.' },
   'textarea': { path: 'src/components/core/textarea.tsx', category: 'Core', description: 'Multi-line text area supporting validation states.' },
+  'button-group': { path: 'src/components/core/button-group.tsx', category: 'Core', description: 'Container for grouping adjacent buttons with border collapse.' },
+  'input-group': { path: 'src/components/core/input-group.tsx', category: 'Core', description: 'Input container with prefix and suffix addons.' },
 
   // Forms
   'accordion': { path: 'src/components/forms/accordion.tsx', category: 'Forms', description: 'Collapsible content panels with smooth height transitions.' },
@@ -37,6 +39,8 @@ const COMPONENT_REGISTRY = {
   'radio-group': { path: 'src/components/forms/radio-group.tsx', category: 'Forms', description: 'Radio button group container with keyboard navigation.' },
   'form': { path: 'src/components/forms/form.tsx', category: 'Forms', description: 'Composable form context linking labels, controls, and error alerts.' },
   'tabs': { path: 'src/components/forms/tabs.tsx', category: 'Forms', description: 'Tabbed panel switcher with accessible keyboard roving focus.' },
+  'password-input': { path: 'src/components/forms/password-input.tsx', category: 'Forms', description: 'Password input with integrated reveal toggle and caps-lock detection.' },
+  'number-input': { path: 'src/components/forms/number-input.tsx', category: 'Forms', description: 'Numeric stepper input with clamp bounds and arrow keys.' },
 
   // Layout
   'drawer': { path: 'src/components/layout/drawer.tsx', category: 'Layout', description: 'Edge slide-out sheet modal.' },
@@ -76,13 +80,16 @@ const COMPONENT_REGISTRY = {
   'alert': { path: 'src/components/feedback/alert.tsx', category: 'Feedback', description: 'Callout banner with semantic variants and dismiss.' },
   'toast': { path: 'src/components/feedback/toast.tsx', category: 'Feedback', description: 'Temporary toast alert notification.' },
   'sonner': { path: 'src/components/feedback/sonner.tsx', category: 'Feedback', description: 'Stacked toast notification stream.' },
+  'spinner': { path: 'src/components/feedback/spinner.tsx', category: 'Feedback', description: 'Animated indeterminate loading spinner.' },
+  'empty-state': { path: 'src/components/feedback/empty-state.tsx', category: 'Feedback', description: 'Zero-data placeholder graphic and action container.' },
 
   // Media
   'avatar': { path: 'src/components/media/avatar.tsx', category: 'Media', description: 'User image avatar with fallback initials.' },
   'badge': { path: 'src/components/media/badge.tsx', category: 'Media', description: 'Status pill badge with semantic styles.' },
   'aspect-ratio': { path: 'src/components/media/aspect-ratio.tsx', category: 'Media', description: 'Aspect ratio container maintaining proportional width and height.' },
   'carousel': { path: 'src/components/media/carousel.tsx', category: 'Media', description: 'Slide carousel with autoplay, touch gestures, and pagination.' },
-  'typography': { path: 'src/components/media/typography.tsx', category: 'Media', description: 'Type scale components with semantic HTML elements.' }
+  'typography': { path: 'src/components/media/typography.tsx', category: 'Media', description: 'Type scale components with semantic HTML elements.' },
+  'kbd': { path: 'src/components/media/kbd.tsx', category: 'Media', description: 'Keyboard shortcut indicator badge.' }
 };
 
 // Aliases for user convenience (e.g. datatable -> data-table)
@@ -100,7 +107,12 @@ const ALIASES = {
   'dropdownmenu': 'dropdown-menu',
   'contextmenu': 'context-menu',
   'hovercard': 'hover-card',
-  'aspectratio': 'aspect-ratio'
+  'aspectratio': 'aspect-ratio',
+  'buttongroup': 'button-group',
+  'inputgroup': 'input-group',
+  'passwordinput': 'password-input',
+  'numberinput': 'number-input',
+  'emptystate': 'empty-state'
 };
 
 function normalizeName(name) {

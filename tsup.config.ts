@@ -73,6 +73,8 @@ export default defineConfig([
       'src/individual/slider.ts',
       'src/individual/rating.ts',
       'src/individual/progress.ts',
+      'src/individual/button-group.ts',
+      'src/individual/input-group.ts',
     ],
   },
   // Individual components — batch 2: forms
@@ -88,6 +90,8 @@ export default defineConfig([
       'src/individual/radio-group.ts',
       'src/individual/calendar.ts',
       'src/individual/datetime-picker.ts',
+      'src/individual/password-input.ts',
+      'src/individual/number-input.ts',
     ],
   },
   // Individual components — batch 3: overlays
@@ -149,6 +153,9 @@ export default defineConfig([
       'src/individual/alert.ts',
       'src/individual/toast.ts',
       'src/individual/sonner.ts',
+      'src/individual/spinner.ts',
+      'src/individual/empty-state.ts',
+      'src/individual/kbd.ts',
     ],
   },
 ])

@@ -1698,6 +1698,218 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       required: false,
       description: 'Custom underlying semantic HTML element override'
     }
+  ],
+  'button-group': [
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      required: false,
+      default: 'horizontal',
+      description: 'Orientation layout of the button group'
+    },
+    {
+      name: 'attached',
+      type: 'boolean',
+      required: false,
+      default: true,
+      description: 'Whether adjacent buttons have collapsed borders'
+    },
+    {
+      name: 'fullWidth',
+      type: 'boolean',
+      required: false,
+      default: false,
+      description: 'Whether the group spans the full container width'
+    }
+  ],
+  'input-group': [
+    {
+      name: 'size',
+      type: "'sm' | 'default' | 'lg'",
+      required: false,
+      default: 'default',
+      description: 'The size of the input group and its children'
+    }
+  ],
+  'password-input': [
+    {
+      name: 'showToggle',
+      type: 'boolean',
+      required: false,
+      default: true,
+      description: 'Whether to show the reveal password toggle eye button'
+    },
+    {
+      name: 'strengthMeter',
+      type: 'boolean',
+      required: false,
+      default: false,
+      description: 'Whether to display the password strength score bar'
+    },
+    {
+      name: 'strengthScore',
+      type: 'number',
+      required: false,
+      default: 0,
+      description: 'Password strength score from 0 to 4'
+    },
+    {
+      name: 'onVisibilityChange',
+      type: '(visible: boolean) => void',
+      required: false,
+      description: 'Callback fired when password visibility is toggled'
+    }
+  ],
+  'number-input': [
+    {
+      name: 'value',
+      type: 'number | ""',
+      required: false,
+      description: 'Controlled numeric value'
+    },
+    {
+      name: 'defaultValue',
+      type: 'number | ""',
+      required: false,
+      description: 'Initial uncontrolled numeric value'
+    },
+    {
+      name: 'onChange',
+      type: '(value: number | undefined) => void',
+      required: false,
+      description: 'Callback fired when the numeric value changes'
+    },
+    {
+      name: 'min',
+      type: 'number',
+      required: false,
+      description: 'Minimum allowed numeric value'
+    },
+    {
+      name: 'max',
+      type: 'number',
+      required: false,
+      description: 'Maximum allowed numeric value'
+    },
+    {
+      name: 'step',
+      type: 'number',
+      required: false,
+      default: 1,
+      description: 'Step interval for incrementing or decrementing'
+    },
+    {
+      name: 'precision',
+      type: 'number',
+      required: false,
+      description: 'Number of decimal places to format the value'
+    },
+    {
+      name: 'clampValueOnBlur',
+      type: 'boolean',
+      required: false,
+      default: true,
+      description: 'Whether to clamp values to min/max on blur'
+    },
+    {
+      name: 'hideStepper',
+      type: 'boolean',
+      required: false,
+      default: false,
+      description: 'Whether to hide the increment and decrement buttons'
+    },
+    {
+      name: 'inputSize',
+      type: "'sm' | 'default' | 'lg'",
+      required: false,
+      default: 'default',
+      description: 'The height and font size of the input'
+    }
+  ],
+  'spinner': [
+    {
+      name: 'size',
+      type: "'xs' | 'sm' | 'md' | 'lg' | 'xl'",
+      required: false,
+      default: 'md',
+      description: 'Size dimension of the spinner'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'primary' | 'secondary' | 'muted' | 'white'",
+      required: false,
+      default: 'default',
+      description: 'Color theme variant of the spinner'
+    },
+    {
+      name: 'label',
+      type: 'string',
+      required: false,
+      default: 'Loading...',
+      description: 'Accessible screen reader label for the loading state'
+    },
+    {
+      name: 'strokeWidth',
+      type: 'number',
+      required: false,
+      default: 3,
+      description: 'Stroke thickness of the circular spinner path'
+    }
+  ],
+  'empty-state': [
+    {
+      name: 'icon',
+      type: 'any',
+      required: false,
+      description: 'Icon component or React node for the graphic'
+    },
+    {
+      name: 'title',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Primary headline for the empty state'
+    },
+    {
+      name: 'description',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Supporting subtext describing the zero data situation'
+    },
+    {
+      name: 'action',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Action buttons or trigger slots'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'dashed' | 'outline'",
+      required: false,
+      default: 'default',
+      description: 'Container frame border style'
+    }
+  ],
+  'kbd': [
+    {
+      name: 'variant',
+      type: "'default' | 'outline' | 'subtle'",
+      required: false,
+      default: 'default',
+      description: 'Visual badge style for the key'
+    },
+    {
+      name: 'size',
+      type: "'xs' | 'sm' | 'md'",
+      required: false,
+      default: 'sm',
+      description: 'Key badge dimension and font size'
+    },
+    {
+      name: 'keys',
+      type: 'string[]',
+      required: false,
+      description: 'List of keys to format and render as badges'
+    }
   ]
 }
 
@@ -1714,6 +1926,11 @@ const ALIAS_MAP: Record<string, string> = {
   contextmenu: 'context-menu',
   hovercard: 'hover-card',
   aspectratio: 'aspect-ratio',
+  buttongroup: 'button-group',
+  inputgroup: 'input-group',
+  passwordinput: 'password-input',
+  numberinput: 'number-input',
+  emptystate: 'empty-state',
   'date-picker': 'datetime-picker',
   datepicker: 'datetime-picker',
   timepicker: 'datetime-picker'

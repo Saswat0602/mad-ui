@@ -1,5 +1,5 @@
 import React from 'react'
-import { Badge, Avatar, AspectRatio, Carousel, TypographyH1, TypographyH2, TypographyH3, TypographyH4, TypographyH5, TypographyH6, TypographyP, TypographyBlockquote, TypographyCode, TypographyLead, TypographyLarge, TypographySmall, TypographyMuted } from 'mad-ui-components'
+import { Badge, Avatar, AspectRatio, Carousel, TypographyH1, TypographyH2, TypographyH3, TypographyH4, TypographyH5, TypographyH6, TypographyP, TypographyBlockquote, TypographyCode, TypographyLead, TypographyLarge, TypographySmall, TypographyMuted, Kbd } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -288,6 +288,49 @@ export function TypographySpecial() {
             This is a blockquote with some important information.
           </TypographyBlockquote>
           <TypographyCode>const example = &quot;Hello World&quot;;</TypographyCode>
+        </div>
+      )
+    }
+  ],
+
+  kbd: [
+    {
+      title: 'Keyboard Shortcuts',
+      description: 'Platform-aware shortcut badges with modifier normalization',
+      code: `import { Kbd } from 'mad-ui-components'
+
+export function KbdExample() {
+  return (
+    <div className="flex flex-col gap-3">
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-zinc-500">Quick search:</span>
+        <Kbd keys={['cmd', 'k']} />
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-zinc-500">Save changes:</span>
+        <Kbd keys={['ctrl', 's']} />
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="text-sm text-zinc-500">Close modal:</span>
+        <Kbd>Esc</Kbd>
+      </div>
+    </div>
+  )
+}`,
+      preview: (
+        <div className="flex flex-col gap-3 p-4">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-zinc-500 dark:text-zinc-400">Quick search:</span>
+            <Kbd keys={['cmd', 'k']} />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-zinc-500 dark:text-zinc-400">Save changes:</span>
+            <Kbd keys={['ctrl', 's']} />
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-zinc-500 dark:text-zinc-400">Close modal:</span>
+            <Kbd>Esc</Kbd>
+          </div>
         </div>
       )
     }

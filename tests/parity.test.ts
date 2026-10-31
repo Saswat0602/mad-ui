@@ -5,8 +5,8 @@ import { componentManifest } from '../src/component.manifest'
 import { COMPONENT_PROPS, getComponentProps } from '../docs/src/lib/component-props'
 
 describe('Component & Documentation Parity Test Suite', () => {
-  it('ensures all 55 manifest components have documented props tables', () => {
-    expect(componentManifest.length).toBe(55)
+  it('ensures all manifest components have documented props tables', () => {
+    expect(componentManifest.length).toBe(62)
 
     const missingProps: string[] = []
 
@@ -39,7 +39,7 @@ describe('Component & Documentation Parity Test Suite', () => {
 
     // Extract all mapped component paths
     const matches = [...cliContent.matchAll(/path:\s*['"]([^'"]+)['"]/g)]
-    expect(matches.length).toBe(55)
+    expect(matches.length).toBe(62)
 
     for (const match of matches) {
       const relativePath = match[1]

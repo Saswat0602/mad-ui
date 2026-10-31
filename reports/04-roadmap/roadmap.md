@@ -1,104 +1,68 @@
-# Roadmap to an Advanced UI Library
+# Roadmap: Completed Milestones & Future Evolution
 
-Five phases. Each phase ends in a releasable state and a git tag, in line with the phase-wise commit protocol in [AGENTS.md](../../AGENTS.md) section 6. Durations assume one or two developers working part time and are rough estimates.
+Tracking completed engineering phases through `v3.0.0` and the active development roadmap for `v3.1+`.
 
-## Phase 0: Stop the bleeding (week 1)
+---
 
-Goal: nothing documented is broken.
+## 🟢 Completed Milestones (Phases 0–5 Delivered in v3.0.0)
 
-- All items in [quick-wins.md](quick-wins.md).
-- Release `2.16.0` with a real `CHANGELOG.md` entry.
+| Phase | Title | Delivered Capabilities | Version | Status |
+| :--- | :--- | :--- | :---: | :---: |
+| **Phase 0** | **Stop the Bleeding** | P0 bug fixes (Dialog trigger, Slider drag, Switch onChange, DateTimePicker, Table hooks), `"use client"` banners, subpath exports map, `@source` preview CSS | `v2.16.0` | ✅ **Completed** |
+| **Phase 1** | **Foundation Infrastructure** | Vitest testing, axe-core a11y, Changesets, component manifest audit, publint validation, root ESLint, CI workflow, zinc neutral palette migration | `v2.16.0` | ✅ **Completed** |
+| **Phase 2** | **Primitives & Headless Rewrite** | Standalone native headless primitives (`Slot`, `Portal`, `FocusScope`, `Presence`, `useControllableState`, `useClickOutside`) with 0 Radix dependencies, GPU-accelerated exit animations, roving focus | `v3.0.0` | ✅ **Completed** |
+| **Phase 3** | **Advanced Components & Forms** | Composable form system (`Form`, `FormField`, `FormLabel`, `FormControl`, `FormMessage` with automatic ARIA IDs and zod/RHF compatibility), advanced virtualized `DataTable`, zero-dep `useVirtualizer` | `v3.0.0` | ✅ **Completed** |
+| **Phase 4** | **Showcase Platform & DX** | Interactive Theme Builder (`/theme-builder`), Smart CLI component adder (`npx mad-ui-components add <component>`), 100% comprehensive props documentation, enterprise analytics example | `v3.0.0` | ✅ **Completed** |
+| **Phase 5** | **Release & Community** | Official v3.0.0 release, `MIGRATION_V2_TO_V3.md`, community guidelines, automated release provenance | `v3.0.0` | ✅ **Completed** |
 
-Exit criteria:
+---
 
-- Every `package.json#exports` entry resolves in a smoke test.
-- Importing any component from a Next.js Server Component page works.
-- `tsc --noEmit` passes.
-- Docs previews render the library's real classes.
+## 🎯 Active Roadmap (v3.1 — Catalog Expansion)
 
-## Phase 1: Foundation (weeks 2 to 4)
+With the foundational architecture, native primitives, and composable form engine now rock-solid, development shifts to expanding the component catalog with high-demand enterprise components.
 
-Goal: the infrastructure that makes every later change safe.
+### Phase 6A: Essential Form & Input Extensions (Target: v3.1.0)
+High-frequency inputs needed across web applications:
 
-- Convert to pnpm workspaces plus Turborepo with the layout in [../03-target-architecture/folder-structure.md](../03-target-architecture/folder-structure.md). Docs depend on `workspace:*`.
-- Add the component manifest and codegen for barrels, exports, tsup entries and the docs registry ([../03-target-architecture/build-and-release.md](../03-target-architecture/build-and-release.md)).
-- Rewrite the tsup config: single config, `splitting: true`, ESM plus CJS, sourcemaps, `"use client"` banner.
-- Add CI: typecheck against React 18 and 19 types, lint (with `jsx-a11y` and a "no palette classes" rule), build, `publint`, `attw`, export smoke test, RSC fixture build, size-limit.
-- Add Vitest, Testing Library and axe. Write smoke plus SSR tests for all 55 components.
-- Add Changesets and trusted publishing with provenance.
-- Create `packages/tokens`, ship `theme.css` (Tailwind v4 `@theme`) and a v3 preset. Add success, warning, info, chart and sidebar tokens.
-- Add `LICENSE`, `CONTRIBUTING.md`, `SECURITY.md`, `CODE_OF_CONDUCT.md`.
+- [ ] **Kbd**: Keyboard shortcut badge with automatic platform awareness (Mac `⌘` vs Windows `Ctrl`).
+- [ ] **Spinner**: Accessible indeterminate loading indicator with configurable sizes, speeds, and color tokens.
+- [ ] **PasswordInput**: Specialized input with integrated toggle visibility button (`Eye`/`EyeOff`), caps-lock warning, and accessible label wiring.
+- [ ] **NumberInput**: Numeric stepper with increment/decrement buttons, min/max clamp, step increments, and keyboard arrow keys.
+- [ ] **ButtonGroup & InputGroup**: Container primitives for seamlessly joining buttons and inputs with shared borders and focus handling.
+- [ ] **EmptyState**: Standardized zero-data display with icon placeholder, header, message, and action button slots.
+- [ ] **MultiSelect / TagsInput**: Multi-value pill selector built on native Popover and Command with chip removal and search filtering.
 
-Exit criteria: CI green on every PR, a test file for every component, tokens importable with one CSS line.
+### Phase 6B: Advanced Dates & Workflow Controls (Target: v3.2.0)
+Advanced date pickers and multi-step UI:
 
-## Phase 2: Primitives and API rewrite (weeks 4 to 10)
+- [ ] **DateRangePicker**: Dual-month calendar picker with date range selection and pre-set ranges ("Today", "Last 7 days", "This Month").
+- [ ] **TimePicker**: Standalone segmented time selector (hours, minutes, AM/PM) with keyboard stepping.
+- [ ] **Stepper**: Multi-step process wizard with horizontal/vertical layouts, completed/active/pending states, and descriptions.
+- [ ] **FileUpload / Dropzone**: Drag-and-drop file upload component with mime-type filters, file size limits, progress indicator, and file previews.
 
-Goal: every interactive component reaches at least a B grade.
+### Phase 6C: Analytics & Activity Display (Target: v3.3.0)
+Enterprise data presentation:
 
-- Make the headless foundation decision ([../03-target-architecture/component-api-standards.md](../03-target-architecture/component-api-standards.md#headless-foundation-decision)). Recommended: Radix for interactive primitives.
-- Add shared internals: `Slot`, `useControllableState`, `composeEventHandlers`, `Presence`.
-- Rebuild, in this order (highest usage and worst grade first):
-  1. Dialog, AlertDialog, Sheet (Modal and Drawer become deprecated wrappers)
-  2. Popover, Tooltip, HoverCard
-  3. DropdownMenu, ContextMenu, Menubar (shared menu core)
-  4. Select, Combobox, Command (cmdk)
-  5. Tabs, Accordion, Collapsible
-  6. Checkbox, Switch, RadioGroup, Slider, Toggle, ToggleGroup
-  7. NavigationMenu, ScrollArea, Resizable
-- Apply the variant vocabulary and replace all hardcoded palette classes with tokens. Remove every `dark:` class from components.
-- Ship the motion system ([../03-target-architecture/motion-system.md](../03-target-architecture/motion-system.md)): motion tokens, `animations.css`, `Presence` for exit animations, reduced motion, and the per-component motion spec.
-- Make focus visible in forced colors mode and add Pointer Events to drag interactions (Slider, Resizable, Carousel).
-- Remove inert props (about 150) or implement them.
-- Full behavior test checklist for every rebuilt component.
+- [ ] **StatCard / KPICard**: Metric display cards with trend indicator badges (up/down percentage), subtext, and optional mini sparklines.
+- [ ] **Timeline**: Vertical activity feed component with status icons, connector lines, timestamps, and expandable content.
+- [ ] **Banner / Callout**: System-wide dismissible notifications and inline contextual message boxes.
+- [ ] **Unified Toast Engine**: Single unified `toast()` store deprecating dual Toast/Sonner APIs.
 
-Exit criteria: no F grades, axe clean, keyboard tables generated from tests.
+### Phase 6D: AI Interface Kit (Target: v3.4.0)
+Modern AI-native conversational UI components:
 
-## Phase 3: Advanced components (weeks 10 to 16)
+- [ ] **PromptInput**: Auto-expanding chat prompt box with attachment buttons, token count, and send action.
+- [ ] **MessageBubble**: User and Assistant message bubbles supporting markdown rendering, streaming state, and copy actions.
+- [ ] **ReasoningDisclosure**: Collapsible "Thought process" accordion with shimmer loading animations.
+- [ ] **ToolCallCard**: Structured display for AI function/tool executions with status badges and argument inspect dialog.
 
-Goal: the features that set enterprise libraries apart.
+---
 
-- **Forms**: `Field` system, real react-hook-form `Form`, zod example, hidden inputs for custom controls.
-- **Dates**: inline Calendar on react-day-picker (single, multiple, range), DatePicker, DateRangePicker, TimePicker, DateTimePicker. Locale support through `Intl`.
-- **DataTable** on TanStack Table: sorting, filtering, column visibility, pinning, resizing, row selection, server mode, virtualization, empty and loading states.
-- **Charts**: `ChartContainer` on Recharts using `--chart-*` tokens, with tooltip, legend and accessible data table fallback.
-- **Toasts**: one `toast()` API (wrap sonner or build a `useSyncExternalStore` store).
-- **New Tier 1 components** from [../02-benchmark/missing-components.md](../02-benchmark/missing-components.md): MultiSelect, NumberInput, PasswordInput, Spinner, Kbd, Empty, ButtonGroup, InputGroup, Stepper, FileUpload, Stack, Grid, Container.
-- `hooks` entry point.
-- RTL support through `DirectionProvider` and logical CSS properties.
+## 📈 Quality & Testing Gates for New Additions
 
-Exit criteria: feature parity with shadcn for core components, plus DataTable and Dates beyond it.
-
-## Phase 4: Docs platform and ecosystem (weeks 12 to 20, overlaps phase 3)
-
-Goal: docs that cannot drift and an ecosystem around the package.
-
-- Migrate docs to MDX with one server-rendered page per component ([../03-target-architecture/docs-platform.md](../03-target-architecture/docs-platform.md)).
-- Generated props tables, single-source demos, Shiki highlighting, real search.
-- Guides: Theming, Dark mode, Server Components, Forms, Accessibility, Migration, Contributing.
-- Theme builder page with contrast checks and export.
-- shadcn-compatible registry, then the `mad-ui` CLI ([../03-target-architecture/cli-and-registry.md](../03-target-architecture/cli-and-registry.md)).
-- Blocks: dashboard shell, auth, settings, billing, team members. Navbar, Sidebar and Layout move here.
-- Starter templates for Next.js App Router and Vite.
-- Workbench (Storybook or Ladle) with visual regression in CI.
-
-## Phase 5: 3.0 release (around week 20)
-
-- Remove deprecated exports: `Modal`, standalone `Radio`, `Sonner`, `colors.ts` helpers, custom `useId`, `individual/*` paths that changed.
-- Publish the migration guide with codemods through `mad-ui upgrade`.
-- Announce with a public test and accessibility matrix.
-
-## Ongoing after 3.0
-
-- Pass every gate in [production-readiness.md](production-readiness.md) and run the dogfooding apps before calling the library production grade.
-- AI kit (Conversation, Message, PromptInput, Response, Reasoning, ToolCall, Sources) and the optional `motion` entry point.
-- P2 components from [../02-benchmark/component-catalog-expansion.md](../02-benchmark/component-catalog-expansion.md) (Tree, Timeline, SegmentedControl, Chip, ColorPicker, virtualized List and more).
-- Density modes and multi-brand theming.
-- Figma kit generated from `packages/tokens`.
-- Quarterly manual screen reader audit.
-
-## Tracking
-
-Replace [COMPONENTS_STATUS.md](../../COMPONENTS_STATUS.md) and [MAD_UI_ROADMAP.md](../../MAD_UI_ROADMAP.md) with:
-
-- A GitHub Project board with one issue per component per phase.
-- A generated status page in the docs (grade, tests, a11y, since-version), built from `*.meta.ts` and CI results.
+Every new component must satisfy the following checklist before merge:
+1. **Zero Third-Party UI Dependencies**: Built strictly on existing native primitives (`Slot`, `Portal`, `FocusScope`, `Presence`).
+2. **Behavior Test Suite**: Comprehensive tests in `tests/smoke.test.tsx` verifying StrictMode, SSR rendering, ref forwarding, and accessibility.
+3. **Automated a11y Audit**: `axe-core` verification with 0 violations.
+4. **Registry & Props Documentation**: Fully documented in `component.manifest.ts`, `component-registry.ts`, and `component-props.ts`.
+5. **CLI Adder Parity**: Validated in `tests/parity.test.ts` for clean distribution via `npx mad-ui-components add <name>`.

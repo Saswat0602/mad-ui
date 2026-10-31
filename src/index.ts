@@ -26,12 +26,16 @@ export { Slider } from './components/core/slider'
 export { Rating } from './components/core/rating'
 export { Skeleton } from './components/core/skeleton'
 export { Textarea } from './components/core/textarea'
+export { ButtonGroup } from './components/core/button-group'
+export { InputGroup, InputGroupAddon } from './components/core/input-group'
 
 // Form Components
 export { RadioGroup, RadioGroupItem } from './components/forms/radio-group'
 export { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from './components/forms/accordion'
 export { Calendar } from './components/forms/calendar'
 export { DateTimePicker } from './components/forms/datetime-picker'
+export { PasswordInput } from './components/forms/password-input'
+export { NumberInput } from './components/forms/number-input'
 export { InputOTP, InputOTPGroup, InputOTPSlot } from './components/forms/input-otp'
 export { Breadcrumbs } from './components/forms/breadcrumbs'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/forms/tabs'
@@ -168,6 +172,8 @@ export { Chart, BarChart, LineChart, PieChart, DoughnutChart } from './component
 
 // Feedback Components
 export { Alert, AlertTitle, AlertDescription } from './components/feedback/alert'
+export { Spinner } from './components/feedback/spinner'
+export { EmptyState, EmptyStateIcon, EmptyStateTitle, EmptyStateDescription, EmptyStateActions } from './components/feedback/empty-state'
 export { Sonner } from './components/feedback/sonner'
 export { 
   Toast, 
@@ -217,6 +223,7 @@ export { Pagination, PaginationItem, PaginationContent, PaginationEllipsis } fro
 // Media Components
 export { Avatar, AvatarImage, AvatarFallback, AvatarGroup } from './components/media/avatar'
 export { Badge } from './components/media/badge'
+export { Kbd, formatKeySymbol } from './components/media/kbd'
 export { AspectRatio } from './components/media/aspect-ratio'
 export { 
   Carousel, 
@@ -266,11 +273,15 @@ export type { SliderProps } from './components/core/slider'
 export type { RatingProps } from './components/core/rating'
 export type { SkeletonProps } from './components/core/skeleton'
 export type { TextareaProps } from './components/core/textarea'
+export type { ButtonGroupProps } from './components/core/button-group'
+export type { InputGroupProps, InputGroupAddonProps } from './components/core/input-group'
 
 export type { RadioGroupProps, RadioGroupItemProps } from './components/forms/radio-group'
 export type { AccordionProps, AccordionItemData, AccordionItemProps, AccordionTriggerProps, AccordionContentProps } from './components/forms/accordion'
 export type { CalendarProps } from './components/forms/calendar'
 export type { DateTimePickerProps, DateTimeMode, TimeFormat } from './components/forms/datetime-picker'
+export type { PasswordInputProps } from './components/forms/password-input'
+export type { NumberInputProps } from './components/forms/number-input'
 export type { InputOTPProps, InputOTPGroupProps, InputOTPSlotProps } from './components/forms/input-otp'
 export type { BreadcrumbsProps, BreadcrumbItem } from './components/forms/breadcrumbs'
 export type { TabsProps, TabItem, TabsListProps, TabsTriggerProps, TabsContentProps } from './components/forms/tabs'
@@ -398,6 +409,8 @@ export type { DataTableProps, DataTableColumn, DataTableHeaderProps, DataTableRo
 export type { ChartProps, ChartData, BarChartProps, LineChartProps, PieChartProps } from './components/data/chart'
 
 export type { AlertProps, AlertType, AlertVariant } from './components/feedback/alert'
+export type { SpinnerProps } from './components/feedback/spinner'
+export type { EmptyStateProps, EmptyStateIconProps } from './components/feedback/empty-state'
 export type { SonnerProps, ToastItem } from './components/feedback/sonner'
 export type { ToastProps, ToastProviderProps } from './components/feedback/toast'
 
@@ -445,6 +458,7 @@ export type { PaginationProps, PaginationItemProps } from './components/navigati
 
 export type { AvatarProps, AvatarImageProps, AvatarFallbackProps, AvatarGroupProps } from './components/media/avatar'
 export type { BadgeProps } from './components/media/badge'
+export type { KbdProps } from './components/media/kbd'
 export type { AspectRatioProps } from './components/media/aspect-ratio'
 export type { 
   CarouselProps, 

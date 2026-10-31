@@ -15,6 +15,7 @@
 | **Phase 3** | **Advanced Components & Forms** | Composable form system (zod + react-hook-form compatible), advanced virtualized DataTable | 🟢 **COMPLETED** | **100%** |
 | **Phase 4** | **Showcase Platform & DX** | Interactive theme builder, CLI component adder, props documentation | 🟢 **COMPLETED** | **100%** |
 | **Phase 5** | **Release & Community** | NPM 3.0 release, migration guides, automated release provenance | 🟢 **COMPLETED** | **100%** |
+| **Phase 6A** | **Essential Micro-Components** | Kbd, Spinner, PasswordInput, NumberInput, ButtonGroup, InputGroup, EmptyState | 🟢 **COMPLETED** | **100%** |
 
 ---
 
@@ -214,18 +215,48 @@
 
 ---
 
+## 🟢 Phase 6A — Essential Micro-Components & Core Inputs — [COMPLETED]
+
+**Goal**: Deliver essential micro-components and form inputs requested in the roadmap (`Kbd`, `Spinner`, `PasswordInput`, `NumberInput`, `ButtonGroup`, `InputGroup`, `EmptyState`) adhering to the 10-point integration checklist, 0 third-party UI dependencies, and strict accessibility.
+
+### Completed Milestones
+- [x] **`Kbd` (`src/components/media/kbd.tsx`)**:
+  - Semantic `<kbd>` component with automatic cross-platform key symbol formatting (Mac `⌘`, `⌥`, `⇧` vs Windows `Ctrl`, `Alt`, `Shift`).
+  - Variants: `default`, `outline`, `subtle`.
+- [x] **`Spinner` (`src/components/feedback/spinner.tsx`)**:
+  - Indeterminate SVG spinner with `role="status"` and accessible screen reader announcement.
+  - Configurable sizes (`xs`–`xl`) and semantic color tokens.
+- [x] **`PasswordInput` (`src/components/forms/password-input.tsx`)**:
+  - Secure password field with reveal eye toggle, caps-lock detection, and optional 4-tier strength score meter.
+- [x] **`NumberInput` (`src/components/forms/number-input.tsx`)**:
+  - Numeric stepper input with auto-repeat on hold, arrow key incrementing, min/max clamp, and `role="spinbutton"`.
+- [x] **`ButtonGroup` (`src/components/core/button-group.tsx`)**:
+  - Visual button container with border collapsing, focus ring elevation, and horizontal/vertical layout.
+- [x] **`InputGroup` (`src/components/core/input-group.tsx`)**:
+  - Composite input wrapper with prefix/suffix text and icon addons.
+- [x] **`EmptyState` (`src/components/feedback/empty-state.tsx`)**:
+  - Minimal zero-data graphic container with title, description, and action button slots.
+- [x] **Verification & Documentation Parity**:
+  - All 7 components registered in `component.manifest.ts` (now 62 components).
+  - Subpath exports added to `package.json#exports` and `tsup.config.ts`.
+  - Props tables documented in `docs/src/lib/component-props.ts`.
+  - Interactive demos added in `docs/src/lib/examples/`.
+  - Tests expanded to 55 / 55 passing with 0 axe-core violations.
+
+---
+
 ## 🧪 Verification Matrix
 
 | Check / Tool | Target | Status | Result |
 | :--- | :--- | :---: | :--- |
 | **TypeScript Typecheck** | `tsc --noEmit` | ✅ Passing | 0 errors |
-| **Unit & Parity Tests** | `vitest run` (`parity.test.ts` & `smoke.test.tsx`) | ✅ Passing | 49 / 49 tests passing |
+| **Unit & Parity Tests** | `vitest run` (`parity.test.ts` & `smoke.test.tsx`) | ✅ Passing | 55 / 55 tests passing |
 | **Accessibility Audits** | `vitest-axe` (`axe-core`) | ✅ Passing | 0 violations |
-| **Package Linter** | `publint` (`npm run check:pkg`) | ✅ Passing | 64 / 64 subpaths valid |
-| **Manifest Audit** | `node scripts/verify-manifest.js` | ✅ Passing | 55 / 55 components verified |
+| **Package Linter** | `publint` (`npm run check:pkg`) | ✅ Passing | 71 / 71 subpaths valid |
+| **Manifest Audit** | `node scripts/verify-manifest.js` | ✅ Passing | 62 / 62 components verified |
 | **Root Linter** | `eslint src tests` | ✅ Passing | 0 errors |
-| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 67 bundles + 67.65 KB CSS |
-| **Documentation Build** | `next build` (Next.js 16.4.3 Turbopack) | ✅ Passing | 65 / 65 static pages generated |
+| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 74 bundles + 69.42 KB CSS |
+| **Documentation Build** | `next build` (Next.js 16.4.3 Turbopack) | ✅ Passing | 72 / 72 static pages generated |
 | **Documentation Linter** | `npm --prefix docs run lint` | ✅ Passing | 0 errors, 0 warnings |
 
 

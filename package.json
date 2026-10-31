@@ -357,6 +357,41 @@
       "types": "./dist/toast.d.mts",
       "import": "./dist/toast.mjs",
       "default": "./dist/toast.mjs"
+    },
+    "./button-group": {
+      "types": "./dist/button-group.d.mts",
+      "import": "./dist/button-group.mjs",
+      "default": "./dist/button-group.mjs"
+    },
+    "./input-group": {
+      "types": "./dist/input-group.d.mts",
+      "import": "./dist/input-group.mjs",
+      "default": "./dist/input-group.mjs"
+    },
+    "./password-input": {
+      "types": "./dist/password-input.d.mts",
+      "import": "./dist/password-input.mjs",
+      "default": "./dist/password-input.mjs"
+    },
+    "./number-input": {
+      "types": "./dist/number-input.d.mts",
+      "import": "./dist/number-input.mjs",
+      "default": "./dist/number-input.mjs"
+    },
+    "./spinner": {
+      "types": "./dist/spinner.d.mts",
+      "import": "./dist/spinner.mjs",
+      "default": "./dist/spinner.mjs"
+    },
+    "./empty-state": {
+      "types": "./dist/empty-state.d.mts",
+      "import": "./dist/empty-state.mjs",
+      "default": "./dist/empty-state.mjs"
+    },
+    "./kbd": {
+      "types": "./dist/kbd.d.mts",
+      "import": "./dist/kbd.mjs",
+      "default": "./dist/kbd.mjs"
     }
   },
   "files": [

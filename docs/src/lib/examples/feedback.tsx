@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, Toast } from 'mad-ui-components'
+import { Alert, Toast, Spinner, EmptyState, Button } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -130,6 +130,64 @@ export function ToastExample() {
       preview: (
         <div className="w-full max-w-sm">
           <Toast message="This is a toast message" type="success" />
+        </div>
+      )
+    }
+  ],
+
+  spinner: [
+    {
+      title: 'Spinner Sizes & Variants',
+      description: 'Accessible loading indicator across multiple scales and semantic variants',
+      code: `import { Spinner } from 'mad-ui-components'
+
+export function SpinnerExample() {
+  return (
+    <div className="flex items-center gap-6">
+      <Spinner size="xs" />
+      <Spinner size="sm" />
+      <Spinner size="md" variant="primary" />
+      <Spinner size="lg" variant="secondary" />
+      <Spinner size="xl" variant="muted" />
+    </div>
+  )
+}`,
+      preview: (
+        <div className="flex items-center justify-center gap-6 p-4">
+          <Spinner size="xs" />
+          <Spinner size="sm" />
+          <Spinner size="md" variant="primary" />
+          <Spinner size="lg" variant="secondary" />
+          <Spinner size="xl" variant="muted" />
+        </div>
+      )
+    }
+  ],
+
+  'empty-state': [
+    {
+      title: 'Dashed Empty State',
+      description: 'Zero data placeholder with title, subtext, and action buttons',
+      code: `import { EmptyState, Button } from 'mad-ui-components'
+
+export function EmptyStateExample() {
+  return (
+    <EmptyState
+      variant="dashed"
+      title="No active deployments"
+      description="You haven't deployed any services yet. Get started by connecting a Git repository."
+      action={<Button size="sm">Deploy Service</Button>}
+    />
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <EmptyState
+            variant="dashed"
+            title="No active deployments"
+            description="You haven't deployed any services yet. Get started by connecting a Git repository."
+            action={<Button size="sm">Deploy Service</Button>}
+          />
         </div>
       )
     }

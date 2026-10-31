@@ -1,6 +1,6 @@
 # 📋 Mad UI Component Implementation & Status Audit
 
-This document provides a comprehensive audit of all **55+ components** in `mad-ui-components`, detailing implementation status, export availability, TypeScript declaration support, and documentation status.
+This document provides a comprehensive audit of all **62 components** in `mad-ui-components`, detailing implementation status, export availability, TypeScript declaration support, and documentation status.
 
 ---
 
@@ -8,15 +8,15 @@ This document provides a comprehensive audit of all **55+ components** in `mad-u
 
 | Category | Components Count | Build Status | TypeScript Support | Documentation Status |
 | :--- | :---: | :---: | :---: | :---: |
-| **Core** | 13 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Forms** | 8 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
+| **Core** | 15 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
+| **Forms** | 10 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Layout** | 10 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Overlay** | 8 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Navigation** | 5 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Data Display** | 3 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Feedback** | 3 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Media** | 5 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Total** | **55** | **100% Compiled** | **Universal** | **All Documented** |
+| **Feedback** | 5 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
+| **Media** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
+| **Total** | **62** | **100% Compiled** | **Universal** | **All Documented** |
 
 ---
 
@@ -37,10 +37,12 @@ This document provides a comprehensive audit of all **55+ components** in `mad-u
 | **Rating** | `src/components/core/rating.tsx` | `mad-ui-components/rating` | 🟢 100% Stable | Star rating input with hover feedback, fractional ratings, read-only mode. |
 | **Skeleton** | `src/components/core/skeleton.tsx` | `mad-ui-components/skeleton` | 🟢 100% Stable | Pulse and shimmer placeholder loading skeletons with custom dimensions. |
 | **Textarea** | `src/components/core/textarea.tsx` | `mad-ui-components/textarea` | 🟢 100% Stable | Multi-line text input with auto-resize and character limit indicator. |
+| **ButtonGroup** | `src/components/core/button-group.tsx` | `mad-ui-components/button-group` | 🟢 100% Stable | Grouping adjacent buttons with seamless border merging and focus rings. |
+| **InputGroup** | `src/components/core/input-group.tsx` | `mad-ui-components/input-group` | 🟢 100% Stable | Composite input wrapper with prefix/suffix addons and action buttons. |
 
 ---
 
-## 2. Form & Input Components (8 Components)
+## 2. Form & Input Components (10 Components)
 
 | Component | Source Path | Subpath Export | Status | Features & Notes |
 | :--- | :--- | :--- | :---: | :--- |
@@ -52,6 +54,8 @@ This document provides a comprehensive audit of all **55+ components** in `mad-u
 | **Radio Group** | `src/components/forms/radio-group.tsx` | `mad-ui-components/radio-group` | 🟢 100% Stable | Group controller for radio options with keyboard arrow navigation. |
 | **React Hook Form** | `src/components/forms/react-hook-form.tsx` | `mad-ui-components/form` | 🟢 100% Stable | Form wrappers with field validation errors and context binding. |
 | **Tabs** | `src/components/forms/tabs.tsx` | `mad-ui-components/tabs` | 🟢 100% Stable | Horizontal/vertical tabbed panels with animated active underline/pill. |
+| **PasswordInput** | `src/components/forms/password-input.tsx` | `mad-ui-components/password-input` | 🟢 100% Stable | Password field with reveal toggle, strength meter, and caps-lock detection. |
+| **NumberInput** | `src/components/forms/number-input.tsx` | `mad-ui-components/number-input` | 🟢 100% Stable | Numeric stepper input with clamp bounds, increment buttons, and arrow keys. |
 
 ---
 
@@ -109,17 +113,19 @@ This document provides a comprehensive audit of all **55+ components** in `mad-u
 
 ---
 
-## 7. Feedback Components (3 Components)
+## 7. Feedback Components (5 Components)
 
 | Component | Source Path | Subpath Export | Status | Features & Notes |
 | :--- | :--- | :--- | :---: | :--- |
 | **Alert** | `src/components/feedback/alert.tsx` | `mad-ui-components/alert` | 🟢 100% Stable | Inline status banners (`default`, `info`, `success`, `warning`, `destructive`). |
 | **Toast** | `src/components/feedback/toast.tsx` | `mad-ui-components/toast` | 🟢 100% Stable | Corner toast notifications with auto-dismiss timers and action buttons. |
 | **Sonner** | `src/components/feedback/sonner.tsx` | `mad-ui-components/sonner` | 🟢 100% Stable | Modern stacked toast system with swipe gestures and theme support. |
+| **Spinner** | `src/components/feedback/spinner.tsx` | `mad-ui-components/spinner` | 🟢 100% Stable | Accessible indeterminate loading indicator with screen reader support. |
+| **EmptyState** | `src/components/feedback/empty-state.tsx` | `mad-ui-components/empty-state` | 🟢 100% Stable | Zero-data placeholder graphic and action container for empty views. |
 
 ---
 
-## 8. Media & Typography Components (5 Components)
+## 8. Media & Typography Components (6 Components)
 
 | Component | Source Path | Subpath Export | Status | Features & Notes |
 | :--- | :--- | :--- | :---: | :--- |
@@ -128,6 +134,7 @@ This document provides a comprehensive audit of all **55+ components** in `mad-u
 | **AspectRatio** | `src/components/media/aspect-ratio.tsx` | `mad-ui-components/aspect-ratio` | 🟢 100% Stable | Container for maintaining video and image aspect ratios (16/9, 4/3, 1/1). |
 | **Carousel** | `src/components/media/carousel.tsx` | `mad-ui-components/carousel` | 🟢 100% Stable | Interactive touch carousel with autoplay, indicators, and arrow navigation. |
 | **Typography** | `src/components/media/typography.tsx` | `mad-ui-components/typography` | 🟢 100% Stable | Semantic text components: `H1`, `H2`, `H3`, `H4`, `P`, `Blockquote`, `Code`, `Lead`. |
+| **Kbd** | `src/components/media/kbd.tsx` | `mad-ui-components/kbd` | 🟢 100% Stable | Keyboard shortcut indicator badge with cross-platform key normalization. |
 
 ---
 

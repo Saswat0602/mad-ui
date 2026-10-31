@@ -10,6 +10,7 @@ export {
 } from '../components/media/carousel'
 export { Avatar, AvatarImage, AvatarFallback, AvatarGroup } from '../components/media/avatar'
 export { Badge } from '../components/media/badge'
+export { Kbd, formatKeySymbol } from '../components/media/kbd'
 
 export { 
   TypographyH1, 
@@ -39,6 +40,7 @@ export type {
 } from '../components/media/carousel'
 export type { AvatarProps, AvatarImageProps, AvatarFallbackProps, AvatarGroupProps } from '../components/media/avatar'
 export type { BadgeProps } from '../components/media/badge'
+export type { KbdProps } from '../components/media/kbd'
 export type { 
   TypographyProps,
   TypographyH1Props, 
