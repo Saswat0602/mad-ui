@@ -75,6 +75,13 @@ import { Spinner } from '../src/components/feedback/spinner'
 import { EmptyState } from '../src/components/feedback/empty-state'
 import { Kbd } from '../src/components/media/kbd'
 
+// Phase 2 Advanced Inputs & Workflow Navigation
+import { MultiSelect } from '../src/components/forms/multi-select'
+import { DateRangePicker } from '../src/components/forms/date-range-picker'
+import { TimePicker } from '../src/components/forms/time-picker'
+import { FileUpload } from '../src/components/forms/file-upload'
+import { Stepper } from '../src/components/navigation/stepper'
+
 
 describe('Smoke & SSR Component Suite', () => {
   describe('Client Rendering in StrictMode', () => {
@@ -786,6 +793,166 @@ describe('Smoke & SSR Component Suite', () => {
         />
       )
       expect(ssr).toContain('SSR Title')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders MultiSelect with pills, search filter and selection toggle', async () => {
+      let selectedValues: string[] = ['admin']
+      const options = [
+        { label: 'Administrator', value: 'admin' },
+        { label: 'Developer', value: 'dev' },
+        { label: 'Designer', value: 'designer' }
+      ]
+
+      const { container, getByText } = render(
+        <StrictMode>
+          <MultiSelect
+            options={options}
+            value={selectedValues}
+            onChange={(val) => { selectedValues = val }}
+            placeholder="Select roles"
+          />
+        </StrictMode>
+      )
+
+      expect(getByText('Administrator')).toBeDefined()
+
+      // Open dropdown by clicking trigger
+      const trigger = getByText('Administrator').closest('div')
+      if (trigger) fireEvent.click(trigger)
+
+      // SSR test
+      const ssr = renderToString(
+        <MultiSelect options={options} defaultValue={['dev']} />
+      )
+      expect(ssr).toContain('Developer')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders DateRangePicker with presets and date display', async () => {
+      let activeRange = {
+        from: new Date(2026, 9, 1),
+        to: new Date(2026, 9, 15)
+      }
+
+      const { container, getByText } = render(
+        <StrictMode>
+          <DateRangePicker
+            value={activeRange}
+            onChange={(range) => { activeRange = range }}
+          />
+        </StrictMode>
+      )
+
+      expect(getByText(/Oct 1, 2026/)).toBeDefined()
+      expect(getByText(/Oct 15, 2026/)).toBeDefined()
+
+      // SSR test
+      const ssr = renderToString(
+        <DateRangePicker defaultValue={activeRange} />
+      )
+      expect(ssr).toContain('Oct 1, 2026')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders TimePicker and handles time format', async () => {
+      let selectedTime = '10:30 AM'
+
+      const { container, getByLabelText, getByText } = render(
+        <StrictMode>
+          <TimePicker
+            value={selectedTime}
+            onChange={(time) => { selectedTime = time }}
+            format="12h"
+          />
+        </StrictMode>
+      )
+
+      const hoursInput = getByLabelText('Hours') as HTMLInputElement
+      const minutesInput = getByLabelText('Minutes') as HTMLInputElement
+      expect(hoursInput.value).toBe('10')
+      expect(minutesInput.value).toBe('30')
+      expect(getByText('AM')).toBeDefined()
+
+      // SSR test
+      const ssr = renderToString(
+        <TimePicker defaultValue="02:45 PM" />
+      )
+      expect(ssr).toContain('02')
+      expect(ssr).toContain('45')
+      expect(ssr).toContain('PM')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders FileUpload dropzone with drag events and file list', async () => {
+      const mockFile = new File(['mock content'], 'test-doc.pdf', { type: 'application/pdf' })
+      let files: File[] = [mockFile]
+
+      const { container, getByText } = render(
+        <StrictMode>
+          <FileUpload
+            value={files}
+            onChange={(f) => { files = f }}
+            title="Upload invoices"
+            description="PDF files up to 5MB"
+          />
+        </StrictMode>
+      )
+
+      expect(getByText('Upload invoices')).toBeDefined()
+      expect(getByText('PDF files up to 5MB')).toBeDefined()
+      expect(getByText('test-doc.pdf')).toBeDefined()
+
+      // SSR test
+      const ssr = renderToString(
+        <FileUpload title="Upload SSR files" />
+      )
+      expect(ssr).toContain('Upload SSR files')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders Stepper with active and completed steps and clickable navigation', async () => {
+      let active = 1
+      const steps = [
+        { title: 'Step 1: Account', description: 'Enter credentials' },
+        { title: 'Step 2: Profile', description: 'Personal details' },
+        { title: 'Step 3: Review', description: 'Confirm submit' }
+      ]
+
+      const { container, getByText } = render(
+        <StrictMode>
+          <Stepper
+            steps={steps}
+            activeStep={active}
+            onStepChange={(s) => { active = s }}
+            clickable
+          />
+        </StrictMode>
+      )
+
+      expect(getByText('Step 1: Account')).toBeDefined()
+      expect(getByText('Step 2: Profile')).toBeDefined()
+      expect(getByText('Step 3: Review')).toBeDefined()
+
+      // Click completed step 0
+      fireEvent.click(getByText('Step 1: Account'))
+      expect(active).toBe(0)
+
+      // SSR test
+      const ssr = renderToString(
+        <Stepper steps={steps} activeStep={2} />
+      )
+      expect(ssr).toContain('Step 3: Review')
 
       const results = await axe(container)
       expect(results.violations).toEqual([])

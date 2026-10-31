@@ -1910,6 +1910,240 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       required: false,
       description: 'List of keys to format and render as badges'
     }
+  ],
+  'multi-select': [
+    {
+      name: 'options',
+      type: 'MultiSelectOption[]',
+      required: true,
+      description: 'Array of selectable option objects with label, value, and disabled status'
+    },
+    {
+      name: 'value',
+      type: 'string[]',
+      required: false,
+      description: 'Controlled array of active selected value strings'
+    },
+    {
+      name: 'defaultValue',
+      type: 'string[]',
+      required: false,
+      description: 'Initial selected values for uncontrolled mode'
+    },
+    {
+      name: 'onChange',
+      type: '(value: string[]) => void',
+      required: false,
+      description: 'Callback fired when selection array changes'
+    },
+    {
+      name: 'placeholder',
+      type: 'string',
+      required: false,
+      default: 'Select options...',
+      description: 'Placeholder label when no options are selected'
+    },
+    {
+      name: 'maxSelected',
+      type: 'number',
+      required: false,
+      description: 'Maximum number of items displayed before collapsing into +N more badge'
+    },
+    {
+      name: 'searchable',
+      type: 'boolean',
+      required: false,
+      default: true,
+      description: 'Enables real-time search filtering within dropdown menu'
+    },
+    {
+      name: 'clearable',
+      type: 'boolean',
+      required: false,
+      default: true,
+      description: 'Shows quick clear button to remove all selections'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'default' | 'lg'",
+      required: false,
+      default: 'default',
+      description: 'Trigger dimension and badge padding'
+    }
+  ],
+  'date-range-picker': [
+    {
+      name: 'value',
+      type: 'DateRange',
+      required: false,
+      description: 'Controlled active date range object containing from and to dates'
+    },
+    {
+      name: 'defaultValue',
+      type: 'DateRange',
+      required: false,
+      description: 'Initial date range for uncontrolled mode'
+    },
+    {
+      name: 'onChange',
+      type: '(range: DateRange) => void',
+      required: false,
+      description: 'Callback fired when date selection changes'
+    },
+    {
+      name: 'presets',
+      type: 'DateRangePreset[]',
+      required: false,
+      description: 'Quick-select range preset buttons (Today, Yesterday, Last 7 days, etc.)'
+    },
+    {
+      name: 'minDate',
+      type: 'Date',
+      required: false,
+      description: 'Earliest allowable selectable date constraint'
+    },
+    {
+      name: 'maxDate',
+      type: 'Date',
+      required: false,
+      description: 'Latest allowable selectable date constraint'
+    },
+    {
+      name: 'placeholder',
+      type: 'string',
+      required: false,
+      default: 'Select date range',
+      description: 'Placeholder label displayed when range is unselected'
+    }
+  ],
+  'time-picker': [
+    {
+      name: 'value',
+      type: 'string',
+      required: false,
+      description: 'Controlled time string formatted as HH:MM or HH:MM AM/PM'
+    },
+    {
+      name: 'defaultValue',
+      type: 'string',
+      required: false,
+      default: '12:00 PM',
+      description: 'Initial time string for uncontrolled mode'
+    },
+    {
+      name: 'onChange',
+      type: '(time: string) => void',
+      required: false,
+      description: 'Callback fired when time value updates'
+    },
+    {
+      name: 'format',
+      type: "'12h' | '24h'",
+      required: false,
+      default: '12h',
+      description: 'Display and stepping format mode'
+    },
+    {
+      name: 'step',
+      type: 'number',
+      required: false,
+      default: 1,
+      description: 'Minute increment step for chevron arrows'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'default' | 'lg'",
+      required: false,
+      default: 'default',
+      description: 'Input box dimension'
+    }
+  ],
+  'file-upload': [
+    {
+      name: 'accept',
+      type: 'string',
+      required: false,
+      description: 'Comma-separated file extensions or MIME types allowed for upload'
+    },
+    {
+      name: 'multiple',
+      type: 'boolean',
+      required: false,
+      default: true,
+      description: 'Enables multi-file selection and drop'
+    },
+    {
+      name: 'maxSize',
+      type: 'number',
+      required: false,
+      description: 'Maximum allowable file size in bytes before rejecting'
+    },
+    {
+      name: 'maxFiles',
+      type: 'number',
+      required: false,
+      description: 'Maximum number of concurrent files allowed'
+    },
+    {
+      name: 'value',
+      type: 'File[]',
+      required: false,
+      description: 'Controlled array of active files'
+    },
+    {
+      name: 'onChange',
+      type: '(files: File[]) => void',
+      required: false,
+      description: 'Callback fired when files are added or removed'
+    },
+    {
+      name: 'variant',
+      type: "'dropzone' | 'compact'",
+      required: false,
+      default: 'dropzone',
+      description: 'Visual layout style: full dashed drag area or compact button bar'
+    }
+  ],
+  'stepper': [
+    {
+      name: 'steps',
+      type: 'StepItem[]',
+      required: true,
+      description: 'List of step definitions with title, optional description, and icon'
+    },
+    {
+      name: 'activeStep',
+      type: 'number',
+      required: false,
+      description: 'Zero-based index of current active step (controlled)'
+    },
+    {
+      name: 'defaultStep',
+      type: 'number',
+      required: false,
+      default: 0,
+      description: 'Initial step index for uncontrolled mode'
+    },
+    {
+      name: 'onStepChange',
+      type: '(step: number) => void',
+      required: false,
+      description: 'Callback fired when user clicks an unlocked step'
+    },
+    {
+      name: 'orientation',
+      type: "'horizontal' | 'vertical'",
+      required: false,
+      default: 'horizontal',
+      description: 'Layout axis direction for step nodes and connector lines'
+    },
+    {
+      name: 'clickable',
+      type: 'boolean',
+      required: false,
+      default: true,
+      description: 'Allows clicking previous completed steps to navigate backwards'
+    }
   ]
 }
 
@@ -1931,9 +2165,13 @@ const ALIAS_MAP: Record<string, string> = {
   passwordinput: 'password-input',
   numberinput: 'number-input',
   emptystate: 'empty-state',
+  multiselect: 'multi-select',
+  daterangepicker: 'date-range-picker',
+  'date-range': 'date-range-picker',
+  timepicker: 'time-picker',
+  fileupload: 'file-upload',
   'date-picker': 'datetime-picker',
-  datepicker: 'datetime-picker',
-  timepicker: 'datetime-picker'
+  datepicker: 'datetime-picker'
 }
 
 export function getComponentProps(slug: string): ComponentProp[] {

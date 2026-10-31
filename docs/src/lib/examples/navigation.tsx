@@ -20,7 +20,9 @@ import {
   NavigationMenuTrigger,
   NavigationMenuContent,
   NavigationMenuLink,
-  Pagination 
+  Pagination,
+  Stepper,
+  Button
 } from 'mad-ui-components'
 import { Search, Settings, User, CreditCard, HelpCircle, FileText, Layout } from 'lucide-react'
 
@@ -340,5 +342,88 @@ export function PaginationExample() {
         </div>
       )
     }
+  ],
+
+  stepper: [
+    {
+      title: 'Workflow Stepper Wizard',
+      description: 'Horizontal step tracker with active state highlighting, step completion icons, and interactive navigation',
+      code: `import { Stepper, Button } from 'mad-ui-components'
+import { useState } from 'react'
+
+const STEPS = [
+  { title: 'Project Details', description: 'Name and repository settings' },
+  { title: 'Environment', description: 'Configure build variables' },
+  { title: 'Deployment', description: 'Review and trigger launch' }
+]
+
+export function StepperExample() {
+  const [activeStep, setActiveStep] = useState(1)
+
+  return (
+    <div className="w-full max-w-xl space-y-6">
+      <Stepper
+        steps={STEPS}
+        activeStep={activeStep}
+        onStepChange={setActiveStep}
+      />
+      <div className="flex justify-between pt-4 border-t border-zinc-200 dark:border-zinc-800">
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={activeStep === 0}
+          onClick={() => setActiveStep(prev => prev - 1)}
+        >
+          Previous
+        </Button>
+        <Button
+          size="sm"
+          disabled={activeStep === STEPS.length - 1}
+          onClick={() => setActiveStep(prev => prev + 1)}
+        >
+          Next Step
+        </Button>
+      </div>
+    </div>
+  )
+}`,
+      preview: <StepperDemo />
+    }
   ]
+}
+
+function StepperDemo() {
+  const [activeStep, setActiveStep] = React.useState(1)
+  const steps = [
+    { title: 'Project Details', description: 'Name & repository' },
+    { title: 'Environment', description: 'Build variables' },
+    { title: 'Deployment', description: 'Launch to prod' }
+  ]
+
+  return (
+    <div className="w-full max-w-xl space-y-6 p-4">
+      <Stepper
+        steps={steps}
+        activeStep={activeStep}
+        onStepChange={setActiveStep}
+      />
+      <div className="flex justify-between pt-4 border-t border-zinc-200 dark:border-zinc-800">
+        <Button
+          variant="outline"
+          size="sm"
+          disabled={activeStep === 0}
+          onClick={() => setActiveStep(prev => prev - 1)}
+        >
+          Previous
+        </Button>
+        <Button
+          size="sm"
+          disabled={activeStep === steps.length - 1}
+          onClick={() => setActiveStep(prev => prev + 1)}
+        >
+          Next Step
+        </Button>
+      </div>
+    </div>
+  )
 }

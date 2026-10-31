@@ -203,7 +203,39 @@ export const COMPONENT_REGISTRY = {
     description: 'Numeric stepper input with increment buttons, clamp bounds, and arrow key support',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['form', 'number', 'stepper', 'input']
+    tags: ['form', 'number', 'stepper']
+  },
+  'multi-select': {
+    category: 'Form' as ComponentCategory,
+    title: 'Multi Select',
+    description: 'Searchable multi-tag selector with pill removal, keyboard navigation, and max badges',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['form', 'select', 'tags']
+  },
+  'date-range-picker': {
+    category: 'Form' as ComponentCategory,
+    title: 'Date Range Picker',
+    description: 'Dual-calendar date range selector with quick preset shortcuts and constraint validation',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['form', 'date', 'calendar']
+  },
+  'time-picker': {
+    category: 'Form' as ComponentCategory,
+    title: 'Time Picker',
+    description: 'Segmented time selector supporting 12h/24h formats and minute stepping',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['form', 'time', 'clock']
+  },
+  'file-upload': {
+    category: 'Form' as ComponentCategory,
+    title: 'File Upload',
+    description: 'Drag-and-drop file upload zone with preview cards, size limits, and file removal',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['form', 'upload', 'files']
   },
 
   // Layout Components
@@ -466,7 +498,15 @@ export const COMPONENT_REGISTRY = {
     description: 'A collapsible sidebar navigation component with persistent state, multiple variants, and enterprise features for building modern web applications.',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['sidebar', 'navigation', 'collapsible', 'persistent', 'enterprise', 'accessibility']
+    tags: ['sidebar', 'navigation', 'collapsible']
+  },
+  'stepper': {
+    category: 'Navigation' as ComponentCategory,
+    title: 'Stepper',
+    description: 'Multi-step workflow wizard indicator supporting horizontal and vertical orientations',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['navigation', 'stepper', 'wizard']
   },
 
 

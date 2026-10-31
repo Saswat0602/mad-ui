@@ -18,6 +18,12 @@ import {
   Button,
   PasswordInput,
   NumberInput,
+  MultiSelect,
+  DateRangePicker,
+  TimePicker,
+  FileUpload,
+  type DateRange,
+  type MultiSelectOption,
   Calendar as MadCalendar 
 } from 'mad-ui-components'
 import { Calendar as CalendarIcon, Clock, Sliders, Palette, CalendarDays, Zap } from 'lucide-react'
@@ -779,6 +785,121 @@ export function NumberInputExample() {
 }`,
       preview: <NumberInputDemo />
     }
+  ],
+
+  'multi-select': [
+    {
+      title: 'Searchable Tag Multi-Select',
+      description: 'Multi-value option selection with inline pill removal, search query filter, and max item badges',
+      code: `import { MultiSelect } from 'mad-ui-components'
+import { useState } from 'react'
+
+const ROLES = [
+  { label: 'Administrator', value: 'admin' },
+  { label: 'Software Engineer', value: 'swe' },
+  { label: 'Product Designer', value: 'designer' },
+  { label: 'DevOps / SRE', value: 'devops' },
+  { label: 'Billing Specialist', value: 'billing' }
+]
+
+export function MultiSelectExample() {
+  const [selected, setSelected] = useState(['admin', 'swe'])
+
+  return (
+    <div className="w-full max-w-sm space-y-2">
+      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Assigned Team Roles</label>
+      <MultiSelect
+        options={ROLES}
+        value={selected}
+        onChange={setSelected}
+        placeholder="Choose roles..."
+      />
+    </div>
+  )
+}`,
+      preview: <MultiSelectDemo />
+    }
+  ],
+
+  'date-range-picker': [
+    {
+      title: 'Date Range with Preset Shortcuts',
+      description: 'Dual-calendar range selector with fast preset buttons for common billing intervals',
+      code: `import { DateRangePicker, DateRange } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function DateRangePickerExample() {
+  const [range, setRange] = useState<DateRange>({
+    from: new Date(2026, 9, 1),
+    to: new Date(2026, 9, 31)
+  })
+
+  return (
+    <div className="w-full max-w-sm space-y-2">
+      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Audit Time Window</label>
+      <DateRangePicker
+        value={range}
+        onChange={setRange}
+      />
+    </div>
+  )
+}`,
+      preview: <DateRangePickerDemo />
+    }
+  ],
+
+  'time-picker': [
+    {
+      title: 'Segmented Time Selector',
+      description: 'Time picker supporting 12-hour AM/PM and 24-hour modes with minute stepper controls',
+      code: `import { TimePicker } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function TimePickerExample() {
+  const [time, setTime] = useState('09:30 AM')
+
+  return (
+    <div className="w-full max-w-xs space-y-2">
+      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Office Check-in Time</label>
+      <TimePicker
+        value={time}
+        onChange={setTime}
+        format="12h"
+      />
+    </div>
+  )
+}`,
+      preview: <TimePickerDemo />
+    }
+  ],
+
+  'file-upload': [
+    {
+      title: 'Drag & Drop File Upload Zone',
+      description: 'Dropzone with drag feedback, file size limits, removal triggers, and thumbnail previews',
+      code: `import { FileUpload } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function FileUploadExample() {
+  const [files, setFiles] = useState<File[]>([])
+
+  return (
+    <div className="w-full max-w-md space-y-2">
+      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Identity Documents</label>
+      <FileUpload
+        value={files}
+        onChange={setFiles}
+        maxSize={10 * 1024 * 1024}
+        maxFiles={3}
+        accept="image/*,application/pdf"
+        title="Upload passport or national ID"
+        description="PDF, PNG, JPG up to 10MB"
+      />
+    </div>
+  )
+}`,
+      preview: <FileUploadDemo />
+    }
   ]
 }
 
@@ -890,6 +1011,83 @@ function FormDemo() {
           </Button>
         </div>
       </Form>
+    </div>
+  )
+}
+
+const SAMPLE_ROLES: MultiSelectOption[] = [
+  { label: 'Administrator', value: 'admin' },
+  { label: 'Software Engineer', value: 'swe' },
+  { label: 'Product Designer', value: 'designer' },
+  { label: 'DevOps / SRE', value: 'devops' },
+  { label: 'Billing Specialist', value: 'billing' }
+]
+
+function MultiSelectDemo() {
+  const [selected, setSelected] = useState(['admin', 'swe'])
+
+  return (
+    <div className="w-full max-w-sm space-y-2">
+      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Assigned Team Roles</label>
+      <MultiSelect
+        options={SAMPLE_ROLES}
+        value={selected}
+        onChange={setSelected}
+        placeholder="Choose roles..."
+      />
+      <p className="text-xs text-zinc-500">Selected values: {selected.join(', ') || 'None'}</p>
+    </div>
+  )
+}
+
+function DateRangePickerDemo() {
+  const [range, setRange] = useState<DateRange>({
+    from: new Date(2026, 9, 1),
+    to: new Date(2026, 9, 31)
+  })
+
+  return (
+    <div className="w-full max-w-sm space-y-2">
+      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Audit Time Window</label>
+      <DateRangePicker
+        value={range}
+        onChange={setRange}
+      />
+    </div>
+  )
+}
+
+function TimePickerDemo() {
+  const [time, setTime] = useState('09:30 AM')
+
+  return (
+    <div className="w-full max-w-xs space-y-2">
+      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Office Check-in Time</label>
+      <TimePicker
+        value={time}
+        onChange={setTime}
+        format="12h"
+      />
+      <p className="text-xs text-zinc-500">Formatted time: {time}</p>
+    </div>
+  )
+}
+
+function FileUploadDemo() {
+  const [files, setFiles] = useState<File[]>([])
+
+  return (
+    <div className="w-full max-w-md space-y-2">
+      <label className="text-sm font-medium text-zinc-700 dark:text-zinc-300">Identity Documents</label>
+      <FileUpload
+        value={files}
+        onChange={setFiles}
+        maxSize={10 * 1024 * 1024}
+        maxFiles={3}
+        accept="image/*,application/pdf"
+        title="Upload passport or national ID"
+        description="PDF, PNG, JPG up to 10MB"
+      />
     </div>
   )
 }

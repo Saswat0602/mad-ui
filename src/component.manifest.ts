@@ -263,6 +263,46 @@ export const componentManifest: ComponentMeta[] = [
     exports: ['NumberInput', 'NumberInputProps'],
     description: 'Numeric stepper input with increment buttons, clamp bounds, and arrow key support.'
   },
+  {
+    name: 'multi-select',
+    title: 'Multi Select',
+    category: 'forms',
+    status: 'stable',
+    subpath: './multi-select',
+    sourceFile: 'src/components/forms/multi-select.tsx',
+    exports: ['MultiSelect', 'MultiSelectProps', 'MultiSelectOption'],
+    description: 'Searchable multi-tag selector with pill removal, keyboard navigation, and max badges.'
+  },
+  {
+    name: 'date-range-picker',
+    title: 'Date Range Picker',
+    category: 'forms',
+    status: 'stable',
+    subpath: './date-range-picker',
+    sourceFile: 'src/components/forms/date-range-picker.tsx',
+    exports: ['DateRangePicker', 'DateRangePickerProps', 'DateRange', 'DateRangePreset'],
+    description: 'Calendar date range selector with fast preset ranges and keyboard navigation.'
+  },
+  {
+    name: 'time-picker',
+    title: 'Time Picker',
+    category: 'forms',
+    status: 'stable',
+    subpath: './time-picker',
+    sourceFile: 'src/components/forms/time-picker.tsx',
+    exports: ['TimePicker', 'TimePickerProps'],
+    description: 'Segmented time selector supporting 12h/24h formats and minute steps.'
+  },
+  {
+    name: 'file-upload',
+    title: 'File Upload',
+    category: 'forms',
+    status: 'stable',
+    subpath: './file-upload',
+    sourceFile: 'src/components/forms/file-upload.tsx',
+    exports: ['FileUpload', 'FileUploadProps', 'formatBytes'],
+    description: 'Drag-and-drop file upload dropzone with preview cards, size limits, and removal.'
+  },
 
   // Layout
   {
@@ -498,6 +538,16 @@ export const componentManifest: ComponentMeta[] = [
     sourceFile: 'src/components/navigation/pagination.tsx',
     exports: ['Pagination', 'PaginationProps'],
     description: 'Navigation control across segmented pages of data.'
+  },
+  {
+    name: 'stepper',
+    title: 'Stepper',
+    category: 'navigation',
+    status: 'stable',
+    subpath: './stepper',
+    sourceFile: 'src/components/navigation/stepper.tsx',
+    exports: ['Stepper', 'StepperProps', 'StepItem'],
+    description: 'Multi-step workflow wizard indicator supporting horizontal and vertical orientations.'
   },
 
   // Data

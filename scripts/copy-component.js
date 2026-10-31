@@ -41,6 +41,10 @@ const COMPONENT_REGISTRY = {
   'tabs': { path: 'src/components/forms/tabs.tsx', category: 'Forms', description: 'Tabbed panel switcher with accessible keyboard roving focus.' },
   'password-input': { path: 'src/components/forms/password-input.tsx', category: 'Forms', description: 'Password input with integrated reveal toggle and caps-lock detection.' },
   'number-input': { path: 'src/components/forms/number-input.tsx', category: 'Forms', description: 'Numeric stepper input with clamp bounds and arrow keys.' },
+  'multi-select': { path: 'src/components/forms/multi-select.tsx', category: 'Forms', description: 'Searchable multi-tag selector with keyboard tags and max badges.' },
+  'date-range-picker': { path: 'src/components/forms/date-range-picker.tsx', category: 'Forms', description: 'Dual-calendar date range picker with fast preset ranges.' },
+  'time-picker': { path: 'src/components/forms/time-picker.tsx', category: 'Forms', description: 'Segmented time selector with 12h/24h and arrow step controls.' },
+  'file-upload': { path: 'src/components/forms/file-upload.tsx', category: 'Forms', description: 'Drag-and-drop file upload dropzone with preview cards and size validation.' },
 
   // Layout
   'drawer': { path: 'src/components/layout/drawer.tsx', category: 'Layout', description: 'Edge slide-out sheet modal.' },
@@ -70,6 +74,7 @@ const COMPONENT_REGISTRY = {
   'menubar': { path: 'src/components/navigation/menubar.tsx', category: 'Navigation', description: 'Desktop application menubar system with submenus.' },
   'navigation-menu': { path: 'src/components/navigation/navigation-menu.tsx', category: 'Navigation', description: 'Navigation bar with responsive dropdown panels.' },
   'pagination': { path: 'src/components/navigation/pagination.tsx', category: 'Navigation', description: 'Page navigation controls with sibling pagination.' },
+  'stepper': { path: 'src/components/navigation/stepper.tsx', category: 'Navigation', description: 'Multi-step workflow wizard indicator with horizontal and vertical layouts.' },
 
   // Data
   'table': { path: 'src/components/data/table.tsx', category: 'Data', description: 'Semantic HTML table structure with hover and stripe styles.' },
@@ -112,7 +117,11 @@ const ALIASES = {
   'inputgroup': 'input-group',
   'passwordinput': 'password-input',
   'numberinput': 'number-input',
-  'emptystate': 'empty-state'
+  'emptystate': 'empty-state',
+  'multiselect': 'multi-select',
+  'daterangepicker': 'date-range-picker',
+  'timepicker': 'time-picker',
+  'fileupload': 'file-upload'
 };
 
 function normalizeName(name) {

@@ -16,6 +16,8 @@
 | **Phase 4** | **Showcase Platform & DX** | Interactive theme builder, CLI component adder, props documentation | 🟢 **COMPLETED** | **100%** |
 | **Phase 5** | **Release & Community** | NPM 3.0 release, migration guides, automated release provenance | 🟢 **COMPLETED** | **100%** |
 | **Phase 6A** | **Essential Micro-Components** | Kbd, Spinner, PasswordInput, NumberInput, ButtonGroup, InputGroup, EmptyState | 🟢 **COMPLETED** | **100%** |
+| **Phase 6B** | **Advanced Inputs & Navigation** | MultiSelect, DateRangePicker, TimePicker, Stepper, FileUpload | 🟢 **COMPLETED** | **100%** |
+| **Phase 6C** | **Display, Feedback & Custom Hooks** | StatCard, Timeline, Banner, TreeView, hooks (useClipboard, useHotkeys...) | ⏳ **IN PROGRESS** | **0%** |
 
 ---
 
@@ -245,18 +247,43 @@
 
 ---
 
+## 🟢 Phase 6B — Advanced Inputs & Workflow Navigation — [COMPLETED]
+
+**Goal**: Implement the 5 missing enterprise-grade form controls and sequential workflow navigation components without any third-party UI dependencies.
+
+- [x] **`MultiSelect` (`src/components/forms/multi-select.tsx`)**:
+  - Searchable multi-tag selector with keyboard tags, pill removal, clear button, max badges, and ARIA combobox/listbox integration.
+- [x] **`DateRangePicker` (`src/components/forms/date-range-picker.tsx`)**:
+  - Calendar date range picker with fast preset shortcuts (Today, Yesterday, Last 7/30 days, Month to date), dual month view, and min/max constraints.
+- [x] **`TimePicker` (`src/components/forms/time-picker.tsx`)**:
+  - Segmented time selector supporting 12-hour AM/PM and 24-hour formats with minute step controls and spinbutton accessibility.
+- [x] **`FileUpload` (`src/components/forms/file-upload.tsx`)**:
+  - Drag-and-drop file upload dropzone with preview cards, size validation, formatBytes utility, and file removal triggers.
+- [x] **`Stepper` (`src/components/navigation/stepper.tsx`)**:
+  - Multi-step workflow wizard indicator supporting horizontal and vertical orientations with active/completed step state tracking.
+- [x] **Verification & Documentation Parity**:
+  - All 5 components registered in `component.manifest.ts` (now 67 components).
+  - CLI distributor updated in `scripts/copy-component.js` with aliases.
+  - Subpath exports added to `package.json#exports` and `tsup.config.ts`.
+  - Props tables documented in `docs/src/lib/component-props.ts`.
+  - Interactive live demos added in `docs/src/lib/examples/forms.tsx` and `navigation.tsx`.
+  - Unit tests and accessibility audits passing with 0 axe violations (60/60 tests).
+  - Next.js 16.4.3 docs build generating 77/77 static pages.
+
+---
+
 ## 🧪 Verification Matrix
 
 | Check / Tool | Target | Status | Result |
 | :--- | :--- | :---: | :--- |
 | **TypeScript Typecheck** | `tsc --noEmit` | ✅ Passing | 0 errors |
-| **Unit & Parity Tests** | `vitest run` (`parity.test.ts` & `smoke.test.tsx`) | ✅ Passing | 55 / 55 tests passing |
+| **Unit & Parity Tests** | `vitest run` (`parity.test.ts` & `smoke.test.tsx`) | ✅ Passing | 60 / 60 tests passing |
 | **Accessibility Audits** | `vitest-axe` (`axe-core`) | ✅ Passing | 0 violations |
-| **Package Linter** | `publint` (`npm run check:pkg`) | ✅ Passing | 71 / 71 subpaths valid |
-| **Manifest Audit** | `node scripts/verify-manifest.js` | ✅ Passing | 62 / 62 components verified |
+| **Package Linter** | `publint` (`npm run check:pkg`) | ✅ Passing | 76 / 76 subpaths valid |
+| **Manifest Audit** | `node scripts/verify-manifest.js` | ✅ Passing | 67 / 67 components verified |
 | **Root Linter** | `eslint src tests` | ✅ Passing | 0 errors |
-| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 74 bundles + 69.42 KB CSS |
-| **Documentation Build** | `next build` (Next.js 16.4.3 Turbopack) | ✅ Passing | 72 / 72 static pages generated |
+| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 79 bundles + 71.46 KB CSS |
+| **Documentation Build** | `next build` (Next.js 16.4.3 Turbopack) | ✅ Passing | 77 / 77 static pages generated |
 | **Documentation Linter** | `npm --prefix docs run lint` | ✅ Passing | 0 errors, 0 warnings |
 
 

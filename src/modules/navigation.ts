@@ -31,6 +31,7 @@ export {
 export { Command, CommandInput, CommandList, CommandEmpty, CommandGroup, CommandItem, CommandSeparator, CommandShortcut, CommandDialog } from '../components/navigation/command'
 export { Combobox } from '../components/navigation/combobox'
 export { Pagination, PaginationItem, PaginationContent, PaginationEllipsis } from '../components/navigation/pagination'
+export { Stepper } from '../components/navigation/stepper'
 
 
 // Navigation Types
@@ -75,3 +76,4 @@ export type {
 } from '../components/navigation/command'
 export type { ComboboxProps, ComboboxOption } from '../components/navigation/combobox'
 export type { PaginationProps, PaginationItemProps } from '../components/navigation/pagination'
+export type { StepperProps, StepItem } from '../components/navigation/stepper'

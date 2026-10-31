@@ -1,6 +1,6 @@
 # 📋 Mad UI Component Implementation & Status Audit
 
-This document provides a comprehensive audit of all **62 components** in `mad-ui-components`, detailing implementation status, export availability, TypeScript declaration support, and documentation status.
+This document provides a comprehensive audit of all **67 components** in `mad-ui-components`, detailing implementation status, export availability, TypeScript declaration support, and documentation status.
 
 ---
 
@@ -9,14 +9,14 @@ This document provides a comprehensive audit of all **62 components** in `mad-ui
 | Category | Components Count | Build Status | TypeScript Support | Documentation Status |
 | :--- | :---: | :---: | :---: | :---: |
 | **Core** | 15 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Forms** | 10 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
+| **Forms** | 14 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Layout** | 10 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Overlay** | 8 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Navigation** | 5 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
+| **Navigation** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Data Display** | 3 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Feedback** | 5 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Media** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Total** | **62** | **100% Compiled** | **Universal** | **All Documented** |
+| **Total** | **67** | **100% Compiled** | **Universal** | **All Documented** |
 
 ---
 
@@ -42,7 +42,7 @@ This document provides a comprehensive audit of all **62 components** in `mad-ui
 
 ---
 
-## 2. Form & Input Components (10 Components)
+## 2. Form & Input Components (14 Components)
 
 | Component | Source Path | Subpath Export | Status | Features & Notes |
 | :--- | :--- | :--- | :---: | :--- |
@@ -56,6 +56,10 @@ This document provides a comprehensive audit of all **62 components** in `mad-ui
 | **Tabs** | `src/components/forms/tabs.tsx` | `mad-ui-components/tabs` | 🟢 100% Stable | Horizontal/vertical tabbed panels with animated active underline/pill. |
 | **PasswordInput** | `src/components/forms/password-input.tsx` | `mad-ui-components/password-input` | 🟢 100% Stable | Password field with reveal toggle, strength meter, and caps-lock detection. |
 | **NumberInput** | `src/components/forms/number-input.tsx` | `mad-ui-components/number-input` | 🟢 100% Stable | Numeric stepper input with clamp bounds, increment buttons, and arrow keys. |
+| **MultiSelect** | `src/components/forms/multi-select.tsx` | `mad-ui-components/multi-select` | 🟢 100% Stable | Searchable multi-tag selector with keyboard tags, clear button, and max badges. |
+| **DateRangePicker** | `src/components/forms/date-range-picker.tsx` | `mad-ui-components/date-range-picker` | 🟢 100% Stable | Dual-calendar date range picker with fast preset ranges and constraint validation. |
+| **TimePicker** | `src/components/forms/time-picker.tsx` | `mad-ui-components/time-picker` | 🟢 100% Stable | Segmented time selector supporting 12h/24h formats and minute step controls. |
+| **FileUpload** | `src/components/forms/file-upload.tsx` | `mad-ui-components/file-upload` | 🟢 100% Stable | Drag-and-drop file upload dropzone with preview cards, size limits, and removal. |
 
 ---
 
@@ -91,7 +95,7 @@ This document provides a comprehensive audit of all **62 components** in `mad-ui
 
 ---
 
-## 5. Navigation Components (5 Components)
+## 5. Navigation Components (6 Components)
 
 | Component | Source Path | Subpath Export | Status | Features & Notes |
 | :--- | :--- | :--- | :---: | :--- |
@@ -100,6 +104,7 @@ This document provides a comprehensive audit of all **62 components** in `mad-ui
 | **Command** | `src/components/navigation/command.tsx` | `mad-ui-components/command` | 🟢 100% Stable | Command palette modal (⌘K) with instant fuzzy search and grouped actions. |
 | **Combobox** | `src/components/navigation/combobox.tsx` | `mad-ui-components/combobox` | 🟢 100% Stable | Searchable autocomplete select component with keyboard selection. |
 | **Pagination** | `src/components/navigation/pagination.tsx` | `mad-ui-components/pagination` | 🟢 100% Stable | Multi-page navigation control with previous, next, ellipsis, and page numbers. |
+| **Stepper** | `src/components/navigation/stepper.tsx` | `mad-ui-components/stepper` | 🟢 100% Stable | Multi-step workflow wizard indicator supporting horizontal and vertical orientations. |
 
 ---
 
@@ -142,8 +147,8 @@ This document provides a comprehensive audit of all **62 components** in `mad-ui
 
 | Test Criteria | Status | Details |
 | :--- | :---: | :--- |
-| **Root Build (`tsup`)** | ✅ Passing | Generates 124+ `.mjs` and `.d.mts` files in `dist/`. |
-| **Documentation Build (`next build`)** | ✅ Passing | Generates 63/63 static pages cleanly without type or ESLint errors. |
+| **Root Build (`tsup`)** | ✅ Passing | Generates 134+ `.mjs` and `.d.mts` files in `dist/`. |
+| **Documentation Build (`next build`)** | ✅ Passing | Generates 77/77 static pages cleanly without type or ESLint errors. |
 | **ESLint (`eslint`)** | ✅ Passing | 0 errors across entire workspace. |
 | **React Compatibility** | ✅ Verified | Works seamlessly across React 18 consumers and React 19 Next.js apps. |
 | **Tailwind Compatibility** | ✅ Verified | Tested with both Tailwind CSS v3 and Tailwind CSS v4. |

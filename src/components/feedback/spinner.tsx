@@ -82,3 +82,4 @@ export const Spinner = React.forwardRef<HTMLDivElement, SpinnerProps>(
 )
 
 Spinner.displayName = "Spinner"
+

@@ -92,6 +92,10 @@ export default defineConfig([
       'src/individual/datetime-picker.ts',
       'src/individual/password-input.ts',
       'src/individual/number-input.ts',
+      'src/individual/multi-select.ts',
+      'src/individual/date-range-picker.ts',
+      'src/individual/time-picker.ts',
+      'src/individual/file-upload.ts',
     ],
   },
   // Individual components — batch 3: overlays
@@ -138,6 +142,7 @@ export default defineConfig([
       'src/individual/combobox.ts',
       'src/individual/navigation-menu.ts',
       'src/individual/menubar.ts',
+      'src/individual/stepper.ts',
     ],
   },
   // Individual components — batch 6: media/feedback

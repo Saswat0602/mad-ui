@@ -392,6 +392,31 @@
       "types": "./dist/kbd.d.mts",
       "import": "./dist/kbd.mjs",
       "default": "./dist/kbd.mjs"
+    },
+    "./multi-select": {
+      "types": "./dist/multi-select.d.mts",
+      "import": "./dist/multi-select.mjs",
+      "default": "./dist/multi-select.mjs"
+    },
+    "./date-range-picker": {
+      "types": "./dist/date-range-picker.d.mts",
+      "import": "./dist/date-range-picker.mjs",
+      "default": "./dist/date-range-picker.mjs"
+    },
+    "./time-picker": {
+      "types": "./dist/time-picker.d.mts",
+      "import": "./dist/time-picker.mjs",
+      "default": "./dist/time-picker.mjs"
+    },
+    "./file-upload": {
+      "types": "./dist/file-upload.d.mts",
+      "import": "./dist/file-upload.mjs",
+      "default": "./dist/file-upload.mjs"
+    },
+    "./stepper": {
+      "types": "./dist/stepper.d.mts",
+      "import": "./dist/stepper.mjs",
+      "default": "./dist/stepper.mjs"
     }
   },
   "files": [
