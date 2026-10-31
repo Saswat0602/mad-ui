@@ -7,7 +7,8 @@ expect.extend(matchers)
 
 const originalConsoleError = console.error
 console.error = (...args: any[]) => {
-  if (typeof args[0] === 'string' && args[0].includes('Not implemented:')) return
+  const msg = typeof args[0] === 'string' ? args[0] : (args[0]?.message || String(args[0]))
+  if (msg.includes('Not implemented:') || msg.includes('HTMLCanvasElement')) return
   originalConsoleError(...args)
 }
 
@@ -31,12 +32,12 @@ if (typeof window !== 'undefined') {
       dispatchEvent: () => false,
     })
   }
-  if (typeof HTMLCanvasElement !== 'undefined' && !HTMLCanvasElement.prototype.getContext) {
+  if (typeof HTMLCanvasElement !== 'undefined') {
     // @ts-expect-error mock getContext for axe-core in jsdom
     HTMLCanvasElement.prototype.getContext = () => ({
       fillRect: () => {},
       clearRect: () => {},
-      getImageData: () => ({ data: [] }),
+      getImageData: () => ({ data: new Uint8ClampedArray(4) }),
       putImageData: () => {},
       createImageData: () => [],
       setTransform: () => {},
@@ -56,6 +57,7 @@ if (typeof window !== 'undefined') {
       fill: () => {},
       measureText: () => ({ width: 0 }),
       transform: () => {},
+      resetTransform: () => {},
       rect: () => {},
       clip: () => {},
     })
