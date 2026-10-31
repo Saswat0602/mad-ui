@@ -180,8 +180,8 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
           className={cn(
             "flex h-9 w-full items-center justify-between rounded-lg border bg-background px-3 py-1.5 text-sm ring-offset-background transition-all shadow-2xs cursor-pointer select-none",
             error
-              ? "border-red-500 focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-500/20"
-              : "border-zinc-300 dark:border-zinc-700 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20",
+              ? "border-destructive focus-visible:border-destructive focus-visible:ring-1 focus-visible:ring-destructive/30"
+              : "border-input focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring",
             disabled && "cursor-not-allowed opacity-50 bg-zinc-50 dark:bg-zinc-900",
             !range?.from && "text-muted-foreground"
           )}
@@ -283,11 +283,11 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
                       onClick={() => isSelectable && handleSelectDay(day)}
                       className={cn(
                         "h-8 w-8 text-xs font-medium transition-colors flex items-center justify-center cursor-pointer",
-                        isStart && "rounded-l-md bg-blue-600 text-white font-semibold",
-                        isEnd && "rounded-r-md bg-blue-600 text-white font-semibold",
+                        isStart && "rounded-l-md bg-primary text-primary-foreground font-semibold",
+                        isEnd && "rounded-r-md bg-primary text-primary-foreground font-semibold",
                         isStart && isEnd && "rounded-md",
-                        inBetween && "bg-blue-50 text-blue-900 dark:bg-blue-950/60 dark:text-blue-100",
-                        !isStart && !isEnd && !inBetween && "rounded-md hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-700 dark:text-zinc-200",
+                        inBetween && "bg-accent text-accent-foreground",
+                        !isStart && !isEnd && !inBetween && "rounded-md hover:bg-accent hover:text-accent-foreground text-foreground",
                         !isSelectable && "opacity-30 cursor-not-allowed pointer-events-none"
                       )}
                     >

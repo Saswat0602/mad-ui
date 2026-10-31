@@ -85,7 +85,7 @@ export const AccordionTrigger = forwardRef<HTMLButtonElement, AccordionTriggerPr
           data-state={open ? 'open' : 'closed'}
           onClick={handleClick}
           className={cn(
-            'flex flex-1 items-center justify-between py-4 px-5 text-sm font-medium transition-all text-zinc-900 dark:text-zinc-100 hover:text-blue-600 dark:hover:text-blue-400 disabled:opacity-50 disabled:pointer-events-none cursor-pointer',
+            'flex flex-1 items-center justify-between py-4 px-5 text-sm font-medium transition-all text-foreground hover:underline disabled:opacity-50 disabled:pointer-events-none cursor-pointer',
             iconPosition === 'left' && 'flex-row-reverse justify-end gap-3',
             className
           )}

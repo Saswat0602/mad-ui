@@ -55,7 +55,7 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
       if (index >= score) return "bg-zinc-200 dark:bg-zinc-800"
       if (score <= 1) return "bg-red-500"
       if (score === 2) return "bg-amber-500"
-      if (score === 3) return "bg-blue-500"
+      if (score === 3) return "bg-primary/80"
       return "bg-emerald-500"
     }
 
@@ -95,7 +95,7 @@ export const PasswordInput = React.forwardRef<HTMLInputElement, PasswordInputPro
                 onClick={toggleVisibility}
                 disabled={disabled}
                 aria-label={visible ? "Hide password" : "Show password"}
-                className="p-1 rounded text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/50"
+                className="p-1 rounded text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
               >
                 {visible ? (
                   <EyeOff className="h-4 w-4" aria-hidden="true" />

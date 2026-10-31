@@ -113,14 +113,14 @@ export const RadioGroupItem = forwardRef<HTMLButtonElement, RadioGroupItemProps>
         onClick={handleClick}
         onKeyDown={handleKeyDown}
         className={cn(
-          'aspect-square h-4 w-4 rounded-full border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-blue-600 dark:text-blue-500 ring-offset-white focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500/30 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 dark:ring-offset-zinc-950 flex items-center justify-center cursor-pointer',
-          isChecked && 'border-blue-600 dark:border-blue-500',
+          'aspect-square h-4 w-4 rounded-full border border-input bg-background text-primary ring-offset-background focus:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 flex items-center justify-center cursor-pointer',
+          isChecked && 'border-primary',
           className
         )}
         {...props}
       >
         {isChecked && (
-          <Circle className="h-2 w-2 fill-blue-600 text-blue-600 dark:fill-blue-500 dark:text-blue-500" />
+          <Circle className="h-2 w-2 fill-primary text-primary" />
         )}
       </button>
     )

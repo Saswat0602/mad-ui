@@ -144,8 +144,8 @@ export const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(
         className={cn(
           "inline-flex items-center gap-1.5 rounded-lg border bg-background font-mono shadow-2xs select-none",
           error
-            ? "border-red-500 focus-within:border-red-500 focus-within:ring-2 focus-within:ring-red-500/20"
-            : "border-zinc-300 dark:border-zinc-700 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20",
+            ? "border-destructive focus-within:border-destructive focus-within:ring-1 focus-within:ring-destructive/30"
+            : "border-input focus-within:border-ring focus-within:ring-1 focus-within:ring-ring",
           disabled && "cursor-not-allowed opacity-50 bg-zinc-50 dark:bg-zinc-900",
           sizeClasses,
           className

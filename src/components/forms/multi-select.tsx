@@ -138,8 +138,8 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
           className={cn(
             "flex w-full flex-wrap items-center gap-1.5 rounded-lg border bg-background ring-offset-background transition-all shadow-2xs cursor-pointer select-none",
             error
-              ? "border-red-500 focus-visible:border-red-500 focus-visible:ring-2 focus-visible:ring-red-500/20"
-              : "border-zinc-300 dark:border-zinc-700 focus-visible:border-blue-500 focus-visible:ring-2 focus-visible:ring-blue-500/20",
+              ? "border-destructive focus-visible:border-destructive focus-visible:ring-1 focus-visible:ring-destructive/30"
+              : "border-input focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring",
             disabled && "cursor-not-allowed opacity-50 bg-zinc-50 dark:bg-zinc-900",
             sizeClasses
           )}
@@ -230,16 +230,16 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                       className={cn(
                         "flex items-center justify-between rounded-md px-2.5 py-1.5 text-xs transition-colors cursor-pointer select-none",
                         checked
-                          ? "bg-blue-50 text-blue-900 font-medium dark:bg-blue-950/50 dark:text-blue-100"
-                          : "hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200",
+                          ? "bg-accent text-accent-foreground font-medium"
+                          : "hover:bg-accent hover:text-accent-foreground text-foreground",
                         opt.disabled && "cursor-not-allowed opacity-50"
                       )}
                     >
                       <span className="flex items-center gap-2">
-                        {opt.icon && <span className="text-zinc-500">{opt.icon}</span>}
+                        {opt.icon && <span className="text-muted-foreground">{opt.icon}</span>}
                         {opt.label}
                       </span>
-                      {checked && <Check className="h-3.5 w-3.5 text-blue-600 dark:text-blue-400" />}
+                      {checked && <Check className="h-3.5 w-3.5 text-primary" />}
                     </div>
                   )
                 })

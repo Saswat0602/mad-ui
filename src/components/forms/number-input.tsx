@@ -166,8 +166,8 @@ export const NumberInput = React.forwardRef<HTMLInputElement, NumberInputProps>(
           className={cn(
             "w-full rounded-lg border bg-background font-mono ring-offset-background transition-all shadow-2xs focus-visible:outline-none focus-visible:ring-2",
             isError
-              ? "border-red-500 text-red-900 dark:text-red-100 focus-visible:border-red-500 focus-visible:ring-red-500/20"
-              : "border-zinc-300 dark:border-zinc-700 focus-visible:border-blue-500 focus-visible:ring-blue-500/20",
+              ? "border-destructive text-destructive focus-visible:border-destructive focus-visible:ring-1 focus-visible:ring-destructive/30"
+              : "border-input focus-visible:border-ring focus-visible:ring-1 focus-visible:ring-ring",
             disabled && "cursor-not-allowed opacity-50",
             !hideStepper && "pr-8",
             sizeClasses

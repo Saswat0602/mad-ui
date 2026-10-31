@@ -152,8 +152,8 @@ export const PromptInput = React.forwardRef<HTMLDivElement, PromptInputProps>(
                 className={cn(
                   "flex h-8 w-8 items-center justify-center rounded-xl transition-all",
                   canSubmit
-                    ? "bg-blue-600 text-white hover:bg-blue-700 dark:bg-blue-500 dark:hover:bg-blue-600 cursor-pointer shadow-xs"
-                    : "bg-zinc-100 text-zinc-400 dark:bg-zinc-800 dark:text-zinc-600 cursor-not-allowed"
+                    ? "bg-primary text-primary-foreground hover:bg-primary/90 cursor-pointer shadow-xs"
+                    : "bg-muted text-muted-foreground/50 cursor-not-allowed"
                 )}
               >
                 <ArrowUp className="h-4 w-4 stroke-[2.5]" />

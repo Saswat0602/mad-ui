@@ -283,10 +283,10 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
               handleDateSelect(dayObj.date)
             }}
             className={cn(
-              'h-8 w-8 text-sm rounded-md transition-all duration-200 hover:bg-blue-50 flex items-center justify-center font-medium',
+              'h-8 w-8 text-sm rounded-md transition-all duration-200 hover:bg-accent flex items-center justify-center font-medium',
               !dayObj.isCurrentMonth ? 'text-zinc-300 hover:text-zinc-500' : 'text-zinc-700 hover:text-zinc-900',
-              isSelected(dayObj.date) ? 'bg-blue-600 text-white hover:bg-blue-700' : '',
-              isToday(dayObj.date) && !isSelected(dayObj.date) ? 'bg-blue-100 text-blue-800 font-bold' : ''
+              isSelected(dayObj.date) ? 'bg-primary text-primary-foreground hover:bg-primary/90' : '',
+              isToday(dayObj.date) && !isSelected(dayObj.date) ? 'bg-accent text-accent-foreground font-bold' : ''
             )}
           >
             {dayObj.day}
@@ -313,7 +313,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
           <select
             value={getHourDisplay()}
             onChange={(e) => handleTimeChange('hour', e.target.value)}
-            className="w-14 h-10 text-sm border border-zinc-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center font-medium bg-white"
+            className="w-14 h-10 text-sm border border-input rounded-md focus:ring-1 focus:ring-ring focus:border-ring text-center font-medium bg-background text-foreground"
           >
             {Array.from({ length: timeFormat === '12' ? 12 : 24 }, (_, i) => {
               const hour = timeFormat === '12' ? i + 1 : i
@@ -326,14 +326,14 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
           </select>
         </div>
 
-        <div className="text-2xl font-bold text-zinc-400 mt-6">:</div>
+        <div className="text-2xl font-bold text-muted-foreground mt-6">:</div>
 
         <div className="flex flex-col items-center">
-          <label className="text-xs font-semibold text-zinc-600 mb-2 uppercase tracking-wide">Minute</label>
+          <label className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wide">Minute</label>
           <select
             value={selectedDate.getMinutes()}
             onChange={(e) => handleTimeChange('minute', e.target.value)}
-            className="w-14 h-10 text-sm border border-zinc-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center font-medium bg-white"
+            className="w-14 h-10 text-sm border border-input rounded-md focus:ring-1 focus:ring-ring focus:border-ring text-center font-medium bg-background text-foreground"
           >
             {Array.from({ length: 60 }, (_, i) => (
               <option key={i} value={i}>
@@ -345,11 +345,11 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
 
         {timeFormat === '12' && (
           <div className="flex flex-col items-center">
-            <label className="text-xs font-semibold text-zinc-600 mb-2 uppercase tracking-wide">Period</label>
+            <label className="text-xs font-semibold text-muted-foreground mb-2 uppercase tracking-wide">Period</label>
             <select
               value={getAMPM()}
               onChange={(e) => handleTimeChange('ampm', e.target.value)}
-              className="w-16 h-10 text-sm border border-zinc-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-blue-500 text-center font-medium bg-white"
+              className="w-16 h-10 text-sm border border-input rounded-md focus:ring-1 focus:ring-ring focus:border-ring text-center font-medium bg-background text-foreground"
             >
               <option value="AM">AM</option>
               <option value="PM">PM</option>
@@ -384,7 +384,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
               }}
               className={cn(
                 'p-2 text-sm rounded-lg transition-colors',
-                year === viewDate.getFullYear() ? 'bg-blue-600 text-white' : 'hover:bg-zinc-100 text-zinc-700'
+                year === viewDate.getFullYear() ? 'bg-primary text-primary-foreground' : 'hover:bg-accent text-foreground'
               )}
             >
               {year}
@@ -419,7 +419,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
               }}
               className={cn(
                 'p-2 text-sm rounded-lg transition-colors',
-                index === viewDate.getMonth() ? 'bg-blue-600 text-white' : 'hover:bg-zinc-100 text-zinc-700'
+                index === viewDate.getMonth() ? 'bg-primary text-primary-foreground' : 'hover:bg-accent text-foreground'
               )}
             >
               {month}
@@ -436,29 +436,29 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         className={cn(
-          'w-full p-3 text-left border border-zinc-300 rounded-lg bg-white transition-all duration-200 flex items-center justify-between',
-          disabled ? 'bg-zinc-100 text-zinc-400 cursor-not-allowed' : 'hover:border-blue-400 focus:ring-2 focus:ring-blue-500 focus:border-blue-500',
-          isOpen ? 'border-blue-500 ring-2 ring-blue-200' : ''
+          'w-full p-3 text-left border border-input rounded-lg bg-background text-foreground transition-all duration-200 flex items-center justify-between',
+          disabled ? 'bg-muted text-muted-foreground cursor-not-allowed' : 'hover:border-ring focus:ring-1 focus:ring-ring focus:border-ring',
+          isOpen ? 'border-ring ring-1 ring-ring' : ''
         )}
       >
-        <span className={value ? 'text-zinc-900' : 'text-zinc-500'}>
+        <span className={value ? 'text-foreground' : 'text-muted-foreground'}>
           {formatDisplayValue()}
         </span>
-        <div className="flex items-center space-x-1 text-zinc-400">
+        <div className="flex items-center space-x-1 text-muted-foreground">
           {(mode === 'date' || mode === 'both') && <Calendar size={16} />}
           {(mode === 'time' || mode === 'both') && <Clock size={16} />}
         </div>
       </button>
 
       {isOpen && (
-        <div className="absolute top-full left-0 mt-1 bg-white rounded-lg shadow-xl border border-zinc-200 z-40 min-w-[320px]">
+        <div className="absolute top-full left-0 mt-1 bg-popover text-popover-foreground rounded-lg shadow-xl border border-border z-40 min-w-[320px]">
           {mode === 'both' && (
-            <div className="flex border-b border-zinc-200">
+            <div className="flex border-b border-border">
               <button
                 onClick={() => setActiveTab('date')}
                 className={cn(
                   'flex-1 p-3 text-sm font-medium transition-colors flex items-center justify-center space-x-2',
-                  activeTab === 'date' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-zinc-600 hover:text-zinc-800 hover:bg-zinc-50'
+                  activeTab === 'date' ? 'text-foreground border-b-2 border-primary bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 )}
               >
                 <Calendar size={16} />
@@ -468,7 +468,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                 onClick={() => setActiveTab('time')}
                 className={cn(
                   'flex-1 p-3 text-sm font-medium transition-colors flex items-center justify-center space-x-2',
-                  activeTab === 'time' ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50' : 'text-zinc-600 hover:text-zinc-800 hover:bg-zinc-50'
+                  activeTab === 'time' ? 'text-foreground border-b-2 border-primary bg-accent' : 'text-muted-foreground hover:text-foreground hover:bg-muted'
                 )}
               >
                 <Clock size={16} />
@@ -485,14 +485,14 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
             {showMonthModal && renderMonthModal()}
           </div>
 
-          <div className="flex justify-end space-x-2 p-3 border-t border-zinc-200">
+          <div className="flex justify-end space-x-2 p-3 border-t border-border">
             <button
               onClick={() => {
                 setIsOpen(false)
                 setShowYearModal(false)
                 setShowMonthModal(false)
               }}
-              className="px-4 py-2 text-sm font-medium text-zinc-600 hover:text-zinc-800 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
             >
               Cancel
             </button>
@@ -502,7 +502,7 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
                 setShowYearModal(false)
                 setShowMonthModal(false)
               }}
-              className="px-4 py-2 text-sm font-medium bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-4 py-2 text-sm font-medium bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors cursor-pointer"
             >
               Done
             </button>

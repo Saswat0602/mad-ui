@@ -121,9 +121,9 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
 
     const getFileIcon = (file: File) => {
       if (file.type.startsWith("image/")) {
-        return <ImageIcon className="h-4 w-4 text-blue-500" />
+        return <ImageIcon className="h-4 w-4 text-muted-foreground" />
       }
-      return <FileText className="h-4 w-4 text-zinc-500" />
+      return <FileText className="h-4 w-4 text-muted-foreground" />
     }
 
     return (
@@ -144,8 +144,8 @@ export const FileUpload = React.forwardRef<HTMLDivElement, FileUploadProps>(
             "flex flex-col items-center justify-center rounded-xl border-2 border-dashed transition-all cursor-pointer select-none",
             variant === "compact" ? "p-4" : "p-8",
             isDragging
-              ? "border-blue-500 bg-blue-50/50 dark:bg-blue-950/20"
-              : "border-zinc-300 dark:border-zinc-700 hover:border-zinc-400 dark:hover:border-zinc-600 bg-zinc-50/50 dark:bg-zinc-900/50",
+              ? "border-primary bg-accent/40"
+              : "border-border hover:border-foreground/30 bg-muted/20",
             disabled && "cursor-not-allowed opacity-50 pointer-events-none"
           )}
         >

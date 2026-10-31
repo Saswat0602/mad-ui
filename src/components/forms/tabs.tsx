@@ -77,8 +77,8 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
         data-state={isActive ? 'active' : 'inactive'}
         onClick={handleClick}
         className={cn(
-          'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-white transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer select-none',
-          isActive && 'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-sm',
+          'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer select-none',
+          isActive && 'bg-background text-foreground shadow-xs',
           className
         )}
         {...props}
@@ -106,7 +106,7 @@ export const TabsContent = forwardRef<HTMLDivElement, TabsContentProps>(
         tabIndex={0}
         data-state={isActive ? 'active' : 'inactive'}
         className={cn(
-          'mt-2 ring-offset-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2 dark:ring-offset-zinc-950 animate-in fade-in-50 duration-200',
+          'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 animate-in fade-in-50 duration-200',
           className
         )}
         {...props}
@@ -205,27 +205,27 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
               const isActive = value === item.id
               const triggerVariantClasses = {
                 default: cn(
-                  'rounded-lg font-medium transition-all text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100',
+                  'rounded-lg font-medium transition-all text-muted-foreground hover:text-foreground',
                   isActive &&
-                    'bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-50 shadow-sm'
+                    'bg-background text-foreground shadow-xs'
                 ),
                 pills: cn(
-                  'rounded-full font-medium transition-all text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100',
-                  isActive && 'bg-blue-600 text-white shadow-sm hover:text-white'
+                  'rounded-full font-medium transition-all text-muted-foreground hover:text-foreground',
+                  isActive && 'bg-primary text-primary-foreground shadow-xs'
                 ),
                 underline: cn(
-                  'border-b-2 border-transparent font-medium transition-all rounded-none text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100',
+                  'border-b-2 border-transparent font-medium transition-all rounded-none text-muted-foreground hover:text-foreground',
                   isActive &&
-                    'border-blue-600 text-blue-600 dark:border-blue-400 dark:text-blue-400'
+                    'border-primary text-foreground'
                 ),
                 cards: cn(
-                  'rounded-lg font-medium transition-all text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 border border-transparent',
+                  'rounded-lg font-medium transition-all text-muted-foreground hover:text-foreground border border-transparent',
                   isActive &&
-                    'border-zinc-200 dark:border-zinc-700/80 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 shadow-sm'
+                    'border-border bg-background text-foreground shadow-xs'
                 ),
                 minimal: cn(
-                  'rounded-lg font-medium transition-all text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100',
-                  isActive && 'text-blue-600 dark:text-blue-400 font-semibold'
+                  'rounded-lg font-medium transition-all text-muted-foreground hover:text-foreground',
+                  isActive && 'text-foreground font-semibold'
                 ),
               }[variant]
 
@@ -235,7 +235,7 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
                   value={item.id}
                   disabled={item.disabled}
                   className={cn(
-                    'inline-flex items-center justify-center gap-2 whitespace-nowrap outline-none ring-offset-white dark:ring-offset-zinc-950 focus-visible:ring-2 focus-visible:ring-blue-500 disabled:pointer-events-none disabled:opacity-40 transition-all',
+                    'inline-flex items-center justify-center gap-2 whitespace-nowrap outline-none ring-offset-background focus-visible:ring-2 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-40 transition-all',
                     sizeClasses[size],
                     triggerVariantClasses,
                     fullWidth && 'flex-1'
