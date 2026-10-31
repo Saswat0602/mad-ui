@@ -151,3 +151,4 @@ describe('Data Display Domain Smoke & Accessibility Suite', () => {
     expect(results.violations).toEqual([])
   })
 })
+

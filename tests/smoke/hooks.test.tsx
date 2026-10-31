@@ -177,3 +177,4 @@ describe('Hooks & Headless Primitives Smoke Suite', () => {
     expect(typeof result.current).toBe('boolean')
   })
 })
+
