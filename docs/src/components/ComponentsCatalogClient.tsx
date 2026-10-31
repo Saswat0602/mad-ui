@@ -3,12 +3,12 @@
 import React, { useState, useMemo } from 'react'
 import Link from 'next/link'
 import { ComponentCategory } from '@/types/component'
-import { ArrowUpRight, Search, Layers, LayoutGrid, List, Sparkles } from 'lucide-react'
+import { ArrowUpRight, Search } from 'lucide-react'
 
 interface ComponentMetadata {
   title: string
   slug: string
-  description: string
+  description?: string
   category: ComponentCategory
   version?: string
   status?: 'stable' | 'beta' | 'alpha' | 'deprecated'
@@ -33,7 +33,6 @@ const CATEGORY_ORDER: ComponentCategory[] = [
 export function ComponentsCatalogClient({ components }: ComponentsCatalogClientProps) {
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [searchQuery, setSearchQuery] = useState('')
-  const [viewMode, setViewMode] = useState<'grid' | 'compact'>('grid')
 
   const filteredComponents = useMemo(() => {
     return components.filter((comp) => {
@@ -41,7 +40,6 @@ export function ComponentsCatalogClient({ components }: ComponentsCatalogClientP
       const matchesSearch =
         searchQuery === '' ||
         comp.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        comp.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
         comp.category.toLowerCase().includes(searchQuery.toLowerCase())
       return matchesCategory && matchesSearch
     })
@@ -70,7 +68,7 @@ export function ComponentsCatalogClient({ components }: ComponentsCatalogClientP
 
   return (
     <div className="space-y-8 w-full">
-      {/* Header (Matching shadcn/ui) */}
+      {/* Header (Clean, minimal shadcn-style) */}
       <div className="space-y-3 border-b border-border/40 pb-6">
         <div className="flex items-center gap-2">
           <span className="text-xs font-semibold uppercase tracking-wider text-primary">Library Catalog</span>
@@ -84,9 +82,8 @@ export function ComponentsCatalogClient({ components }: ComponentsCatalogClientP
           Here you can find all the components available in the library. Built with TypeScript and Tailwind CSS with full theme support.
         </p>
 
-        {/* Search & View Controls Bar */}
+        {/* Live Filter Search Bar */}
         <div className="pt-3 flex flex-col sm:flex-row items-stretch sm:items-center justify-between gap-3">
-          {/* Quick Filter Search */}
           <div className="relative flex-1 max-w-md">
             <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-muted-foreground" />
             <input
@@ -98,38 +95,9 @@ export function ComponentsCatalogClient({ components }: ComponentsCatalogClientP
             />
           </div>
 
-          {/* View Mode Toggle */}
-          <div className="flex items-center gap-1.5 self-end sm:self-auto">
-            <span className="text-xs text-muted-foreground font-mono mr-2 hidden sm:inline">
-              {filteredComponents.length} {filteredComponents.length === 1 ? 'component' : 'components'}
-            </span>
-            <div className="inline-flex rounded-lg border border-border/60 bg-muted/40 p-0.5 text-xs">
-              <button
-                onClick={() => setViewMode('grid')}
-                className={`p-1.5 rounded-md transition-colors cursor-pointer ${
-                  viewMode === 'grid'
-                    ? 'bg-background text-foreground shadow-2xs font-semibold'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-                title="Grid view"
-                aria-label="Grid view"
-              >
-                <LayoutGrid className="h-3.5 w-3.5" />
-              </button>
-              <button
-                onClick={() => setViewMode('compact')}
-                className={`p-1.5 rounded-md transition-colors cursor-pointer ${
-                  viewMode === 'compact'
-                    ? 'bg-background text-foreground shadow-2xs font-semibold'
-                    : 'text-muted-foreground hover:text-foreground'
-                }`}
-                title="Compact list view"
-                aria-label="Compact list view"
-              >
-                <List className="h-3.5 w-3.5" />
-              </button>
-            </div>
-          </div>
+          <span className="text-xs text-muted-foreground font-mono self-end sm:self-auto">
+            {filteredComponents.length} {filteredComponents.length === 1 ? 'component' : 'components'}
+          </span>
         </div>
 
         {/* Category Filter Pills (Horizontal swipe on mobile) */}
@@ -163,10 +131,10 @@ export function ComponentsCatalogClient({ components }: ComponentsCatalogClientP
         </div>
       </div>
 
-      {/* Components Stream */}
-      <div className="space-y-10">
+      {/* Components Stream (No bulky descriptions — clean, minimal links) */}
+      <div className="space-y-8">
         {Object.entries(grouped).map(([category, items]) => (
-          <section key={category} className="space-y-3.5">
+          <section key={category} className="space-y-3">
             <div className="flex items-baseline justify-between border-b border-border/30 pb-2">
               <h2 className="text-base sm:text-lg font-semibold tracking-tight text-foreground flex items-center gap-2">
                 <span>{category}</span>
@@ -176,52 +144,21 @@ export function ComponentsCatalogClient({ components }: ComponentsCatalogClientP
               </span>
             </div>
 
-            {/* Grid View (2-cols on mobile, 3-cols on desktop) */}
-            {viewMode === 'grid' ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-3.5">
-                {items.map((component) => (
-                  <Link
-                    key={component.slug}
-                    href={`/docs/components/${component.slug}`}
-                    className="group relative flex flex-col justify-between p-3 sm:p-4 rounded-xl border border-border/60 bg-card/50 hover:bg-card hover:border-primary/50 hover:shadow-xs transition-all duration-150"
-                  >
-                    <div>
-                      <div className="flex items-center justify-between gap-1 mb-1">
-                        <h3 className="text-xs sm:text-sm font-semibold text-foreground group-hover:text-primary transition-colors truncate">
-                          {component.title}
-                        </h3>
-                        <ArrowUpRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-primary shrink-0" />
-                      </div>
-
-                      <p className="text-[11px] sm:text-xs text-muted-foreground line-clamp-2 leading-relaxed">
-                        {component.description}
-                      </p>
-                    </div>
-
-                    <div className="mt-2.5 pt-2 border-t border-border/30 flex items-center justify-between text-[10px] text-muted-foreground font-mono">
-                      <span>{component.category}</span>
-                      <span className="text-primary font-sans font-medium hidden sm:inline opacity-0 group-hover:opacity-100 transition-opacity">
-                        View &rarr;
-                      </span>
-                    </div>
-                  </Link>
-                ))}
-              </div>
-            ) : (
-              /* Compact List View (shadcn-style minimal links) */
-              <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
-                {items.map((component) => (
-                  <Link
-                    key={component.slug}
-                    href={`/docs/components/${component.slug}`}
-                    className="flex items-center justify-between px-3 py-2 rounded-lg border border-border/40 bg-card/30 hover:bg-card hover:border-primary/50 text-xs font-medium text-foreground hover:text-primary transition-colors group"
-                  >
-                    <span className="truncate">{component.title}</span>
-                    <ArrowUpRight className="h-3 w-3 opacity-0 group-hover:opacity-100 text-primary shrink-0 transition-opacity" />
-                  </Link>
-                ))}
-              </div>
-            )}
+            {/* Clean Component Grid: 2 columns on mobile, 3 on tablet, 4 on desktop */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-2.5">
+              {items.map((component) => (
+                <Link
+                  key={component.slug}
+                  href={`/docs/components/${component.slug}`}
+                  className="group flex items-center justify-between px-3.5 py-2.5 rounded-lg border border-border/50 bg-card/40 hover:bg-card hover:border-primary/50 hover:shadow-2xs transition-all duration-150"
+                >
+                  <span className="text-xs sm:text-sm font-medium text-foreground group-hover:text-primary transition-colors truncate">
+                    {component.title}
+                  </span>
+                  <ArrowUpRight className="h-3 w-3 sm:h-3.5 sm:w-3.5 opacity-0 group-hover:opacity-100 transition-opacity text-primary shrink-0 ml-1.5" />
+                </Link>
+              ))}
+            </div>
           </section>
         ))}
 
