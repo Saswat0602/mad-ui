@@ -173,11 +173,15 @@ export { ScrollArea, ScrollBar } from './components/layout/scroll-area'
 export { Table, TableHeader, TableBody, TableFooter, TableHead, TableRow, TableCell, TableCaption } from './components/data/table'
 export { DataTable, DataTableHeader, DataTableRow, DataTablePagination } from './components/data/data-table'
 export { Chart, BarChart, LineChart, PieChart, DoughnutChart } from './components/data/chart'
+export { StatCard } from './components/data/stat-card'
+export { Timeline, TimelineItem, TimelineNode, TimelineContent, TimelineTitle, TimelineDescription, TimelineTime } from './components/data/timeline'
+export { TreeView } from './components/data/tree-view'
 
 // Feedback Components
 export { Alert, AlertTitle, AlertDescription } from './components/feedback/alert'
 export { Spinner } from './components/feedback/spinner'
 export { EmptyState, EmptyStateIcon, EmptyStateTitle, EmptyStateDescription, EmptyStateActions } from './components/feedback/empty-state'
+export { Banner } from './components/feedback/banner'
 export { Sonner } from './components/feedback/sonner'
 export { 
   Toast, 
@@ -416,10 +420,14 @@ export type { ScrollAreaProps, ScrollBarProps } from './components/layout/scroll
 export type { TableProps, TableColumn } from './components/data/table'
 export type { DataTableProps, DataTableColumn, DataTableHeaderProps, DataTableRowProps, DataTablePaginationProps } from './components/data/data-table'
 export type { ChartProps, ChartData, BarChartProps, LineChartProps, PieChartProps } from './components/data/chart'
+export type { StatCardProps, StatCardTrend } from './components/data/stat-card'
+export type { TimelineProps, TimelineItemData, TimelineItemStatus, TimelineItemProps, TimelineNodeProps } from './components/data/timeline'
+export type { TreeViewProps, TreeNode } from './components/data/tree-view'
 
 export type { AlertProps, AlertType, AlertVariant } from './components/feedback/alert'
 export type { SpinnerProps } from './components/feedback/spinner'
 export type { EmptyStateProps, EmptyStateIconProps } from './components/feedback/empty-state'
+export type { BannerProps, BannerVariant } from './components/feedback/banner'
 export type { SonnerProps, ToastItem } from './components/feedback/sonner'
 export type { ToastProps, ToastProviderProps } from './components/feedback/toast'
 

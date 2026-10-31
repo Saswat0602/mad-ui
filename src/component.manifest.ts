@@ -581,6 +581,36 @@ export const componentManifest: ComponentMeta[] = [
     exports: ['Chart', 'ChartProps'],
     description: 'SVG charts supporting bar and line visualizations.'
   },
+  {
+    name: 'stat-card',
+    title: 'Stat Card',
+    category: 'data',
+    status: 'stable',
+    subpath: './stat-card',
+    sourceFile: 'src/components/data/stat-card.tsx',
+    exports: ['StatCard', 'StatCardProps', 'StatCardTrend'],
+    description: 'Metric card displaying KPI numbers, trend badges, and icons.'
+  },
+  {
+    name: 'timeline',
+    title: 'Timeline',
+    category: 'data',
+    status: 'stable',
+    subpath: './timeline',
+    sourceFile: 'src/components/data/timeline.tsx',
+    exports: ['Timeline', 'TimelineItem', 'TimelineNode', 'TimelineContent', 'TimelineTitle', 'TimelineDescription', 'TimelineTime', 'TimelineProps'],
+    description: 'Vertical chronological activity stream and event sequence tracker.'
+  },
+  {
+    name: 'tree-view',
+    title: 'Tree View',
+    category: 'data',
+    status: 'stable',
+    subpath: './tree-view',
+    sourceFile: 'src/components/data/tree-view.tsx',
+    exports: ['TreeView', 'TreeViewProps', 'TreeNode'],
+    description: 'Hierarchical navigation tree with branch expansion and keyboard control.'
+  },
 
   // Feedback
   {
@@ -632,6 +662,16 @@ export const componentManifest: ComponentMeta[] = [
     sourceFile: 'src/components/feedback/empty-state.tsx',
     exports: ['EmptyState', 'EmptyStateIcon', 'EmptyStateTitle', 'EmptyStateDescription', 'EmptyStateActions', 'EmptyStateProps'],
     description: 'Clean zero-data graphic container for empty lists, search results, and tables.'
+  },
+  {
+    name: 'banner',
+    title: 'Banner',
+    category: 'feedback',
+    status: 'stable',
+    subpath: './banner',
+    sourceFile: 'src/components/feedback/banner.tsx',
+    exports: ['Banner', 'BannerProps', 'BannerVariant'],
+    description: 'Full-width top-level announcement banner with action and dismiss controls.'
   },
 
   // Media

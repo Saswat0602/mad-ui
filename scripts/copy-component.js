@@ -80,6 +80,9 @@ const COMPONENT_REGISTRY = {
   'table': { path: 'src/components/data/table.tsx', category: 'Data', description: 'Semantic HTML table structure with hover and stripe styles.' },
   'data-table': { path: 'src/components/data/data-table.tsx', category: 'Data', description: 'Advanced table with multi-sorting, selection, search, and pagination.' },
   'chart': { path: 'src/components/data/chart.tsx', category: 'Data', description: 'Data visualization chart component.' },
+  'stat-card': { path: 'src/components/data/stat-card.tsx', category: 'Data', description: 'Metric card displaying KPI numbers, trend badges, and icons.' },
+  'timeline': { path: 'src/components/data/timeline.tsx', category: 'Data', description: 'Vertical chronological activity stream and event sequence tracker.' },
+  'tree-view': { path: 'src/components/data/tree-view.tsx', category: 'Data', description: 'Hierarchical navigation tree with branch expansion and keyboard control.' },
 
   // Feedback
   'alert': { path: 'src/components/feedback/alert.tsx', category: 'Feedback', description: 'Callout banner with semantic variants and dismiss.' },
@@ -87,6 +90,7 @@ const COMPONENT_REGISTRY = {
   'sonner': { path: 'src/components/feedback/sonner.tsx', category: 'Feedback', description: 'Stacked toast notification stream.' },
   'spinner': { path: 'src/components/feedback/spinner.tsx', category: 'Feedback', description: 'Animated indeterminate loading spinner.' },
   'empty-state': { path: 'src/components/feedback/empty-state.tsx', category: 'Feedback', description: 'Zero-data placeholder graphic and action container.' },
+  'banner': { path: 'src/components/feedback/banner.tsx', category: 'Feedback', description: 'Full-width top-level announcement banner with action and dismiss controls.' },
 
   // Media
   'avatar': { path: 'src/components/media/avatar.tsx', category: 'Media', description: 'User image avatar with fallback initials.' },
@@ -121,7 +125,9 @@ const ALIASES = {
   'multiselect': 'multi-select',
   'daterangepicker': 'date-range-picker',
   'timepicker': 'time-picker',
-  'fileupload': 'file-upload'
+  'fileupload': 'file-upload',
+  'statcard': 'stat-card',
+  'treeview': 'tree-view'
 };
 
 function normalizeName(name) {

@@ -82,6 +82,16 @@ import { TimePicker } from '../src/components/forms/time-picker'
 import { FileUpload } from '../src/components/forms/file-upload'
 import { Stepper } from '../src/components/navigation/stepper'
 
+// Phase 3 Display, Feedback & Custom Utility Hooks
+import { StatCard } from '../src/components/data/stat-card'
+import { Timeline } from '../src/components/data/timeline'
+import { TreeView } from '../src/components/data/tree-view'
+import { Banner } from '../src/components/feedback/banner'
+import { useClipboard } from '../src/hooks/use-clipboard'
+import { useHotkeys } from '../src/hooks/use-hotkeys'
+import { useDebounce } from '../src/hooks/use-debounce'
+import { useLocalStorage } from '../src/hooks/use-local-storage'
+
 
 describe('Smoke & SSR Component Suite', () => {
   describe('Client Rendering in StrictMode', () => {
@@ -956,6 +966,182 @@ describe('Smoke & SSR Component Suite', () => {
 
       const results = await axe(container)
       expect(results.violations).toEqual([])
+    })
+
+    it('renders StatCard with value, trend badge, and passes a11y', async () => {
+      const { container, getByText } = render(
+        <StrictMode>
+          <StatCard
+            title="Monthly Recurring Revenue"
+            value="$42,800"
+            description="Across 120 enterprise subscriptions"
+            trend={{ value: "+18.4%", direction: "up" }}
+          />
+        </StrictMode>
+      )
+
+      expect(getByText('Monthly Recurring Revenue')).toBeDefined()
+      expect(getByText('$42,800')).toBeDefined()
+      expect(getByText('+18.4%')).toBeDefined()
+      expect(getByText('Across 120 enterprise subscriptions')).toBeDefined()
+
+      // SSR test
+      const ssr = renderToString(
+        <StatCard title="SSR Metric" value="99.9%" />
+      )
+      expect(ssr).toContain('SSR Metric')
+      expect(ssr).toContain('99.9%')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders Timeline with events, time badges, and passes a11y', async () => {
+      const items = [
+        {
+          title: "Created Repository",
+          time: "1 hour ago",
+          description: "Initialized Git repo with clean architecture.",
+          status: "completed" as const
+        },
+        {
+          title: "Automated Verification",
+          time: "30 minutes ago",
+          description: "All lint and a11y checks passed.",
+          status: "current" as const
+        }
+      ]
+
+      const { container, getByText } = render(
+        <StrictMode>
+          <Timeline items={items} />
+        </StrictMode>
+      )
+
+      expect(getByText('Created Repository')).toBeDefined()
+      expect(getByText('1 hour ago')).toBeDefined()
+      expect(getByText('Automated Verification')).toBeDefined()
+
+      // SSR test
+      const ssr = renderToString(<Timeline items={items} />)
+      expect(ssr).toContain('Created Repository')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders Banner with action, handles dismiss, and passes a11y', async () => {
+      let dismissed = false
+
+      const { container, getByText, getByLabelText } = render(
+        <StrictMode>
+          <Banner
+            variant="warning"
+            title="API Maintenance"
+            dismissible
+            onDismiss={() => { dismissed = true }}
+            action={<button type="button">Details</button>}
+          >
+            Planned downtime this weekend.
+          </Banner>
+        </StrictMode>
+      )
+
+      expect(getByText('API Maintenance')).toBeDefined()
+      expect(getByText('Planned downtime this weekend.')).toBeDefined()
+      expect(getByText('Details')).toBeDefined()
+
+      const dismissBtn = getByLabelText('Dismiss banner')
+      fireEvent.click(dismissBtn)
+      expect(dismissed).toBe(true)
+
+      // SSR test
+      const ssr = renderToString(
+        <Banner title="SSR Banner Alert">System notice</Banner>
+      )
+      expect(ssr).toContain('SSR Banner Alert')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('renders TreeView with keyboard navigation, branch expand, and passes a11y', async () => {
+      let selectedNodeId = ""
+      const treeData = [
+        {
+          id: "folder-1",
+          label: "Documents",
+          children: [
+            { id: "file-1", label: "resume.pdf" },
+            { id: "file-2", label: "portfolio.pdf" }
+          ]
+        },
+        { id: "file-3", label: "notes.txt" }
+      ]
+
+      const { container, getByText } = render(
+        <StrictMode>
+          <TreeView
+            data={treeData}
+            defaultExpandedIds={["folder-1"]}
+            onSelect={(node) => { selectedNodeId = node.id }}
+          />
+        </StrictMode>
+      )
+
+      expect(getByText('Documents')).toBeDefined()
+      expect(getByText('resume.pdf')).toBeDefined()
+      expect(getByText('notes.txt')).toBeDefined()
+
+      // Click node
+      fireEvent.click(getByText('resume.pdf'))
+      expect(selectedNodeId).toBe('file-1')
+
+      // SSR test
+      const ssr = renderToString(
+        <TreeView data={treeData} defaultExpandedIds={["folder-1"]} />
+      )
+      expect(ssr).toContain('Documents')
+      expect(ssr).toContain('resume.pdf')
+
+      const results = await axe(container)
+      expect(results.violations).toEqual([])
+    })
+
+    it('verifies utility hooks (useClipboard, useHotkeys, useDebounce, useLocalStorage)', async () => {
+      // 1. useClipboard
+      const { result: clipboardResult } = renderHook(() => useClipboard({ timeout: 1000 }))
+      expect(clipboardResult.current.copied).toBe(false)
+      expect(typeof clipboardResult.current.copy).toBe('function')
+
+      // 2. useHotkeys
+      let hotkeyTriggered = false
+      renderHook(() =>
+        useHotkeys('mod+k', () => { hotkeyTriggered = true })
+      )
+      window.dispatchEvent(
+        new KeyboardEvent('keydown', { key: 'k', metaKey: true })
+      )
+      expect(hotkeyTriggered).toBe(true)
+
+      // 3. useDebounce
+      const { result: debounceResult, rerender: rerenderDebounce } = renderHook(
+        ({ val }) => useDebounce(val, 50),
+        { initialProps: { val: 'first' } }
+      )
+      expect(debounceResult.current).toBe('first')
+      rerenderDebounce({ val: 'second' })
+      expect(debounceResult.current).toBe('first')
+
+      // 4. useLocalStorage
+      const { result: storageResult } = renderHook(() =>
+        useLocalStorage('test-token', 'initial-token')
+      )
+      expect(storageResult.current[0]).toBe('initial-token')
+      act(() => {
+        storageResult.current[1]('updated-token')
+      })
+      expect(storageResult.current[0]).toBe('updated-token')
     })
   })
 })

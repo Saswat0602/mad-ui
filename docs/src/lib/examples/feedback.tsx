@@ -1,5 +1,5 @@
 import React from 'react'
-import { Alert, Toast, Spinner, EmptyState, Button } from 'mad-ui-components'
+import { Alert, Toast, Spinner, EmptyState, Banner, Button } from 'mad-ui-components'
 
 export interface ComponentExample {
   title: string
@@ -188,6 +188,56 @@ export function EmptyStateExample() {
             description="You haven't deployed any services yet. Get started by connecting a Git repository."
             action={<Button size="sm">Deploy Service</Button>}
           />
+        </div>
+      )
+    }
+  ],
+
+  banner: [
+    {
+      title: 'Announcement Banner',
+      description: 'Full-width banner for maintenance alerts and system notifications with action link and dismiss button',
+      code: `import { Banner, Button } from 'mad-ui-components'
+
+export function BannerExample() {
+  return (
+    <div className="w-full space-y-4">
+      <Banner
+        variant="info"
+        title="Scheduled Maintenance:"
+        dismissible
+        action={<Button size="sm" variant="outline">Learn More</Button>}
+      >
+        API v2 will undergo scheduled maintenance tonight at 02:00 UTC.
+      </Banner>
+
+      <Banner
+        variant="success"
+        title="Release v3.0.0 is live!"
+        dismissible
+      >
+        Check out 71 enterprise components and zero external dependencies.
+      </Banner>
+    </div>
+  )
+}`,
+      preview: (
+        <div className="w-full space-y-3">
+          <Banner
+            variant="info"
+            title="Scheduled Maintenance:"
+            dismissible
+            action={<Button size="sm" variant="outline" className="h-7 text-xs">Learn More</Button>}
+          >
+            API v2 will undergo scheduled maintenance tonight at 02:00 UTC.
+          </Banner>
+          <Banner
+            variant="success"
+            title="Release v3.0.0 is live!"
+            dismissible
+          >
+            All 71 enterprise components compiled with zero external dependencies.
+          </Banner>
         </div>
       )
     }

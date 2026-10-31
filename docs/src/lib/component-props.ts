@@ -2144,6 +2144,132 @@ export const COMPONENT_PROPS: Record<string, ComponentProp[]> = {
       default: true,
       description: 'Allows clicking previous completed steps to navigate backwards'
     }
+  ],
+  'stat-card': [
+    {
+      name: 'title',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'Statistic title or metric category label'
+    },
+    {
+      name: 'value',
+      type: 'React.ReactNode',
+      required: true,
+      description: 'Primary numeric or formatted metric display value'
+    },
+    {
+      name: 'description',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Supporting caption or benchmark context'
+    },
+    {
+      name: 'icon',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Visual icon badge displayed in top corner'
+    },
+    {
+      name: 'trend',
+      type: 'StatCardTrend',
+      required: false,
+      description: 'Percentage change trend indicator with direction (up, down, neutral) and badge'
+    },
+    {
+      name: 'variant',
+      type: "'default' | 'outline' | 'subtle'",
+      required: false,
+      default: 'default',
+      description: 'Container background and border frame appearance'
+    },
+    {
+      name: 'size',
+      type: "'sm' | 'default' | 'lg'",
+      required: false,
+      default: 'default',
+      description: 'Card padding and text size scaling'
+    }
+  ],
+  'timeline': [
+    {
+      name: 'items',
+      type: 'TimelineItemData[]',
+      required: false,
+      description: 'Structured array of chronological event items'
+    },
+    {
+      name: 'children',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Composable subcomponents (TimelineItem, TimelineNode, TimelineContent)'
+    }
+  ],
+  'tree-view': [
+    {
+      name: 'data',
+      type: 'TreeNode[]',
+      required: true,
+      description: 'Hierarchical node tree data array with id, label, icon, and children'
+    },
+    {
+      name: 'selectedId',
+      type: 'string',
+      required: false,
+      description: 'Controlled identifier of the currently selected node'
+    },
+    {
+      name: 'onSelect',
+      type: '(node: TreeNode) => void',
+      required: false,
+      description: 'Callback fired when a tree item is selected'
+    },
+    {
+      name: 'expandedIds',
+      type: 'string[]',
+      required: false,
+      description: 'Controlled array of expanded node IDs'
+    },
+    {
+      name: 'onToggleExpand',
+      type: '(id: string, expanded: boolean) => void',
+      required: false,
+      description: 'Callback fired when a branch node is expanded or collapsed'
+    }
+  ],
+  'banner': [
+    {
+      name: 'variant',
+      type: "'default' | 'info' | 'success' | 'warning' | 'destructive'",
+      required: false,
+      default: 'default',
+      description: 'Visual semantic status theme and border tint'
+    },
+    {
+      name: 'title',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Prominent headline or alert tag'
+    },
+    {
+      name: 'action',
+      type: 'React.ReactNode',
+      required: false,
+      description: 'Call to action button or link slot'
+    },
+    {
+      name: 'dismissible',
+      type: 'boolean',
+      required: false,
+      default: false,
+      description: 'Shows close button to dismiss the banner'
+    },
+    {
+      name: 'storageKey',
+      type: 'string',
+      required: false,
+      description: 'Unique key to persist dismissed state across page reloads in localStorage'
+    }
   ]
 }
 
@@ -2170,6 +2296,8 @@ const ALIAS_MAP: Record<string, string> = {
   'date-range': 'date-range-picker',
   timepicker: 'time-picker',
   fileupload: 'file-upload',
+  statcard: 'stat-card',
+  treeview: 'tree-view',
   'date-picker': 'datetime-picker',
   datepicker: 'datetime-picker'
 }

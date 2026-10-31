@@ -417,6 +417,26 @@
       "types": "./dist/stepper.d.mts",
       "import": "./dist/stepper.mjs",
       "default": "./dist/stepper.mjs"
+    },
+    "./stat-card": {
+      "types": "./dist/stat-card.d.mts",
+      "import": "./dist/stat-card.mjs",
+      "default": "./dist/stat-card.mjs"
+    },
+    "./timeline": {
+      "types": "./dist/timeline.d.mts",
+      "import": "./dist/timeline.mjs",
+      "default": "./dist/timeline.mjs"
+    },
+    "./tree-view": {
+      "types": "./dist/tree-view.d.mts",
+      "import": "./dist/tree-view.mjs",
+      "default": "./dist/tree-view.mjs"
+    },
+    "./banner": {
+      "types": "./dist/banner.d.mts",
+      "import": "./dist/banner.mjs",
+      "default": "./dist/banner.mjs"
     }
   },
   "files": [

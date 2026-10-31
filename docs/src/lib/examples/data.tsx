@@ -1,5 +1,6 @@
-import React from 'react'
-import { Table, DataTable, Chart, Badge } from 'mad-ui-components'
+import React, { useState } from 'react'
+import { Table, DataTable, Chart, Badge, StatCard, Timeline, TreeView } from 'mad-ui-components'
+import { Users, DollarSign, Activity } from 'lucide-react'
 
 export interface ComponentExample {
   title: string
@@ -307,6 +308,136 @@ export function ChartExample() {
         </div>
       )
     }
+  ],
+
+  'stat-card': [
+    {
+      title: 'Metrics & KPI Stat Cards',
+      description: 'Overview metric cards with trend indicators, direction badges, and icon adornments',
+      code: `import { StatCard } from 'mad-ui-components'
+import { DollarSign, Users, Activity } from 'lucide-react'
+
+export function StatCardExample() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+      <StatCard
+        title="Total Revenue"
+        value="$48,295"
+        description="Compared to last month"
+        icon={<DollarSign className="h-4 w-4" />}
+        trend={{ value: "+14.2%", direction: "up" }}
+      />
+      <StatCard
+        title="Active Users"
+        value="2,420"
+        description="Daily unique developers"
+        icon={<Users className="h-4 w-4" />}
+        trend={{ value: "+8.1%", direction: "up" }}
+      />
+      <StatCard
+        title="Server Latency"
+        value="42ms"
+        description="Average response time"
+        icon={<Activity className="h-4 w-4" />}
+        trend={{ value: "-3.4%", direction: "down" }}
+      />
+    </div>
+  )
+}`,
+      preview: <StatCardDemo />
+    }
+  ],
+
+  timeline: [
+    {
+      title: 'Deployment & Activity Timeline',
+      description: 'Vertical chronological activity stream with status nodes, timestamps, and connecting tracks',
+      code: `import { Timeline } from 'mad-ui-components'
+
+const EVENTS = [
+  {
+    title: "Production Release v3.0.0",
+    time: "10 minutes ago",
+    description: "Deployed commit 50e3b40 to production cluster across 8 edge regions.",
+    status: "completed" as const
+  },
+  {
+    title: "Database Migration",
+    time: "45 minutes ago",
+    description: "Applied schema migration v3_add_indices without downtime.",
+    status: "completed" as const
+  },
+  {
+    title: "End-to-End Test Suite",
+    time: "1 hour ago",
+    description: "All 60 automated accessibility and integration tests passed.",
+    status: "completed" as const
+  }
+]
+
+export function TimelineExample() {
+  return (
+    <div className="w-full max-w-lg p-4">
+      <Timeline items={EVENTS} />
+    </div>
+  )
+}`,
+      preview: <TimelineDemo />
+    }
+  ],
+
+  'tree-view': [
+    {
+      title: 'File Explorer Tree View',
+      description: 'Collapsible hierarchical folder tree with keyboard arrow navigation and branch expansion',
+      code: `import { TreeView, TreeNode } from 'mad-ui-components'
+import { useState } from 'react'
+
+const FILE_TREE: TreeNode[] = [
+  {
+    id: "src",
+    label: "src",
+    children: [
+      {
+        id: "components",
+        label: "components",
+        children: [
+          { id: "button.tsx", label: "button.tsx" },
+          { id: "card.tsx", label: "card.tsx" },
+          { id: "input.tsx", label: "input.tsx" }
+        ]
+      },
+      {
+        id: "hooks",
+        label: "hooks",
+        children: [
+          { id: "use-clipboard.ts", label: "use-clipboard.ts" },
+          { id: "use-hotkeys.ts", label: "use-hotkeys.ts" }
+        ]
+      },
+      { id: "index.ts", label: "index.ts" }
+    ]
+  },
+  { id: "package.json", label: "package.json" },
+  { id: "README.md", label: "README.md" }
+]
+
+export function TreeViewExample() {
+  const [selected, setSelected] = useState<string>("button.tsx")
+
+  return (
+    <div className="w-full max-w-sm rounded-lg border border-zinc-200 dark:border-zinc-800 p-3 bg-card">
+      <TreeView
+        data={FILE_TREE}
+        selectedId={selected}
+        onSelect={(node) => setSelected(node.id)}
+        defaultExpandedIds={["src", "components"]}
+      />
+    </div>
+  )
+}`,
+      preview: <TreeViewDemo />
+    }
   ]
 }
 
@@ -349,6 +480,106 @@ function DataTableDemo() {
         pagination
         pageSize={5}
         pageSizeOptions={[5, 10, 20]}
+      />
+    </div>
+  )
+}
+
+function StatCardDemo() {
+  return (
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-4 w-full">
+      <StatCard
+        title="Total Revenue"
+        value="$48,295"
+        description="Compared to last month"
+        icon={<DollarSign className="h-4 w-4" />}
+        trend={{ value: "+14.2%", direction: "up" }}
+      />
+      <StatCard
+        title="Active Users"
+        value="2,420"
+        description="Daily unique developers"
+        icon={<Users className="h-4 w-4" />}
+        trend={{ value: "+8.1%", direction: "up" }}
+      />
+      <StatCard
+        title="Server Latency"
+        value="42ms"
+        description="Average response time"
+        icon={<Activity className="h-4 w-4" />}
+        trend={{ value: "-3.4%", direction: "down" }}
+      />
+    </div>
+  )
+}
+
+function TimelineDemo() {
+  const events = [
+    {
+      title: "Production Release v3.0.0",
+      time: "10m ago",
+      description: "Deployed commit 50e3b40 to production cluster.",
+      status: "completed" as const
+    },
+    {
+      title: "Database Migration",
+      time: "45m ago",
+      description: "Applied schema migration v3_add_indices without downtime.",
+      status: "completed" as const
+    },
+    {
+      title: "End-to-End Test Suite",
+      time: "1h ago",
+      description: "All 60 automated accessibility and integration tests passed.",
+      status: "completed" as const
+    }
+  ]
+
+  return (
+    <div className="w-full max-w-lg p-4">
+      <Timeline items={events} />
+    </div>
+  )
+}
+
+function TreeViewDemo() {
+  const [selected, setSelected] = useState<string>("button.tsx")
+  const fileTree = [
+    {
+      id: "src",
+      label: "src",
+      children: [
+        {
+          id: "components",
+          label: "components",
+          children: [
+            { id: "button.tsx", label: "button.tsx" },
+            { id: "card.tsx", label: "card.tsx" },
+            { id: "input.tsx", label: "input.tsx" }
+          ]
+        },
+        {
+          id: "hooks",
+          label: "hooks",
+          children: [
+            { id: "use-clipboard.ts", label: "use-clipboard.ts" },
+            { id: "use-hotkeys.ts", label: "use-hotkeys.ts" }
+          ]
+        },
+        { id: "index.ts", label: "index.ts" }
+      ]
+    },
+    { id: "package.json", label: "package.json" },
+    { id: "README.md", label: "README.md" }
+  ]
+
+  return (
+    <div className="w-full max-w-sm rounded-lg border border-zinc-200 dark:border-zinc-800 p-3 bg-card">
+      <TreeView
+        data={fileTree}
+        selectedId={selected}
+        onSelect={(node) => setSelected(node.id)}
+        defaultExpandedIds={["src", "components"]}
       />
     </div>
   )

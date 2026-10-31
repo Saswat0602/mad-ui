@@ -143,6 +143,9 @@ export default defineConfig([
       'src/individual/navigation-menu.ts',
       'src/individual/menubar.ts',
       'src/individual/stepper.ts',
+      'src/individual/stat-card.ts',
+      'src/individual/timeline.ts',
+      'src/individual/tree-view.ts',
     ],
   },
   // Individual components — batch 6: media/feedback
@@ -160,6 +163,7 @@ export default defineConfig([
       'src/individual/sonner.ts',
       'src/individual/spinner.ts',
       'src/individual/empty-state.ts',
+      'src/individual/banner.ts',
       'src/individual/kbd.ts',
     ],
   },

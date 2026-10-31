@@ -17,7 +17,8 @@
 | **Phase 5** | **Release & Community** | NPM 3.0 release, migration guides, automated release provenance | 🟢 **COMPLETED** | **100%** |
 | **Phase 6A** | **Essential Micro-Components** | Kbd, Spinner, PasswordInput, NumberInput, ButtonGroup, InputGroup, EmptyState | 🟢 **COMPLETED** | **100%** |
 | **Phase 6B** | **Advanced Inputs & Navigation** | MultiSelect, DateRangePicker, TimePicker, Stepper, FileUpload | 🟢 **COMPLETED** | **100%** |
-| **Phase 6C** | **Display, Feedback & Custom Hooks** | StatCard, Timeline, Banner, TreeView, hooks (useClipboard, useHotkeys...) | ⏳ **IN PROGRESS** | **0%** |
+| **Phase 6C** | **Display, Feedback & Custom Hooks** | StatCard, Timeline, Banner, TreeView, hooks (useClipboard, useHotkeys...) | 🟢 **COMPLETED** | **100%** |
+| **Phase 6D** | **AI Interface Kit** | PromptInput, MessageBubble, ReasoningDisclosure, ToolCallCard | ⏳ **IN PROGRESS** | **0%** |
 
 ---
 
@@ -272,18 +273,46 @@
 
 ---
 
+## 🟢 Phase 6C — Display, Feedback & Custom Utility Hooks — [COMPLETED]
+
+**Goal**: Deliver 4 rich data/feedback components and 4 essential headless utility hooks with full TypeScript declarations, SSR safety, and documentation parity.
+
+- [x] **`StatCard` (`src/components/data/stat-card.tsx`)**:
+  - Metric display card with percentage change trend indicators, direction pills (up/down/neutral), icon slots, and description captions.
+- [x] **`Timeline` (`src/components/data/timeline.tsx`)**:
+  - Vertical chronological activity tracker with status nodes (`completed`, `current`, `upcoming`, `error`), timestamps, and connecting line tracks.
+- [x] **`Banner` (`src/components/feedback/banner.tsx`)**:
+  - Full-width announcement banner supporting semantic variants (`info`, `success`, `warning`, `destructive`), action buttons, dismiss triggers, and localStorage dismissal persistence.
+- [x] **`TreeView` (`src/components/data/tree-view.tsx`)**:
+  - Hierarchical folder/file tree viewer with branch collapse/expand, keyboard arrow roving navigation, and custom node selection.
+- [x] **4 Headless Utility Hooks (`src/hooks/`)**:
+  - `useClipboard`: One-click copy with timeout feedback and legacy fallback.
+  - `useHotkeys`: Multi-key combination shortcut listener (`mod+k`, `ctrl+shift+p`).
+  - `useDebounce` & `useDebouncedCallback`: Value and callback rate-limiter.
+  - `useLocalStorage`: SSR-safe state synchronized across browser tabs.
+- [x] **Verification & Documentation Parity**:
+  - All 4 components registered in `component.manifest.ts` (now 71 components).
+  - CLI distributor updated in `scripts/copy-component.js` with aliases (`statcard`, `treeview`).
+  - Subpath exports added to `package.json#exports` and `tsup.config.ts`.
+  - Props tables documented in `docs/src/lib/component-props.ts`.
+  - Interactive live demos added in `docs/src/lib/examples/data.tsx` and `feedback.tsx`.
+  - Unit tests and accessibility audits passing with 0 axe violations (65/65 tests).
+  - Next.js 16.4.3 docs build generating 81/81 static pages.
+
+---
+
 ## 🧪 Verification Matrix
 
 | Check / Tool | Target | Status | Result |
 | :--- | :--- | :---: | :--- |
 | **TypeScript Typecheck** | `tsc --noEmit` | ✅ Passing | 0 errors |
-| **Unit & Parity Tests** | `vitest run` (`parity.test.ts` & `smoke.test.tsx`) | ✅ Passing | 60 / 60 tests passing |
+| **Unit & Parity Tests** | `vitest run` (`parity.test.ts` & `smoke.test.tsx`) | ✅ Passing | 65 / 65 tests passing |
 | **Accessibility Audits** | `vitest-axe` (`axe-core`) | ✅ Passing | 0 violations |
-| **Package Linter** | `publint` (`npm run check:pkg`) | ✅ Passing | 76 / 76 subpaths valid |
-| **Manifest Audit** | `node scripts/verify-manifest.js` | ✅ Passing | 67 / 67 components verified |
+| **Package Linter** | `publint` (`npm run check:pkg`) | ✅ Passing | 80 / 80 subpaths valid |
+| **Manifest Audit** | `node scripts/verify-manifest.js` | ✅ Passing | 71 / 71 components verified |
 | **Root Linter** | `eslint src tests` | ✅ Passing | 0 errors |
-| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 79 bundles + 71.46 KB CSS |
-| **Documentation Build** | `next build` (Next.js 16.4.3 Turbopack) | ✅ Passing | 77 / 77 static pages generated |
+| **Core Build** | `tsup && node scripts/build-css.js` | ✅ Passing | 83 bundles + 74.12 KB CSS |
+| **Documentation Build** | `next build` (Next.js 16.4.3 Turbopack) | ✅ Passing | 81 / 81 static pages generated |
 | **Documentation Linter** | `npm --prefix docs run lint` | ✅ Passing | 0 errors, 0 warnings |
 
 

@@ -5,4 +5,8 @@ export * from './use-keyboard'
 export * from './use-media-query'
 export * from './use-id'
 export * from './use-virtualizer'
+export * from './use-clipboard'
+export * from './use-hotkeys'
+export * from './use-debounce'
+export * from './use-local-storage'
 

@@ -512,12 +512,36 @@ export const COMPONENT_REGISTRY = {
 
   // Data Components
   'table': {
-    category: 'Data' as ComponentCategory,
+    category: 'Data Display' as ComponentCategory,
     title: 'Table',
     description: 'A powerful data table component with sorting, selection, pagination, and enterprise features for displaying and managing large datasets.',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['table', 'data', 'sorting', 'pagination', 'selection', 'enterprise', 'accessibility']
+    tags: ['table', 'data', 'sorting', 'enterprise']
+  },
+  'stat-card': {
+    category: 'Data Display' as ComponentCategory,
+    title: 'Stat Card',
+    description: 'Metric card displaying KPI numbers, trend badges, and icons for dashboards',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['data', 'analytics', 'kpi', 'metric']
+  },
+  'timeline': {
+    category: 'Data Display' as ComponentCategory,
+    title: 'Timeline',
+    description: 'Vertical chronological activity stream and event sequence tracker with status nodes',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['data', 'timeline', 'activity', 'events']
+  },
+  'tree-view': {
+    category: 'Data Display' as ComponentCategory,
+    title: 'Tree View',
+    description: 'Hierarchical navigation tree with collapsible branches and keyboard arrow navigation',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['data', 'tree', 'hierarchy', 'navigation']
   },
 
   // Feedback Components
@@ -562,6 +586,14 @@ export const COMPONENT_REGISTRY = {
     version: '3.0.0',
     status: 'stable' as const,
     tags: ['feedback', 'empty', 'state', 'placeholder']
+  },
+  'banner': {
+    category: 'Feedback' as ComponentCategory,
+    title: 'Banner',
+    description: 'Full-width top-level announcement banner with action links and persistent dismiss',
+    version: '3.0.0',
+    status: 'stable' as const,
+    tags: ['feedback', 'banner', 'announcement', 'alert']
   }
 } as const
 

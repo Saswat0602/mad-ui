@@ -1,6 +1,6 @@
 # 📋 Mad UI Component Implementation & Status Audit
 
-This document provides a comprehensive audit of all **67 components** in `mad-ui-components`, detailing implementation status, export availability, TypeScript declaration support, and documentation status.
+This document provides a comprehensive audit of all **71 components** in `mad-ui-components`, detailing implementation status, export availability, TypeScript declaration support, and documentation status.
 
 ---
 
@@ -13,10 +13,10 @@ This document provides a comprehensive audit of all **67 components** in `mad-ui
 | **Layout** | 10 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Overlay** | 8 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Navigation** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Data Display** | 3 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Feedback** | 5 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
+| **Data Display** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
+| **Feedback** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
 | **Media** | 6 | ✅ 100% Ready | Full `.d.mts` | Live Interactive Docs |
-| **Total** | **67** | **100% Compiled** | **Universal** | **All Documented** |
+| **Total** | **71** | **100% Compiled** | **Universal** | **All Documented** |
 
 ---
 
@@ -108,17 +108,20 @@ This document provides a comprehensive audit of all **67 components** in `mad-ui
 
 ---
 
-## 6. Data Display Components (3 Components)
+## 6. Data Display Components (6 Components)
 
 | Component | Source Path | Subpath Export | Status | Features & Notes |
 | :--- | :--- | :--- | :---: | :--- |
 | **Table** | `src/components/data/table.tsx` | `mad-ui-components/table` | 🟢 100% Stable | HTML table primitives (`TableHeader`, `TableBody`, `TableRow`, `TableCell`). |
 | **Data Table** | `src/components/data/data-table.tsx` | `mad-ui-components/data-table` | 🟢 100% Stable | Advanced table with column sorting, filtering, selection, and pagination. |
 | **Chart** | `src/components/data/chart.tsx` | `mad-ui-components/chart` | 🟡 100% Beta | Data visualization wrapper with tooltips and responsive SVG bars/lines. |
+| **StatCard** | `src/components/data/stat-card.tsx` | `mad-ui-components/stat-card` | 🟢 100% Stable | Metric card displaying KPI numbers, trend badges, and icons for dashboards. |
+| **Timeline** | `src/components/data/timeline.tsx` | `mad-ui-components/timeline` | 🟢 100% Stable | Vertical chronological activity stream with status nodes and connecting tracks. |
+| **TreeView** | `src/components/data/tree-view.tsx` | `mad-ui-components/tree-view` | 🟢 100% Stable | Hierarchical folder tree with collapsible branches and keyboard navigation. |
 
 ---
 
-## 7. Feedback Components (5 Components)
+## 7. Feedback Components (6 Components)
 
 | Component | Source Path | Subpath Export | Status | Features & Notes |
 | :--- | :--- | :--- | :---: | :--- |
@@ -127,6 +130,7 @@ This document provides a comprehensive audit of all **67 components** in `mad-ui
 | **Sonner** | `src/components/feedback/sonner.tsx` | `mad-ui-components/sonner` | 🟢 100% Stable | Modern stacked toast system with swipe gestures and theme support. |
 | **Spinner** | `src/components/feedback/spinner.tsx` | `mad-ui-components/spinner` | 🟢 100% Stable | Accessible indeterminate loading indicator with screen reader support. |
 | **EmptyState** | `src/components/feedback/empty-state.tsx` | `mad-ui-components/empty-state` | 🟢 100% Stable | Zero-data placeholder graphic and action container for empty views. |
+| **Banner** | `src/components/feedback/banner.tsx` | `mad-ui-components/banner` | 🟢 100% Stable | Full-width announcement banner with action links and persistent dismiss. |
 
 ---
 
@@ -147,8 +151,8 @@ This document provides a comprehensive audit of all **67 components** in `mad-ui
 
 | Test Criteria | Status | Details |
 | :--- | :---: | :--- |
-| **Root Build (`tsup`)** | ✅ Passing | Generates 134+ `.mjs` and `.d.mts` files in `dist/`. |
-| **Documentation Build (`next build`)** | ✅ Passing | Generates 77/77 static pages cleanly without type or ESLint errors. |
+| **Root Build (`tsup`)** | ✅ Passing | Generates 142+ `.mjs` and `.d.mts` files in `dist/`. |
+| **Documentation Build (`next build`)** | ✅ Passing | Generates 81/81 static pages cleanly without type or ESLint errors. |
 | **ESLint (`eslint`)** | ✅ Passing | 0 errors across entire workspace. |
 | **React Compatibility** | ✅ Verified | Works seamlessly across React 18 consumers and React 19 Next.js apps. |
 | **Tailwind Compatibility** | ✅ Verified | Tested with both Tailwind CSS v3 and Tailwind CSS v4. |
