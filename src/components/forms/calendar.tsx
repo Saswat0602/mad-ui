@@ -102,6 +102,25 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     showYearNavigation = false,
     highlightWeekends = false,
     highlightHolidays = false,
+    analyticsId: _analyticsId,
+    analyticsEvent: _analyticsEvent,
+    analyticsData: _analyticsData,
+    ariaLabel,
+    ariaDescribedBy,
+    role,
+    dataTestId,
+    onAnalytics: _onAnalytics,
+    tooltip: _tooltip,
+    loading: _loading,
+    error: _error,
+    success: _success,
+    validation: _validation,
+    shortcuts: _shortcuts,
+    customDays: _customDays,
+    onDateHover: _onDateHover,
+    onDateFocus: _onDateFocus,
+    keyboardNavigation: _keyboardNavigation,
+    autoFocus: _autoFocus,
     style,
     ...props 
   }, ref) => {
@@ -110,6 +129,8 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     const [currentDate, setCurrentDate] = React.useState(value || new Date())
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(value || null)
     const containerRef = React.useRef<HTMLDivElement>(null)
+
+    React.useImperativeHandle(ref, () => containerRef.current!)
     
     // Size classes
     const sizeClasses = {
@@ -360,7 +381,14 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
       : ["S", "M", "T", "W", "T", "F", "S"]
     
     return (
-      <div ref={containerRef} className={cn("relative", fullWidth && "w-full", className)}>
+      <div
+        ref={containerRef}
+        className={cn("relative", fullWidth && "w-full", className)}
+        role={role || 'region'}
+        aria-label={ariaLabel || (props as any)['aria-label'] || 'Calendar'}
+        aria-describedby={ariaDescribedBy}
+        data-testid={dataTestId || (props as any)['data-testid']}
+      >
         <div className="relative">
           <input
             type="text"

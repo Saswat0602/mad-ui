@@ -1,5 +1,5 @@
 import * as React from "react"
-import { cn, createVariants } from "../../lib/utils"
+import { createVariants } from "../../lib/utils"
 
 export interface LabelProps extends React.LabelHTMLAttributes<HTMLLabelElement> {
   required?: boolean

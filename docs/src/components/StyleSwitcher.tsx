@@ -83,3 +83,4 @@ export function StyleSwitcher({ className = '', variant = 'compact' }: StyleSwit
     </div>
   )
 }
+
