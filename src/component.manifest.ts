@@ -180,7 +180,17 @@ export const componentManifest: ComponentMeta[] = [
     status: 'stable',
     subpath: './breadcrumbs',
     sourceFile: 'src/components/forms/breadcrumbs.tsx',
-    exports: ['Breadcrumbs', 'BreadcrumbsProps', 'BreadcrumbItem'],
+    exports: [
+      'Breadcrumbs',
+      'BreadcrumbsProps',
+      'BreadcrumbItem',
+      'Breadcrumb',
+      'BreadcrumbList',
+      'BreadcrumbLink',
+      'BreadcrumbPage',
+      'BreadcrumbSeparator',
+      'BreadcrumbEllipsis',
+    ],
     description: 'Hierarchical navigation trail indicating current page location.'
   },
   {

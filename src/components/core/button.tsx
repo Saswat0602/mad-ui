@@ -8,6 +8,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
   variant?: "default" | "destructive" | "outline" | "secondary" | "ghost" | "link"
   size?: "default" | "sm" | "lg" | "icon"
   loading?: boolean
+  isLoading?: boolean
   leftIcon?: React.ReactNode
   rightIcon?: React.ReactNode
   fullWidth?: boolean
@@ -50,32 +51,40 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     variant,
     size,
     loading,
+    isLoading,
     disabled,
     leftIcon,
     rightIcon,
     fullWidth,
     asChild = false,
     children,
+    type,
     ...props
   }, ref) => {
+    const isBusy = Boolean(loading || isLoading)
     const Comp = asChild ? Slot : "button"
     return (
       <Comp
         className={cn(
           buttonVariants({ variant, size }),
           fullWidth && "w-full",
+          isBusy && "pointer-events-none opacity-80",
           className
         )}
         ref={ref}
-        disabled={disabled || loading}
+        type={asChild ? undefined : (type || "button")}
+        aria-busy={isBusy ? "true" : undefined}
+        data-loading={isBusy ? "" : undefined}
+        disabled={disabled || isBusy}
         {...props}
       >
-        {loading && (
+        {isBusy && (
           <svg
-            className="h-4 w-4 animate-spin"
+            className="h-4 w-4 animate-spin shrink-0"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <circle
               className="opacity-25"
@@ -92,9 +101,9 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             />
           </svg>
         )}
-        {!loading && leftIcon && <span className="shrink-0">{leftIcon}</span>}
+        {!isBusy && leftIcon && <span className="shrink-0">{leftIcon}</span>}
         {children}
-        {!loading && rightIcon && <span className="shrink-0">{rightIcon}</span>}
+        {!isBusy && rightIcon && <span className="shrink-0">{rightIcon}</span>}
       </Comp>
     )
   }

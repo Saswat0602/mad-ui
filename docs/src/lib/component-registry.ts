@@ -166,7 +166,7 @@ export const COMPONENT_REGISTRY = {
     tags: ['form', 'radiogroup', 'selection']
   },
   'tabs': {
-    category: 'Navigation' as ComponentCategory,
+    category: 'Layout' as ComponentCategory,
     title: 'Tabs',
     description: 'A tabs component for organizing content into switchable panels',
     version: '3.0.0',
@@ -358,7 +358,7 @@ export const COMPONENT_REGISTRY = {
     tags: ['navigation', 'command', 'palette']
   },
   'combobox': {
-    category: 'Navigation' as ComponentCategory,
+    category: 'Form' as ComponentCategory,
     title: 'Combobox',
     description: 'A combobox component with search and selection',
     version: '3.0.0',

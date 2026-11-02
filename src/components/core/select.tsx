@@ -32,6 +32,7 @@ function useSelectContext() {
 
 export interface SelectProps {
   children?: React.ReactNode
+  name?: string
   value?: string
   defaultValue?: string
   onValueChange?: (value: string) => void
@@ -43,6 +44,7 @@ export interface SelectProps {
 
 export const Select: React.FC<SelectProps> = ({
   children,
+  name,
   value: controlledValue,
   defaultValue,
   onValueChange,
@@ -73,6 +75,18 @@ export const Select: React.FC<SelectProps> = ({
     }
   }, [])
 
+  React.useEffect(() => {
+    if (!open) return
+    updateTriggerRect()
+    const handleScrollOrResize = () => updateTriggerRect()
+    window.addEventListener("scroll", handleScrollOrResize, true)
+    window.addEventListener("resize", handleScrollOrResize)
+    return () => {
+      window.removeEventListener("scroll", handleScrollOrResize, true)
+      window.removeEventListener("resize", handleScrollOrResize)
+    }
+  }, [open, updateTriggerRect])
+
   return (
     <SelectContext.Provider
       value={{
@@ -88,6 +102,13 @@ export const Select: React.FC<SelectProps> = ({
         disabled,
       }}
     >
+      {name && (
+        <input
+          type="hidden"
+          name={name}
+          value={value ?? ""}
+        />
+      )}
       {children}
     </SelectContext.Provider>
   )
@@ -222,10 +243,15 @@ export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps
 
     if (!open) return null
 
+    const shouldFlip = triggerRect
+      ? typeof window !== "undefined" && triggerRect.bottom + 260 > window.innerHeight && triggerRect.top > 260
+      : false
+
     const style: React.CSSProperties = triggerRect
       ? {
           position: "fixed",
-          top: `${triggerRect.bottom + 4}px`,
+          top: shouldFlip ? `${triggerRect.top - 4}px` : `${triggerRect.bottom + 4}px`,
+          transform: shouldFlip ? "translateY(-100%)" : undefined,
           left: `${triggerRect.left}px`,
           minWidth: `${triggerRect.width}px`,
           maxWidth: "calc(100vw - 32px)",
@@ -241,6 +267,7 @@ export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps
             else if (ref) (ref as React.MutableRefObject<HTMLDivElement | null>).current = node
           }}
           role="listbox"
+          data-side={shouldFlip ? "top" : "bottom"}
           style={style}
           className={cn(
             "fixed z-50 max-h-80 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xl duration-150 animate-in fade-in-0 zoom-in-95 p-1",

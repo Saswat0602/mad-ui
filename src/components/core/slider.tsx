@@ -4,6 +4,7 @@ import { cn } from '../../lib/utils'
 export interface SliderProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange' | 'defaultValue'> {
   value?: number | number[] | [number, number]
   defaultValue?: number | number[] | [number, number]
+  name?: string
   min?: number
   max?: number
   step?: number
@@ -35,6 +36,7 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
     {
       value: controlledValue,
       defaultValue = 0,
+      name,
       min = 0,
       max = 100,
       step = 1,
@@ -179,6 +181,13 @@ export const Slider = forwardRef<HTMLDivElement, SliderProps>(
         className={cn('relative flex flex-col gap-1.5 select-none', fullWidth && 'w-full', className)}
         {...props}
       >
+        {name && (
+          <input
+            type="hidden"
+            name={name}
+            value={values.join(',')}
+          />
+        )}
         <div
           ref={trackRef}
           onPointerDown={handlePointerDown}

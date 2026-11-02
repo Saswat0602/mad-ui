@@ -42,7 +42,16 @@ export { TimePicker } from './components/forms/time-picker'
 export { FileUpload, formatBytes } from './components/forms/file-upload'
 export { PromptInput } from './components/forms/prompt-input'
 export { InputOTP, InputOTPGroup, InputOTPSlot } from './components/forms/input-otp'
-export { Breadcrumbs } from './components/forms/breadcrumbs'
+export {
+  Breadcrumbs,
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
+} from './components/forms/breadcrumbs'
 export { Tabs, TabsList, TabsTrigger, TabsContent } from './components/forms/tabs'
 export { 
   Form, 
@@ -301,7 +310,7 @@ export type { TimePickerProps } from './components/forms/time-picker'
 export type { FileUploadProps } from './components/forms/file-upload'
 export type { PromptInputProps } from './components/forms/prompt-input'
 export type { InputOTPProps, InputOTPGroupProps, InputOTPSlotProps } from './components/forms/input-otp'
-export type { BreadcrumbsProps, BreadcrumbItem } from './components/forms/breadcrumbs'
+export type { BreadcrumbsProps, BreadcrumbItemData, BreadcrumbsItem } from './components/forms/breadcrumbs'
 export type { TabsProps, TabItem, TabsListProps, TabsTriggerProps, TabsContentProps } from './components/forms/tabs'
 export type { 
   FormProps,

@@ -59,6 +59,7 @@ export const RadioGroup = forwardRef<HTMLDivElement, RadioGroupProps>(
           className={cn('grid gap-2.5', className)}
           {...props}
         >
+          {name && <input type="hidden" name={name} value={value ?? ""} />}
           {children}
         </div>
       </RadioGroupContext.Provider>

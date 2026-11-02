@@ -9,6 +9,7 @@ export interface TimePickerProps
   extends Omit<React.HTMLAttributes<HTMLDivElement>, "onChange" | "defaultValue"> {
   value?: string
   defaultValue?: string
+  name?: string
   onChange?: (time: string) => void
   format?: "12h" | "24h"
   step?: number
@@ -23,6 +24,7 @@ export const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(
       className,
       value: controlledValue,
       defaultValue = "12:00 PM",
+      name,
       onChange,
       format = "12h",
       step = 1,
@@ -152,6 +154,7 @@ export const TimePicker = React.forwardRef<HTMLDivElement, TimePickerProps>(
         )}
         {...props}
       >
+        {name && <input type="hidden" name={name} value={time ?? ""} />}
         <Clock className="h-4 w-4 text-muted-foreground shrink-0 mr-1" />
 
         <input

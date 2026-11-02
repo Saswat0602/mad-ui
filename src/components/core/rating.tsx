@@ -7,6 +7,7 @@ import { cn } from "../../lib/utils"
 export interface RatingProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value: number
   max?: number
+  name?: string
   onChange?: (value: number) => void
   readOnly?: boolean
   size?: "sm" | "md" | "lg"
@@ -20,6 +21,7 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
     className,
     value = 0,
     max = 5,
+    name,
     onChange,
     readOnly = false,
     size = "md",
@@ -106,6 +108,7 @@ const Rating = React.forwardRef<HTMLDivElement, RatingProps>(
           aria-label={label || "Rating"}
           {...props}
         >
+          {name && <input type="hidden" name={name} value={value} />}
           {Array.from({ length: max }, (_, index) => renderStar(index + 1))}
         </div>
       </div>

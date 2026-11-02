@@ -7,6 +7,8 @@ export interface SwitchProps
   label?: string
   description?: string
   size?: 'sm' | 'md' | 'lg'
+  name?: string
+  value?: string
   checked?: boolean
   defaultChecked?: boolean
   onCheckedChange?: (checked: boolean) => void
@@ -21,6 +23,8 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
       description,
       size = 'md',
       id,
+      name,
+      value,
       disabled = false,
       checked: controlledChecked,
       defaultChecked = false,
@@ -90,36 +94,57 @@ export const Switch = React.forwardRef<HTMLButtonElement, SwitchProps>(
     }
 
     const switchNode = (
-      <button
-        type="button"
-        role="switch"
-        ref={ref}
-        id={switchId}
-        aria-checked={checked}
-        aria-disabled={disabled}
-        disabled={disabled}
-        data-state={checked ? 'checked' : 'unchecked'}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        className={cn(
-          'peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 select-none',
-          checked
-            ? 'bg-primary'
-            : 'bg-input',
-          rootSizes[size],
-          className
+      <>
+        {name && (
+          <input
+            type="checkbox"
+            name={name}
+            value={value ?? "on"}
+            checked={checked}
+            style={{
+              position: 'absolute',
+              opacity: 0,
+              pointerEvents: 'none',
+              margin: 0,
+              width: 0,
+              height: 0,
+            }}
+            tabIndex={-1}
+            aria-hidden="true"
+            readOnly
+          />
         )}
-        {...props}
-      >
-        <span
+        <button
+          type="button"
+          role="switch"
+          ref={ref}
+          id={switchId}
+          aria-checked={checked}
+          aria-disabled={disabled}
+          disabled={disabled}
           data-state={checked ? 'checked' : 'unchecked'}
+          onClick={handleClick}
+          onKeyDown={handleKeyDown}
           className={cn(
-            'pointer-events-none block rounded-full bg-background shadow-md ring-0 transition-transform duration-200 ease-in-out',
-            thumbSizes[size],
-            translateClasses[size]
+            'peer inline-flex shrink-0 cursor-pointer items-center rounded-full border-2 border-transparent transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 select-none',
+            checked
+              ? 'bg-primary'
+              : 'bg-input',
+            rootSizes[size],
+            className
           )}
-        />
-      </button>
+          {...props}
+        >
+          <span
+            data-state={checked ? 'checked' : 'unchecked'}
+            className={cn(
+              'pointer-events-none block rounded-full bg-background shadow-md ring-0 transition-transform duration-200 ease-in-out',
+              thumbSizes[size],
+              translateClasses[size]
+            )}
+          />
+        </button>
+      </>
     )
 
     if (!label && !description) {

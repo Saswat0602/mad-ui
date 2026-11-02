@@ -76,6 +76,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
     ref
   ) => {
     const contentRef = React.useRef<HTMLDivElement | null>(null)
+    const titleId = React.useId()
 
     useFocusTrap(contentRef as React.RefObject<HTMLElement>, isOpen)
 
@@ -132,6 +133,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             }}
             role="dialog"
             aria-modal="true"
+            aria-labelledby={title ? titleId : undefined}
             data-state={isOpen ? "open" : "closed"}
             className={cn(
               "fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full rounded-2xl border duration-200",
@@ -157,7 +159,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             {(title || showCloseButton) && (
               <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
                 {title ? (
-                  <h2 className="text-base font-semibold text-zinc-900 dark:text-zinc-100 leading-none">
+                  <h2 id={titleId} className="text-base font-semibold text-zinc-900 dark:text-zinc-100 leading-none">
                     {title}
                   </h2>
                 ) : (

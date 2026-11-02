@@ -11,7 +11,7 @@
 const fs = require('fs');
 const path = require('path');
 
-// 55 Core Components mapped to source files
+// 75 Core Components mapped to source files
 const COMPONENT_REGISTRY = {
   // Core
   'button': { path: 'src/components/core/button.tsx', category: 'Core', description: 'Interactive button with multiple semantic variants and sizes.' },
@@ -323,7 +323,7 @@ function main() {
   }
 
   if (options.all) {
-    console.log(`\n🚀 Copying all 55 components to ${options.targetDir}...\n`);
+    console.log(`\n🚀 Copying all 75 components to ${options.targetDir}...\n`);
     const components = Object.keys(COMPONENT_REGISTRY);
     let successCount = 0;
 
@@ -422,6 +422,16 @@ function copyComponentWithDeps(componentKey, options, rootDir) {
     if (fs.existsSync(colorsSrc)) {
       copyFileSafe(colorsSrc, colorsDest, options.overwrite, options.dryRun);
       console.log(`    + Utility: lib/colors.ts`);
+    }
+  }
+
+  // 6. Copy icons if needed
+  if (deps.icons) {
+    const iconsSrc = path.join(rootDir, 'src', 'icons', 'index.tsx');
+    const iconsDest = path.join(options.targetDir, 'icons', 'index.tsx');
+    if (fs.existsSync(iconsSrc)) {
+      copyFileSafe(iconsSrc, iconsDest, options.overwrite, options.dryRun);
+      console.log(`    + Icons: icons/index.tsx`);
     }
   }
 

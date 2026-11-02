@@ -12,6 +12,8 @@ export interface CheckboxProps
   error?: boolean
   indeterminate?: boolean
   size?: 'sm' | 'md' | 'lg'
+  name?: string
+  value?: string
   checked?: CheckedState
   defaultChecked?: CheckedState
   onCheckedChange?: (checked: CheckedState) => void
@@ -28,6 +30,8 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
       indeterminate,
       size = 'md',
       id,
+      name,
+      value,
       checked: controlledChecked,
       defaultChecked = false,
       disabled = false,
@@ -95,32 +99,53 @@ export const Checkbox = React.forwardRef<HTMLButtonElement, CheckboxProps>(
     }
 
     const checkboxNode = (
-      <button
-        type="button"
-        role="checkbox"
-        ref={ref}
-        id={checkboxId}
-        aria-checked={isIndeterminate ? 'mixed' : isChecked}
-        aria-disabled={disabled}
-        disabled={disabled}
-        data-state={isIndeterminate ? 'indeterminate' : isChecked ? 'checked' : 'unchecked'}
-        onClick={handleClick}
-        onKeyDown={handleKeyDown}
-        className={cn(
-          'peer shrink-0 flex items-center justify-center border border-input bg-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 select-none cursor-pointer',
-          (isChecked || isIndeterminate) && 'bg-primary border-primary text-primary-foreground',
-          (error || props["aria-invalid"] === true || props["aria-invalid"] === "true") && 'border-destructive',
-          sizeClasses[size],
-          className
+      <>
+        {name && (
+          <input
+            type="checkbox"
+            name={name}
+            value={value ?? "on"}
+            checked={isChecked}
+            style={{
+              position: 'absolute',
+              opacity: 0,
+              pointerEvents: 'none',
+              margin: 0,
+              width: 0,
+              height: 0,
+            }}
+            tabIndex={-1}
+            aria-hidden="true"
+            readOnly
+          />
         )}
-        {...props}
-      >
-        {isIndeterminate ? (
-          <Minus className={iconSizes[size]} />
-        ) : isChecked ? (
-          <Check className={iconSizes[size]} />
-        ) : null}
-      </button>
+        <button
+          type="button"
+          role="checkbox"
+          ref={ref}
+          id={checkboxId}
+          aria-checked={isIndeterminate ? 'mixed' : isChecked}
+          aria-disabled={disabled}
+          disabled={disabled}
+          data-state={isIndeterminate ? 'indeterminate' : isChecked ? 'checked' : 'unchecked'}
+          onClick={handleClick}
+          onKeyDown={handleKeyDown}
+          className={cn(
+            'peer shrink-0 flex items-center justify-center border border-input bg-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 ring-offset-background disabled:cursor-not-allowed disabled:opacity-50 select-none cursor-pointer',
+            (isChecked || isIndeterminate) && 'bg-primary border-primary text-primary-foreground',
+            (error || props["aria-invalid"] === true || props["aria-invalid"] === "true") && 'border-destructive',
+            sizeClasses[size],
+            className
+          )}
+          {...props}
+        >
+          {isIndeterminate ? (
+            <Minus className={iconSizes[size]} />
+          ) : isChecked ? (
+            <Check className={iconSizes[size]} />
+          ) : null}
+        </button>
+      </>
     )
 
     if (!label && !description) {

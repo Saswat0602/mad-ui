@@ -103,10 +103,12 @@ export function Header() {
               href="https://github.com/Saswat0602/mad-ui" 
               target="_blank" 
               rel="noopener noreferrer"
+              aria-label="View source on GitHub"
               className="p-1.5 sm:p-2 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors"
               title="View source on GitHub"
             >
               <Github className="h-4 w-4" />
+              <span className="sr-only">GitHub</span>
             </a>
             
             <div className="hidden sm:block w-px h-4 bg-border/60 mx-0.5" />
