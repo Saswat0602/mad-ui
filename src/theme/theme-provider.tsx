@@ -34,25 +34,21 @@ export function ThemeProvider({
   attribute = 'class',
   enableSystem = true,
 }: ThemeProviderProps) {
-  const [theme, setThemeState] = React.useState<Theme>(() => {
-    if (typeof window === 'undefined') return defaultTheme
+  // Initialize with defaults to guarantee matching SSR and initial client hydration
+  const [theme, setThemeState] = React.useState<Theme>(defaultTheme)
+  const [style, setStyleState] = React.useState<ThemeStyle>(defaultStyle)
+
+  // Sync stored preferences after client mount
+  React.useEffect(() => {
     try {
       const stored = localStorage.getItem(storageKey) as Theme | null
-      return stored || defaultTheme
+      if (stored) setThemeState(stored)
+      const storedStyle = localStorage.getItem(styleStorageKey) as ThemeStyle | null
+      if (storedStyle === 'normal' || storedStyle === 'monochrome') setStyleState(storedStyle)
     } catch {
-      return defaultTheme
+      // Ignore localStorage read failures
     }
-  })
-
-  const [style, setStyleState] = React.useState<ThemeStyle>(() => {
-    if (typeof window === 'undefined') return defaultStyle
-    try {
-      const stored = localStorage.getItem(styleStorageKey) as ThemeStyle | null
-      return stored || defaultStyle
-    } catch {
-      return defaultStyle
-    }
-  })
+  }, [storageKey, styleStorageKey])
 
   const [resolvedTheme, setResolvedTheme] = React.useState<'light' | 'dark'>('light')
 

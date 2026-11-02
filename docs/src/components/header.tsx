@@ -160,7 +160,7 @@ export function Header() {
               </div>
 
               {/* Scrollable Navigation Tree */}
-              <div className="flex-1 overflow-y-auto">
+              <div className="flex-1 overflow-y-auto no-scrollbar scrollbar-none">
                 <DocsSidebar onItemClick={() => setIsMobileMenuOpen(false)} />
               </div>
 

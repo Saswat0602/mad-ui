@@ -8,8 +8,18 @@ interface StyleSwitcherProps {
   variant?: 'compact' | 'full'
 }
 
+const emptySubscribe = () => () => {}
+
 export function StyleSwitcher({ className = '', variant = 'compact' }: StyleSwitcherProps) {
   const { style, setStyle } = useTheme()
+  const mounted = React.useSyncExternalStore(
+    emptySubscribe,
+    () => true,
+    () => false
+  )
+
+  // Prior to client mount, default to 'monochrome' to guarantee identical SSR output
+  const activeStyle = mounted ? style : 'monochrome'
 
   if (variant === 'full') {
     return (
@@ -17,12 +27,13 @@ export function StyleSwitcher({ className = '', variant = 'compact' }: StyleSwit
         <button
           type="button"
           onClick={() => setStyle('monochrome')}
+          suppressHydrationWarning
           className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md text-xs font-medium transition-all cursor-pointer ${
-            style === 'monochrome'
+            activeStyle === 'monochrome'
               ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
               : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
           }`}
-          aria-pressed={style === 'monochrome'}
+          aria-pressed={activeStyle === 'monochrome'}
         >
           <span className="h-2.5 w-2.5 rounded-full bg-foreground border border-muted-foreground/40 shrink-0" />
           <span>B&amp;W (Zinc)</span>
@@ -31,12 +42,13 @@ export function StyleSwitcher({ className = '', variant = 'compact' }: StyleSwit
         <button
           type="button"
           onClick={() => setStyle('normal')}
+          suppressHydrationWarning
           className={`flex items-center justify-center gap-2 px-3 py-2 rounded-md text-xs font-medium transition-all cursor-pointer ${
-            style === 'normal'
+            activeStyle === 'normal'
               ? 'bg-background text-foreground shadow-xs font-semibold border border-border/80'
               : 'text-muted-foreground hover:text-foreground hover:bg-muted/60'
           }`}
-          aria-pressed={style === 'normal'}
+          aria-pressed={activeStyle === 'normal'}
         >
           <span className="h-2.5 w-2.5 rounded-full bg-blue-600 shrink-0" />
           <span>Normal (Blue)</span>
@@ -54,13 +66,14 @@ export function StyleSwitcher({ className = '', variant = 'compact' }: StyleSwit
       <button
         type="button"
         onClick={() => setStyle('monochrome')}
+        suppressHydrationWarning
         className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium transition-all cursor-pointer select-none ${
-          style === 'monochrome'
+          activeStyle === 'monochrome'
             ? 'bg-background text-foreground shadow-xs font-semibold'
             : 'text-muted-foreground hover:text-foreground'
         }`}
         title="Dark/White Monochrome (shadcn Zinc)"
-        aria-pressed={style === 'monochrome'}
+        aria-pressed={activeStyle === 'monochrome'}
       >
         <span className="h-2 w-2 rounded-full bg-foreground border border-muted-foreground/40 shrink-0" />
         <span className="hidden sm:inline">B&amp;W</span>
@@ -69,13 +82,14 @@ export function StyleSwitcher({ className = '', variant = 'compact' }: StyleSwit
       <button
         type="button"
         onClick={() => setStyle('normal')}
+        suppressHydrationWarning
         className={`flex items-center gap-1.5 px-2 py-1 rounded-md text-xs font-medium transition-all cursor-pointer select-none ${
-          style === 'normal'
+          activeStyle === 'normal'
             ? 'bg-background text-foreground shadow-xs font-semibold'
             : 'text-muted-foreground hover:text-foreground'
         }`}
         title="Normal Style (Default Vibrant Blue)"
-        aria-pressed={style === 'normal'}
+        aria-pressed={activeStyle === 'normal'}
       >
         <span className="h-2 w-2 rounded-full bg-blue-600 shrink-0" />
         <span className="hidden sm:inline">Normal</span>

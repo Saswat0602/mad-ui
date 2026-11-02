@@ -132,23 +132,38 @@ html {
     overflow-x: hidden;
   }
   
-  /* Clean scrollbar styling */
+  /* Sleek scrollbar styling */
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
+    height: 5px;
   }
   
   ::-webkit-scrollbar-track {
-    background: var(--muted);
+    background: transparent;
   }
   
   ::-webkit-scrollbar-thumb {
-    background: var(--muted-foreground);
-    border-radius: 3px;
+    background: var(--border);
+    border-radius: 9999px;
   }
   
   ::-webkit-scrollbar-thumb:hover {
-    background: var(--foreground);
+    background: var(--muted-foreground);
   }
+}
+
+/* Hide scrollbar completely while preserving scrolling */
+.no-scrollbar,
+.scrollbar-none {
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
+}
+
+.no-scrollbar::-webkit-scrollbar,
+.scrollbar-none::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
 }
 
 @layer components {

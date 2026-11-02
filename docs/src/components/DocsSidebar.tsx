@@ -69,8 +69,8 @@ export function DocsSidebar({ onItemClick }: DocsSidebarProps) {
         </div>
       </div>
 
-      {/* Nav List with scroll */}
-      <div className="flex-1 overflow-y-auto px-4 py-2 space-y-6 scrollbar-thin">
+      {/* Nav List with scroll (scrollbar indicator hidden) */}
+      <div className="flex-1 overflow-y-auto px-4 py-2 space-y-6 no-scrollbar scrollbar-none">
         {/* Getting Started Links */}
         {!filterQuery && (
           <div className="space-y-1">

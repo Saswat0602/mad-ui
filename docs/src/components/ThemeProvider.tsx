@@ -29,6 +29,37 @@ const initialState: ThemeProviderState = {
 
 const ThemeProviderContext = createContext<ThemeProviderState>(initialState)
 
+const storageSubscribe = (callback: () => void) => {
+  window.addEventListener('storage', callback)
+  return () => window.removeEventListener('storage', callback)
+}
+
+function useStoredValue<T extends string>(key: string, defaultValue: T): [T, (val: T) => void] {
+  const getSnapshot = () => {
+    try {
+      const item = localStorage?.getItem(key) as T | null
+      return item ?? defaultValue
+    } catch {
+      return defaultValue
+    }
+  }
+
+  const getServerSnapshot = () => defaultValue
+
+  const value = React.useSyncExternalStore(storageSubscribe, getSnapshot, getServerSnapshot)
+
+  const setValue = (newVal: T) => {
+    try {
+      localStorage?.setItem(key, newVal)
+      window.dispatchEvent(new Event('storage'))
+    } catch {
+      // ignore
+    }
+  }
+
+  return [value, setValue]
+}
+
 export function ThemeProvider({
   children,
   defaultTheme = 'system',
@@ -37,29 +68,8 @@ export function ThemeProvider({
   styleStorageKey = 'mad-ui-style',
   ...props
 }: ThemeProviderProps) {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const storedTheme = localStorage?.getItem(storageKey) as Theme
-        if (storedTheme) return storedTheme
-      } catch {
-        // Ignore localStorage access errors
-      }
-    }
-    return defaultTheme
-  })
-
-  const [style, setStyle] = useState<ThemeStyle>(() => {
-    if (typeof window !== 'undefined') {
-      try {
-        const storedStyle = localStorage?.getItem(styleStorageKey) as ThemeStyle
-        if (storedStyle === 'normal' || storedStyle === 'monochrome') return storedStyle
-      } catch {
-        // Ignore localStorage access errors
-      }
-    }
-    return defaultStyle
-  })
+  const [theme, handleSetTheme] = useStoredValue<Theme>(storageKey, defaultTheme)
+  const [style, handleSetStyle] = useStoredValue<ThemeStyle>(styleStorageKey, defaultStyle)
 
   useEffect(() => {
     const root = window.document.documentElement
@@ -83,28 +93,6 @@ export function ThemeProvider({
     const root = window.document.documentElement
     root.setAttribute('data-style', style)
   }, [style])
-
-  const handleSetTheme = (newTheme: Theme) => {
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage?.setItem(storageKey, newTheme)
-      } catch {
-        // ignore
-      }
-    }
-    setTheme(newTheme)
-  }
-
-  const handleSetStyle = (newStyle: ThemeStyle) => {
-    if (typeof window !== 'undefined') {
-      try {
-        localStorage?.setItem(styleStorageKey, newStyle)
-      } catch {
-        // ignore
-      }
-    }
-    setStyle(newStyle)
-  }
 
   const value = {
     theme,
