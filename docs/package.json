@@ -6,6 +6,8 @@
     "dev": "node scripts/build-package.js && next dev",
     "prebuild": "node scripts/build-package.js",
     "build": "next build",
+    "build:all": "npm run build",
+    "build-package": "node scripts/build-package.js",
     "start": "next start",
     "lint": "eslint"
   },
