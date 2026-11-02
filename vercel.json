@@ -1,5 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "framework": "nextjs",
-  "buildCommand": "node -e \"const fs=require('fs'),cp=require('child_process');cp.execSync(fs.existsSync('next.config.ts')?'npm run build':'npm run build && npm --prefix docs run build',{stdio:'inherit'})\""
+  "installCommand": "npm install",
+  "buildCommand": "npm run build:all",
+  "outputDirectory": "docs/.next"
 }

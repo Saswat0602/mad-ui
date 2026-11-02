@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronRight, Circle } from "lucide-react"
+import { Check, ChevronRight, Circle } from "../../icons"
 import { cn } from "../../lib/utils"
 import { Portal } from "../../lib/portal"
 import { Slot } from "../../lib/slot"
@@ -208,10 +208,11 @@ export interface MenubarItemProps extends React.HTMLAttributes<HTMLDivElement> {
   inset?: boolean
   disabled?: boolean
   onSelect?: () => void
+  asChild?: boolean
 }
 
 export const MenubarItem = React.forwardRef<HTMLDivElement, MenubarItemProps>(
-  ({ className, inset, disabled = false, onSelect, onClick, ...props }, ref) => {
+  ({ className, inset, disabled = false, asChild = false, onSelect, onClick, ...props }, ref) => {
     const menubarCtx = React.useContext(MenubarContext)
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -223,8 +224,10 @@ export const MenubarItem = React.forwardRef<HTMLDivElement, MenubarItemProps>(
       }
     }
 
+    const Comp = asChild ? Slot : "div"
+
     return (
-      <div
+      <Comp
         ref={ref}
         role="menuitem"
         aria-disabled={disabled}

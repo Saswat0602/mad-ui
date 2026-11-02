@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { UploadCloud, FileText, Image as ImageIcon, X, AlertCircle } from "lucide-react"
+import { UploadCloud, FileText, Image as ImageIcon, X, AlertCircle } from "../../icons"
 import { cn } from "../../lib/utils"
 import { useControllableState } from "../../lib/use-controllable-state"
 

@@ -7,7 +7,7 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3%20%7C%204-38bdf8.svg?style=flat-square)](https://tailwindcss.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square)](https://opensource.org/licenses/MIT)
 
-An enterprise-grade, accessible, and themeable React UI component library built with **TypeScript** and **Tailwind CSS**. Features **55+ standalone components and modules** with **zero external UI runtime dependencies**, Architecture-by-Layer, full keyboard accessibility, interactive theme builder, and smart CLI distribution.
+An enterprise-grade, accessible, and themeable React UI component library built with **TypeScript** and **Tailwind CSS**. Features **75+ standalone components, AI primitives, and modules** with **zero external UI runtime dependencies**, Architecture-by-Layer, full keyboard accessibility, interactive theme builder, and smart CLI distribution.
 
 - 🌐 **Documentation & Live Showcase:** [mad-ui.vercel.app](https://mad-ui.vercel.app)
 - 🎨 **Interactive Theme Builder:** [mad-ui.vercel.app/theme-builder](https://mad-ui.vercel.app/theme-builder)
@@ -19,8 +19,8 @@ An enterprise-grade, accessible, and themeable React UI component library built 
 
 ## ✨ Features
 
-- 🛡️ **Zero External UI Runtime Dependencies** — 100% native React primitives (`Slot`, `Portal`, `Presence`, `FocusTrap`) with zero `@radix-ui/*` bloat.
-- 🚀 **55+ Enterprise Components** — From core inputs, buttons, and composable forms to semantic data tables, date-time pickers, and navigation systems.
+- 🛡️ **Zero External UI Runtime Dependencies** — 100% native React primitives (`Slot`, `Portal`, `Presence`, `FocusTrap`) and zero-dependency inline SVG icons.
+- 🚀 **75+ Enterprise Components & AI UI** — From core inputs, composable forms, and data tables to agentic AI primitives (`PromptInput`, `MessageBubble`, `ReasoningDisclosure`, `ToolCallCard`).
 - ⚡ **Architecture-by-Layer** — Import via full package, categorized modules (`/forms`, `/layout`), headless primitives (`/primitives`), hooks (`/hooks`), or individual tree-shaken components (`/button`, `/dialog`).
 - 🛠️ **Smart CLI Component Distribution** — Prefer local component ownership? Run `npx mad-ui-components add <component>` to scaffold components with all dependencies auto-resolved.
 - 🎨 **Tailwind CSS Native & Theme Builder** — Seamlessly integrates with Tailwind CSS tokens and provides a real-time live preview theme builder with 1-click CSS variable export.
@@ -67,9 +67,26 @@ npx mad-ui-components list
 
 ### 2. Configure Tailwind CSS
 
-Add the Mad UI component distribution directory to the `content` array of your `tailwind.config.js`:
+Mad UI provides 3 straightforward options:
 
+#### Option A: Self-Contained Precompiled CSS (Simplest)
+Import pre-compiled styles directly in your root layout (`app/layout.tsx` or `src/main.tsx`):
+```tsx
+import "mad-ui-components/styles.css"
+```
+
+#### Option B: Tailwind CSS v4 (@source directive)
+Add the `@source` directive in your main CSS file (`globals.css`):
+```css
+@import "tailwindcss";
+@source "../node_modules/mad-ui-components/dist";
+```
+
+#### Option C: Tailwind v3 Monorepo & Hoisting-Safe Path
+Add the resolved directory to `content` in `tailwind.config.js` (guaranteed to work across pnpm, Yarn Berry, Turborepo, and npm workspaces):
 ```javascript
+const path = require("path")
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
@@ -77,7 +94,7 @@ module.exports = {
     "./src/**/*.{js,ts,jsx,tsx}",
     "./app/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/mad-ui-components/dist/**/*.{mjs,js}"
+    path.dirname(require.resolve("mad-ui-components/package.json")) + "/dist/**/*.{mjs,js}"
   ],
   theme: {
     extend: {},

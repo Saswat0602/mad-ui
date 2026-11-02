@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronDown, ChevronUp } from "lucide-react"
+import { Check, ChevronDown, ChevronUp } from "../../icons"
 import { cn } from "../../lib/utils"
 import { Portal } from "../../lib/portal"
 import { useClickOutside } from "../../lib/use-click-outside"

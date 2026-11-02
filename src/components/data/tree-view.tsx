@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronRight, Folder, FolderOpen, FileText } from "lucide-react"
+import { ChevronRight, Folder, FolderOpen, FileText } from "../../icons"
 import { cn } from "../../lib/utils"
 import { useControllableState } from "../../lib/use-controllable-state"
 

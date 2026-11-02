@@ -11,14 +11,23 @@ export const pkgCommands = {
 export const nextjs = {
   createApp: "npx create-next-app@latest my-app --typescript --tailwind --eslint --app",
   install: "npm install mad-ui-components",
-  tailwindConfig: `/** @type {import('tailwindcss').Config} */
+  methodCss: `// app/layout.tsx (Method 1: Zero-config precompiled CSS)
+import "mad-ui-components/styles.css"`,
+  methodTailwindV4: `/* app/globals.css (Method 2: Tailwind CSS v4) */
+@import "tailwindcss";
+@source "../node_modules/mad-ui-components/dist";`,
+  tailwindConfig: `// tailwind.config.js (Method 3: Tailwind v3 Monorepo-Safe)
+const path = require("path")
+
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
     "./src/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/mad-ui-components/dist/**/*.{mjs,js}"
+    // Monorepo-safe path: resolves accurately in Turborepo, pnpm workspaces, and standard apps
+    path.dirname(require.resolve("mad-ui-components/package.json")) + "/dist/**/*.{mjs,js}"
   ],
   theme: {
     extend: {},
@@ -45,13 +54,18 @@ export default function Home() {
 export const vite = {
   createApp: "npm create vite@latest my-app -- --template react-ts",
   install: "npm install -D tailwindcss postcss autoprefixer\nnpx tailwindcss init -p\nnpm install mad-ui-components",
-  tailwindConfig: `/** @type {import('tailwindcss').Config} */
+  tailwindConfig: `// tailwind.config.js (Monorepo & Vite safe)
+import path from "path"
+import { createRequire } from "module"
+const require = createRequire(import.meta.url)
+
+/** @type {import('tailwindcss').Config} */
 export default {
   darkMode: ["class"],
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/mad-ui-components/dist/**/*.{mjs,js}"
+    path.dirname(require.resolve("mad-ui-components/package.json")) + "/dist/**/*.{mjs,js}"
   ],
   theme: {
     extend: {},
@@ -79,6 +93,53 @@ export const manual = {
   install: "npm install react react-dom mad-ui-components",
   css: `@tailwind base;\n@tailwind components;\n@tailwind utilities;`
 }
+
+export const themeVariables = `/* HSL Channel Tokens (enables Tailwind opacity modifiers like bg-primary/80) */
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+    --primary: 221.2 83.2% 53.3%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 240 4.8% 95.9%;
+    --secondary-foreground: 240 5.9% 10%;
+    --muted: 240 4.8% 95.9%;
+    --muted-foreground: 240 3.8% 46.1%;
+    --accent: 240 4.8% 95.9%;
+    --accent-foreground: 240 5.9% 10%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 221.2 83.2% 53.3%;
+    --radius: 0.5rem;
+  }
+  .dark {
+    --background: 240 10% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 240 10% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 240 10% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 217.2 91.2% 59.8%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 240 3.7% 15.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 240 3.7% 15.9%;
+    --muted-foreground: 240 5% 64.9%;
+    --accent: 240 3.7% 15.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 240 3.7% 15.9%;
+    --input: 240 3.7% 15.9%;
+    --ring: 217.2 91.2% 59.8%;
+  }
+}`
 
 export const cli = {
   copyCommand: "npx mad-ui-components copy button card input"

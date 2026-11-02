@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronUp, ChevronDown } from "lucide-react"
+import { ChevronUp, ChevronDown } from "../../icons"
 import { cn } from "../../lib/utils"
 
 export interface NumberInputProps

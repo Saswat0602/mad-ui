@@ -3,7 +3,7 @@ import {
   Search, Bell, User, Menu, X, ChevronDown, Sun, Moon, Globe, 
   Settings, LogOut, Heart, Star, ShoppingCart, MessageCircle,
   Home, Info, Mail, Phone, Briefcase, Image, Award, Zap
-} from 'lucide-react';
+} from '../../icons';
 import { cn } from '../../lib/utils';
 
 const primaryColorMap: Record<string, {

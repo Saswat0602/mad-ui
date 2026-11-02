@@ -8,18 +8,29 @@ export const installCommands = {
   bun: 'bun add mad-ui-components',
 }
 
-export const tailwindConfig = `/** @type {import('tailwindcss').Config} */
+export const tailwindConfig = `const path = require("path")
+
+/** @type {import('tailwindcss').Config} */
 module.exports = {
   darkMode: ["class"],
   content: [
-    "./src/**/*.{js,ts,jsx,tsx}",
-    "./node_modules/mad-ui-components/dist/**/*.{mjs,js}"
+    "./src/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    // Monorepo & hoisting-safe resolution
+    path.dirname(require.resolve("mad-ui-components/package.json")) + "/dist/**/*.{mjs,js}"
   ],
   theme: {
     extend: {},
   },
   plugins: [],
 }`
+
+export const tailwindV4Config = `@import "tailwindcss";
+@source "../node_modules/mad-ui-components/dist";`
+
+export const cssImport = `// In your root layout or main entry:
+import "mad-ui-components/styles.css"`
 
 export const usage = `import { Button, Card, Input } from 'mad-ui-components'
 

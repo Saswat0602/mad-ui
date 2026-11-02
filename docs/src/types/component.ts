@@ -36,6 +36,7 @@ export interface ComponentDoc {
 }
 
 export type ComponentCategory = 
+  | 'AI & Agents'
   | 'Core' 
   | 'Form' 
   | 'Navigation' 

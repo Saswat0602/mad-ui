@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, X } from "lucide-react"
+import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, X } from "../../icons"
 import { cn } from "../../lib/utils"
 import { useClickOutside } from "../../lib/use-click-outside"
 import { useControllableState } from "../../lib/use-controllable-state"

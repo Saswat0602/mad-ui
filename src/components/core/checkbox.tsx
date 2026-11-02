@@ -1,5 +1,5 @@
 import React from 'react'
-import { Check, Minus } from 'lucide-react'
+import { Check, Minus } from '../../icons'
 import { cn } from '../../lib/utils'
 import { useControllableState } from '../../lib/use-controllable-state'
 

@@ -5,7 +5,7 @@ import { cn } from "../../lib/utils"
 import { Portal } from "../../lib/portal"
 import { Presence } from "../../primitives/presence"
 import { useFocusTrap } from "../../lib/focus"
-import { X } from "lucide-react"
+import { X } from "../../icons"
 
 export interface ModalProps extends React.HTMLAttributes<HTMLDivElement> {
   isOpen: boolean

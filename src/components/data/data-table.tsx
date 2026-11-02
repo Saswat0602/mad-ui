@@ -23,7 +23,7 @@ import {
   ChevronsLeft, 
   ChevronsRight,
   SlidersHorizontal
-} from "lucide-react"
+} from "../../icons"
 
 export interface DataTableColumn<T> {
   key: keyof T | string

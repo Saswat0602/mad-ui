@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Star } from "lucide-react"
+import { Star } from "../../icons"
 import { cn } from "../../lib/utils"
 
 export interface RatingProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {

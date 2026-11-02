@@ -205,23 +205,66 @@ export default function InstallationPage() {
               />
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-4">
               <div className="flex items-center gap-2.5">
                 <span className="w-5 h-5 rounded-full bg-primary/10 text-primary flex items-center justify-center text-[11px] font-bold">3</span>
                 <h3 className="text-sm font-semibold text-foreground">
-                  Configure Tailwind Content Path
+                  Configure Tailwind CSS
                 </h3>
               </div>
               <p className="text-xs text-muted-foreground pl-7.5">
-                Ensure Tailwind scans Mad UI component classes in <code className="text-foreground font-mono">tailwind.config.js</code> or <code className="text-foreground font-mono">tailwind.config.ts</code>:
+                Choose the integration method that matches your architecture:
               </p>
-              <CodeSnippet 
-                filename="tailwind.config.js"
-                language="javascript"
-                code={snippets.nextjs.tailwindConfig}
-                copiedKey={copiedKey}
-                onCopy={copyText}
-              />
+
+              <div className="space-y-4 pl-7.5">
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/10 text-emerald-500">Method 1 (Recommended)</span>
+                    <span className="text-xs font-medium text-foreground">Self-Contained Precompiled CSS</span>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Zero content scanning required. All 75+ component styles are pre-compiled and tree-shaken into a single CSS file.
+                  </p>
+                  <CodeSnippet 
+                    filename="app/layout.tsx"
+                    language="tsx"
+                    code={snippets.nextjs.methodCss}
+                    copiedKey={copiedKey}
+                    onCopy={copyText}
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-blue-500/10 text-blue-500">Method 2</span>
+                    <span className="text-xs font-medium text-foreground">Tailwind CSS v4 (@source directive)</span>
+                  </div>
+                  <CodeSnippet 
+                    filename="app/globals.css"
+                    language="css"
+                    code={snippets.nextjs.methodTailwindV4}
+                    copiedKey={copiedKey}
+                    onCopy={copyText}
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <div className="flex items-center gap-2">
+                    <span className="px-1.5 py-0.5 rounded text-[10px] font-semibold bg-purple-500/10 text-purple-500">Method 3</span>
+                    <span className="text-xs font-medium text-foreground">Tailwind v3 Monorepo &amp; Hoisting-Safe Path</span>
+                  </div>
+                  <p className="text-[11px] text-muted-foreground">
+                    Using <code className="font-mono text-foreground">path.dirname(require.resolve(...))</code> ensures styles compile accurately in pnpm, Turborepo, Yarn Berry, and npm workspaces.
+                  </p>
+                  <CodeSnippet 
+                    filename="tailwind.config.js"
+                    language="javascript"
+                    code={snippets.nextjs.tailwindConfig}
+                    copiedKey={copiedKey}
+                    onCopy={copyText}
+                  />
+                </div>
+              </div>
             </div>
 
             <div className="space-y-3">
@@ -429,6 +472,24 @@ npx mad-ui-components list`}
             />
           </div>
         </div>
+      </section>
+
+      {/* Step 6: Theme Customization with HSL Channel Tokens */}
+      <section className="space-y-4 pt-6 border-t border-border/40">
+        <div>
+          <h2 className="text-xl font-bold tracking-tight text-foreground">Theme Variables (HSL Channel Tokens)</h2>
+          <p className="text-xs text-muted-foreground mt-1">
+            Mad UI uses HSL channel tokens (<code className="font-mono text-foreground">--primary: 221.2 83.2% 53.3%</code>) without hardcoded color functions. This ensures Tailwind opacity modifiers like <code className="font-mono text-foreground">bg-primary/80</code> and <code className="font-mono text-foreground">ring-primary/20</code> work without color clipping.
+          </p>
+        </div>
+
+        <CodeSnippet 
+          filename="app/globals.css"
+          language="css"
+          code={snippets.themeVariables}
+          copiedKey={copiedKey}
+          onCopy={copyText}
+        />
       </section>
 
       {/* Next Steps CTA */}

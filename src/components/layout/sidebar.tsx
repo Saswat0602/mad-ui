@@ -3,7 +3,7 @@ import {
   ChevronLeft, ChevronRight, Home, Settings, User, FileText, BarChart, Mail, 
   Search, Bell, Shield, Bookmark, Calendar, Clock, Zap, Heart, Star, 
   Palette, Moon, Sun, Volume2, VolumeX, Wifi, WifiOff 
-} from 'lucide-react';
+} from '../../icons';
 import { cn } from '../../lib/utils';
 
 const primaryColorMap: Record<string, {

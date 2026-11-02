@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { X } from "lucide-react"
+import { X } from "../../icons"
 import { cn } from "../../lib/utils"
 import { Portal } from "../../lib/portal"
 import { Slot } from "../../lib/slot"

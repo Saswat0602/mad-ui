@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ArrowUp, Square } from "lucide-react"
+import { ArrowUp, Square } from "../../icons"
 import { cn } from "../../lib/utils"
 import { useControllableState } from "../../lib/use-controllable-state"
 

@@ -1,6 +1,6 @@
 import React, { forwardRef, useState, useEffect } from 'react'
 import { cn } from '../../lib/utils'
-import { CheckCircle2, AlertCircle, AlertTriangle, Info, X } from 'lucide-react'
+import { CheckCircle2, AlertCircle, AlertTriangle, Info, X } from '../../icons'
 
 export interface ToastProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onClose'> {
   id?: string

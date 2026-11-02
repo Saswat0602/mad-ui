@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown } from "../../icons"
 import { cn } from "../../lib/utils"
 import { Slot } from "../../lib/slot"
 import { useId } from "../../hooks/use-id"

@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, ChevronRight, Circle } from "lucide-react"
+import { Check, ChevronRight, Circle } from "../../icons"
 import { cn } from "../../lib/utils"
 import { Portal } from "../../lib/portal"
 import { Slot } from "../../lib/slot"
@@ -161,10 +161,11 @@ export interface ContextMenuItemProps extends React.HTMLAttributes<HTMLDivElemen
   inset?: boolean
   disabled?: boolean
   onSelect?: () => void
+  asChild?: boolean
 }
 
 export const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemProps>(
-  ({ className, inset, disabled = false, onSelect, onClick, ...props }, ref) => {
+  ({ className, inset, disabled = false, asChild = false, onSelect, onClick, ...props }, ref) => {
     const { setOpen } = useContextMenuContext()
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
@@ -176,8 +177,10 @@ export const ContextMenuItem = React.forwardRef<HTMLDivElement, ContextMenuItemP
       }
     }
 
+    const Comp = asChild ? Slot : "div"
+
     return (
-      <div
+      <Comp
         ref={ref}
         role="menuitem"
         aria-disabled={disabled}

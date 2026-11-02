@@ -126,15 +126,15 @@ export const COMPONENT_REGISTRY = {
 
   // Form Components
   'accordion': {
-    category: 'Form' as ComponentCategory,
+    category: 'Layout' as ComponentCategory,
     title: 'Accordion',
     description: 'Clean and simple accordion component with smooth animations, customizable icons, and flexible content support',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['form', 'accordion', 'collapsible', 'animation', 'content']
+    tags: ['layout', 'accordion', 'collapsible', 'animation', 'content']
   },
   'breadcrumbs': {
-    category: 'Form' as ComponentCategory,
+    category: 'Navigation' as ComponentCategory,
     title: 'Breadcrumbs',
     description: 'A breadcrumb navigation component',
     version: '3.0.0',
@@ -166,12 +166,12 @@ export const COMPONENT_REGISTRY = {
     tags: ['form', 'radiogroup', 'selection']
   },
   'tabs': {
-    category: 'Form' as ComponentCategory,
+    category: 'Navigation' as ComponentCategory,
     title: 'Tabs',
-    description: 'A tabs component for organizing content into panels',
+    description: 'A tabs component for organizing content into switchable panels',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['form', 'tabs', 'panels']
+    tags: ['navigation', 'tabs', 'panels']
   },
   'calendar': {
     category: 'Form' as ComponentCategory,
@@ -238,12 +238,12 @@ export const COMPONENT_REGISTRY = {
     tags: ['form', 'upload', 'files']
   },
   'prompt-input': {
-    category: 'Form' as ComponentCategory,
+    category: 'AI & Agents' as ComponentCategory,
     title: 'Prompt Input',
     description: 'AI prompt input box with auto-expanding textarea, attachments, token counters, and cancel actions',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['form', 'ai', 'prompt', 'chat']
+    tags: ['ai', 'agent', 'prompt', 'chat', 'llm']
   },
 
   // Layout Components
@@ -258,7 +258,7 @@ export const COMPONENT_REGISTRY = {
   'modal': {
     category: 'Layout' as ComponentCategory,
     title: 'Modal',
-    description: 'Modal dialog overlay for focused user tasks and notifications',
+    description: 'Convenience dialog overlay with built-in isOpen/onClose state management. For compound Radix-style composition, prefer Dialog.',
     version: '3.0.0',
     status: 'stable' as const,
     tags: ['layout', 'modal', 'overlay', 'enterprise', 'accessibility']
@@ -282,18 +282,18 @@ export const COMPONENT_REGISTRY = {
   'drawer': {
     category: 'Layout' as ComponentCategory,
     title: 'Drawer',
-    description: 'Simple and flexible drawer component with multiple positions, sizes, and smooth animations',
+    description: 'Docked slide-up drawer panel for mobile sheets, quick forms, and actions with smooth spring animations',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['layout', 'drawer', 'slide', 'overlay', 'modal']
+    tags: ['layout', 'drawer', 'slide', 'overlay', 'sheet']
   },
   'sheet': {
     category: 'Layout' as ComponentCategory,
     title: 'Sheet',
-    description: 'A sheet component for overlay content',
+    description: 'Slide-over side drawer overlay with 4 directional options (left, right, top, bottom)',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['layout', 'sheet', 'overlay']
+    tags: ['layout', 'sheet', 'overlay', 'side-panel']
   },
   'resizable': {
     category: 'Layout' as ComponentCategory,
@@ -378,10 +378,10 @@ export const COMPONENT_REGISTRY = {
   'dialog': {
     category: 'Overlay' as ComponentCategory,
     title: 'Dialog',
-    description: 'A dialog component for modal interactions',
+    description: 'Canonical, accessible modal dialog primitive with backdrop blur, focus trap, and composable triggers. Recommended over Modal for full structural flexibility.',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['overlay', 'dialog', 'modal']
+    tags: ['overlay', 'dialog', 'modal', 'primitive']
   },
   'alert-dialog': {
     category: 'Overlay' as ComponentCategory,
@@ -565,19 +565,19 @@ export const COMPONENT_REGISTRY = {
   'toast': {
     category: 'Feedback' as ComponentCategory,
     title: 'Toast',
-    description: 'A toast notification component for displaying temporary messages with customizable positioning, duration, and enterprise features.',
+    description: 'Low-level toast notification primitive for displaying targeted status feedback. For multi-toast stacked queues, prefer Sonner.',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['toast', 'notification', 'message', 'temporary', 'enterprise', 'accessibility']
+    tags: ['toast', 'notification', 'message', 'temporary', 'primitive']
   },
 
   'sonner': {
     category: 'Feedback' as ComponentCategory,
     title: 'Sonner',
-    description: 'Modern toast notification system with support for promises, custom actions, and themes',
+    description: 'Modern stacked toast notification queue with promise integration, custom actions, and automatic dismiss',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['sonner', 'toast', 'notification', 'modern', 'enterprise', 'accessibility']
+    tags: ['sonner', 'toast', 'notification', 'stacked', 'queue']
   },
   'spinner': {
     category: 'Feedback' as ComponentCategory,
@@ -604,28 +604,28 @@ export const COMPONENT_REGISTRY = {
     tags: ['feedback', 'banner', 'announcement', 'alert']
   },
   'message-bubble': {
-    category: 'Feedback' as ComponentCategory,
+    category: 'AI & Agents' as ComponentCategory,
     title: 'Message Bubble',
     description: 'Chat message bubble for user and AI agent responses with formatted content and copy actions',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['feedback', 'ai', 'chat', 'message']
+    tags: ['ai', 'agent', 'chat', 'message']
   },
   'reasoning-disclosure': {
-    category: 'Feedback' as ComponentCategory,
+    category: 'AI & Agents' as ComponentCategory,
     title: 'Reasoning Disclosure',
     description: 'Collapsible chain-of-thought disclosure card showing AI model thinking steps and duration',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['feedback', 'ai', 'reasoning', 'disclosure']
+    tags: ['ai', 'agent', 'reasoning', 'disclosure', 'thinking']
   },
   'tool-call-card': {
-    category: 'Feedback' as ComponentCategory,
+    category: 'AI & Agents' as ComponentCategory,
     title: 'Tool Call Card',
     description: 'Structured card displaying AI agent tool invocations, arguments, execution status, and results',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['feedback', 'ai', 'agent', 'tool']
+    tags: ['ai', 'agent', 'tool', 'function-calling']
   }
 } as const
 

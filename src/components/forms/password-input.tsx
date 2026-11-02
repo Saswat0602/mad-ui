@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Eye, EyeOff, ArrowUpFromLine } from "lucide-react"
+import { Eye, EyeOff, ArrowUpFromLine } from "../../icons"
 import { cn } from "../../lib/utils"
 import { Input, type InputProps } from "../core/input"
 

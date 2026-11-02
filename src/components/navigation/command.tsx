@@ -1,6 +1,6 @@
 import React from 'react'
 import { cn } from '../../lib/utils'
-import { Search } from 'lucide-react'
+import { Search } from '../../icons'
 
 export interface CommandProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode

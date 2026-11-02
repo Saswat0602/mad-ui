@@ -59,8 +59,9 @@ describe('Component & Documentation Parity Test Suite', () => {
     expect(prodDeps.some(d => d.startsWith('@tanstack/'))).toBe(false)
     expect(prodDeps.some(d => d.startsWith('framer-motion'))).toBe(false)
 
-    // Allowed base dependencies only
-    expect(prodDeps.sort()).toEqual(['clsx', 'lucide-react', 'tailwind-merge'].sort())
+    // Allowed base dependencies only (clsx and tailwind-merge; lucide-react is decoupled peer/optional)
+    expect(prodDeps.sort()).toEqual(['clsx', 'tailwind-merge'].sort())
+    expect(pkg.peerDependencies?.['lucide-react']).toBeDefined()
   })
 
   it('executes CLI list and dry-run copy commands successfully', async () => {

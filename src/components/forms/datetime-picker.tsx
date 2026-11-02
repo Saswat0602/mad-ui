@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { ChevronLeft, ChevronRight, Clock, Calendar, X } from 'lucide-react'
+import { ChevronLeft, ChevronRight, Clock, Calendar, X } from '../../icons'
 
 export type DateTimeMode = 'date' | 'time' | 'both'
 export type TimeFormat = '12' | '24'

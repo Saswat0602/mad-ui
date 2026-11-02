@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { ChevronRight, Wrench, CheckCircle2, AlertCircle, Loader2 } from "lucide-react"
+import { ChevronRight, Wrench, CheckCircle2, AlertCircle, Loader2 } from "../../icons"
 import { cn } from "../../lib/utils"
 import { useControllableState } from "../../lib/use-controllable-state"
 

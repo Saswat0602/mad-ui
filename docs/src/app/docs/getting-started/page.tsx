@@ -57,7 +57,7 @@ export default function GettingStartedPage() {
         </div>
 
         <p className="text-xs text-muted-foreground">
-          Install <code className="text-foreground font-mono">mad-ui-components</code> into your project (dependencies like <code className="font-mono text-foreground">clsx</code>, <code className="font-mono text-foreground">tailwind-merge</code>, and <code className="font-mono text-foreground">lucide-react</code> are bundled automatically):
+          Install <code className="text-foreground font-mono">mad-ui-components</code> into your project (zero external framework lock-in, with native SVG icon primitives):
         </p>
 
         <div className="space-y-2">

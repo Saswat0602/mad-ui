@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Info, CheckCircle2, AlertTriangle, AlertCircle, X } from "lucide-react"
+import { Info, CheckCircle2, AlertTriangle, AlertCircle, X } from "../../icons"
 import { cn } from "../../lib/utils"
 
 export type BannerVariant = "default" | "info" | "success" | "warning" | "destructive"

@@ -475,9 +475,15 @@
   "author": "Saswat Ranjan Mohanty",
   "license": "MIT",
   "peerDependencies": {
+    "lucide-react": "^0.577.0",
     "react": ">=18.0.0",
     "react-dom": ">=18.0.0",
     "tailwindcss": ">=3.0.0"
+  },
+  "peerDependenciesMeta": {
+    "lucide-react": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@changesets/cli": "3.0.3",
@@ -489,6 +495,7 @@
     "autoprefixer": "^10.6.2",
     "eslint": "10.13.0",
     "jsdom": "^26.1.0",
+    "lucide-react": "^0.577.0",
     "postcss": "^8.5.32",
     "publint": "0.3.25",
     "react": "^18.2.0",
@@ -505,6 +512,8 @@
   },
   "scripts": {
     "build": "tsup && node scripts/build-css.js",
+    "build-package": "tsup && node scripts/build-css.js",
+    "build:all": "npm run build-package && npm --workspace=docs run build",
     "build:css": "node scripts/build-css.js",
     "dev": "tsup --watch",
     "clean": "rm -rf dist",
@@ -519,7 +528,6 @@
   },
   "dependencies": {
     "clsx": "^2.1.1",
-    "lucide-react": "^0.577.0",
     "tailwind-merge": "^3.7.0"
   }
 }

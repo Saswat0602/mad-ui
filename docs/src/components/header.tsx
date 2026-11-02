@@ -8,6 +8,7 @@ import { Menu, X, Search, ExternalLink, Github } from "lucide-react"
 import { useState, useEffect } from "react"
 import { ComponentSearch } from "./ComponentSearch"
 import { DocsSidebar } from "./DocsSidebar"
+import { PACKAGE_VERSION } from "@/lib/version"
 
 export function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
@@ -94,7 +95,7 @@ export function Header() {
               title="View on npm (mad-ui-components)"
             >
               <span className="font-bold text-red-500 text-xs tracking-tighter">npm</span>
-              <span className="hidden xl:inline text-[11px] text-muted-foreground/80">v3.0.0</span>
+              <span className="hidden xl:inline text-[11px] text-muted-foreground/80">{PACKAGE_VERSION}</span>
             </a>
 
             {/* GitHub Link */}
@@ -138,7 +139,7 @@ export function Header() {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="font-bold text-sm tracking-tight text-foreground">Mad UI</span>
-                    <span className="px-1.5 py-0.5 rounded bg-primary/10 text-primary text-[10px] font-mono font-semibold">v3.0.0</span>
+                    <span className="px-1.5 py-0.5 rounded bg-primary/10 text-primary text-[10px] font-mono font-semibold">{PACKAGE_VERSION}</span>
                   </div>
                 </Link>
                 <button
@@ -183,7 +184,7 @@ export function Header() {
                   className="flex items-center space-x-1.5 hover:text-foreground transition-colors"
                 >
                   <span className="font-bold text-red-500 text-xs">npm</span>
-                  <span>v3.0.0</span>
+                  <span>{PACKAGE_VERSION}</span>
                   <ExternalLink className="h-3 w-3 opacity-60" />
                 </a>
               </div>

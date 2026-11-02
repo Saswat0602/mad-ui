@@ -1,7 +1,7 @@
 "use client"
 
 import React, { createContext, useContext, forwardRef } from 'react'
-import { Circle } from 'lucide-react'
+import { Circle } from '../../icons'
 import { cn } from '../../lib/utils'
 import { useControllableState } from '../../lib/use-controllable-state'
 

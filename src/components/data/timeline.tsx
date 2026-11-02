@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Check, Circle, AlertCircle } from "lucide-react"
+import { Check, Circle, AlertCircle } from "../../icons"
 import { cn } from "../../lib/utils"
 
 export type TimelineItemStatus = "completed" | "current" | "upcoming" | "error"

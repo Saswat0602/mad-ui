@@ -1,6 +1,6 @@
 import * as React from 'react'
 import { cn } from '../../lib/utils'
-import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from 'lucide-react'
+import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight, MoreHorizontal } from '../../icons'
 
 export interface PaginationProps extends React.ComponentProps<'nav'> {
   currentPage?: number

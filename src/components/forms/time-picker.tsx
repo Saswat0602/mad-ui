@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Clock } from "lucide-react"
+import { Clock } from "../../icons"
 import { cn } from "../../lib/utils"
 import { useControllableState } from "../../lib/use-controllable-state"
 

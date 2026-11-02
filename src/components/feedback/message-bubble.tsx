@@ -1,7 +1,7 @@
 "use client"
 
 import * as React from "react"
-import { Copy, Check, User, Bot } from "lucide-react"
+import { Copy, Check, User, Bot } from "../../icons"
 import { cn } from "../../lib/utils"
 import { useClipboard } from "../../hooks/use-clipboard"
 

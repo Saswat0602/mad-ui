@@ -13,6 +13,7 @@ interface DocsSidebarProps {
 }
 
 const CATEGORY_ORDER: ComponentCategory[] = [
+  'AI & Agents',
   'Core',
   'Form',
   'Layout',

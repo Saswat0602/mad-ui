@@ -2,7 +2,7 @@
 
 import * as React from "react"
 import { cn } from "../../lib/utils"
-import { ChevronsUpDown, Check, Search } from "lucide-react"
+import { ChevronsUpDown, Check, Search } from "../../icons"
 import { Popover, PopoverTrigger, PopoverContent } from "../layout/popover"
 
 export interface ComboboxOption {
