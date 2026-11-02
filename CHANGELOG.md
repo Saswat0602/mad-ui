@@ -7,6 +7,38 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.1.0] - 2026-11-02
+
+### 🚀 New Components & AI Interface Suite
+- **AI Interface Kit**:
+  - `PromptInput`: Expandable AI chat input with auto-resize, submit shortcuts, and action buttons.
+  - `MessageBubble`: Conversational bubble with role-based formatting (`user`, `assistant`, `system`).
+  - `ReasoningDisclosure`: Expandable collapsible drawer for AI model thought processes and chains of reasoning.
+  - `ToolCallCard`: Visual display card for function executions, tool invocations, inputs, and results.
+- **Enterprise Form Pickers**:
+  - `MultiSelect`: Searchable multi-selection dropdown with tag badges and keyboard navigation.
+  - `DateRangePicker`: Calendar popover with start/end date selection and range presets.
+  - `TimePicker`: Accessible standalone 12/24h time picker with scrollable hours/minutes columns.
+  - `FileUpload`: Drag-and-drop file upload zone with file size validation and preview state.
+- **Data & Navigation**:
+  - `Stepper`: Multi-step progress workflow component with active, completed, and error states.
+  - `StatCard`: KPI summary card with trend indicator, icons, and sparkline support.
+  - `Timeline`: Chronological activity timeline with icon nodes and event cards.
+  - `TreeView`: Recursive hierarchical tree with keyboard arrow navigation and branch expansion.
+
+### 🎨 Authentic Monochrome (Shadcn Zinc) & Dual Theme Engine
+- **Monochrome & Zinc Palette**:
+  - Full migration of core controls, layout, navigation, and overlays to authentic shadcn zinc semantic tokens.
+  - Dual style system: `monochrome` (black & white zinc aesthetic) and `normal` (vibrant blue primary accent) with seamless live switching via `ThemeProvider`.
+- **Headless Utility Hooks**:
+  - Added `useClipboard`, `useHotkeys`, and virtualizer windowing hooks under `mad-ui-components/hooks`.
+
+### 🛠️ Ref Forwarding & Docs Stability
+- Polished `React.forwardRef` across `Calendar`, `Label`, `Toast`, and core inputs.
+- Enhanced `docs` build pipeline with automated stale artifact detection.
+
+---
+
 ## [3.0.0] - 2026-10-30
 
 ### 🚀 Major Architectural Evolution: Native, Headless & Zero-Radix

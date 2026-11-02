@@ -12,12 +12,50 @@ console.log('[build-package] Checking mad-ui-components dist status...');
 
 const isInstalledPackage = fs.existsSync(path.join(docsDir, 'node_modules', 'mad-ui-components', 'package.json'));
 
-if (fs.existsSync(indexMjs) && fs.existsSync(stylesCss)) {
+function isDistStale() {
+  if (!fs.existsSync(indexMjs) || !fs.existsSync(stylesCss)) {
+    return true;
+  }
+  try {
+    const distMtime = fs.statSync(indexMjs).mtimeMs;
+    const srcDir = path.join(rootDir, 'src');
+
+    function checkDir(dir) {
+      if (!fs.existsSync(dir)) return false;
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          if (checkDir(fullPath)) return true;
+        } else if (entry.isFile()) {
+          if (fs.statSync(fullPath).mtimeMs > distMtime) {
+            return true;
+          }
+        }
+      }
+      return false;
+    }
+
+    const triggerFiles = ['tsup.config.ts', 'package.json', 'scripts/build-css.js'];
+    for (const file of triggerFiles) {
+      const p = path.join(rootDir, file);
+      if (fs.existsSync(p) && fs.statSync(p).mtimeMs > distMtime) {
+        return true;
+      }
+    }
+
+    return checkDir(srcDir);
+  } catch {
+    return true;
+  }
+}
+
+if (!isDistStale()) {
   console.log('[build-package] Local dist/ is up to date.');
-} else if (isInstalledPackage) {
+} else if (isInstalledPackage && !fs.existsSync(path.join(rootDir, 'src'))) {
   console.log('[build-package] Using installed mad-ui-components package from npm.');
 } else {
-  console.log('[build-package] dist/ incomplete or missing. Building mad-ui-components from source...');
+  console.log('[build-package] dist/ incomplete, missing, or outdated. Building mad-ui-components from source...');
   
   // Ensure root node_modules exists (link to docs/node_modules if absent)
   const rootNodeModules = path.join(rootDir, 'node_modules');
