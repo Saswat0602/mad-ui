@@ -7,6 +7,36 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [3.2.0] - 2026-11-02
+
+### 🛡️ Decoupled `lucide-react` & Zero-Dependency Native SVGs
+- **Complete Decoupling of Icons**:
+  - Replaced all internal `lucide-react` imports across all 41 components with native, zero-dependency inline SVG primitives in `src/icons`.
+  - Moved `lucide-react` from direct `dependencies` to `peerDependencies` (with `peerDependenciesMeta: { "lucide-react": { "optional": true } }`).
+  - Consumers can use any icon library or version of Lucide without duplicate bundle sizes or TypeScript `LucideIcon` version mismatches.
+
+### ⚡ Polymorphic `asChild` Delegation
+- **Menu Item Slot Polymorphism**:
+  - Added `asChild?: boolean` support with `Slot` delegation to `DropdownMenuItem`, `ContextMenuItem`, and `MenubarItem`.
+  - Enables clean Next.js/React Router `<Link>` wrapping without invalid nested interactive element warnings.
+
+### 🤖 AI Primitives Spotlight & Reorganized Taxonomy
+- **AI & Agentic UI Spotlight**:
+  - Created a dedicated top-level **AI & Agents** category featuring `PromptInput`, `MessageBubble`, `ReasoningDisclosure`, and `ToolCallCard`.
+  - Relocated misplaced components: `Accordion` &rarr; `Layout`, `Breadcrumbs` &amp; `Tabs` &rarr; `Navigation`.
+  - Clarified canonical primitives vs convenience wrappers (`Dialog` vs `Modal`, `Sonner` vs `Toast`, `Sheet` vs `Drawer`).
+
+### 🏗️ Monorepo & Vercel Pipeline Hardening
+- **Standardized Monorepo Workspace**:
+  - Added `build-package` and `build:all` workspace scripts.
+  - Hardened `vercel.json` with explicit `installCommand: "npm install"` and `buildCommand: "npm run build:all"`.
+  - Dynamically bound docs version badges to `package.json` to eliminate version drift.
+- **Tailwind v4 & Monorepo Safe Documentation**:
+  - Documented precompiled CSS imports (`mad-ui-components/styles.css`), Tailwind v4 `@source` directives, and monorepo-safe `require.resolve` paths.
+  - Documented HSL channel color tokens for Tailwind opacity modifier compatibility.
+
+---
+
 ## [3.1.0] - 2026-11-02
 
 ### 🚀 New Components & AI Interface Suite
