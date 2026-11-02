@@ -1,7 +1,7 @@
 export * from './use-controllable-state'
 export * from './use-click-outside'
 export * from './use-focus-trap'
-export * from './use-keyboard'
+export { KEYS, useKeyboardNavigation, type KeyboardNavigationOptions } from './use-keyboard'
 export * from './use-media-query'
 export * from './use-id'
 export * from './use-virtualizer'
@@ -9,4 +9,7 @@ export * from './use-clipboard'
 export * from './use-hotkeys'
 export * from './use-debounce'
 export * from './use-local-storage'
+export * from './use-floating-position'
+export * from './use-roving-tabindex'
+
 

@@ -463,7 +463,9 @@
     "dist",
     "src"
   ],
-  "sideEffects": false,
+  "sideEffects": [
+    "*.css"
+  ],
   "keywords": [
     "react",
     "ui",

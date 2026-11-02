@@ -7,46 +7,46 @@ Every component in `mad-ui-components` must satisfy this 9-point checklist befor
 ## 9-Point Verification Checklist
 
 ### 1. ARIA Roles & Pattern Conformance
-- [ ] Renders with default props and correct semantic HTML element or ARIA `role`.
-- [ ] Essential ARIA attributes present (`aria-expanded`, `aria-controls`, `aria-label`, `aria-haspopup`, `aria-modal`).
-- [ ] Complies with the official [W3C WAI-ARIA Authoring Practices Guide (APG)](https://www.w3.org/WAI/ARIA/apg/patterns/).
+- [x] Renders with default props and correct semantic HTML element or ARIA `role`.
+- [x] Essential ARIA attributes present (`aria-expanded`, `aria-controls`, `aria-label`, `aria-haspopup`, `aria-modal`).
+- [x] Complies with the official [W3C WAI-ARIA Authoring Practices Guide (APG)](https://www.w3.org/WAI/ARIA/apg/patterns/).
 
 ### 2. Ref Forwarding
-- [ ] Forwards `ref` to the primary underlying DOM element (`HTMLButtonElement`, `HTMLInputElement`, `HTMLDivElement`, etc.).
-- [ ] Works cleanly with both `React.createRef()` and callback refs.
+- [x] Forwards `ref` to the primary underlying DOM element (`HTMLButtonElement`, `HTMLInputElement`, `HTMLDivElement`, etc.).
+- [x] Works cleanly with both `React.createRef()` and callback refs.
 
 ### 3. Attribute & Class Composition
-- [ ] Merges custom `className` using `cn()` from `@/lib/utils` without dropping default styles.
-- [ ] Spreads additional HTML attributes (e.g. `data-*`, `id`, `style`) onto the root DOM element.
+- [x] Merges custom `className` using `cn()` from `@/lib/utils` without dropping default styles.
+- [x] Spreads additional HTML attributes (e.g. `data-*`, `id`, `style`) onto the root DOM element.
 
 ### 4. Controlled State
-- [ ] Controlled mode: passing state (`value`, `open`, `checked`) directly controls component representation.
-- [ ] Callback (`onChange`, `onValueChange`, `onOpenChange`) fires when interactions occur.
+- [x] Controlled mode: passing state (`value`, `open`, `checked`) directly controls component representation.
+- [x] Callback (`onChange`, `onValueChange`, `onOpenChange`) fires when interactions occur.
 
 ### 5. Uncontrolled State
-- [ ] Uncontrolled mode: accepts initial default values (`defaultValue`, `defaultOpen`, `defaultChecked`).
-- [ ] Maintains internal state without requiring external handler wiring.
+- [x] Uncontrolled mode: accepts initial default values (`defaultValue`, `defaultOpen`, `defaultChecked`).
+- [x] Maintains internal state without requiring external handler wiring.
 
 ### 6. Keyboard Navigation Map
-- [ ] Tab / Shift+Tab moves focus correctly across focusable elements.
-- [ ] Arrow keys (`ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`) navigate items where applicable (Tabs, Menus, Select, Radios).
-- [ ] `Escape` dismisses modals, sheets, dialogs, and popovers, returning focus to the trigger.
-- [ ] `Enter` / `Space` activates triggers and buttons.
+- [x] Tab / Shift+Tab moves focus correctly across focusable elements.
+- [x] Arrow keys (`ArrowUp`, `ArrowDown`, `ArrowLeft`, `ArrowRight`) navigate items where applicable (Tabs, Menus, Select, Radios).
+- [x] `Escape` dismisses modals, sheets, dialogs, and popovers, returning focus to the trigger.
+- [x] `Enter` / `Space` activates triggers and buttons.
 
 ### 7. Disabled & Loading States
-- [ ] When `disabled` is true, pointer and keyboard interactions are blocked.
-- [ ] Sets native `disabled` attribute or `aria-disabled="true"`.
-- [ ] Focus cannot be received when disabled.
+- [x] When `disabled` is true, pointer and keyboard interactions are blocked.
+- [x] Sets native `disabled` attribute or `aria-disabled="true"`.
+- [x] Focus cannot be received when disabled.
 
 ### 8. Automated Accessibility (`axe-core`)
-- [ ] `await axe(container)` reports 0 violations in default state.
-- [ ] `await axe(container)` reports 0 violations in open/expanded state.
-- [ ] `await axe(container)` reports 0 violations in disabled/error state.
+- [x] `await axe(container)` reports 0 violations in default state.
+- [x] `await axe(container)` reports 0 violations in open/expanded state.
+- [x] `await axe(container)` reports 0 violations in disabled/error state.
 
 ### 9. Server-Side Rendering (SSR) & React 19 Compatibility
-- [ ] `renderToString(<Component />)` renders cleanly on the server without throwing.
-- [ ] No direct access to `window`, `document`, or `navigator` in the render path.
-- [ ] Mounts and unmounts cleanly under `<React.StrictMode>` with no listener memory leaks.
+- [x] `renderToString(<Component />)` renders cleanly on the server without throwing.
+- [x] No direct access to `window`, `document`, or `navigator` in the render path.
+- [x] Mounts and unmounts cleanly under `<React.StrictMode>` with no listener memory leaks.
 
 ---
 

@@ -1,5 +1,3 @@
-"use client"
-
 import * as React from "react"
 import { cn, createVariants } from "../../lib/utils"
 

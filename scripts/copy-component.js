@@ -163,7 +163,11 @@ function parseArgs() {
 
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
-    if (arg === 'list') {
+    if (arg === 'init') {
+      options.command = 'init';
+    } else if (arg === '--help' || arg === '-h') {
+      options.command = 'help';
+    } else if (arg === 'list') {
       options.command = 'list';
     } else if (arg === 'add') {
       options.command = 'add';
@@ -176,6 +180,9 @@ function parseArgs() {
       options.dryRun = true;
     } else if (arg === '--overwrite') {
       options.overwrite = true;
+    } else if (arg === '--copy') {
+      // Explicit copy flag
+      options.copy = true;
     } else if (arg === '--path' || arg === '-p') {
       if (args[i + 1]) {
         options.targetDir = path.resolve(process.cwd(), args[++i]);
@@ -194,11 +201,13 @@ function printHelp() {
 Mad UI Component CLI (mad-ui-components)
 
 Commands:
+  npx mad-ui-components init                   Initialize project with styles and utils
   npx mad-ui-components list                   List all 75 components by category
   npx mad-ui-components add <component>       Copy component and its dependencies
   npx mad-ui-components add --all             Copy all 75 components
 
 Options:
+  --copy              Explicitly copy source code into project (default behavior)
   --path, -p <dir>    Custom destination directory (default: components/ui/mad-ui)
   --overwrite         Overwrite files if they already exist
   --dry-run           Preview which files would be copied without writing to disk
@@ -313,9 +322,52 @@ function copyFileSafe(src, dest, overwrite, dryRun, transform = null) {
   return { status: 'copied' };
 }
 
+function initProject(options, rootDir) {
+  console.log('\n🚀 Initializing Mad UI in your project...\n');
+  const cwd = process.cwd();
+
+  // 1. Ensure lib/utils.ts exists
+  const utilsDir = path.join(cwd, 'lib');
+  const utilsPath = path.join(utilsDir, 'utils.ts');
+  if (!fs.existsSync(utilsPath)) {
+    fs.mkdirSync(utilsDir, { recursive: true });
+    const templateUtils = fs.readFileSync(path.join(rootDir, 'src', 'lib', 'utils.ts'), 'utf8');
+    fs.writeFileSync(utilsPath, templateUtils, 'utf8');
+    console.log('  ✓ Created lib/utils.ts');
+  } else {
+    console.log('  - lib/utils.ts already exists');
+  }
+
+  // 2. Ensure components/ui directory exists
+  const componentsUiDir = path.join(cwd, 'components', 'ui');
+  if (!fs.existsSync(componentsUiDir)) {
+    fs.mkdirSync(componentsUiDir, { recursive: true });
+    console.log('  ✓ Created components/ui directory');
+  }
+
+  console.log('\n🎉 Mad UI initialized successfully!');
+  console.log('\nNext steps:');
+  console.log('  1. Add theme styles to your globals.css:');
+  console.log('     @import "mad-ui-components/theme.css";');
+  console.log('  2. For Tailwind v4, add to your CSS:');
+  console.log('     @source "../node_modules/mad-ui-components/dist";');
+  console.log('  3. Add components to your project:');
+  console.log('     npx mad-ui-components add button\n');
+}
+
 function main() {
   const options = parseArgs();
   const rootDir = path.resolve(__dirname, '..');
+
+  if (options.command === 'help') {
+    printHelp();
+    process.exit(0);
+  }
+
+  if (options.command === 'init') {
+    initProject(options, rootDir);
+    process.exit(0);
+  }
 
   if (options.command === 'list') {
     listComponents();

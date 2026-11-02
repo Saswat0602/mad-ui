@@ -433,15 +433,16 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   return (
     <div ref={containerRef} className={cn('relative', className)}>
       <button
+        type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         className={cn(
-          'w-full p-3 text-left border border-input rounded-lg bg-background text-foreground transition-all duration-200 flex items-center justify-between',
+          'w-full p-3 text-left border border-input rounded-lg bg-background text-foreground transition-all duration-200 flex items-center justify-between cursor-pointer',
           disabled ? 'bg-muted text-muted-foreground cursor-not-allowed' : 'hover:border-ring focus:ring-1 focus:ring-ring focus:border-ring',
           isOpen ? 'border-ring ring-1 ring-ring' : ''
         )}
       >
-        <span className={value ? 'text-foreground' : 'text-muted-foreground'}>
+        <span suppressHydrationWarning className={value ? 'text-foreground' : 'text-muted-foreground'}>
           {formatDisplayValue()}
         </span>
         <div className="flex items-center space-x-1 text-muted-foreground">

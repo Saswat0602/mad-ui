@@ -24,6 +24,18 @@ const CATEGORY_ORDER: ComponentCategory[] = [
   'Media'
 ]
 
+const CATEGORY_DISPLAY_LABELS: Record<string, string> = {
+  'AI & Agents': 'AI & Agentic UI',
+  'Core': 'Core & Primitives',
+  'Form': 'Forms & Inputs',
+  'Layout': 'Layout & Disclosure',
+  'Overlay': 'Overlays & Dialogs',
+  'Navigation': 'Navigation',
+  'Data Display': 'Data Display & Media',
+  'Feedback': 'Feedback',
+  'Media': 'Media & Typography',
+}
+
 export function DocsSidebar({ onItemClick }: DocsSidebarProps) {
   const pathname = usePathname()
   const [filterQuery, setFilterQuery] = useState('')
@@ -70,8 +82,14 @@ export function DocsSidebar({ onItemClick }: DocsSidebarProps) {
         </div>
       </div>
 
-      {/* Nav List with scroll (scrollbar indicator hidden) */}
-      <div className="flex-1 overflow-y-auto px-4 py-2 space-y-6 no-scrollbar scrollbar-none">
+      {/* Nav List with scroll */}
+      <div 
+        className="flex-1 overflow-y-auto px-4 py-2 space-y-6 scrollbar-thin"
+        style={{
+          scrollbarWidth: 'thin',
+          scrollbarColor: 'var(--border) transparent',
+        }}
+      >
         {/* Getting Started Links */}
         {!filterQuery && (
           <div className="space-y-1">
@@ -115,7 +133,7 @@ export function DocsSidebar({ onItemClick }: DocsSidebarProps) {
             <div key={category} className="space-y-1">
               <div className="flex items-center justify-between px-2 py-1">
                 <span className="text-[11px] font-semibold text-muted-foreground/80 uppercase tracking-wider">
-                  {category}
+                  {CATEGORY_DISPLAY_LABELS[category] || category}
                 </span>
                 <span className="text-[10px] text-muted-foreground/60 font-mono">
                   {items.length}

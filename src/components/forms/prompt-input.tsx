@@ -95,6 +95,7 @@ export const PromptInput = React.forwardRef<HTMLDivElement, PromptInputProps>(
     }
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+      if (e.nativeEvent.isComposing) return
       if (e.key === "Enter" && !e.shiftKey) {
         e.preventDefault()
         handleSubmit()

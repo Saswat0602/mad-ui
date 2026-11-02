@@ -4,6 +4,7 @@
 
 @layer base {
   :root {
+    color-scheme: light;
     /* Authentic Shadcn Zinc Monochromatic HSL Color System */
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
@@ -73,6 +74,7 @@
   }
   
   .dark {
+    color-scheme: dark;
     --background: 240 10% 3.9%;
     --foreground: 0 0% 98%;
     

@@ -82,6 +82,8 @@ All UI contributions must reflect senior-level engineering quality:
 1. **Clean, Refined Color Palette**:
    - Use crisp neutral darks (`#09090b`, `#18181b`, `#27272a`) and clean lights (`#ffffff`, `#f4f4f5`, `#e4e4e7`).
    - Use subtle, semantic primary accents (`blue-500`, `indigo-500`) with modest opacity.
+   - Always declare `color-scheme: dark;` on `.dark` and `color-scheme: light;` on `:root` to ensure browsers render native scrollbars and controls in the correct theme.
+   - Provide sleek, custom scrollbars (`scrollbar-thin` with transparent track and subtle `var(--border)` thumb) to eliminate clunky, white native OS scrollbars.
    - **PROHIBITED**: Gaudy rainbow animated floating orbs, loud fluorescent pink/green blur blobs, and oversaturated neon gradients ("vibe coding").
 2. **No Tag Bloat or Repetitive Version Spam**:
    - Do NOT display 5+ tags on every component card or header.
@@ -148,7 +150,8 @@ When adding a new component to the library, follow this strict checklist:
 1. **Implementation**:
    - Place component in `src/components/<category>/<component-name>.tsx`.
    - Use `cn()` from `src/lib/utils.ts` for Tailwind class composition.
-   - Include ARIA attributes (`aria-label`, `aria-expanded`, `role`) and keyboard navigation support.
+   - For overlays, modals, and dropdowns, use foundational primitives (`src/primitives/overlay-stack.ts`, `src/hooks/use-floating-position.ts`, `src/primitives/visually-hidden-input.tsx`).
+   - Include ARIA attributes (`aria-label`, `aria-expanded`, `role`) and keyboard navigation support (`src/hooks/use-roving-tabindex.ts`).
 2. **Exports**:
    - Re-export in `src/components/index.ts`.
    - Re-export in `src/index.ts`.

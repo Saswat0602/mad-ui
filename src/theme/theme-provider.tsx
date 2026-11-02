@@ -63,6 +63,7 @@ export function ThemeProvider({
       } else {
         root.setAttribute(attribute, targetTheme)
       }
+      root.style.colorScheme = targetTheme
     }
 
     if (theme === 'system' && enableSystem) {

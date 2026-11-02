@@ -77,4 +77,37 @@ describe('Component & Documentation Parity Test Suite', () => {
     expect(dryRunOutput).toContain('Would create')
     expect(dryRunOutput).toContain('Primitive: primitives/presence.tsx')
   })
+
+  it('validates displayName, ref forwarding, and className merging on core primitives', async () => {
+    const React = await import('react')
+    const { render } = await import('@testing-library/react')
+    const { Button } = await import('../src/components/core/button')
+    const { Input } = await import('../src/components/core/input')
+    const { Badge } = await import('../src/components/media/badge')
+    const { Checkbox } = await import('../src/components/core/checkbox')
+    const { Switch } = await import('../src/components/core/switch')
+
+    // displayName assertions
+    expect(Button.displayName).toBe('Button')
+    expect(Input.displayName).toBe('Input')
+    expect(Badge.displayName).toBe('Badge')
+    expect(Checkbox.displayName).toBe('Checkbox')
+    expect(Switch.displayName).toBe('Switch')
+
+    // Ref forwarding & className merge assertions
+    const buttonRef = React.createRef<HTMLButtonElement>()
+    const { getByTestId } = render(
+      React.createElement(Button, {
+        ref: buttonRef,
+        className: 'custom-parity-class',
+        'data-testid': 'parity-btn',
+        'aria-label': 'Parity Button',
+      }, 'Test')
+    )
+
+    const btnElement = getByTestId('parity-btn')
+    expect(buttonRef.current).toBe(btnElement)
+    expect(btnElement.className).toContain('custom-parity-class')
+    expect(btnElement.getAttribute('aria-label')).toBe('Parity Button')
+  })
 })
