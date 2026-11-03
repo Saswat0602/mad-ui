@@ -86,6 +86,9 @@ describe('Component & Documentation Parity Test Suite', () => {
     const { Badge } = await import('../src/components/media/badge')
     const { Checkbox } = await import('../src/components/core/checkbox')
     const { Switch } = await import('../src/components/core/switch')
+    const { Drawer } = await import('../src/components/layout/drawer')
+    const { Combobox } = await import('../src/components/navigation/combobox')
+    const { DateTimePicker } = await import('../src/components/forms/datetime-picker')
 
     // displayName assertions
     expect(Button.displayName).toBe('Button')
@@ -93,6 +96,9 @@ describe('Component & Documentation Parity Test Suite', () => {
     expect(Badge.displayName).toBe('Badge')
     expect(Checkbox.displayName).toBe('Checkbox')
     expect(Switch.displayName).toBe('Switch')
+    expect(Drawer.displayName).toBe('Drawer')
+    expect(Combobox.displayName).toBe('Combobox')
+    expect(DateTimePicker.displayName).toBe('DateTimePicker')
 
     // Ref forwarding & className merge assertions
     const buttonRef = React.createRef<HTMLButtonElement>()
@@ -109,5 +115,35 @@ describe('Component & Documentation Parity Test Suite', () => {
     expect(buttonRef.current).toBe(btnElement)
     expect(btnElement.className).toContain('custom-parity-class')
     expect(btnElement.getAttribute('aria-label')).toBe('Parity Button')
+  })
+
+  it('guarantees all source components utilizing React hooks carry the "use client" directive', () => {
+    function walkSync(dir: string): string[] {
+      let files: string[] = []
+      const entries = fs.readdirSync(dir, { withFileTypes: true })
+      for (const entry of entries) {
+        const fullPath = path.join(dir, entry.name)
+        if (entry.isDirectory()) {
+          files = files.concat(walkSync(fullPath))
+        } else if (fullPath.endsWith('.tsx')) {
+          files.push(fullPath)
+        }
+      }
+      return files
+    }
+
+    const componentFiles = walkSync(path.resolve(__dirname, '../src/components'))
+    const missingUseClient: string[] = []
+
+    for (const file of componentFiles) {
+      const content = fs.readFileSync(file, 'utf8')
+      const usesHooks = /useState|useEffect|useRef|useCallback|useMemo|useId|useContext|useReducer|useImperativeHandle/.test(content)
+      const hasUseClient = content.startsWith('"use client"') || content.startsWith("'use client'")
+      if (usesHooks && !hasUseClient) {
+        missingUseClient.push(path.basename(file))
+      }
+    }
+
+    expect(missingUseClient, `Components using hooks must carry "use client" for Next.js App Router RSC safety`).toEqual([])
   })
 })

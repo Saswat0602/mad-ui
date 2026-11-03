@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useRef, useState } from 'react'
 import { ChevronLeft, ChevronRight, Clock, Calendar, X } from '../../icons'
 
@@ -18,23 +20,27 @@ const cn = (...classes: (string | boolean | undefined)[]) => {
   return classes.filter(Boolean).join(' ')
 }
 
-export const DateTimePicker: React.FC<DateTimePickerProps> = ({
-  mode = 'both',
-  timeFormat = '12',
-  value = null,
-  onChange,
-  placeholder = 'Select date & time',
-  disabled = false,
-  className = ''
-}) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [selectedDate, setSelectedDate] = useState<Date>(value ? new Date(value) : new Date())
-  const [viewDate, setViewDate] = useState<Date>(new Date())
-  const [showYearModal, setShowYearModal] = useState(false)
-  const [showMonthModal, setShowMonthModal] = useState(false)
-  const [activeTab, setActiveTab] = useState<DateTimeMode>(mode === 'both' ? 'date' : mode)
+export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerProps>(
+  (
+    {
+      mode = 'both',
+      timeFormat = '12',
+      value = null,
+      onChange,
+      placeholder = 'Select date & time',
+      disabled = false,
+      className = '',
+    },
+    forwardedRef
+  ) => {
+    const [isOpen, setIsOpen] = useState(false)
+    const [selectedDate, setSelectedDate] = useState<Date>(value ? new Date(value) : new Date())
+    const [viewDate, setViewDate] = useState<Date>(new Date())
+    const [showYearModal, setShowYearModal] = useState(false)
+    const [showMonthModal, setShowMonthModal] = useState(false)
+    const [activeTab, setActiveTab] = useState<DateTimeMode>(mode === 'both' ? 'date' : mode)
 
-  const containerRef = useRef<HTMLDivElement | null>(null)
+    const containerRef = useRef<HTMLDivElement | null>(null)
 
   useEffect(() => {
     if (value) {
@@ -431,7 +437,14 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
   )
 
   return (
-    <div ref={containerRef} className={cn('relative', className)}>
+    <div 
+      ref={(node) => {
+        containerRef.current = node
+        if (typeof forwardedRef === 'function') forwardedRef(node)
+        else if (forwardedRef) (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+      }} 
+      className={cn('relative', className)}
+    >
       <button
         type="button"
         onClick={() => !disabled && setIsOpen(!isOpen)}
@@ -512,4 +525,5 @@ export const DateTimePicker: React.FC<DateTimePickerProps> = ({
       )}
     </div>
   )
-}
+})
+DateTimePicker.displayName = 'DateTimePicker'

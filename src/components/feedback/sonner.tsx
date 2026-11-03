@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect, useRef } from 'react'
 import { cn } from '../../lib/utils'
 import { CheckCircle2, AlertCircle, AlertTriangle, Info, X } from '../../icons'

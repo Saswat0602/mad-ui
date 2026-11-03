@@ -5,6 +5,8 @@ import { cn } from "../../lib/utils"
 import { ChevronsUpDown, Check, Search } from "../../icons"
 import { Popover, PopoverTrigger, PopoverContent } from "../layout/popover"
 
+import { VisuallyHiddenInput } from "../../primitives/visually-hidden-input"
+
 export interface ComboboxOption {
   value: string
   label: string
@@ -20,18 +22,24 @@ export interface ComboboxProps {
   className?: string
   disabled?: boolean
   searchable?: boolean
+  name?: string
 }
 
-export const Combobox: React.FC<ComboboxProps> = ({
-  options = [],
-  value,
-  defaultValue = "",
-  onValueChange,
-  placeholder = "Select an option...",
-  className,
-  disabled = false,
-  searchable = true,
-}) => {
+export const Combobox = React.forwardRef<HTMLButtonElement, ComboboxProps>(
+  (
+    {
+      options = [],
+      value,
+      defaultValue = "",
+      onValueChange,
+      placeholder = "Select an option...",
+      className,
+      disabled = false,
+      searchable = true,
+      name,
+    },
+    ref
+  ) => {
   const [open, setOpen] = React.useState(false)
   const [searchValue, setSearchValue] = React.useState("")
   const [internalValue, setInternalValue] = React.useState(defaultValue)
@@ -64,11 +72,14 @@ export const Combobox: React.FC<ComboboxProps> = ({
   }, [open, searchable])
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
-      <PopoverTrigger asChild>
-        <button
-          type="button"
-          role="combobox"
+    <>
+      {name && <VisuallyHiddenInput name={name} value={selectedValue || ""} />}
+      <Popover open={open} onOpenChange={setOpen}>
+        <PopoverTrigger asChild>
+          <button
+            ref={ref}
+            type="button"
+            role="combobox"
           aria-label={selectedOption ? selectedOption.label : placeholder}
           aria-expanded={open}
           disabled={disabled}
@@ -137,7 +148,9 @@ export const Combobox: React.FC<ComboboxProps> = ({
         </div>
       </PopoverContent>
     </Popover>
+    </>
   )
-}
+})
+Combobox.displayName = "Combobox"
 
 export default Combobox

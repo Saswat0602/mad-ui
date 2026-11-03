@@ -49,24 +49,28 @@ const positionVariants = {
     "inset-x-0 bottom-0 w-full border-t border-zinc-200 dark:border-zinc-800 data-[state=open]:animate-in data-[state=open]:slide-in-from-bottom-full data-[state=closed]:animate-out data-[state=closed]:slide-out-to-bottom-full",
 }
 
-export const Drawer: React.FC<DrawerProps> = ({
-  isOpen = false,
-  onClose,
-  position = "right",
-  size = "md",
-  width,
-  height,
-  overlay = true,
-  closeOnOverlayClick = true,
-  closeOnEscape = true,
-  showCloseButton = true,
-  className = "",
-  overlayClassName = "",
-  children,
-  style,
-  ...props
-}) => {
-  const contentRef = React.useRef<HTMLDivElement | null>(null)
+export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>(
+  (
+    {
+      isOpen = false,
+      onClose,
+      position = "right",
+      size = "md",
+      width,
+      height,
+      overlay = true,
+      closeOnOverlayClick = true,
+      closeOnEscape = true,
+      showCloseButton = true,
+      className = "",
+      overlayClassName = "",
+      children,
+      style,
+      ...props
+    },
+    forwardedRef
+  ) => {
+    const contentRef = React.useRef<HTMLDivElement | null>(null)
 
   useFocusTrap(contentRef as React.RefObject<HTMLElement>, isOpen)
 
@@ -130,7 +134,11 @@ export const Drawer: React.FC<DrawerProps> = ({
           />
         )}
         <div
-          ref={contentRef}
+          ref={(node) => {
+            contentRef.current = node
+            if (typeof forwardedRef === "function") forwardedRef(node)
+            else if (forwardedRef) (forwardedRef as React.MutableRefObject<HTMLDivElement | null>).current = node
+          }}
           role="dialog"
           aria-modal="true"
           data-state={isOpen ? "open" : "closed"}
@@ -163,6 +171,7 @@ export const Drawer: React.FC<DrawerProps> = ({
       </Portal>
     </Presence>
   )
-}
+})
+Drawer.displayName = "Drawer"
 
 export default Drawer

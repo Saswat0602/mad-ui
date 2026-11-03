@@ -150,15 +150,55 @@ export const DropdownMenuContent = React.forwardRef<HTMLDivElement, DropdownMenu
 
     React.useEffect(() => {
       if (!open) return
+
+      // Auto-focus first active menuitem when opening
+      const timer = setTimeout(() => {
+        if (contentRef.current) {
+          const firstItem = contentRef.current.querySelector<HTMLElement>(
+            '[role^="menuitem"]:not([aria-disabled="true"]):not([data-disabled])'
+          )
+          firstItem?.focus()
+        }
+      }, 10)
+
       const handleKeyDown = (e: KeyboardEvent) => {
         if (e.key === "Escape") {
           e.preventDefault()
           setOpen(false)
           triggerRef.current?.focus()
+        } else if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Home" || e.key === "End") {
+          if (!contentRef.current) return
+          const items = Array.from(
+            contentRef.current.querySelectorAll<HTMLElement>(
+              '[role^="menuitem"]:not([aria-disabled="true"]):not([data-disabled])'
+            )
+          )
+          if (!items.length) return
+          const activeIndex = items.indexOf(document.activeElement as HTMLElement)
+          let nextIndex = 0
+
+          if (e.key === "ArrowDown") {
+            e.preventDefault()
+            nextIndex = activeIndex === -1 ? 0 : (activeIndex + 1) % items.length
+          } else if (e.key === "ArrowUp") {
+            e.preventDefault()
+            nextIndex = activeIndex === -1 ? items.length - 1 : (activeIndex - 1 + items.length) % items.length
+          } else if (e.key === "Home") {
+            e.preventDefault()
+            nextIndex = 0
+          } else if (e.key === "End") {
+            e.preventDefault()
+            nextIndex = items.length - 1
+          }
+
+          items[nextIndex]?.focus()
         }
       }
       window.addEventListener("keydown", handleKeyDown)
-      return () => window.removeEventListener("keydown", handleKeyDown)
+      return () => {
+        clearTimeout(timer)
+        window.removeEventListener("keydown", handleKeyDown)
+      }
     }, [open, setOpen, triggerRef])
 
     if (!open) return null
@@ -233,15 +273,28 @@ export const DropdownMenuItem = React.forwardRef<HTMLDivElement, DropdownMenuIte
       }
     }
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      onClick?.(e as any)
+      if (disabled || e.defaultPrevented) return
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault()
+        onSelect?.()
+        setOpen(false)
+        triggerRef.current?.focus()
+      }
+    }
+
     const Comp = asChild ? Slot : "div"
 
     return (
       <Comp
         ref={ref}
         role="menuitem"
+        tabIndex={disabled ? undefined : -1}
         aria-disabled={disabled}
         data-disabled={disabled ? "" : undefined}
         onClick={handleClick}
+        onKeyDown={handleKeyDown}
         className={cn(
           "relative flex cursor-pointer select-none items-center rounded-lg px-2.5 py-1.5 text-xs outline-none transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:hover:bg-zinc-800 dark:hover:text-zinc-100 focus:bg-zinc-100 focus:text-zinc-900 dark:focus:bg-zinc-800 dark:focus:text-zinc-100",
           inset && "pl-8",

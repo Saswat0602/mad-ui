@@ -12,6 +12,7 @@ interface TooltipContextValue {
   triggerRect: DOMRect | null
   updateTriggerRect: () => void
   delayDuration: number
+  tooltipId: string
 }
 
 const TooltipContext = React.createContext<TooltipContextValue | null>(null)
@@ -55,7 +56,7 @@ export interface TooltipTriggerProps extends React.HTMLAttributes<HTMLElement> {
 
 export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>(
   ({ asChild = false, children, onMouseEnter, onMouseLeave, onFocus, onBlur, ...props }, forwardedRef) => {
-    const { setOpen, triggerRef, updateTriggerRect, delayDuration } = useTooltipContext()
+    const { open, setOpen, triggerRef, updateTriggerRect, delayDuration, tooltipId } = useTooltipContext()
     const timerRef = React.useRef<any>(null)
     const Comp = asChild ? Slot : "button"
 
@@ -87,6 +88,7 @@ export const TooltipTrigger = React.forwardRef<HTMLElement, TooltipTriggerProps>
     return (
       <Comp
         ref={setMergedRef as any}
+        aria-describedby={open ? tooltipId : undefined}
         onMouseEnter={(e: any) => {
           onMouseEnter?.(e)
           handleEnter()
@@ -119,34 +121,43 @@ export interface TooltipContentProps extends React.HTMLAttributes<HTMLDivElement
 
 export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentProps>(
   ({ className, side = "top", sideOffset = 4, children, style, ...props }, ref) => {
-    const { open, triggerRect } = useTooltipContext()
+    const { open, triggerRect, tooltipId } = useTooltipContext()
 
     if (!open) return null
 
+    let effectiveSide = side
+    if (triggerRect) {
+      if (side === "top" && triggerRect.top - sideOffset < 48) {
+        effectiveSide = "bottom"
+      } else if (side === "bottom" && window.innerHeight - triggerRect.bottom - sideOffset < 48) {
+        effectiveSide = "top"
+      }
+    }
+
     let positioningStyle: React.CSSProperties = {}
     if (triggerRect) {
-      if (side === "top") {
+      if (effectiveSide === "top") {
         positioningStyle = {
           position: "fixed",
           bottom: `${window.innerHeight - triggerRect.top + sideOffset}px`,
           left: `${triggerRect.left + triggerRect.width / 2}px`,
           transform: "translateX(-50%)",
         }
-      } else if (side === "bottom") {
+      } else if (effectiveSide === "bottom") {
         positioningStyle = {
           position: "fixed",
           top: `${triggerRect.bottom + sideOffset}px`,
           left: `${triggerRect.left + triggerRect.width / 2}px`,
           transform: "translateX(-50%)",
         }
-      } else if (side === "left") {
+      } else if (effectiveSide === "left") {
         positioningStyle = {
           position: "fixed",
           right: `${window.innerWidth - triggerRect.left + sideOffset}px`,
           top: `${triggerRect.top + triggerRect.height / 2}px`,
           transform: "translateY(-50%)",
         }
-      } else if (side === "right") {
+      } else if (effectiveSide === "right") {
         positioningStyle = {
           position: "fixed",
           left: `${triggerRect.right + sideOffset}px`,
@@ -160,7 +171,9 @@ export const TooltipContent = React.forwardRef<HTMLDivElement, TooltipContentPro
       <Portal>
         <div
           ref={ref}
+          id={tooltipId}
           role="tooltip"
+          data-side={effectiveSide}
           style={{ ...positioningStyle, ...style }}
           className={cn(
             "fixed z-50 overflow-hidden rounded-md bg-zinc-900 px-3 py-1.5 text-xs text-zinc-50 shadow-md animate-in fade-in-0 zoom-in-95 dark:bg-zinc-100 dark:text-zinc-900 pointer-events-none",
@@ -214,6 +227,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
 
   const resolvedSide = side || position || "top"
   const resolvedDelay = delay ?? delayDuration
+  const tooltipId = React.useId()
 
   const contextValue = {
     open,
@@ -222,6 +236,7 @@ export const Tooltip: React.FC<TooltipProps> = ({
     triggerRect,
     updateTriggerRect,
     delayDuration: resolvedDelay,
+    tooltipId,
   }
 
   if (content !== undefined) {

@@ -32,13 +32,53 @@ function useTabsContext() {
 export interface TabsListProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
-  ({ className, ...props }, ref) => {
+  ({ className, onKeyDown, ...props }, ref) => {
     const { orientation } = useTabsContext()
+
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLDivElement>) => {
+      onKeyDown?.(e)
+      if (e.defaultPrevented) return
+
+      const target = e.target as HTMLElement
+      if (!target || target.getAttribute('role') !== 'tab') return
+
+      const tabList = e.currentTarget
+      const tabs = Array.from(tabList.querySelectorAll<HTMLButtonElement>('[role="tab"]:not([disabled])'))
+      if (!tabs.length) return
+
+      const currentIndex = tabs.indexOf(target as HTMLButtonElement)
+      if (currentIndex === -1) return
+
+      let nextIndex = currentIndex
+      const isHorizontal = orientation === 'horizontal'
+
+      if ((isHorizontal && e.key === 'ArrowRight') || (!isHorizontal && e.key === 'ArrowDown')) {
+        e.preventDefault()
+        nextIndex = (currentIndex + 1) % tabs.length
+      } else if ((isHorizontal && e.key === 'ArrowLeft') || (!isHorizontal && e.key === 'ArrowUp')) {
+        e.preventDefault()
+        nextIndex = (currentIndex - 1 + tabs.length) % tabs.length
+      } else if (e.key === 'Home') {
+        e.preventDefault()
+        nextIndex = 0
+      } else if (e.key === 'End') {
+        e.preventDefault()
+        nextIndex = tabs.length - 1
+      }
+
+      if (nextIndex !== currentIndex) {
+        const nextTab = tabs[nextIndex]
+        nextTab.focus()
+        nextTab.click()
+      }
+    }
+
     return (
       <div
         ref={ref}
         role="tablist"
         aria-orientation={orientation}
+        onKeyDown={handleKeyDown}
         className={cn(
           'inline-flex h-9 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80 p-1 text-zinc-500 dark:text-zinc-400',
           className
