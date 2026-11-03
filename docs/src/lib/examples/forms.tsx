@@ -1,7 +1,14 @@
 import React, { useState } from 'react'
 import { 
   Accordion, 
-  Breadcrumbs, 
+  Breadcrumbs,
+  Breadcrumb,
+  BreadcrumbList,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+  BreadcrumbEllipsis,
   DateTimePicker, 
   InputOTP, 
   RadioGroup, 
@@ -30,7 +37,7 @@ import {
   type MultiSelectOption,
   Calendar as MadCalendar 
 } from 'mad-ui-components'
-import { Calendar as CalendarIcon, Clock, Sliders, Palette, CalendarDays, Zap, User, Shield, Bell } from 'lucide-react'
+import { Calendar as CalendarIcon, Clock, Sliders, Palette, CalendarDays, Zap, User, Shield, Bell, Home as HomeIcon, Folder, FileText, Layers, Slash } from 'lucide-react'
 
 // Breadcrumb Designs Demo Component
 function BreadcrumbDesignsDemo() {
@@ -425,55 +432,228 @@ export function EnterpriseAccordion() {
 
   breadcrumbs: [
     {
-      title: 'Multiple Breadcrumb Designs',
-      description: 'Choose from various breadcrumb styles - modern, card, pill, gradient, and steps',
+      title: 'Minimal & Chevron Styles',
+      description: 'Clean minimalist breadcrumb paths with configurable separators such as forward slashes or chevrons',
       code: `import { Breadcrumbs } from 'mad-ui-components'
-import { useState } from 'react'
 
-export function BreadcrumbDesignsDemo() {
-  const [selectedVariant, setSelectedVariant] = useState('default')
-  
+export function BreadcrumbsSeparatorDemo() {
   const items = [
     { label: 'Home', href: '/' },
-    { label: 'Products', href: '/products' },
-    { label: 'Electronics', href: '/products/electronics' },
-    { label: 'Smartphones' }
+    { label: 'Workspace', href: '/workspace' },
+    { label: 'Design System', href: '/workspace/design-system' },
+    { label: 'Navigation' }
   ]
 
-  const variants = ['default', 'minimal', 'outlined', 'modern', 'card', 'pill', 'gradient', 'steps']
-
   return (
-    <div className="space-y-6">
-      {/* Variant Selector */}
-      <div className="flex flex-wrap gap-2">
-        {variants.map((variant) => (
-          <button
-            key={variant}
-            onClick={() => setSelectedVariant(variant)}
-            className={\`px-3 py-1 text-sm rounded-md transition-colors \${
-              selectedVariant === variant 
-                ? 'bg-primary text-primary-foreground' 
-                : 'bg-muted text-muted-foreground hover:bg-muted/80'
-            }\`}
-          >
-            {variant}
-          </button>
-        ))}
-      </div>
+    <div className="space-y-4">
+      {/* Default Slash Separator */}
+      <Breadcrumbs items={items} separator="/" />
 
-      {/* Breadcrumb Display */}
-      <div className="p-4 bg-gray-50 rounded-lg">
-        <Breadcrumbs 
-          items={items} 
-          variant={selectedVariant}
-          showHomeIcon={selectedVariant !== 'steps'}
-        />
-      </div>
+      {/* Chevron Separator */}
+      <Breadcrumbs 
+        items={items} 
+        separator={<span className="text-muted-foreground/60">›</span>} 
+      />
     </div>
   )
 }`,
       preview: (
-        <BreadcrumbDesignsDemo />
+        <div className="space-y-4 p-4 w-full">
+          <div>
+            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block mb-1">Slash separator</span>
+            <Breadcrumbs 
+              items={[
+                { label: 'Home', href: '#' },
+                { label: 'Workspace', href: '#' },
+                { label: 'Design System', href: '#' },
+                { label: 'Navigation' }
+              ]} 
+              separator="/" 
+            />
+          </div>
+          <div>
+            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block mb-1">Chevron separator</span>
+            <Breadcrumbs 
+              items={[
+                { label: 'Home', href: '#' },
+                { label: 'Workspace', href: '#' },
+                { label: 'Design System', href: '#' },
+                { label: 'Navigation' }
+              ]} 
+              separator={<span className="text-muted-foreground/60 font-semibold">›</span>} 
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Pill & Outlined Badge Styles with Icons',
+      description: 'Card-backed, pill, and bordered badge breadcrumbs equipped with Lucide vector icons',
+      code: `import { Breadcrumbs } from 'mad-ui-components'
+import { Home, Folder, Layers, FileText } from 'lucide-react'
+
+export function BreadcrumbsBadgesDemo() {
+  const items = [
+    { label: 'Root', href: '/', icon: <Home className="w-3.5 h-3.5 inline mr-1" /> },
+    { label: 'Components', href: '/components', icon: <Folder className="w-3.5 h-3.5 inline mr-1" /> },
+    { label: 'Forms', href: '/components/forms', icon: <Layers className="w-3.5 h-3.5 inline mr-1" /> },
+    { label: 'Breadcrumbs.tsx', icon: <FileText className="w-3.5 h-3.5 inline mr-1" /> }
+  ]
+
+  return (
+    <div className="space-y-4">
+      {/* Outlined Badge Variant */}
+      <Breadcrumbs items={items} variant="outlined" />
+
+      {/* Pill Badge Variant */}
+      <Breadcrumbs items={items} variant="pill" />
+
+      {/* Card Elevated Variant */}
+      <Breadcrumbs items={items} variant="card" />
+    </div>
+  )
+}`,
+      preview: (
+        <div className="space-y-3.5 p-2 w-full">
+          <div>
+            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block mb-1">Outlined Badge</span>
+            <Breadcrumbs 
+              variant="outlined"
+              items={[
+                { label: 'Root', href: '#', icon: <HomeIcon className="w-3.5 h-3.5 inline mr-1" /> },
+                { label: 'Components', href: '#', icon: <Folder className="w-3.5 h-3.5 inline mr-1" /> },
+                { label: 'Forms', href: '#', icon: <Layers className="w-3.5 h-3.5 inline mr-1" /> },
+                { label: 'Breadcrumbs.tsx', icon: <FileText className="w-3.5 h-3.5 inline mr-1" /> }
+              ]}
+            />
+          </div>
+          <div>
+            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block mb-1">Pill Badge</span>
+            <Breadcrumbs 
+              variant="pill"
+              items={[
+                { label: 'Root', href: '#', icon: <HomeIcon className="w-3.5 h-3.5 inline mr-1" /> },
+                { label: 'Components', href: '#', icon: <Folder className="w-3.5 h-3.5 inline mr-1" /> },
+                { label: 'Forms', href: '#', icon: <Layers className="w-3.5 h-3.5 inline mr-1" /> },
+                { label: 'Breadcrumbs.tsx', icon: <FileText className="w-3.5 h-3.5 inline mr-1" /> }
+              ]}
+            />
+          </div>
+          <div>
+            <span className="text-[11px] font-mono text-muted-foreground uppercase tracking-wider block mb-1">Card Container</span>
+            <Breadcrumbs 
+              variant="card"
+              items={[
+                { label: 'Root', href: '#', icon: <HomeIcon className="w-3.5 h-3.5 inline mr-1" /> },
+                { label: 'Components', href: '#', icon: <Folder className="w-3.5 h-3.5 inline mr-1" /> },
+                { label: 'Forms', href: '#', icon: <Layers className="w-3.5 h-3.5 inline mr-1" /> },
+                { label: 'Breadcrumbs.tsx', icon: <FileText className="w-3.5 h-3.5 inline mr-1" /> }
+              ]}
+            />
+          </div>
+        </div>
+      )
+    },
+    {
+      title: 'Collapsed Path with Ellipsis',
+      description: 'Compact breadcrumb for deeply nested routes that collapses intermediate segments into an ellipsis',
+      code: `import { Breadcrumbs } from 'mad-ui-components'
+
+export function CollapsedBreadcrumbsDemo() {
+  const deepItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Enterprise', href: '/enterprise' },
+    { label: 'Organizations', href: '/enterprise/orgs' },
+    { label: 'Acme Corp', href: '/enterprise/orgs/acme' },
+    { label: 'Engineering', href: '/enterprise/orgs/acme/engineering' },
+    { label: 'Deployments', href: '/enterprise/orgs/acme/engineering/deployments' },
+    { label: 'Production Pipeline' }
+  ]
+
+  return (
+    <Breadcrumbs 
+      items={deepItems} 
+      maxItems={4} 
+      showHomeIcon 
+    />
+  )
+}`,
+      preview: (
+        <div className="p-4 w-full">
+          <Breadcrumbs 
+            items={[
+              { label: 'Home', href: '#' },
+              { label: 'Enterprise', href: '#' },
+              { label: 'Organizations', href: '#' },
+              { label: 'Acme Corp', href: '#' },
+              { label: 'Engineering', href: '#' },
+              { label: 'Deployments', href: '#' },
+              { label: 'Production Pipeline' }
+            ]} 
+            maxItems={4} 
+            showHomeIcon 
+          />
+        </div>
+      )
+    },
+    {
+      title: 'Declarative Compound Breadcrumb',
+      description: 'Radix & shadcn compatible composable compound breadcrumbs with active page and semantic list semantics',
+      code: `import { 
+  Breadcrumb, 
+  BreadcrumbList, 
+  BreadcrumbItem, 
+  BreadcrumbLink, 
+  BreadcrumbSeparator, 
+  BreadcrumbPage,
+  BreadcrumbEllipsis 
+} from 'mad-ui-components'
+
+export function CompoundBreadcrumbDemo() {
+  return (
+    <Breadcrumb>
+      <BreadcrumbList>
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbEllipsis />
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbLink href="/components">Components</BreadcrumbLink>
+        </BreadcrumbItem>
+        <BreadcrumbSeparator />
+        <BreadcrumbItem>
+          <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+        </BreadcrumbItem>
+      </BreadcrumbList>
+    </Breadcrumb>
+  )
+}`,
+      preview: (
+        <div className="p-4 w-full flex items-center justify-center">
+          <Breadcrumb>
+            <BreadcrumbList>
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#">Home</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbEllipsis />
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbLink href="#">Components</BreadcrumbLink>
+              </BreadcrumbItem>
+              <BreadcrumbSeparator />
+              <BreadcrumbItem>
+                <BreadcrumbPage>Breadcrumb</BreadcrumbPage>
+              </BreadcrumbItem>
+            </BreadcrumbList>
+          </Breadcrumb>
+        </div>
       )
     }
   ],

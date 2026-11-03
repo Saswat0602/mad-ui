@@ -2,7 +2,7 @@ import * as React from "react"
 import { cn } from "../../lib/utils"
 import { componentColors } from "../../lib/colors"
 import { Slot } from "../../lib/slot"
-import { ChevronRight, MoreHorizontal } from "../../icons"
+import { ChevronRight, MoreHorizontal, Home } from "../../icons"
 
 export interface BreadcrumbItemData {
   label: string
@@ -87,39 +87,39 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
           }
         case "outlined":
           return {
-            backgroundColor: backgroundColor || "hsl(var(--color-card))",
-            border: `1px solid hsl(var(--color-border))`,
-            padding: "12px 16px",
-            borderRadius: "8px"
+            backgroundColor: backgroundColor || "hsl(var(--color-card, var(--card)))",
+            border: `1px solid hsl(var(--color-border, var(--border)))`,
+            padding: "8px 14px",
+            borderRadius: borderRadius || "8px"
           }
         case "modern":
           return {
-            backgroundColor: backgroundColor || "hsl(var(--color-card) / 0.8)",
-            backdropFilter: "blur(10px)",
-            border: `1px solid hsl(var(--color-border) / 0.5)`,
-            padding: "16px 20px",
-            borderRadius: "12px"
+            backgroundColor: backgroundColor || "hsl(var(--color-muted, var(--muted)) / 0.5)",
+            border: `1px solid hsl(var(--color-border, var(--border)) / 0.7)`,
+            padding: "10px 16px",
+            borderRadius: borderRadius || "10px"
           }
         case "card":
           return {
-            backgroundColor: backgroundColor || "hsl(var(--color-card))",
-            boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
-            padding: "16px 20px",
-            borderRadius: "12px"
+            backgroundColor: backgroundColor || "hsl(var(--color-card, var(--card)))",
+            border: `1px solid hsl(var(--color-border, var(--border)))`,
+            boxShadow: "0 1px 3px 0 rgba(0, 0, 0, 0.05)",
+            padding: "10px 16px",
+            borderRadius: borderRadius || "10px"
           }
         case "pill":
           return {
-            backgroundColor: backgroundColor || "hsl(var(--color-primary) / 0.1)",
-            borderRadius: "9999px",
-            padding: "8px 16px",
-            border: `1px solid hsl(var(--color-primary) / 0.2)`
+            backgroundColor: backgroundColor || "hsl(var(--color-muted, var(--muted)) / 0.6)",
+            borderRadius: borderRadius || "9999px",
+            padding: "6px 14px",
+            border: `1px solid hsl(var(--color-border, var(--border)) / 0.8)`
           }
         case "gradient":
           return {
-            background: backgroundColor || "linear-gradient(135deg, hsl(var(--color-primary)) 0%, hsl(var(--color-accent)) 100%)",
-            padding: "16px 20px",
-            borderRadius: "12px",
-            color: "white"
+            backgroundColor: backgroundColor || "hsl(var(--color-muted, var(--muted)) / 0.4)",
+            border: `1px solid hsl(var(--color-border, var(--border)))`,
+            padding: "10px 16px",
+            borderRadius: borderRadius || "10px"
           }
         case "steps":
           return {
@@ -128,9 +128,8 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
           }
         default:
           return {
-            backgroundColor: backgroundColor || "hsl(var(--color-card))",
-            padding: "12px 16px",
-            borderRadius: "8px"
+            backgroundColor: backgroundColor || "transparent",
+            padding: "4px 0"
           }
       }
     }
@@ -256,11 +255,11 @@ const Breadcrumbs = React.forwardRef<HTMLElement, BreadcrumbsProps>(
           <>
             <span
               className={cn(
-                "text-muted-foreground hover:text-foreground transition-colors duration-200",
+                "inline-flex items-center text-muted-foreground hover:text-foreground transition-colors duration-200",
                 sizeClasses[size]
               )}
             >
-              {homeIcon || "🏠"}
+              {homeIcon || <Home className="w-3.5 h-3.5" />}
             </span>
             <span
               className={cn(
@@ -402,6 +401,15 @@ export const BreadcrumbEllipsis = ({
 )
 BreadcrumbEllipsis.displayName = "BreadcrumbEllipsis"
 
+// Attach compound subcomponents to Breadcrumbs
+;(Breadcrumbs as any).List = BreadcrumbList
+;(Breadcrumbs as any).Item = BreadcrumbItem
+;(Breadcrumbs as any).Link = BreadcrumbLink
+;(Breadcrumbs as any).Page = BreadcrumbPage
+;(Breadcrumbs as any).Separator = BreadcrumbSeparator
+;(Breadcrumbs as any).Ellipsis = BreadcrumbEllipsis
+
+export default Breadcrumbs
 export {
   Breadcrumbs,
 }

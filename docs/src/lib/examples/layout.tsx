@@ -54,7 +54,8 @@ import {
   Copy,
   Layers,
   Folder,
-  FileCode
+  FileCode,
+  Shield
 } from 'lucide-react'
 
 // 1. Interactive Drawer Demo
@@ -786,45 +787,75 @@ export function AppShellDemo() {
 
   navbar: [
     {
-      title: 'Enhanced Responsive Navbar',
-      description: 'Sticky header navigation with brand logo, dropdown menus, search trigger, and action items',
+      title: 'Enterprise Header Navbar',
+      description: 'Sleek, responsive black & white enterprise header with dropdown navigation, embedded search, notification center, and user profile',
       code: `import { Navbar } from 'mad-ui-components'
-import { Home, Info, Briefcase, Award } from 'lucide-react'
+import { Home, Layers, Settings, BarChart, Shield, Zap } from 'lucide-react'
 
 export function NavbarDemo() {
   const items = [
-    { id: 'home', label: 'Home', icon: Home, active: true },
+    { id: 'overview', label: 'Overview', icon: Home, active: true },
     { 
-      id: 'about', 
-      label: 'About', 
-      icon: Info,
+      id: 'deployments', 
+      label: 'Deployments', 
+      icon: Layers,
       dropdown: [
-        { icon: Award, label: 'Company Story' },
-        { icon: Briefcase, label: 'Careers' }
+        { label: 'Production Clusters', action: () => {} },
+        { label: 'Staging Preview', action: () => {} },
+        { label: 'Canary Releases', action: () => {} }
       ]
     },
-    { id: 'services', label: 'Services', icon: Briefcase, badge: 'New' }
+    { id: 'analytics', label: 'Analytics', icon: BarChart, badge: 'Live' },
+    { id: 'settings', label: 'Settings', icon: Settings }
   ]
 
-  return <Navbar brand="Mad UI" navItems={items} />
+  return (
+    <Navbar 
+      brand="CloudScale" 
+      navItems={items} 
+      showSearch 
+      showNotifications 
+      notificationCount={3}
+      showProfile
+      profileName="Alex Morgan"
+      profileRole="DevOps Lead"
+      showCTA
+      ctaText="Deploy"
+    />
+  )
 }`,
       preview: (
-        <div className="w-full max-w-2xl rounded-xl border border-border overflow-hidden bg-card shadow-xs">
+        <div className="w-full max-w-4xl rounded-xl border border-border overflow-hidden bg-background shadow-xs">
           <Navbar
-            brand="Mad UI"
+            brand="CloudScale"
             navItems={[
-              { id: 'home', label: 'Home', icon: Home, active: true },
+              { id: 'overview', label: 'Overview', icon: Home, active: true },
               { 
-                id: 'about', 
-                label: 'About', 
-                icon: Info,
+                id: 'deployments', 
+                label: 'Deployments', 
+                icon: Layers,
                 dropdown: [
-                  { icon: Award, label: 'Company Story' },
-                  { icon: Briefcase, label: 'Careers' }
+                  { label: 'Production Clusters', action: () => {} },
+                  { label: 'Staging Preview', action: () => {} },
+                  { label: 'Canary Releases', action: () => {} }
                 ]
               },
-              { id: 'services', label: 'Services', icon: Briefcase, badge: 'New' }
+              { id: 'analytics', label: 'Analytics', icon: BarChart, badge: 'Live' },
+              { id: 'settings', label: 'Settings', icon: Settings }
             ]}
+            showSearch
+            searchPlaceholder="Search infrastructure..."
+            showNotifications
+            notificationCount={3}
+            notificationItems={[
+              { id: '1', title: 'Deployment completed', message: 'Cluster us-east-1 deployed v2.14.0', time: '2m ago' },
+              { id: '2', title: 'High CPU alert', message: 'Worker-04 threshold exceeded 90%', time: '14m ago' }
+            ]}
+            showProfile
+            profileName="Alex Morgan"
+            profileRole="DevOps Lead"
+            showCTA
+            ctaText="Deploy"
           />
         </div>
       )
@@ -834,45 +865,73 @@ export function NavbarDemo() {
   sidebar: [
     {
       title: 'Collapsible Enterprise Sidebar',
-      description: 'Vertical application navigation with collapsible states, badges, and user footer',
+      description: 'Sleek multi-section application navigation with search filtering, badges, keyboard shortcuts, collapsed tooltips, and user profile footer',
       code: `import { Sidebar } from 'mad-ui-components'
-import { Home, BarChart, Users, Settings } from 'lucide-react'
+import { Home, BarChart, Users, Settings, Shield, Layers } from 'lucide-react'
 
 export function SidebarDemo() {
-  const items = [
-    { id: 'dashboard', label: 'Dashboard', icon: Home, active: true },
-    { id: 'analytics', label: 'Analytics', icon: BarChart, badge: 'New' },
-    { id: 'team', label: 'Team', icon: Users },
-    { id: 'settings', label: 'Settings', icon: Settings }
+  const sections = [
+    {
+      title: 'Platform',
+      items: [
+        { id: 'dashboard', label: 'Dashboard', icon: Home, active: true, shortcut: '⌘D' },
+        { id: 'analytics', label: 'Analytics', icon: BarChart, badge: 'Live', shortcut: '⌘A' },
+        { id: 'clusters', label: 'Clusters', icon: Layers }
+      ]
+    },
+    {
+      title: 'Management',
+      items: [
+        { id: 'team', label: 'Team Members', icon: Users, badge: 8 },
+        { id: 'security', label: 'Security & SSO', icon: Shield },
+        { id: 'settings', label: 'Project Settings', icon: Settings }
+      ]
+    }
   ]
 
   return (
     <Sidebar
-      title="Admin Console"
-      items={items}
-      showAvatar={true}
-      userName="Admin User"
-      userRole="Administrator"
+      title="Acme Cloud"
+      subtitle="Production Environment"
+      sections={sections}
+      showSearch
+      showAvatar
+      userName="Sarah Jenkins"
+      userRole="Platform Engineer"
+      showToggleButton
     />
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm rounded-xl border border-border overflow-hidden bg-card shadow-xs h-96 flex">
+        <div className="w-full max-w-sm rounded-xl border border-border overflow-hidden bg-card shadow-xs h-[480px] flex">
           <Sidebar
-            title="Console"
-            subtitle="Admin Panel"
-            items={[
-              { id: 'dashboard', label: 'Dashboard', icon: Home, active: true },
-              { id: 'analytics', label: 'Analytics', icon: BarChart, badge: 'New' },
-              { id: 'team', label: 'Team', icon: Users },
-              { id: 'settings', label: 'Settings', icon: Settings }
+            title="Acme Cloud"
+            subtitle="Production Environment"
+            sections={[
+              {
+                title: 'Platform',
+                items: [
+                  { id: 'dashboard', label: 'Dashboard', icon: Home, active: true, shortcut: '⌘D' },
+                  { id: 'analytics', label: 'Analytics', icon: BarChart, badge: 'Live', shortcut: '⌘A' },
+                  { id: 'clusters', label: 'Clusters', icon: Layers }
+                ]
+              },
+              {
+                title: 'Management',
+                items: [
+                  { id: 'team', label: 'Team Members', icon: Users, badge: 8 },
+                  { id: 'security', label: 'Security & SSO', icon: Shield },
+                  { id: 'settings', label: 'Project Settings', icon: Settings }
+                ]
+              }
             ]}
-            onItemClick={() => {}}
+            showSearch
+            searchPlaceholder="Filter nav..."
+            showAvatar
+            userName="Sarah Jenkins"
+            userRole="Platform Engineer"
+            showToggleButton
             width="w-full"
-            showAvatar={true}
-            userName="Admin User"
-            userRole="Administrator"
-            showSearch={true}
           />
         </div>
       )

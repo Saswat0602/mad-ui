@@ -1,574 +1,405 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
-import { 
-  ChevronLeft, ChevronRight, Home, Settings, User, FileText, BarChart, Mail, 
-  Search, Bell, Shield, Bookmark, Calendar, Clock, Zap, Heart, Star, 
-  Palette, Moon, Sun, Volume2, VolumeX, Wifi, WifiOff 
-} from '../../icons';
-import { cn } from '../../lib/utils';
+import React, { useState } from "react"
+import {
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  User,
+  Settings,
+  LogOut,
+} from "../../icons"
+import { cn } from "../../lib/utils"
 
-const primaryColorMap: Record<string, {
-  activeDark: string;
-  activeLight: string;
-  badge: string;
-  glow: string;
-  ring: string;
-}> = {
-  zinc: { activeDark: "bg-accent text-accent-foreground font-medium", activeLight: "bg-accent text-accent-foreground font-medium", badge: "bg-primary text-primary-foreground", glow: "", ring: "focus:ring-ring" },
-  blue: { activeDark: "bg-accent text-accent-foreground font-medium", activeLight: "bg-accent text-accent-foreground font-medium", badge: "bg-primary text-primary-foreground", glow: "", ring: "focus:ring-ring" },
-  indigo: { activeDark: "bg-indigo-600", activeLight: "bg-indigo-500 text-white", badge: "bg-indigo-500 text-white", glow: "hover:shadow-indigo-500/25", ring: "focus:ring-indigo-500" },
-  purple: { activeDark: "bg-purple-600", activeLight: "bg-purple-500 text-white", badge: "bg-purple-500 text-white", glow: "hover:shadow-purple-500/25", ring: "focus:ring-purple-500" },
-  green: { activeDark: "bg-green-600", activeLight: "bg-green-500 text-white", badge: "bg-green-500 text-white", glow: "hover:shadow-green-500/25", ring: "focus:ring-green-500" },
-  red: { activeDark: "bg-red-600", activeLight: "bg-red-500 text-white", badge: "bg-red-500 text-white", glow: "hover:shadow-red-500/25", ring: "focus:ring-red-500" },
-};
+export interface SidebarItem {
+  id?: string
+  label: string
+  icon?: any
+  active?: boolean
+  badge?: string | number
+  badgeColor?: string
+  shortcut?: string
+  disabled?: boolean
+  onClick?: () => void
+}
 
-// Enhanced Sidebar Component
-export interface SidebarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onToggle'> {
-  // Content props
-  title?: string;
-  subtitle?: string;
-  items?: Array<{
-    id?: string;
-    label: string;
-    icon?: any;
-    active?: boolean;
-    badge?: string | number;
-    badgeColor?: string;
-    shortcut?: string;
-    disabled?: boolean;
-    iconSize?: number;
-    iconColor?: string;
-  }>;
-  sections?: Array<{
-    title?: string;
-    items: Array<{
-      id?: string;
-      label: string;
-      icon?: any;
-      active?: boolean;
-      badge?: string | number;
-      badgeColor?: string;
-      shortcut?: string;
-      disabled?: boolean;
-      iconSize?: number;
-      iconColor?: string;
-    }>;
-  }>;
-  
-  // Logo/Avatar props
-  logo?: React.ReactNode;
-  logoSize?: string;
-  showAvatar?: boolean;
-  avatarUrl?: string;
-  userName?: string;
-  userRole?: string;
-  
-  // Styling props
-  theme?: "dark" | "light" | "gradient" | "glass";
-  width?: string;
-  collapsedWidth?: string;
-  backgroundColor?: string;
-  gradient?: string;
-  textColor?: string;
-  primaryColor?: string;
-  borderRadius?: string;
-  shadow?: string;
-  
-  // Spacing & Typography
-  padding?: string;
-  itemSpacing?: string;
-  itemPadding?: string;
-  headerSpacing?: string;
-  fontSize?: string;
-  fontWeight?: string;
-  
-  // Interactive props
-  defaultCollapsed?: boolean;
-  showToggleButton?: boolean;
-  position?: "left" | "right";
-  animationType?: "slide" | "fade" | "scale";
-  animationDuration?: string;
-  hoverEffect?: "lift" | "glow" | "scale" | "none";
-  
-  // Advanced features
-  showSearch?: boolean;
-  showFooter?: boolean;
-  footerContent?: React.ReactNode;
-  backdrop?: boolean;
-  autoCollapse?: boolean;
-  persistent?: boolean;
-  
+export interface SidebarSection {
+  title?: string
+  items: SidebarItem[]
+}
+
+export interface SidebarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, "onToggle"> {
+  title?: string
+  subtitle?: string
+  items?: SidebarItem[]
+  sections?: SidebarSection[]
+
+  // Brand / Header
+  logo?: React.ReactNode
+  logoSize?: string
+  showAvatar?: boolean
+  avatarUrl?: string
+  userName?: string
+  userRole?: string
+
+  // Sizing & Theme
+  width?: string
+  collapsedWidth?: string
+  theme?: "default" | "card" | "transparent"
+
+  // Interactive
+  defaultCollapsed?: boolean
+  collapsed?: boolean
+  showToggleButton?: boolean
+  position?: "left" | "right"
+  onToggle?: (collapsed: boolean) => void
+
+  // Search & Footer
+  showSearch?: boolean
+  searchPlaceholder?: string
+  onSearch?: (query: string) => void
+  showFooter?: boolean
+  footerContent?: React.ReactNode
+
   // Callbacks
-  onItemClick?: (item: any, index: number, sectionIndex?: number) => void;
-  onToggle?: (collapsed: boolean) => void;
-  onSearch?: (query: string) => void;
-  
-  // Custom classes
-  customClasses?: string;
-  itemCustomClasses?: string;
+  onItemClick?: (item: SidebarItem, index: number, sectionIndex?: number) => void
 }
 
 const Sidebar = React.forwardRef<HTMLDivElement, SidebarProps>(
-  ({
-    // Content props
-    title = "Dashboard",
-    subtitle = "",
-    items = [],
-    sections = [],
-    
-    // Logo/Avatar props
-    logo = null,
-    logoSize = "w-8 h-8",
-    showAvatar = false,
-    avatarUrl = "",
-    userName = "",
-    userRole = "",
-    
-    // Styling props
-    theme = "dark",
-    width = "w-72",
-    collapsedWidth = "w-20",
-    backgroundColor = "",
-    gradient = "from-zinc-900 via-zinc-800 to-zinc-900",
-    textColor = "",
-    primaryColor = "zinc",
-    borderRadius = "rounded-xl",
-    shadow = "shadow-2xl",
-    
-    // Spacing & Typography
-    padding = "p-6",
-    itemSpacing = "space-y-1",
-    itemPadding = "px-4 py-3",
-    headerSpacing = "mb-8",
-    fontSize = "text-sm",
-    fontWeight = "font-medium",
-    
-    // Interactive props
-    defaultCollapsed = false,
-    showToggleButton = true,
-    position = "left",
-    animationType = "slide",
-    animationDuration = "duration-300",
-    hoverEffect = "lift",
-    
-    // Advanced features
-    showSearch = false,
-    showFooter = true,
-    footerContent = null,
-    backdrop = false,
-    autoCollapse = false,
-    persistent = true,
-    
-    // Callbacks
-    onItemClick = () => {},
-    onToggle = () => {},
-    onSearch = () => {},
-    
-    // Custom classes
-    customClasses = "",
-    itemCustomClasses = "",
-    
-    className,
-    ...props
-  }, ref) => {
-    const [isCollapsed, setIsCollapsed] = useState(defaultCollapsed);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [hoveredItem, setHoveredItem] = useState<string | null>(null);
+  (
+    {
+      title = "Dashboard",
+      subtitle = "",
+      items = [],
+      sections = [],
 
-    const colors = primaryColorMap[primaryColor] || primaryColorMap.blue;
+      logo = null,
+      logoSize = "w-6 h-6",
+      showAvatar = false,
+      avatarUrl = "",
+      userName = "Jane Doe",
+      userRole = "Workspace Admin",
 
-    // Theme configurations
-    const themes = {
-      dark: {
-        bg: "bg-gradient-to-b from-zinc-900 via-zinc-800 to-zinc-900",
-        text: "text-zinc-100",
-        textSecondary: "text-zinc-400",
-        hover: "hover:bg-zinc-800/60",
-        active: colors.activeDark,
-        border: "border-zinc-800",
-        glass: "backdrop-blur-xl bg-zinc-900/80"
-      },
-      light: {
-        bg: "bg-gradient-to-b from-white via-zinc-50 to-white",
-        text: "text-zinc-900",
-        textSecondary: "text-zinc-500",
-        hover: "hover:bg-zinc-100",
-        active: colors.activeLight,
-        border: "border-zinc-200",
-        glass: "backdrop-blur-xl bg-white/80"
-      },
-      gradient: {
-        bg: `bg-gradient-to-br ${gradient}`,
-        text: "text-white",
-        textSecondary: "text-white/70",
-        hover: "hover:bg-white/10",
-        active: "bg-white/20",
-        border: "border-white/20",
-        glass: "backdrop-blur-xl"
-      },
-      glass: {
-        bg: "backdrop-blur-xl bg-white/10 border border-white/20",
-        text: "text-white",
-        textSecondary: "text-white/70",
-        hover: "hover:bg-white/20",
-        active: "bg-white/30",
-        border: "border-white/30",
-        glass: "backdrop-blur-xl"
-      }
-    };
+      width = "w-64",
+      collapsedWidth = "w-16",
+      theme = "default",
 
-    const currentTheme = themes[theme];
+      defaultCollapsed = false,
+      collapsed: controlledCollapsed,
+      showToggleButton = true,
+      position = "left",
+      onToggle,
 
-    // Animation classes
-    const animations = {
-      slide: `transform transition-all ${animationDuration} ease-in-out`,
-      fade: `transition-all ${animationDuration} ease-in-out`,
-      scale: `transform transition-all ${animationDuration} ease-in-out ${isCollapsed ? 'scale-95' : 'scale-100'}`
-    };
+      showSearch = false,
+      searchPlaceholder = "Quick search...",
+      onSearch = () => {},
+      showFooter = true,
+      footerContent = null,
 
-    // Hover effects
-    const hoverEffects = {
-      lift: "hover:translate-y-[-2px] hover:shadow-lg transition-all duration-200",
-      glow: cn("hover:shadow-lg transition-all duration-200", colors.glow),
-      scale: "hover:scale-105 transition-transform duration-200",
-      none: ""
-    };
+      onItemClick = () => {},
+
+      className,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const [internalCollapsed, setInternalCollapsed] = useState(defaultCollapsed)
+    const [searchQuery, setSearchQuery] = useState("")
+
+    const isCollapsed = controlledCollapsed !== undefined ? controlledCollapsed : internalCollapsed
 
     const handleToggle = () => {
-      setIsCollapsed(!isCollapsed);
-      onToggle(!isCollapsed);
-    };
+      const next = !isCollapsed
+      if (controlledCollapsed === undefined) {
+        setInternalCollapsed(next)
+      }
+      onToggle?.(next)
+    }
 
-    const handleItemClick = (item: any, index: number, sectionIndex?: number) => {
-      onItemClick(item, index, sectionIndex);
-    };
+    const handleItemClick = (item: SidebarItem, index: number, sectionIndex?: number) => {
+      if (item.disabled) return
+      item.onClick?.()
+      onItemClick(item, index, sectionIndex)
+    }
 
-    const filteredItems = items.filter(item =>
+    const filteredItems = items.filter((item) =>
       item.label.toLowerCase().includes(searchQuery.toLowerCase())
-    );
+    )
 
-    const sidebarClasses = cn(
-      isCollapsed ? collapsedWidth : width,
-      currentTheme.bg,
-      currentTheme.text,
-      padding,
-      animations[animationType],
-      shadow,
-      borderRadius,
-      customClasses,
-      "h-full",
-      "flex",
-      "flex-col",
-      "relative",
-      "overflow-hidden",
-      position === 'right' ? 'ml-auto' : '',
-      className
-    );
+    // If declarative children are passed, render clean shell
+    if (children) {
+      return (
+        <aside
+          ref={ref}
+          aria-label={props["aria-label"] || "Sidebar navigation"}
+          className={cn(
+            "flex flex-col h-full border-r border-border/80 bg-card text-card-foreground select-none transition-all duration-200",
+            isCollapsed ? collapsedWidth : width,
+            position === "right" && "border-r-0 border-l border-border/80 ml-auto",
+            className
+          )}
+          {...props}
+        >
+          {children}
+        </aside>
+      )
+    }
 
-    const renderItems = (itemsToRender: any[], sectionIndex?: number) => {
+    const renderItemsList = (itemsToRender: SidebarItem[], sectionIndex?: number) => {
       return itemsToRender.map((item, index) => {
-        const Icon = item.icon;
-        const isActive = item.active;
-        const isHovered = hoveredItem === `${sectionIndex}-${index}`;
-        
+        const Icon = item.icon
+        const isActive = item.active
+
         return (
           <li key={item.id || `${sectionIndex}-${index}`}>
             <button
+              type="button"
               onClick={() => handleItemClick(item, index, sectionIndex)}
-              onMouseEnter={() => setHoveredItem(`${sectionIndex}-${index}`)}
-              onMouseLeave={() => setHoveredItem(null)}
-              className={cn(
-                "w-full",
-                "flex",
-                "items-center",
-                itemPadding,
-                borderRadius === 'rounded-xl' ? 'rounded-lg' : 'rounded-md',
-                "transition-all",
-                animationDuration,
-                isActive ? currentTheme.active : currentTheme.hover,
-                isCollapsed ? 'justify-center' : 'justify-start',
-                hoverEffects[hoverEffect],
-                fontWeight,
-                fontSize,
-                "group",
-                "relative",
-                item.disabled ? 'opacity-50 cursor-not-allowed' : '',
-                itemCustomClasses
-              )}
-              title={isCollapsed ? item.label : ''}
               disabled={item.disabled}
+              className={cn(
+                "group relative w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer select-none",
+                isActive
+                  ? "bg-accent text-accent-foreground font-semibold shadow-2xs"
+                  : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+                isCollapsed && "justify-center px-0",
+                item.disabled && "opacity-40 pointer-events-none cursor-not-allowed"
+              )}
+              title={isCollapsed ? item.label : undefined}
             >
-              {/* Icon with animation */}
               {Icon && (
-                <div className={cn(
-                  isCollapsed ? '' : 'mr-4', 
-                  "flex-shrink-0", 
-                  "transition-transform", 
-                  animationDuration,
-                  isHovered ? 'scale-110' : ''
-                )}>
-                  <Icon 
-                    size={item.iconSize || 20} 
-                    className={item.iconColor || ''}
-                  />
-                </div>
+                <Icon
+                  className={cn(
+                    "w-4 h-4 shrink-0 transition-colors",
+                    isActive ? "text-foreground" : "text-muted-foreground group-hover:text-foreground"
+                  )}
+                />
               )}
-              
+
               {!isCollapsed && (
-                <div className="flex-1 flex items-center justify-between min-w-0">
-                  <span className="truncate">{item.label}</span>
-                  <div className="flex items-center space-x-2 ml-2">
-                    {item.badge && (
-                      <span className={cn(
-                        "px-2 py-1 text-xs rounded-full", 
-                        item.badgeColor || colors.badge,
-                        "animate-pulse"
-                      )}>
-                        {item.badge}
-                      </span>
-                    )}
-                    {item.shortcut && (
-                      <span className={cn("text-xs", currentTheme.textSecondary, "font-mono")}>
-                        {item.shortcut}
-                      </span>
-                    )}
-                  </div>
-                </div>
+                <>
+                  <span className="truncate flex-1 text-left">{item.label}</span>
+                  {item.badge && (
+                    <span className="ml-auto px-1.5 py-0.2 text-[10px] font-mono rounded-full bg-muted text-muted-foreground border border-border/50">
+                      {item.badge}
+                    </span>
+                  )}
+                  {item.shortcut && (
+                    <span className="ml-auto text-[10px] font-mono text-muted-foreground/60 border border-border/60 rounded px-1 py-0.2 bg-muted/30">
+                      {item.shortcut}
+                    </span>
+                  )}
+                </>
               )}
-              
-              {/* Enhanced tooltip for collapsed state */}
+
+              {/* Tooltip for collapsed state */}
               {isCollapsed && (
-                <div className={cn(
-                  "absolute",
-                  position === 'right' ? 'right-full mr-3' : 'left-full ml-3',
-                  "top-1/2",
-                  "transform",
-                  "-translate-y-1/2",
-                  "bg-zinc-900",
-                  "text-white",
-                  "px-3",
-                  "py-2",
-                  "rounded-lg",
-                  "text-sm",
-                  "whitespace-nowrap",
-                  "opacity-0",
-                  "group-hover:opacity-100",
-                  "transition-all",
-                  animationDuration,
-                  "pointer-events-none",
-                  "z-50",
-                  "shadow-lg",
-                  "backdrop-blur-sm"
-                )}>
-                  <div className="flex items-center space-x-2">
-                    <span>{item.label}</span>
-                    {item.badge && (
-                      <span className="px-1 py-0.5 text-xs rounded bg-red-500">
-                        {item.badge}
-                      </span>
-                    )}
-                  </div>
-                  {/* Tooltip arrow */}
-                  <div className={cn(
-                    "absolute top-1/2 transform -translate-y-1/2",
-                    position === 'right' ? 'left-0 translate-x-[-4px]' : 'right-0 translate-x-[4px]',
-                    "w-2 h-2 bg-zinc-900 rotate-45"
-                  )}></div>
+                <div
+                  className={cn(
+                    "absolute top-1/2 -translate-y-1/2 hidden group-hover:flex items-center gap-2 px-2.5 py-1.5 rounded-lg border border-border bg-popover text-popover-foreground text-xs shadow-lg z-50 whitespace-nowrap pointer-events-none duration-150 animate-in fade-in-0 zoom-in-95",
+                    position === "right" ? "right-full mr-2" : "left-full ml-2"
+                  )}
+                >
+                  <span className="font-medium">{item.label}</span>
+                  {item.badge && (
+                    <span className="px-1.5 py-0.2 text-[10px] font-mono rounded-full bg-muted text-muted-foreground">
+                      {item.badge}
+                    </span>
+                  )}
                 </div>
               )}
             </button>
           </li>
-        );
-      });
-    };
+        )
+      })
+    }
 
     return (
-      <div ref={ref} className={sidebarClasses} {...props}>
-        {/* Header Section */}
-        <div className={headerSpacing}>
-          <div className="flex items-center justify-between mb-4">
-            <div className={cn("flex items-center", isCollapsed ? 'justify-center w-full' : '')}>
-              {logo && (
-                <div className={cn(logoSize, isCollapsed ? '' : 'mr-3', "flex-shrink-0")}>
-                  {logo}
-                </div>
-              )}
-              {!isCollapsed && (
-                <div>
-                  <h2 className="text-xl font-bold truncate">{title}</h2>
-                  {subtitle && (
-                    <p className={cn("text-xs", currentTheme.textSecondary, "truncate")}>
-                      {subtitle}
-                    </p>
-                  )}
-                </div>
-              )}
-            </div>
-            
-            {showToggleButton && (
-              <button
-                onClick={handleToggle}
-                className={cn(
-                  "p-2 rounded-lg transition-all",
-                  animationDuration,
-                  currentTheme.hover,
-                  "group",
-                  isCollapsed ? 'mx-auto' : ''
+      <aside
+        ref={ref}
+        aria-label={props["aria-label"] || "Sidebar navigation"}
+        className={cn(
+          "flex flex-col h-full border-r border-border/80 bg-card text-card-foreground select-none transition-all duration-200",
+          isCollapsed ? collapsedWidth : width,
+          position === "right" && "border-r-0 border-l border-border/80 ml-auto",
+          className
+        )}
+        {...props}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between p-3.5 border-b border-border/60">
+          <div className={cn("flex items-center gap-2.5 overflow-hidden", isCollapsed && "justify-center w-full")}>
+            {logo && <div className={cn(logoSize, "shrink-0 flex items-center justify-center")}>{logo}</div>}
+            {!isCollapsed && (
+              <div className="flex flex-col overflow-hidden">
+                <span className="font-semibold text-xs text-foreground tracking-tight truncate leading-tight">
+                  {title}
+                </span>
+                {subtitle && (
+                  <span className="text-[10px] text-muted-foreground truncate leading-tight mt-0.5">
+                    {subtitle}
+                  </span>
                 )}
-                aria-label={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-              >
-                <div className="transition-transform duration-300 group-hover:scale-110">
-                  {isCollapsed ? (
-                    position === 'right' ? <ChevronLeft size={18} /> : <ChevronRight size={18} />
-                  ) : (
-                    position === 'right' ? <ChevronRight size={18} /> : <ChevronLeft size={18} />
-                  )}
-                </div>
-              </button>
+              </div>
             )}
           </div>
 
-          {/* User Avatar Section */}
-          {showAvatar && !isCollapsed && (
-            <div className={cn("flex items-center space-x-3 p-3 rounded-lg", currentTheme.hover, "mb-4")}>
-              <div className="w-10 h-10 rounded-full bg-primary text-primary-foreground flex items-center justify-center font-bold">
-                {avatarUrl ? (
-                  <img src={avatarUrl} alt="User" className="w-full h-full rounded-full object-cover" />
-                ) : (
-                  <User size={18} className="text-white" />
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">{userName || "User Name"}</p>
-                <p className={cn("text-xs", currentTheme.textSecondary, "truncate")}>
-                  {userRole || "Role"}
-                </p>
-              </div>
-            </div>
-          )}
-
-          {/* Search Bar */}
-          {showSearch && !isCollapsed && (
-            <div className="relative mb-4">
-              <Search size={16} className={cn("absolute left-3 top-1/2 transform -translate-y-1/2", currentTheme.textSecondary)} />
-              <input
-                type="text"
-                placeholder="Search..."
-                value={searchQuery}
-                onChange={(e) => {
-                  setSearchQuery(e.target.value);
-                  onSearch(e.target.value);
-                }}
-                className={cn(
-                  "w-full pl-10 pr-4 py-2 rounded-lg border",
-                  currentTheme.border,
-                  currentTheme.hover,
-                  "bg-transparent placeholder-zinc-400",
-                  "focus:outline-none focus:ring-2",
-                  colors.ring,
-                  `transition-all ${animationDuration}`
-                )}
-              />
-            </div>
+          {showToggleButton && !isCollapsed && (
+            <button
+              type="button"
+              onClick={handleToggle}
+              className="p-1 rounded-md text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
+              aria-label="Collapse sidebar"
+            >
+              {position === "right" ? <ChevronRight className="w-3.5 h-3.5" /> : <ChevronLeft className="w-3.5 h-3.5" />}
+            </button>
           )}
         </div>
 
-        {/* Navigation Items */}
-        <nav aria-label="Sidebar navigation" className="flex-1 overflow-y-auto custom-scrollbar">
-          {sections.length > 0 ? (
-            // Render sections
-            <div className="space-y-6">
-              {sections.map((section, sectionIndex) => (
-                <div key={section.title || sectionIndex}>
-                  {!isCollapsed && section.title && (
-                    <h3 className={cn("text-xs font-semibold", currentTheme.textSecondary, "uppercase tracking-wider mb-2 px-2")}>
-                      {section.title}
-                    </h3>
-                  )}
-                  <ul className={itemSpacing}>
-                    {renderItems(section.items, sectionIndex)}
-                  </ul>
-                </div>
-              ))}
+        {/* Search */}
+        {showSearch && !isCollapsed && (
+          <div className="px-3 pt-3">
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
+              <input
+                type="text"
+                placeholder={searchPlaceholder}
+                value={searchQuery}
+                onChange={(e) => {
+                  setSearchQuery(e.target.value)
+                  onSearch(e.target.value)
+                }}
+                className="w-full h-8 pl-8 pr-3 rounded-lg border border-border/80 bg-muted/40 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring focus:bg-background transition-all"
+              />
             </div>
-          ) : (
-            // Render regular items
-            <ul className={itemSpacing}>
-              {renderItems(showSearch ? filteredItems : items)}
-            </ul>
-          )}
-        </nav>
-        
-        {/* Footer Section */}
-        {showFooter && footerContent && (
-          <div className="mt-auto pt-4">
-            {footerContent}
           </div>
         )}
 
-        {/* Backdrop overlay for mobile */}
-        {backdrop && !isCollapsed && (
-          <div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[-1] lg:hidden"
-            onClick={handleToggle}
-          />
+        {/* Navigation list */}
+        <div className="flex-1 overflow-y-auto px-2 py-3 space-y-4">
+          {sections.length > 0 ? (
+            sections.map((section, sectionIdx) => (
+              <div key={section.title || sectionIdx} className="space-y-1">
+                {!isCollapsed && section.title && (
+                  <div className="px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70">
+                    {section.title}
+                  </div>
+                )}
+                <ul className="space-y-0.5 list-none p-0 m-0">
+                  {renderItemsList(section.items, sectionIdx)}
+                </ul>
+              </div>
+            ))
+          ) : (
+            <ul className="space-y-0.5 list-none p-0 m-0">
+              {renderItemsList(showSearch ? filteredItems : items)}
+            </ul>
+          )}
+        </div>
+
+        {/* Collapsed state Expand Toggle */}
+        {showToggleButton && isCollapsed && (
+          <div className="p-2 border-t border-border/60 flex items-center justify-center">
+            <button
+              type="button"
+              onClick={handleToggle}
+              className="p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer"
+              aria-label="Expand sidebar"
+            >
+              {position === "right" ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+            </button>
+          </div>
         )}
-      </div>
-    );
+
+        {/* Footer */}
+        {showFooter && (
+          <div className="mt-auto p-2 border-t border-border/60">
+            {footerContent ? (
+              footerContent
+            ) : showAvatar ? (
+              <div
+                className={cn(
+                  "flex items-center gap-2.5 p-1.5 rounded-lg hover:bg-accent/60 transition-colors cursor-pointer",
+                  isCollapsed && "justify-center p-1"
+                )}
+              >
+                <div className="w-7 h-7 rounded-full bg-accent text-accent-foreground border border-border/80 flex items-center justify-center font-semibold text-xs shrink-0 overflow-hidden">
+                  {avatarUrl ? (
+                    <img src={avatarUrl} alt={userName} className="w-full h-full object-cover" />
+                  ) : (
+                    <User className="w-3.5 h-3.5 text-muted-foreground" />
+                  )}
+                </div>
+                {!isCollapsed && (
+                  <div className="flex flex-col min-w-0 flex-1">
+                    <span className="text-xs font-medium text-foreground truncate leading-none">
+                      {userName}
+                    </span>
+                    <span className="text-[10px] text-muted-foreground truncate leading-tight mt-0.5">
+                      {userRole}
+                    </span>
+                  </div>
+                )}
+              </div>
+            ) : null}
+          </div>
+        )}
+      </aside>
+    )
   }
-);
+)
 
-Sidebar.displayName = "Sidebar";
+Sidebar.displayName = "Sidebar"
 
+// Composable Compound Subcomponents
 export const SidebarHeader = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex flex-col space-y-2 p-4", className)} {...props} />
+    <div ref={ref} className={cn("flex flex-col space-y-1 p-3.5 border-b border-border/60", className)} {...props} />
   )
-);
-SidebarHeader.displayName = "SidebarHeader";
+)
+SidebarHeader.displayName = "SidebarHeader"
 
 export const SidebarContent = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("flex-1 overflow-y-auto px-3 py-2 space-y-1", className)} {...props} />
+    <div ref={ref} className={cn("flex-1 overflow-y-auto px-2 py-3 space-y-4", className)} {...props} />
   )
-);
-SidebarContent.displayName = "SidebarContent";
+)
+SidebarContent.displayName = "SidebarContent"
 
 export const SidebarFooter = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("mt-auto p-4 border-t border-zinc-200 dark:border-zinc-800", className)} {...props} />
+    <div ref={ref} className={cn("mt-auto p-2 border-t border-border/60", className)} {...props} />
   )
-);
-SidebarFooter.displayName = "SidebarFooter";
+)
+SidebarFooter.displayName = "SidebarFooter"
 
 export const SidebarGroup = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("space-y-1 py-2", className)} {...props} />
+    <div ref={ref} className={cn("space-y-1", className)} {...props} />
   )
-);
-SidebarGroup.displayName = "SidebarGroup";
+)
+SidebarGroup.displayName = "SidebarGroup"
 
 export const SidebarGroupLabel = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
   ({ className, ...props }, ref) => (
-    <div ref={ref} className={cn("px-2 text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-1", className)} {...props} />
+    <div ref={ref} className={cn("px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-muted-foreground/70", className)} {...props} />
   )
-);
-SidebarGroupLabel.displayName = "SidebarGroupLabel";
+)
+SidebarGroupLabel.displayName = "SidebarGroupLabel"
 
 export const SidebarMenu = React.forwardRef<HTMLUListElement, React.HTMLAttributes<HTMLUListElement>>(
   ({ className, ...props }, ref) => (
-    <ul ref={ref} className={cn("space-y-1 list-none p-0 m-0", className)} {...props} />
+    <ul ref={ref} className={cn("space-y-0.5 list-none p-0 m-0", className)} {...props} />
   )
-);
-SidebarMenu.displayName = "SidebarMenu";
+)
+SidebarMenu.displayName = "SidebarMenu"
 
 export const SidebarMenuItem = React.forwardRef<HTMLLIElement, React.LiHTMLAttributes<HTMLLIElement>>(
   ({ className, ...props }, ref) => (
     <li ref={ref} className={cn("relative", className)} {...props} />
   )
-);
-SidebarMenuItem.displayName = "SidebarMenuItem";
+)
+SidebarMenuItem.displayName = "SidebarMenuItem"
 
 export const SidebarMenuButton = React.forwardRef<
   HTMLButtonElement,
@@ -576,17 +407,28 @@ export const SidebarMenuButton = React.forwardRef<
 >(({ className, isActive, ...props }, ref) => (
   <button
     ref={ref}
+    type="button"
     className={cn(
-      "w-full flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer text-left",
+      "w-full flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-xs font-medium transition-colors cursor-pointer text-left select-none",
       isActive
-        ? "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 font-semibold"
-        : "text-zinc-600 dark:text-zinc-400 hover:bg-zinc-100/70 dark:hover:bg-zinc-800/70 hover:text-zinc-900 dark:hover:text-zinc-100",
+        ? "bg-accent text-accent-foreground font-semibold shadow-2xs"
+        : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
       className
     )}
     {...props}
   />
-));
-SidebarMenuButton.displayName = "SidebarMenuButton";
+))
+SidebarMenuButton.displayName = "SidebarMenuButton"
 
-export { Sidebar };
+// Attach compound subcomponents to Sidebar
+;(Sidebar as any).Header = SidebarHeader
+;(Sidebar as any).Content = SidebarContent
+;(Sidebar as any).Footer = SidebarFooter
+;(Sidebar as any).Group = SidebarGroup
+;(Sidebar as any).GroupLabel = SidebarGroupLabel
+;(Sidebar as any).Menu = SidebarMenu
+;(Sidebar as any).MenuItem = SidebarMenuItem
+;(Sidebar as any).MenuButton = SidebarMenuButton
 
+export default Sidebar
+export { Sidebar }

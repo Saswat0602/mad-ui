@@ -4,6 +4,7 @@ import * as React from "react"
 import { ChevronDown } from "../../icons"
 import { cn } from "../../lib/utils"
 import { Slot } from "../../lib/slot"
+import { Portal } from "../../lib/portal"
 import { useId } from "../../hooks/use-id"
 import { useClickOutside } from "../../hooks/use-click-outside"
 import { useControllableState } from "../../hooks/use-controllable-state"
@@ -31,6 +32,9 @@ interface NavigationMenuItemContextValue {
   isOpen: boolean
   triggerId: string
   contentId: string
+  triggerRef: React.MutableRefObject<HTMLButtonElement | null>
+  triggerRect: DOMRect | null
+  updateTriggerRect: () => void
   toggle: () => void
   onMouseEnter: () => void
   onMouseLeave: () => void
@@ -48,10 +52,10 @@ function useNavigationMenuItemContext() {
 
 export const navigationMenuTriggerStyle = () =>
   cn(
-    "group inline-flex h-9 w-max items-center justify-center rounded-lg px-3 py-1.5 text-xs font-medium transition-colors cursor-pointer",
-    "text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100",
-    "focus:outline-none focus:bg-zinc-100 dark:focus:bg-zinc-800 focus:text-zinc-900 dark:focus:text-zinc-100",
-    "disabled:pointer-events-none disabled:opacity-50"
+    "group inline-flex h-9 w-max items-center justify-center rounded-lg px-3.5 py-1.5 text-xs font-medium transition-colors cursor-pointer select-none",
+    "text-muted-foreground hover:bg-accent hover:text-accent-foreground",
+    "focus:bg-accent focus:text-accent-foreground focus:outline-none disabled:pointer-events-none disabled:opacity-50",
+    "data-[state=open]:bg-accent data-[state=open]:text-accent-foreground"
   )
 
 export interface NavigationMenuProps extends React.HTMLAttributes<HTMLElement> {
@@ -67,7 +71,7 @@ export const NavigationMenu = React.forwardRef<HTMLElement, NavigationMenuProps>
       value: controlledValue,
       defaultValue,
       onValueChange,
-      delayDuration = 150,
+      delayDuration = 200,
       className,
       children,
       ...props
@@ -181,12 +185,30 @@ export const NavigationMenuItem = React.forwardRef<HTMLLIElement, NavigationMenu
     const isOpen = activeValue === value
     const triggerId = `${value}-trigger`
     const contentId = `${value}-content`
+    const triggerRef = React.useRef<HTMLButtonElement | null>(null)
+    const [triggerRect, setTriggerRect] = React.useState<DOMRect | null>(null)
+
+    const updateTriggerRect = React.useCallback(() => {
+      if (triggerRef.current) {
+        setTriggerRect(triggerRef.current.getBoundingClientRect())
+      }
+    }, [])
+
+    React.useEffect(() => {
+      if (isOpen) {
+        updateTriggerRect()
+      }
+    }, [isOpen, updateTriggerRect])
 
     const toggle = () => {
+      updateTriggerRect()
       setValue(isOpen ? null : value)
     }
 
-    const onMouseEnter = () => onItemMouseEnter(value)
+    const onMouseEnter = () => {
+      updateTriggerRect()
+      onItemMouseEnter(value)
+    }
     const onMouseLeave = () => onItemMouseLeave()
 
     return (
@@ -196,6 +218,9 @@ export const NavigationMenuItem = React.forwardRef<HTMLLIElement, NavigationMenu
           isOpen,
           triggerId,
           contentId,
+          triggerRef,
+          triggerRect,
+          updateTriggerRect,
           toggle,
           onMouseEnter,
           onMouseLeave,
@@ -223,19 +248,24 @@ export interface NavigationMenuTriggerProps extends React.ButtonHTMLAttributes<H
 
 export const NavigationMenuTrigger = React.forwardRef<HTMLButtonElement, NavigationMenuTriggerProps>(
   ({ asChild = false, showChevron = true, className, children, onClick, ...props }, forwardedRef) => {
-    const { isOpen, triggerId, contentId, toggle } = useNavigationMenuItemContext()
+    const { isOpen, triggerId, contentId, toggle, triggerRef, updateTriggerRect } = useNavigationMenuItemContext()
     const Comp = asChild ? Slot : "button"
 
     const handleClick = (e: React.MouseEvent<HTMLButtonElement>) => {
       onClick?.(e)
       if (!e.defaultPrevented) {
+        updateTriggerRect()
         toggle()
       }
     }
 
     return (
       <Comp
-        ref={forwardedRef as any}
+        ref={(node: HTMLButtonElement | null) => {
+          triggerRef.current = node
+          if (typeof forwardedRef === "function") forwardedRef(node)
+          else if (forwardedRef) (forwardedRef as React.MutableRefObject<HTMLButtonElement | null>).current = node
+        }}
         id={triggerId}
         type={asChild ? undefined : "button"}
         aria-expanded={isOpen}
@@ -244,7 +274,7 @@ export const NavigationMenuTrigger = React.forwardRef<HTMLButtonElement, Navigat
         onClick={handleClick}
         className={cn(
           navigationMenuTriggerStyle(),
-          isOpen && "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100",
+          isOpen && "bg-accent text-accent-foreground",
           className
         )}
         {...props}
@@ -265,15 +295,33 @@ export const NavigationMenuTrigger = React.forwardRef<HTMLButtonElement, Navigat
 )
 NavigationMenuTrigger.displayName = "NavigationMenuTrigger"
 
-export interface NavigationMenuContentProps extends React.HTMLAttributes<HTMLDivElement> {}
+export interface NavigationMenuContentProps extends React.HTMLAttributes<HTMLDivElement> {
+  align?: "start" | "center" | "end"
+  usePortal?: boolean
+  sideOffset?: number
+}
 
 export const NavigationMenuContent = React.forwardRef<HTMLDivElement, NavigationMenuContentProps>(
-  ({ className, children, ...props }, ref) => {
-    const { isOpen, contentId, triggerId, onMouseEnter, onMouseLeave } = useNavigationMenuItemContext()
+  (
+    {
+      className,
+      align = "start",
+      usePortal = true,
+      sideOffset = 6,
+      children,
+      style,
+      ...props
+    },
+    ref
+  ) => {
+    const { isOpen, contentId, triggerId, triggerRef, triggerRect, onMouseEnter, onMouseLeave } =
+      useNavigationMenuItemContext()
 
     if (!isOpen) return null
 
-    return (
+    const rect = triggerRect || (typeof window !== "undefined" && triggerRef.current ? triggerRef.current.getBoundingClientRect() : null)
+
+    const contentElement = (
       <div
         ref={ref}
         id={contentId}
@@ -282,8 +330,32 @@ export const NavigationMenuContent = React.forwardRef<HTMLDivElement, Navigation
         data-state={isOpen ? "open" : "closed"}
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
+        style={
+          usePortal && rect
+            ? {
+                position: "fixed",
+                top: rect.bottom + sideOffset,
+                left:
+                  align === "end"
+                    ? rect.right
+                    : align === "center"
+                    ? rect.left + rect.width / 2
+                    : rect.left,
+                transform:
+                  align === "end"
+                    ? "translateX(-100%)"
+                    : align === "center"
+                    ? "translateX(-50%)"
+                    : undefined,
+                zIndex: 70,
+                ...style,
+              }
+            : style
+        }
         className={cn(
-          "absolute left-0 top-full mt-1.5 w-max max-w-sm rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-3 text-zinc-900 dark:text-zinc-100 shadow-xl duration-150 animate-in fade-in-0 zoom-in-95 z-50",
+          usePortal ? "" : "absolute left-0 top-full mt-1.5",
+          "w-max max-w-md rounded-xl border border-border bg-popover p-3 text-popover-foreground shadow-xl duration-150 animate-in fade-in-0 zoom-in-95",
+          "before:content-[''] before:absolute before:-top-3 before:left-0 before:right-0 before:h-3",
           className
         )}
         {...props}
@@ -291,6 +363,12 @@ export const NavigationMenuContent = React.forwardRef<HTMLDivElement, Navigation
         {children}
       </div>
     )
+
+    if (usePortal && typeof document !== "undefined") {
+      return <Portal>{contentElement}</Portal>
+    }
+
+    return contentElement
   }
 )
 NavigationMenuContent.displayName = "NavigationMenuContent"
@@ -310,10 +388,10 @@ export const NavigationMenuLink = React.forwardRef<HTMLAnchorElement, Navigation
         href={href}
         data-active={active ? "true" : undefined}
         className={cn(
-          "block select-none rounded-lg p-2.5 text-xs font-medium leading-none text-zinc-700 dark:text-zinc-300 no-underline outline-none transition-colors",
-          "hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100",
-          "focus:bg-zinc-100 dark:focus:bg-zinc-800 focus:text-zinc-900 dark:focus:text-zinc-100",
-          active && "bg-zinc-100 dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100",
+          "block select-none rounded-lg p-2.5 text-xs font-medium leading-none text-muted-foreground no-underline outline-none transition-colors cursor-pointer",
+          "hover:bg-accent hover:text-accent-foreground",
+          "focus:bg-accent focus:text-accent-foreground",
+          active && "bg-accent text-accent-foreground font-semibold",
           className
         )}
         {...(props as any)}
@@ -360,3 +438,14 @@ export const NavigationMenuIndicator = React.forwardRef<HTMLDivElement, Navigati
   }
 )
 NavigationMenuIndicator.displayName = "NavigationMenuIndicator"
+
+// Attach compound subcomponents to NavigationMenu
+;(NavigationMenu as any).List = NavigationMenuList
+;(NavigationMenu as any).Item = NavigationMenuItem
+;(NavigationMenu as any).Trigger = NavigationMenuTrigger
+;(NavigationMenu as any).Content = NavigationMenuContent
+;(NavigationMenu as any).Link = NavigationMenuLink
+;(NavigationMenu as any).Viewport = NavigationMenuViewport
+;(NavigationMenu as any).Indicator = NavigationMenuIndicator
+
+export default NavigationMenu

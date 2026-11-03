@@ -1,437 +1,382 @@
 "use client"
 
-import React, { useState, useEffect } from 'react';
-import { 
-  Search, Bell, User, Menu, X, ChevronDown, Sun, Moon, Globe, 
-  Settings, LogOut, Heart, Star, ShoppingCart, MessageCircle,
-  Home, Info, Mail, Phone, Briefcase, Image, Award, Zap
-} from '../../icons';
-import { cn } from '../../lib/utils';
+import React, { useState, useEffect } from "react"
+import {
+  Search,
+  Bell,
+  User,
+  Menu,
+  X,
+  ChevronDown,
+  Sun,
+  Moon,
+  Globe,
+  Settings,
+  LogOut,
+} from "../../icons"
+import { cn } from "../../lib/utils"
 
-const primaryColorMap: Record<string, {
-  bgLight: string;
-  text: string;
-  badge: string;
-  ring: string;
-  button: string;
-  buttonHover: string;
-}> = {
-  zinc: { bgLight: "bg-muted", text: "text-foreground", badge: "bg-primary text-primary-foreground", ring: "focus:ring-ring", button: "bg-primary text-primary-foreground", buttonHover: "hover:bg-primary/90" },
-  blue: { bgLight: "bg-muted", text: "text-foreground", badge: "bg-primary text-primary-foreground", ring: "focus:ring-ring", button: "bg-primary text-primary-foreground", buttonHover: "hover:bg-primary/90" },
-  indigo: { bgLight: "bg-indigo-100", text: "text-indigo-600", badge: "bg-indigo-500 text-white", ring: "focus:ring-indigo-500", button: "bg-indigo-600", buttonHover: "hover:bg-indigo-700" },
-  purple: { bgLight: "bg-purple-100", text: "text-purple-600", badge: "bg-purple-500 text-white", ring: "focus:ring-purple-500", button: "bg-purple-600", buttonHover: "hover:bg-purple-700" },
-  green: { bgLight: "bg-green-100", text: "text-green-600", badge: "bg-green-500 text-white", ring: "focus:ring-green-500", button: "bg-green-600", buttonHover: "hover:bg-green-700" },
-  red: { bgLight: "bg-red-100", text: "text-red-600", badge: "bg-red-500 text-white", ring: "focus:ring-red-500", button: "bg-red-600", buttonHover: "hover:bg-red-700" },
-};
+export interface NavbarNavItem {
+  id?: string
+  label: string
+  href?: string
+  icon?: any
+  active?: boolean
+  badge?: string | number
+  badgeColor?: string
+  dropdown?: Array<{
+    label: string
+    href?: string
+    icon?: any
+    action?: () => void
+    danger?: boolean
+  }>
+}
 
-// Enhanced Navbar Component
+export interface NavbarProfileItem {
+  label: string
+  href?: string
+  icon?: any
+  action?: () => void
+  danger?: boolean
+}
+
+export interface NavbarNotificationItem {
+  id?: string
+  title: string
+  message: string
+  time: string
+  unread?: boolean
+}
+
 export interface NavbarProps extends React.HTMLAttributes<HTMLElement> {
   // Content props
-  brand?: string;
-  brandLogo?: React.ReactNode;
-  navItems?: Array<{
-    id: string;
-    label: string;
-    icon?: any;
-    active?: boolean;
-    badge?: string;
-    badgeColor?: string;
-    dropdown?: Array<{
-      label: string;
-      icon?: any;
-      action?: () => void;
-      danger?: boolean;
-    }>;
-  }>;
-  
+  brand?: string
+  brandLogo?: React.ReactNode
+  navItems?: NavbarNavItem[]
+
   // User/Profile props
-  showProfile?: boolean;
-  profileImage?: string;
-  profileName?: string;
-  profileRole?: string;
-  profileMenuItems?: Array<{
-    label: string;
-    icon?: any;
-    action?: () => void;
-    danger?: boolean;
-  }>;
-  
+  showProfile?: boolean
+  profileImage?: string
+  profileName?: string
+  profileRole?: string
+  profileMenuItems?: NavbarProfileItem[]
+
   // Search props
-  showSearch?: boolean;
-  searchPlaceholder?: string;
-  searchWidth?: string;
-  onSearch?: (query: string) => void;
-  
+  showSearch?: boolean
+  searchPlaceholder?: string
+  searchWidth?: string
+  onSearch?: (query: string) => void
+
   // Notification props
-  showNotifications?: boolean;
-  notificationCount?: number;
-  notificationItems?: Array<{
-    title: string;
-    message: string;
-    time: string;
-    unread?: boolean;
-  }>;
-  onNotificationClick?: () => void;
-  
+  showNotifications?: boolean
+  notificationCount?: number
+  notificationItems?: NavbarNotificationItem[]
+  onNotificationClick?: () => void
+
   // Theme & Styling
-  theme?: "light" | "dark" | "gradient" | "glass" | "colorful";
-  position?: "sticky" | "fixed" | "static";
-  height?: string;
-  backgroundColor?: string;
-  textColor?: string;
-  primaryColor?: string;
-  gradient?: string;
-  blur?: boolean;
-  shadow?: string;
-  borderRadius?: string;
-  
+  theme?: "default" | "light" | "dark" | "bordered" | "transparent" | "glass"
+  position?: "sticky" | "fixed" | "static"
+  height?: string
+  blur?: boolean
+
   // Layout props
-  container?: string;
-  padding?: string;
-  alignment?: "justify-between" | "justify-center" | "justify-start";
-  mobileBreakpoint?: string;
-  
+  container?: string
+  padding?: string
+  alignment?: "justify-between" | "justify-center" | "justify-start"
+  mobileBreakpoint?: "md" | "lg" | "xl"
+
   // Behavior props
-  showMobileMenu?: boolean;
-  onMobileToggle?: (open: boolean) => void;
-  hideOnScroll?: boolean;
-  shrinkOnScroll?: boolean;
-  animationDuration?: string;
-  
+  showMobileMenu?: boolean
+  onMobileToggle?: (open: boolean) => void
+  hideOnScroll?: boolean
+  shrinkOnScroll?: boolean
+
   // Additional features
-  showLanguageSwitch?: boolean;
-  showThemeToggle?: boolean;
-  showCTA?: boolean;
-  ctaText?: string;
-  ctaAction?: () => void;
-  
+  showLanguageSwitch?: boolean
+  showThemeToggle?: boolean
+  showCTA?: boolean
+  ctaText?: string
+  ctaAction?: () => void
+
   // Advanced customization
-  leftContent?: React.ReactNode;
-  centerContent?: React.ReactNode;
-  rightContent?: React.ReactNode;
-  customClasses?: string;
-  itemCustomClasses?: string;
-  
+  leftContent?: React.ReactNode
+  centerContent?: React.ReactNode
+  rightContent?: React.ReactNode
+  customClasses?: string
+  itemCustomClasses?: string
+
   // Callbacks
-  onItemClick?: (item: any, index: number) => void;
-  onBrandClick?: () => void;
+  onItemClick?: (item: NavbarNavItem, index: number) => void
+  onBrandClick?: () => void
 }
 
 const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
-  ({
-    // Content props
-    brand = "Brand",
-    brandLogo = null,
-    navItems = [],
-    
-    // User/Profile props
-    showProfile = true,
-    profileImage = "",
-    profileName = "User",
-    profileRole = "",
-    profileMenuItems = [],
-    
-    // Search props
-    showSearch = true,
-    searchPlaceholder = "Search...",
-    searchWidth = "w-96",
-    onSearch = () => {},
-    
-    // Notification props
-    showNotifications = true,
-    notificationCount = 0,
-    notificationItems = [],
-    onNotificationClick = () => {},
-    
-    // Theme & Styling
-    theme = "light",
-    position = "sticky",
-    height = "h-16",
-    backgroundColor = "",
-    textColor = "",
-    primaryColor = "zinc",
-    gradient = "from-zinc-900 to-zinc-700",
-    blur = true,
-    shadow = "shadow-lg",
-    borderRadius = "",
-    
-    // Layout props
-    container = "container mx-auto",
-    padding = "px-6",
-    alignment = "justify-between",
-    mobileBreakpoint = "lg",
-    
-    // Behavior props
-    showMobileMenu = false,
-    onMobileToggle = () => {},
-    hideOnScroll = false,
-    shrinkOnScroll = false,
-    animationDuration = "duration-300",
-    
-    // Additional features
-    showLanguageSwitch = false,
-    showThemeToggle = false,
-    showCTA = false,
-    ctaText = "Get Started",
-    ctaAction = () => {},
-    
-    // Advanced customization
-    leftContent = null,
-    centerContent = null,
-    rightContent = null,
-    customClasses = "",
-    itemCustomClasses = "",
-    
-    // Callbacks
-    onItemClick = () => {},
-    onBrandClick = () => {},
-    
-    className,
-    ...props
-  }, ref) => {
-    const [isScrolled, setIsScrolled] = useState(false);
-    const [searchQuery, setSearchQuery] = useState("");
-    const [showProfileMenu, setShowProfileMenu] = useState(false);
-    const [showNotificationMenu, setShowNotificationMenu] = useState(false);
-    const [currentTheme, setCurrentTheme] = useState("light");
-    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(showMobileMenu);
+  (
+    {
+      brand = "Acme UI",
+      brandLogo = null,
+      navItems = [],
 
-    // Handle scroll effects
+      showProfile = true,
+      profileImage = "",
+      profileName = "Jane Doe",
+      profileRole = "Admin",
+      profileMenuItems = [],
+
+      showSearch = false,
+      searchPlaceholder = "Search documentation...",
+      searchWidth = "w-64",
+      onSearch = () => {},
+
+      showNotifications = false,
+      notificationCount = 0,
+      notificationItems = [],
+      onNotificationClick = () => {},
+
+      theme = "default",
+      position = "sticky",
+      height = "h-14",
+      blur = true,
+
+      container = "max-w-7xl mx-auto",
+      padding = "px-4 sm:px-6",
+      alignment = "justify-between",
+      mobileBreakpoint = "lg",
+
+      showMobileMenu = false,
+      onMobileToggle = () => {},
+      hideOnScroll = false,
+      shrinkOnScroll = false,
+
+      showLanguageSwitch = false,
+      showThemeToggle = false,
+      showCTA = false,
+      ctaText = "Get Started",
+      ctaAction = () => {},
+
+      leftContent = null,
+      centerContent = null,
+      rightContent = null,
+      customClasses = "",
+      itemCustomClasses = "",
+
+      onItemClick = () => {},
+      onBrandClick = () => {},
+
+      className,
+      children,
+      ...props
+    },
+    ref
+  ) => {
+    const [isScrolled, setIsScrolled] = useState(false)
+    const [searchQuery, setSearchQuery] = useState("")
+    const [showProfileMenu, setShowProfileMenu] = useState(false)
+    const [showNotificationMenu, setShowNotificationMenu] = useState(false)
+    const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(showMobileMenu)
+    const [activeDropdown, setActiveDropdown] = useState<number | null>(null)
+
     useEffect(() => {
       if (hideOnScroll || shrinkOnScroll) {
         const handleScroll = () => {
-          setIsScrolled(window.scrollY > 20);
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+          setIsScrolled(window.scrollY > 20)
+        }
+        window.addEventListener("scroll", handleScroll, { passive: true })
+        return () => window.removeEventListener("scroll", handleScroll)
       }
-    }, [hideOnScroll, shrinkOnScroll]);
-
-    // Theme configurations
-    const themes = {
-      light: {
-        bg: blur ? "bg-white/80 backdrop-blur-xl" : "bg-white",
-        text: "text-zinc-900",
-        textSecondary: "text-zinc-600",
-        hover: "hover:text-foreground hover:bg-accent",
-        border: "border-zinc-200",
-        dropdown: "bg-white border-zinc-200 shadow-xl"
-      },
-      dark: {
-        bg: blur ? "bg-zinc-900/80 backdrop-blur-xl" : "bg-zinc-900",
-        text: "text-white",
-        textSecondary: "text-zinc-400",
-        hover: "hover:text-foreground hover:bg-accent",
-        border: "border-zinc-800",
-        dropdown: "bg-zinc-800 border-zinc-700 shadow-xl"
-      },
-      gradient: {
-        bg: `bg-gradient-to-r ${gradient} ${blur ? 'backdrop-blur-xl' : ''}`,
-        text: "text-white",
-        textSecondary: "text-white/80",
-        hover: "hover:text-white hover:bg-white/10",
-        border: "border-white/20",
-        dropdown: "bg-zinc-900 border-zinc-800 shadow-xl"
-      },
-      glass: {
-        bg: "bg-white/10 backdrop-blur-2xl border-white/20",
-        text: "text-white",
-        textSecondary: "text-white/70",
-        hover: "hover:text-white hover:bg-white/20",
-        border: "border-white/30",
-        dropdown: "bg-white/10 backdrop-blur-xl border-white/20 shadow-xl"
-      },
-      colorful: {
-        bg: "bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500",
-        text: "text-white",
-        textSecondary: "text-white/90",
-        hover: "hover:text-white hover:bg-black/10",
-        border: "border-white/30",
-        dropdown: "bg-zinc-900 border-zinc-800 shadow-xl"
-      }
-    };
-
-    const themeConfig = themes[theme];
-
-    // Dynamic classes based on scroll
-    const navbarClasses = cn(
-      position === 'fixed' ? 'fixed' : position === 'sticky' ? 'sticky' : 'relative',
-      'top-0 left-0 right-0 z-50',
-      shrinkOnScroll && isScrolled ? 'h-12' : height,
-      themeConfig.bg,
-      themeConfig.text,
-      shadow,
-      borderRadius,
-      customClasses,
-      `transition-all ${animationDuration}`,
-      hideOnScroll && isScrolled ? '-translate-y-full' : 'translate-y-0',
-      `border-b ${themeConfig.border}`,
-      className
-    );
+    }, [hideOnScroll, shrinkOnScroll])
 
     const handleMobileToggle = () => {
-      setIsMobileMenuOpen(!isMobileMenuOpen);
-      onMobileToggle(!isMobileMenuOpen);
-    };
+      const next = !isMobileMenuOpen
+      setIsMobileMenuOpen(next)
+      onMobileToggle(next)
+    }
 
-    const handleSearch = (value: string) => {
-      setSearchQuery(value);
-      onSearch(value);
-    };
+    const defaultProfileItems: NavbarProfileItem[] = [
+      { icon: User, label: "Account settings", action: () => {} },
+      { icon: Settings, label: "Preferences", action: () => {} },
+      { icon: LogOut, label: "Sign out", action: () => {}, danger: true },
+    ]
 
-    const colors = primaryColorMap[primaryColor] || primaryColorMap.blue;
+    const profileItems = profileMenuItems.length > 0 ? profileMenuItems : defaultProfileItems
 
-    // Profile menu items default
-    const defaultProfileItems = [
-      { icon: User, label: "Profile", action: () => {} },
-      { icon: Settings, label: "Settings", action: () => {} },
-      { icon: LogOut, label: "Sign Out", action: () => {}, danger: true }
-    ];
-
-    const profileItems = profileMenuItems.length > 0 ? profileMenuItems : defaultProfileItems;
+    // If declarative children are passed, render clean shell
+    if (children) {
+      return (
+        <nav
+          ref={ref}
+          role="navigation"
+          aria-label={props["aria-label"] || "Main navigation"}
+          className={cn(
+            position === "fixed" ? "fixed" : position === "sticky" ? "sticky" : "relative",
+            "top-0 left-0 right-0 z-40 w-full border-b border-border/80 bg-background/95 backdrop-blur-md text-foreground transition-all duration-200",
+            height,
+            className
+          )}
+          {...props}
+        >
+          <div className={cn(container, padding, "h-full flex items-center justify-between")}>
+            {children}
+          </div>
+        </nav>
+      )
+    }
 
     return (
-      <nav ref={ref} aria-label={props['aria-label'] || "Main navigation"} className={navbarClasses} {...props}>
+      <nav
+        ref={ref}
+        role="navigation"
+        aria-label={props["aria-label"] || "Main navigation"}
+        className={cn(
+          position === "fixed" ? "fixed" : position === "sticky" ? "sticky" : "relative",
+          "top-0 left-0 right-0 z-40 w-full border-b border-border/80 bg-background/95 backdrop-blur-md text-foreground transition-all duration-200",
+          shrinkOnScroll && isScrolled ? "h-12" : height,
+          hideOnScroll && isScrolled ? "-translate-y-full" : "translate-y-0",
+          theme === "bordered" && "bg-card border-b border-border shadow-xs",
+          theme === "transparent" && "bg-transparent border-transparent",
+          customClasses,
+          className
+        )}
+        {...props}
+      >
         <div className={cn(container, padding, "h-full")}>
-          <div className={cn("flex items-center", alignment, "h-full")}>
-            
-            {/* Left Content */}
-            <div className="flex items-center space-x-8">
+          <div className={cn("flex items-center", alignment, "h-full gap-4")}>
+            {/* Left Content / Brand */}
+            <div className="flex items-center gap-6">
               {leftContent || (
                 <>
-                  {/* Brand/Logo */}
                   <button
+                    type="button"
                     onClick={onBrandClick}
-                    className={cn(
-                      "flex items-center space-x-3",
-                      themeConfig.hover,
-                      "rounded-lg px-3 py-2 transition-all",
-                      animationDuration,
-                      "group"
-                    )}
+                    className="flex items-center gap-2.5 text-foreground hover:opacity-80 transition-opacity font-semibold text-sm tracking-tight cursor-pointer"
                   >
                     {brandLogo && (
-                      <div className={cn(
-                        shrinkOnScroll && isScrolled ? 'w-6 h-6' : 'w-8 h-8',
-                        "transition-all",
-                        animationDuration,
-                        "group-hover:scale-110"
-                      )}>
+                      <div className="flex items-center justify-center shrink-0">
                         {brandLogo}
                       </div>
                     )}
-                    <span className={cn(
-                      "font-bold",
-                      shrinkOnScroll && isScrolled ? 'text-lg' : 'text-xl',
-                      "transition-all",
-                      animationDuration
-                    )}>
+                    <span className="font-semibold text-sm sm:text-base text-foreground tracking-tight">
                       {brand}
                     </span>
                   </button>
 
-                  {/* Desktop Navigation Items */}
-                  <div className={cn("hidden", `${mobileBreakpoint}:flex`, "items-center space-x-1")}>
+                  {/* Desktop Nav Items */}
+                  <div
+                    className={cn(
+                      "hidden items-center gap-1",
+                      mobileBreakpoint === "md"
+                        ? "md:flex"
+                        : mobileBreakpoint === "xl"
+                        ? "xl:flex"
+                        : "lg:flex"
+                    )}
+                  >
                     {navItems.map((item, index) => {
-                      const Icon = item.icon;
-                      const hasDropdown = item.dropdown && item.dropdown.length > 0;
-                      
+                      const Icon = item.icon
+                      const hasDropdown = item.dropdown && item.dropdown.length > 0
+                      const isDropdownOpen = activeDropdown === index
+
                       return (
-                        <div key={item.id || index} className="relative group">
+                        <div
+                          key={item.id || index}
+                          className="relative"
+                          onMouseEnter={() => hasDropdown && setActiveDropdown(index)}
+                          onMouseLeave={() => hasDropdown && setActiveDropdown(null)}
+                        >
                           <button
-                            onClick={() => onItemClick(item, index)}
+                            type="button"
+                            onClick={() => {
+                              onItemClick(item, index)
+                              if (hasDropdown) setActiveDropdown(isDropdownOpen ? null : index)
+                            }}
                             className={cn(
-                              "flex items-center space-x-2 px-4 py-2 rounded-lg",
-                              `transition-all ${animationDuration}`,
-                              themeConfig.hover,
-                              item.active ? cn(colors.bgLight, colors.text) : '',
-                              itemCustomClasses,
-                              "group"
+                              "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer select-none",
+                              item.active
+                                ? "bg-accent text-accent-foreground font-semibold"
+                                : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+                              itemCustomClasses
                             )}
                           >
-                            {Icon && <Icon size={18} className="group-hover:scale-110 transition-transform" />}
-                            <span className="font-medium">{item.label}</span>
-                            {hasDropdown && <ChevronDown size={16} className="group-hover:rotate-180 transition-transform" />}
+                            {Icon && <Icon className="w-3.5 h-3.5 shrink-0" />}
+                            <span>{item.label}</span>
                             {item.badge && (
-                              <span className={cn(
-                                "ml-2 px-2 py-1 text-xs rounded-full",
-                                item.badgeColor || colors.badge,
-                                "animate-pulse"
-                              )}>
+                              <span className="ml-1 px-1.5 py-0.2 text-[10px] font-mono rounded-full bg-muted text-muted-foreground border border-border/50">
                                 {item.badge}
                               </span>
                             )}
+                            {hasDropdown && (
+                              <ChevronDown
+                                className={cn(
+                                  "w-3 h-3 text-muted-foreground transition-transform duration-150",
+                                  isDropdownOpen && "rotate-180 text-foreground"
+                                )}
+                              />
+                            )}
                           </button>
-                          
+
                           {/* Dropdown Menu */}
-                          {hasDropdown && (
-                            <div className={cn(
-                              "absolute top-full left-0 mt-2 w-48 rounded-xl",
-                              themeConfig.dropdown,
-                              `border ${themeConfig.border}`,
-                              "opacity-0 invisible group-hover:opacity-100 group-hover:visible",
-                              `transition-all ${animationDuration}`,
-                              "transform translate-y-2 group-hover:translate-y-0"
-                            )}>
+                          {hasDropdown && isDropdownOpen && (
+                            <div className="absolute top-full left-0 mt-1.5 w-48 rounded-xl border border-border bg-popover p-1 text-popover-foreground shadow-xl z-50 duration-150 animate-in fade-in-0 zoom-in-95">
                               {item.dropdown?.map((dropItem, dropIndex) => {
-                                const DropIcon = dropItem.icon;
+                                const DropIcon = dropItem.icon
                                 return (
                                   <button
                                     key={dropIndex}
-                                    onClick={() => dropItem.action && dropItem.action()}
+                                    type="button"
+                                    onClick={() => {
+                                      dropItem.action?.()
+                                      setActiveDropdown(null)
+                                    }}
                                     className={cn(
-                                      "w-full flex items-center space-x-3 px-4 py-3",
-                                      themeConfig.hover,
-                                      `transition-all ${animationDuration}`,
-                                      dropIndex === 0 ? 'rounded-t-xl' : '',
-                                      dropIndex === (item.dropdown?.length || 0) - 1 ? 'rounded-b-xl' : '',
-                                      dropItem.danger ? 'text-red-500 hover:text-red-400' : ''
+                                      "w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer",
+                                      dropItem.danger
+                                        ? "text-red-500 hover:bg-red-500/10"
+                                        : "text-muted-foreground hover:bg-accent hover:text-foreground"
                                     )}
                                   >
-                                    {DropIcon && <DropIcon size={16} />}
+                                    {DropIcon && <DropIcon className="w-3.5 h-3.5 shrink-0" />}
                                     <span>{dropItem.label}</span>
                                   </button>
-                                );
+                                )
                               })}
                             </div>
                           )}
                         </div>
-                      );
+                      )
                     })}
                   </div>
                 </>
               )}
             </div>
 
-            {/* Center Content */}
-            <div className="flex-1 flex justify-center">
+            {/* Center Content (e.g. Search) */}
+            <div className="flex-1 flex items-center justify-center max-w-md mx-auto">
               {centerContent || (
                 showSearch && (
-                  <div className={cn("hidden md:block", searchWidth, "max-w-lg")}>
+                  <div className={cn("hidden md:block w-full", searchWidth)}>
                     <div className="relative">
-                      <Search size={20} className={cn("absolute left-3 top-1/2 transform -translate-y-1/2", themeConfig.textSecondary)} />
+                      <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                       <input
                         type="text"
                         placeholder={searchPlaceholder}
                         value={searchQuery}
-                        onChange={(e) => handleSearch(e.target.value)}
-                        className={cn(
-                          "w-full pl-10 pr-4 py-2 rounded-xl border",
-                          themeConfig.border,
-                          themeConfig.hover,
-                          "bg-transparent placeholder-zinc-400",
-                          "focus:outline-none focus:ring-2",
-                          colors.ring,
-                          `transition-all ${animationDuration}`,
-                          "backdrop-blur-sm"
-                        )}
+                        onChange={(e) => {
+                          setSearchQuery(e.target.value)
+                          onSearch(e.target.value)
+                        }}
+                        className="w-full h-8 pl-8 pr-7 rounded-lg border border-border/80 bg-muted/40 text-xs text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-1 focus:ring-ring focus:bg-background transition-all"
                       />
                       {searchQuery && (
                         <button
-                          onClick={() => handleSearch("")}
-                          className={cn("absolute right-3 top-1/2 transform -translate-y-1/2", themeConfig.textSecondary, "hover:text-red-500")}
+                          type="button"
+                          onClick={() => {
+                            setSearchQuery("")
+                            onSearch("")
+                          }}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
                         >
-                          <X size={16} />
+                          <X className="w-3.5 h-3.5" />
                         </button>
                       )}
                     </div>
@@ -441,108 +386,53 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
             </div>
 
             {/* Right Content */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center gap-2">
               {rightContent || (
                 <>
-                  {/* Theme Toggle */}
-                  {showThemeToggle && (
-                    <button
-                      onClick={() => setCurrentTheme(currentTheme === 'light' ? 'dark' : 'light')}
-                      className={cn(
-                        "p-2 rounded-lg",
-                        themeConfig.hover,
-                        `transition-all ${animationDuration}`,
-                        "group"
-                      )}
-                      title="Toggle theme"
-                    >
-                      <div className="group-hover:rotate-180 transition-transform duration-500">
-                        {currentTheme === 'light' ? <Moon size={20} /> : <Sun size={20} />}
-                      </div>
-                    </button>
-                  )}
-
-                  {/* Language Switch */}
-                  {showLanguageSwitch && (
-                    <button
-                      className={cn(
-                        "p-2 rounded-lg",
-                        themeConfig.hover,
-                        `transition-all ${animationDuration}`,
-                        "group"
-                      )}
-                      title="Language"
-                    >
-                      <Globe size={20} className="group-hover:scale-110 transition-transform" />
-                    </button>
-                  )}
-
                   {/* Notifications */}
                   {showNotifications && (
                     <div className="relative">
                       <button
+                        type="button"
                         onClick={() => {
-                          setShowNotificationMenu(!showNotificationMenu);
-                          onNotificationClick();
+                          setShowNotificationMenu(!showNotificationMenu)
+                          onNotificationClick()
                         }}
-                        className={cn(
-                          "relative p-2 rounded-lg",
-                          themeConfig.hover,
-                          `transition-all ${animationDuration}`,
-                          "group"
-                        )}
-                        title="Notifications"
+                        className="h-8 w-8 rounded-lg flex items-center justify-center text-muted-foreground hover:text-foreground hover:bg-accent transition-colors relative cursor-pointer"
+                        aria-label="Notifications"
                       >
-                        <Bell size={20} className="group-hover:animate-pulse" />
+                        <Bell className="w-4 h-4" />
                         {notificationCount > 0 && (
-                          <span className={cn(
-                            "absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center animate-pulse"
-                          )}>
-                            {notificationCount > 9 ? '9+' : notificationCount}
+                          <span className="absolute -top-0.5 -right-0.5 min-w-[16px] h-4 px-1 rounded-full bg-primary text-primary-foreground text-[10px] font-mono flex items-center justify-center font-bold">
+                            {notificationCount > 9 ? "9+" : notificationCount}
                           </span>
                         )}
                       </button>
 
-                      {/* Notifications Dropdown */}
                       {showNotificationMenu && (
-                        <div className={cn(
-                          "absolute top-full right-0 mt-2 w-80 rounded-xl",
-                          themeConfig.dropdown,
-                          `border ${themeConfig.border}`,
-                          "max-h-96 overflow-y-auto",
-                          "animate-in slide-in-from-top-2 duration-200"
-                        )}>
-                          <div className="p-4 border-b border-zinc-200 dark:border-zinc-800">
-                            <h3 className="font-semibold">Notifications</h3>
+                        <div className="absolute top-full right-0 mt-2 w-72 rounded-xl border border-border bg-popover p-2 text-popover-foreground shadow-xl z-50 duration-150 animate-in fade-in-0 zoom-in-95">
+                          <div className="px-2.5 py-1.5 border-b border-border/60 font-semibold text-xs text-foreground">
+                            Notifications
                           </div>
-                          <div className="max-h-64 overflow-y-auto">
+                          <div className="max-h-64 overflow-y-auto py-1">
                             {notificationItems.length > 0 ? (
-                              notificationItems.map((notification, index) => (
+                              notificationItems.map((n, i) => (
                                 <div
-                                  key={index}
-                                  className={cn(
-                                    "p-4 border-b border-zinc-100 dark:border-zinc-800/60 last:border-b-0",
-                                    themeConfig.hover,
-                                    `transition-all ${animationDuration}`
-                                  )}
+                                  key={n.id || i}
+                                  className="px-2.5 py-2 rounded-lg hover:bg-accent transition-colors cursor-pointer text-xs"
                                 >
-                                  <div className="flex items-start space-x-3">
-                                    <div className={cn(
-                                      "w-2 h-2 rounded-full mt-2",
-                                      notification.unread ? 'bg-primary' : 'bg-muted-foreground/30'
-                                    )}></div>
-                                    <div className="flex-1">
-                                      <p className="font-medium text-sm">{notification.title}</p>
-                                      <p className={cn("text-sm", themeConfig.textSecondary, "mt-1")}>{notification.message}</p>
-                                      <p className={cn("text-xs", themeConfig.textSecondary, "mt-2")}>{notification.time}</p>
-                                    </div>
+                                  <div className="font-medium text-foreground">{n.title}</div>
+                                  <div className="text-muted-foreground text-[11px] mt-0.5">
+                                    {n.message}
+                                  </div>
+                                  <div className="text-muted-foreground/60 text-[10px] mt-1">
+                                    {n.time}
                                   </div>
                                 </div>
                               ))
                             ) : (
-                              <div className="p-8 text-center">
-                                <Bell size={32} className={cn("mx-auto", themeConfig.textSecondary, "mb-2")} />
-                                <p className={themeConfig.textSecondary}>No notifications</p>
+                              <div className="py-6 text-center text-xs text-muted-foreground">
+                                No new notifications
                               </div>
                             )}
                           </div>
@@ -551,100 +441,89 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
                     </div>
                   )}
 
-                  {/* CTA Button */}
-                  {showCTA && (
-                    <button
-                      onClick={ctaAction}
-                      className={cn(
-                        "hidden md:block px-6 py-2",
-                        colors.button,
-                        colors.buttonHover,
-                        "text-white rounded-lg font-medium",
-                        `transition-all ${animationDuration}`,
-                        "transform hover:scale-105 hover:shadow-lg"
-                      )}
-                    >
-                      {ctaText}
-                    </button>
-                  )}
-
                   {/* Profile Menu */}
                   {showProfile && (
                     <div className="relative">
                       <button
+                        type="button"
                         onClick={() => setShowProfileMenu(!showProfileMenu)}
-                        className={cn(
-                          "flex items-center space-x-3",
-                          themeConfig.hover,
-                          "rounded-lg px-3 py-2",
-                          `transition-all ${animationDuration}`,
-                          "group"
-                        )}
+                        className="flex items-center gap-2 p-1 pl-1.5 rounded-lg hover:bg-accent transition-colors cursor-pointer"
                       >
-                        <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground font-semibold flex items-center justify-center group-hover:scale-105 transition-transform text-xs">
+                        <div className="w-7 h-7 rounded-full bg-accent text-accent-foreground border border-border/80 flex items-center justify-center font-semibold text-xs overflow-hidden">
                           {profileImage ? (
-                            <img src={profileImage} alt="Profile" className="w-full h-full rounded-full object-cover" />
+                            <img src={profileImage} alt={profileName} className="w-full h-full object-cover" />
                           ) : (
-                            <User size={16} className="text-white" />
+                            <User className="w-3.5 h-3.5 text-muted-foreground" />
                           )}
                         </div>
-                        <div className="hidden md:block text-left">
-                          <p className="font-medium text-sm">{profileName}</p>
+                        <div className="hidden sm:flex flex-col text-left">
+                          <span className="text-xs font-medium text-foreground leading-none">
+                            {profileName}
+                          </span>
                           {profileRole && (
-                            <p className={cn("text-xs", themeConfig.textSecondary)}>{profileRole}</p>
+                            <span className="text-[10px] text-muted-foreground leading-tight mt-0.5">
+                              {profileRole}
+                            </span>
                           )}
                         </div>
-                        <ChevronDown size={16} className={cn("hidden md:block group-hover:rotate-180 transition-transform", animationDuration)} />
+                        <ChevronDown className="w-3 h-3 text-muted-foreground hidden sm:block" />
                       </button>
 
-                      {/* Profile Dropdown */}
                       {showProfileMenu && (
-                        <div className={cn(
-                          "absolute top-full right-0 mt-2 w-48 rounded-xl",
-                          themeConfig.dropdown,
-                          `border ${themeConfig.border}`,
-                          "animate-in slide-in-from-top-2 duration-200"
-                        )}>
+                        <div className="absolute top-full right-0 mt-2 w-48 rounded-xl border border-border bg-popover p-1 text-popover-foreground shadow-xl z-50 duration-150 animate-in fade-in-0 zoom-in-95">
                           {profileItems.map((item, index) => {
-                            const Icon = item.icon;
+                            const Icon = item.icon
                             return (
                               <button
                                 key={index}
+                                type="button"
                                 onClick={() => {
-                                  item.action?.();
-                                  setShowProfileMenu(false);
+                                  item.action?.()
+                                  setShowProfileMenu(false)
                                 }}
                                 className={cn(
-                                  "w-full flex items-center space-x-3 px-4 py-3",
-                                  themeConfig.hover,
-                                  `transition-all ${animationDuration}`,
-                                  index === 0 ? 'rounded-t-xl' : '',
-                                  index === profileItems.length - 1 ? 'rounded-b-xl' : '',
-                                  item.danger ? 'text-red-500 hover:text-red-400' : ''
+                                  "w-full flex items-center gap-2 px-2.5 py-1.5 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer",
+                                  item.danger
+                                    ? "text-red-500 hover:bg-red-500/10"
+                                    : "text-muted-foreground hover:bg-accent hover:text-foreground"
                                 )}
                               >
-                                {Icon && <Icon size={16} />}
+                                {Icon && <Icon className="w-3.5 h-3.5 shrink-0" />}
                                 <span>{item.label}</span>
                               </button>
-                            );
+                            )
                           })}
                         </div>
                       )}
                     </div>
                   )}
 
+                  {/* CTA Button */}
+                  {showCTA && (
+                    <button
+                      type="button"
+                      onClick={ctaAction}
+                      className="hidden sm:inline-flex items-center justify-center h-8 px-3 rounded-lg text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs cursor-pointer select-none"
+                    >
+                      {ctaText}
+                    </button>
+                  )}
+
                   {/* Mobile Menu Toggle */}
                   <button
+                    type="button"
                     onClick={handleMobileToggle}
                     className={cn(
-                      `${mobileBreakpoint}:hidden`,
-                      "p-2 rounded-lg",
-                      themeConfig.hover,
-                      `transition-all ${animationDuration}`
+                      "p-1.5 rounded-lg text-muted-foreground hover:text-foreground hover:bg-accent transition-colors cursor-pointer",
+                      mobileBreakpoint === "md"
+                        ? "md:hidden"
+                        : mobileBreakpoint === "xl"
+                        ? "xl:hidden"
+                        : "lg:hidden"
                     )}
-                    aria-label="Toggle mobile menu"
+                    aria-label="Toggle navigation menu"
                   >
-                    {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+                    {isMobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                   </button>
                 </>
               )}
@@ -652,93 +531,137 @@ const Navbar = React.forwardRef<HTMLElement, NavbarProps>(
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        <div className={cn(
-          mobileBreakpoint + ":hidden",
-          isMobileMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0',
-          "overflow-hidden transition-all",
-          animationDuration,
-          themeConfig.bg,
-          `border-t ${themeConfig.border}`
-        )}>
-          <div className="p-6 space-y-4">
-            {/* Mobile Search */}
+        {/* Mobile Slide-down Menu */}
+        {isMobileMenuOpen && (
+          <div
+            className={cn(
+              "border-t border-border bg-background px-4 py-4 space-y-3 duration-150 animate-in slide-in-from-top-2",
+              mobileBreakpoint === "md"
+                ? "md:hidden"
+                : mobileBreakpoint === "xl"
+                ? "xl:hidden"
+                : "lg:hidden"
+            )}
+          >
             {showSearch && (
               <div className="relative">
-                <Search size={20} className={cn("absolute left-3 top-1/2 transform -translate-y-1/2", themeConfig.textSecondary)} />
+                <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-muted-foreground" />
                 <input
                   type="text"
                   placeholder={searchPlaceholder}
                   value={searchQuery}
-                  onChange={(e) => handleSearch(e.target.value)}
-                  className={cn(
-                    "w-full pl-10 pr-4 py-3 rounded-xl border",
-                    themeConfig.border,
-                    themeConfig.hover,
-                    "bg-transparent placeholder-zinc-400",
-                    "focus:outline-none focus:ring-2",
-                    colors.ring,
-                    `transition-all ${animationDuration}`
-                  )}
+                  onChange={(e) => {
+                    setSearchQuery(e.target.value)
+                    onSearch(e.target.value)
+                  }}
+                  className="w-full h-9 pl-8 pr-3 rounded-lg border border-border bg-muted/40 text-xs text-foreground placeholder:text-muted-foreground"
                 />
               </div>
             )}
 
-            {/* Mobile Navigation Items */}
-            <div className="space-y-2">
-              {navItems.map((item, index) => {
-                const Icon = item.icon;
-                return (
-                  <button
-                    key={item.id || index}
-                    onClick={() => {
-                      onItemClick(item, index);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className={cn(
-                      "w-full flex items-center space-x-3 p-3 rounded-lg",
-                      themeConfig.hover,
-                      `transition-all ${animationDuration}`,
-                      item.active ? cn(colors.bgLight, colors.text) : ''
-                    )}
-                  >
-                    {Icon && <Icon size={20} />}
-                    <span className="font-medium">{item.label}</span>
-                    {item.badge && (
-                      <span className={cn(
-                        "ml-auto px-2 py-1 text-xs rounded-full",
-                        item.badgeColor || colors.badge
-                      )}>
-                        {item.badge}
-                      </span>
-                    )}
-                  </button>
-                );
-              })}
+            <div className="space-y-1">
+              {navItems.map((item, index) => (
+                <button
+                  key={item.id || index}
+                  type="button"
+                  onClick={() => {
+                    onItemClick(item, index)
+                    setIsMobileMenuOpen(false)
+                  }}
+                  className={cn(
+                    "w-full flex items-center justify-between px-3 py-2 rounded-lg text-xs font-medium text-left transition-colors cursor-pointer",
+                    item.active
+                      ? "bg-accent text-accent-foreground font-semibold"
+                      : "text-muted-foreground hover:bg-accent hover:text-foreground"
+                  )}
+                >
+                  <span className="flex items-center gap-2">
+                    {item.icon && <item.icon className="w-4 h-4" />}
+                    {item.label}
+                  </span>
+                  {item.badge && (
+                    <span className="px-1.5 py-0.2 text-[10px] font-mono rounded-full bg-muted text-muted-foreground border border-border/50">
+                      {item.badge}
+                    </span>
+                  )}
+                </button>
+              ))}
             </div>
 
-            {/* Mobile CTA */}
             {showCTA && (
               <button
-                onClick={ctaAction}
-                className={cn(
-                  "w-full px-6 py-3",
-                  colors.button,
-                  colors.buttonHover,
-                  "text-white rounded-lg font-medium",
-                  `transition-all ${animationDuration}`
-                )}
+                type="button"
+                onClick={() => {
+                  ctaAction()
+                  setIsMobileMenuOpen(false)
+                }}
+                className="w-full h-9 rounded-lg text-xs font-medium bg-primary text-primary-foreground hover:bg-primary/90 transition-colors shadow-2xs"
               >
                 {ctaText}
               </button>
             )}
           </div>
-        </div>
+        )}
       </nav>
-    );
+    )
   }
-);
+)
 
-Navbar.displayName = "Navbar";
+Navbar.displayName = "Navbar"
 
-export { Navbar };
+// Composable Compound Subcomponents
+export const NavbarBrand = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("flex items-center gap-2 font-semibold text-sm tracking-tight", className)} {...props} />
+  )
+)
+NavbarBrand.displayName = "NavbarBrand"
+
+export const NavbarNav = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("hidden md:flex items-center gap-1", className)} {...props} />
+  )
+)
+NavbarNav.displayName = "NavbarNav"
+
+export const NavbarItem = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("relative inline-flex items-center", className)} {...props} />
+  )
+)
+NavbarItem.displayName = "NavbarItem"
+
+export const NavbarLink = React.forwardRef<
+  HTMLAnchorElement,
+  React.AnchorHTMLAttributes<HTMLAnchorElement> & { active?: boolean }
+>(({ className, active, ...props }, ref) => (
+  <a
+    ref={ref}
+    className={cn(
+      "inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors cursor-pointer select-none",
+      active
+        ? "bg-accent text-accent-foreground font-semibold"
+        : "text-muted-foreground hover:bg-accent/60 hover:text-foreground",
+      className
+    )}
+    {...props}
+  />
+))
+NavbarLink.displayName = "NavbarLink"
+
+export const NavbarActions = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(
+  ({ className, ...props }, ref) => (
+    <div ref={ref} className={cn("flex items-center gap-2", className)} {...props} />
+  )
+)
+NavbarActions.displayName = "NavbarActions"
+
+// Attach compound subcomponents to Navbar
+;(Navbar as any).Brand = NavbarBrand
+;(Navbar as any).Nav = NavbarNav
+;(Navbar as any).Item = NavbarItem
+;(Navbar as any).Link = NavbarLink
+;(Navbar as any).Actions = NavbarActions
+
+export default Navbar
+export { Navbar }

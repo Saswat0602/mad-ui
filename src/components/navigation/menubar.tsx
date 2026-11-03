@@ -45,7 +45,7 @@ export const Menubar = React.forwardRef<HTMLDivElement, MenubarProps>(
           }}
           role="menubar"
           className={cn(
-            "flex h-9 items-center space-x-1 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950 p-1 text-zinc-900 dark:text-zinc-100 shadow-2xs",
+            "flex h-9 items-center space-x-1 rounded-xl border border-border bg-background p-1 text-foreground shadow-2xs",
             className
           )}
           {...props}
@@ -173,15 +173,17 @@ export const MenubarContent = React.forwardRef<HTMLDivElement, MenubarContentPro
 
     if (!menuCtx?.isOpen) return null
 
-    const triggerRect = menuCtx.triggerRect
+    const rect = menuCtx.triggerRect || (typeof window !== "undefined" && menuCtx.triggerRef.current ? menuCtx.triggerRef.current.getBoundingClientRect() : null)
 
-    const positioningStyle: React.CSSProperties = triggerRect
+    const positioningStyle: React.CSSProperties = rect
       ? {
           position: "fixed",
-          top: `${triggerRect.bottom + sideOffset}px`,
-          left: `${triggerRect.left}px`,
+          top: `${rect.bottom + sideOffset}px`,
+          left: align === "end" ? `${rect.right}px` : align === "center" ? `${rect.left + rect.width / 2}px` : `${rect.left}px`,
+          transform: align === "end" ? "translateX(-100%)" : align === "center" ? "translateX(-50%)" : undefined,
+          zIndex: 70,
         }
-      : {}
+      : { zIndex: 70 }
 
     return (
       <Portal>
@@ -191,7 +193,7 @@ export const MenubarContent = React.forwardRef<HTMLDivElement, MenubarContentPro
           aria-orientation="vertical"
           style={{ ...positioningStyle, ...style }}
           className={cn(
-            "fixed z-50 min-w-[12rem] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1 text-zinc-900 dark:text-zinc-100 shadow-xl duration-150 animate-in fade-in-0 zoom-in-95",
+            "fixed z-[70] min-w-[12rem] overflow-hidden rounded-xl border border-border bg-popover p-1 text-popover-foreground shadow-xl duration-150 animate-in fade-in-0 zoom-in-95",
             className
           )}
           {...props}
@@ -447,5 +449,22 @@ export const MenubarRadioGroup = React.forwardRef<HTMLDivElement, MenubarRadioGr
   )
 )
 MenubarRadioGroup.displayName = "MenubarRadioGroup"
+
+// Attach compound subcomponents to Menubar
+;(Menubar as any).Menu = MenubarMenu
+;(Menubar as any).Trigger = MenubarTrigger
+;(Menubar as any).Portal = MenubarPortal
+;(Menubar as any).Content = MenubarContent
+;(Menubar as any).Item = MenubarItem
+;(Menubar as any).Separator = MenubarSeparator
+;(Menubar as any).Label = MenubarLabel
+;(Menubar as any).CheckboxItem = MenubarCheckboxItem
+;(Menubar as any).RadioGroup = MenubarRadioGroup
+;(Menubar as any).RadioItem = MenubarRadioItem
+;(Menubar as any).Group = MenubarGroup
+;(Menubar as any).Sub = MenubarSub
+;(Menubar as any).SubTrigger = MenubarSubTrigger
+;(Menubar as any).SubContent = MenubarSubContent
+;(Menubar as any).Shortcut = MenubarShortcut
 
 export default Menubar

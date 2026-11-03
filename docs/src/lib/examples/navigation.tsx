@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { 
   Combobox, 
   Command, 
@@ -21,10 +21,16 @@ import {
   NavigationMenuContent,
   NavigationMenuLink,
   Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
   Stepper,
   Button
 } from 'mad-ui-components'
-import { Search, Settings, User, CreditCard, HelpCircle, FileText, Layout } from 'lucide-react'
+import { Search, Settings, User, CreditCard, HelpCircle, FileText, Layout, BarChart, Shield, Zap, Sparkles, BookOpen, Layers } from 'lucide-react'
 
 export interface ComponentExample {
   title: string
@@ -236,8 +242,8 @@ export function MenubarExample() {
 
   'navigation-menu': [
     {
-      title: 'Navigation Menu',
-      description: 'A collection of navigation links with animated flyout content',
+      title: 'Enterprise Mega Navigation Menu',
+      description: 'Full-featured navigation menu with multi-column flyout panels, rich descriptions, and portal positioning that never clips',
       code: `import { 
   NavigationMenu, 
   NavigationMenuList, 
@@ -246,33 +252,69 @@ export function MenubarExample() {
   NavigationMenuContent, 
   NavigationMenuLink 
 } from 'mad-ui-components'
+import { BarChart, Shield, Zap, Sparkles, BookOpen, Layers } from 'lucide-react'
 
 export function NavigationMenuExample() {
   return (
     <NavigationMenu>
       <NavigationMenuList>
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
-          <NavigationMenuContent className="p-4 w-72 space-y-2">
-            <NavigationMenuLink href="/docs/getting-started" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
-              Overview &amp; Quickstart
+          <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+          <NavigationMenuContent className="p-4 w-[420px] grid grid-cols-2 gap-3">
+            <NavigationMenuLink href="#analytics" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-start">
+              <BarChart className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              <div>
+                <div className="font-semibold text-xs text-foreground">Analytics Engine</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Real-time event tracking and dashboards.</div>
+              </div>
             </NavigationMenuLink>
-            <NavigationMenuLink href="/docs/installation" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
-              Installation Guides
+            <NavigationMenuLink href="#security" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-start">
+              <Shield className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              <div>
+                <div className="font-semibold text-xs text-foreground">Cloud Security</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Zero-trust access and audit logging.</div>
+              </div>
+            </NavigationMenuLink>
+            <NavigationMenuLink href="#compute" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-start">
+              <Zap className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              <div>
+                <div className="font-semibold text-xs text-foreground">Edge Compute</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Serverless functions at low latency.</div>
+              </div>
+            </NavigationMenuLink>
+            <NavigationMenuLink href="#ai" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-start">
+              <Sparkles className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+              <div>
+                <div className="font-semibold text-xs text-foreground">AI Integration</div>
+                <div className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Embedded LLM generation tools.</div>
+              </div>
             </NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
-          <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-          <NavigationMenuContent className="p-4 w-72 space-y-2">
-            <NavigationMenuLink href="/docs/components" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
-              All 57+ Primitives
+          <NavigationMenuTrigger>Developers</NavigationMenuTrigger>
+          <NavigationMenuContent className="p-3 w-72 space-y-1">
+            <NavigationMenuLink href="#docs" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-center">
+              <BookOpen className="w-4 h-4 text-muted-foreground shrink-0" />
+              <div>
+                <div className="font-medium text-xs text-foreground">Documentation</div>
+                <div className="text-[10px] text-muted-foreground">Guides and architecture overview</div>
+              </div>
+            </NavigationMenuLink>
+            <NavigationMenuLink href="#components" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-center">
+              <Layers className="w-4 h-4 text-muted-foreground shrink-0" />
+              <div>
+                <div className="font-medium text-xs text-foreground">Component Library</div>
+                <div className="text-[10px] text-muted-foreground">57+ accessible UI primitives</div>
+              </div>
             </NavigationMenuLink>
           </NavigationMenuContent>
         </NavigationMenuItem>
+
         <NavigationMenuItem>
-          <NavigationMenuLink href="/docs/examples" className="px-4 py-2 font-medium text-sm text-muted-foreground hover:text-foreground">
-            Examples
+          <NavigationMenuLink href="#pricing" className="px-3.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">
+            Pricing
           </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
@@ -280,31 +322,66 @@ export function NavigationMenuExample() {
   )
 }`,
       preview: (
-        <div className="w-full flex items-center justify-center p-4">
+        <div className="w-full flex items-start justify-center min-h-[220px] pt-4 pb-16">
           <NavigationMenu>
             <NavigationMenuList>
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Getting Started</NavigationMenuTrigger>
-                <NavigationMenuContent className="p-4 w-72 space-y-2">
-                  <NavigationMenuLink href="/docs/getting-started" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
-                    Overview &amp; Quickstart
+                <NavigationMenuTrigger>Products</NavigationMenuTrigger>
+                <NavigationMenuContent className="p-4 w-[420px] grid grid-cols-2 gap-3">
+                  <NavigationMenuLink href="#" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-start">
+                    <BarChart className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-semibold text-xs text-foreground">Analytics Engine</div>
+                      <div className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Real-time event tracking and dashboards.</div>
+                    </div>
                   </NavigationMenuLink>
-                  <NavigationMenuLink href="/docs/installation" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
-                    Installation Guides
+                  <NavigationMenuLink href="#" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-start">
+                    <Shield className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-semibold text-xs text-foreground">Cloud Security</div>
+                      <div className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Zero-trust access and audit logging.</div>
+                    </div>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink href="#" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-start">
+                    <Zap className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-semibold text-xs text-foreground">Edge Compute</div>
+                      <div className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Serverless functions at low latency.</div>
+                    </div>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink href="#" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-start">
+                    <Sparkles className="w-4 h-4 text-primary shrink-0 mt-0.5" />
+                    <div>
+                      <div className="font-semibold text-xs text-foreground">AI Integration</div>
+                      <div className="text-[11px] text-muted-foreground mt-0.5 leading-snug">Embedded LLM generation tools.</div>
+                    </div>
                   </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
+
               <NavigationMenuItem>
-                <NavigationMenuTrigger>Components</NavigationMenuTrigger>
-                <NavigationMenuContent className="p-4 w-72 space-y-2">
-                  <NavigationMenuLink href="/docs/components" className="block p-2 rounded-lg hover:bg-muted font-medium text-sm">
-                    All 57+ Primitives
+                <NavigationMenuTrigger>Developers</NavigationMenuTrigger>
+                <NavigationMenuContent className="p-3 w-72 space-y-1">
+                  <NavigationMenuLink href="#" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-center">
+                    <BookOpen className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <div>
+                      <div className="font-medium text-xs text-foreground">Documentation</div>
+                      <div className="text-[10px] text-muted-foreground">Guides and architecture overview</div>
+                    </div>
+                  </NavigationMenuLink>
+                  <NavigationMenuLink href="#" className="p-2 rounded-lg hover:bg-accent transition-colors flex gap-2.5 items-center">
+                    <Layers className="w-4 h-4 text-muted-foreground shrink-0" />
+                    <div>
+                      <div className="font-medium text-xs text-foreground">Component Library</div>
+                      <div className="text-[10px] text-muted-foreground">57+ accessible UI primitives</div>
+                    </div>
                   </NavigationMenuLink>
                 </NavigationMenuContent>
               </NavigationMenuItem>
+
               <NavigationMenuItem>
-                <NavigationMenuLink href="/docs/examples" className="px-4 py-2 font-medium text-sm text-muted-foreground hover:text-foreground">
-                  Examples
+                <NavigationMenuLink href="#" className="px-3.5 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground">
+                  Pricing
                 </NavigationMenuLink>
               </NavigationMenuItem>
             </NavigationMenuList>
@@ -316,29 +393,101 @@ export function NavigationMenuExample() {
 
   pagination: [
     {
-      title: 'Pagination Control',
-      description: 'Page pagination component with active state and button navigation',
+      title: 'Controlled Pagination',
+      description: 'Standard pagination controller with direct page selection and previous/next actions',
       code: `import { Pagination } from 'mad-ui-components'
 import { useState } from 'react'
 
 export function PaginationExample() {
-  const [page, setPage] = useState(1)
+  const [page, setPage] = useState(2)
 
   return (
     <Pagination 
       currentPage={page} 
-      totalPages={8} 
+      totalPages={10} 
       onPageChange={setPage} 
     />
   )
 }`,
       preview: (
-        <div className="w-full flex justify-center py-2">
+        <div className="w-full flex justify-center py-4">
           <Pagination 
-            currentPage={1} 
-            totalPages={8} 
+            currentPage={3} 
+            totalPages={10} 
             onPageChange={(page) => console.log('Page:', page)} 
           />
+        </div>
+      )
+    },
+    {
+      title: 'Composable Compound Pagination',
+      description: 'Declarative Radix and shadcn styled compound pagination component with semantic list semantics',
+      code: `import { 
+  Pagination, 
+  PaginationContent, 
+  PaginationItem, 
+  PaginationLink, 
+  PaginationPrevious, 
+  PaginationNext, 
+  PaginationEllipsis 
+} from 'mad-ui-components'
+
+export function CompoundPaginationExample() {
+  return (
+    <Pagination>
+      <PaginationContent>
+        <PaginationItem>
+          <PaginationPrevious href="#" />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#" isActive>1</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">2</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">3</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationEllipsis />
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationLink href="#">12</PaginationLink>
+        </PaginationItem>
+        <PaginationItem>
+          <PaginationNext href="#" />
+        </PaginationItem>
+      </PaginationContent>
+    </Pagination>
+  )
+}`,
+      preview: (
+        <div className="w-full flex justify-center py-4">
+          <Pagination>
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink isActive>1</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink>2</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink>3</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationEllipsis />
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationLink>12</PaginationLink>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
       )
     }

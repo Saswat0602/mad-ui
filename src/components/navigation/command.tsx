@@ -46,7 +46,7 @@ export const Command = React.forwardRef<HTMLDivElement, CommandProps>(
     return (
       <div 
         ref={ref}
-        className={cn('flex h-full w-full flex-col overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-md', className)}
+        className={cn('flex h-full w-full flex-col overflow-hidden rounded-xl border border-border bg-popover text-popover-foreground shadow-md', className)}
         {...props}
       >
         {children}
@@ -59,8 +59,8 @@ Command.displayName = 'Command'
 export const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps>(
   ({ placeholder = 'Type a command or search...', value, onValueChange, className, ...props }, ref) => {
     return (
-      <div className="flex items-center border-b border-zinc-200/80 dark:border-zinc-800/80 px-3.5">
-        <Search className="mr-2.5 h-4 w-4 shrink-0 text-zinc-400 dark:text-zinc-500" />
+      <div className="flex items-center border-b border-border/80 px-3.5">
+        <Search className="mr-2.5 h-4 w-4 shrink-0 text-muted-foreground" />
         <input
           ref={ref}
           type="text"
@@ -68,7 +68,7 @@ export const CommandInput = React.forwardRef<HTMLInputElement, CommandInputProps
           value={value}
           onChange={(e) => onValueChange?.(e.target.value)}
           className={cn(
-            'flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 dark:placeholder:text-zinc-500 disabled:cursor-not-allowed disabled:opacity-50',
+            'flex h-11 w-full rounded-md bg-transparent py-3 text-sm outline-none text-foreground placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50',
             className
           )}
           {...props}
@@ -151,7 +151,7 @@ export const CommandItem = React.forwardRef<HTMLDivElement, CommandItemProps>(
           'relative flex cursor-pointer select-none items-center rounded-lg px-2.5 py-1.5 text-xs font-medium outline-none transition-colors',
           disabled
             ? 'pointer-events-none opacity-50'
-            : 'hover:bg-zinc-100 dark:hover:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:text-zinc-900 dark:hover:text-zinc-50',
+            : 'hover:bg-accent text-foreground hover:text-accent-foreground',
           className
         )}
         onClick={handleSelect}
@@ -171,7 +171,7 @@ export const CommandSeparator = React.forwardRef<HTMLDivElement, CommandSeparato
     return (
       <div 
         ref={ref}
-        className={cn('-mx-1 my-1 h-px bg-zinc-200/80 dark:bg-zinc-800/80', className)} 
+        className={cn('-mx-1 my-1 h-px bg-border/80', className)} 
         {...props}
       />
     )
@@ -184,7 +184,7 @@ export interface CommandShortcutProps extends React.HTMLAttributes<HTMLSpanEleme
 export const CommandShortcut: React.FC<CommandShortcutProps> = ({ className, ...props }) => {
   return (
     <span
-      className={cn('ml-auto text-[11px] font-medium tracking-widest text-zinc-400 dark:text-zinc-500', className)}
+      className={cn('ml-auto text-[11px] font-medium tracking-widest text-muted-foreground', className)}
       {...props}
     />
   )
@@ -208,6 +208,16 @@ export const CommandDialog: React.FC<CommandDialogProps> = ({ children, classNam
   )
 }
 CommandDialog.displayName = 'CommandDialog'
+
+// Attach compound subcomponents to Command
+;(Command as any).Input = CommandInput
+;(Command as any).List = CommandList
+;(Command as any).Empty = CommandEmpty
+;(Command as any).Group = CommandGroup
+;(Command as any).Item = CommandItem
+;(Command as any).Separator = CommandSeparator
+;(Command as any).Shortcut = CommandShortcut
+;(Command as any).Dialog = CommandDialog
 
 export default Command
 
