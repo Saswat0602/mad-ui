@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from 'react'
 import { 
   Drawer,
@@ -5,11 +7,25 @@ import {
   Modal, 
   Navbar, 
   Popover, 
+  PopoverTrigger,
+  PopoverContent,
   Resizable, 
+  ResizablePanel,
+  ResizableHandle,
   ScrollArea, 
+  ScrollBar,
   Sheet, 
+  SheetTrigger,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetDescription,
+  SheetFooter,
+  SheetClose,
   Sidebar, 
-  Tooltip 
+  Tooltip,
+  Button,
+  Input
 } from 'mad-ui-components'
 import { 
   Home, 
@@ -30,832 +46,786 @@ import {
   Award,
   Zap,
   Palette,
-  Check
+  Check,
+  Sliders,
+  Bell,
+  PanelLeft,
+  Share2,
+  Copy,
+  Layers,
+  Folder,
+  FileCode
 } from 'lucide-react'
 
-// Interactive Drawer Demo Component
+// 1. Interactive Drawer Demo
 function InteractiveDrawerDemo() {
   const [isOpen, setIsOpen] = useState(false)
   const [position, setPosition] = useState<'left' | 'right' | 'top' | 'bottom'>('right')
   const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'full'>('md')
-  const [useCustomDimensions, setUseCustomDimensions] = useState(false)
-  const [customWidth, setCustomWidth] = useState('400px')
-  const [customHeight, setCustomHeight] = useState('300px')
   
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col items-center gap-4 w-full max-w-lg">
       {/* Position Controls */}
-      <div className="flex flex-wrap gap-2">
-        {(['left', 'right', 'top', 'bottom'] as const).map((pos) => (
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <span className="text-xs text-muted-foreground mr-1">Position:</span>
+        {(['right', 'left', 'top', 'bottom'] as const).map((pos) => (
           <button
             key={pos}
             onClick={() => setPosition(pos)}
-            className={`px-3 py-1 text-sm rounded-md transition-colors ${
-              position === pos ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
+            className={`px-2.5 py-1 text-xs rounded-md font-medium transition-colors cursor-pointer ${
+              position === pos 
+                ? 'bg-primary text-primary-foreground shadow-xs' 
+                : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
-            {pos}
+            {pos.charAt(0).toUpperCase() + pos.slice(1)}
           </button>
         ))}
       </div>
       
       {/* Size Controls */}
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <span className="text-xs text-muted-foreground mr-1">Size:</span>
         {(['sm', 'md', 'lg', 'full'] as const).map((s) => (
           <button
             key={s}
             onClick={() => setSize(s)}
-            className={`px-3 py-1 text-sm rounded-md transition-colors ${
-              size === s ? 'bg-green-600 text-white' : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+            className={`px-2.5 py-1 text-xs rounded-md font-medium transition-colors cursor-pointer ${
+              size === s 
+                ? 'bg-primary text-primary-foreground shadow-xs' 
+                : 'bg-muted text-muted-foreground hover:bg-muted/80'
             }`}
           >
-            {s}
+            {s.toUpperCase()}
           </button>
         ))}
       </div>
-
-      {/* Custom Dimensions Toggle */}
-      <div className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          id="customDimensions"
-          checked={useCustomDimensions}
-          onChange={(e) => setUseCustomDimensions(e.target.checked)}
-          className="rounded"
-        />
-        <label htmlFor="customDimensions" className="text-sm text-gray-700">
-          Use custom dimensions
-        </label>
-      </div>
-
-      {/* Custom Dimension Inputs */}
-      {useCustomDimensions && (
-        <div className="grid grid-cols-2 gap-2">
-          {(position === 'left' || position === 'right') && (
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">Width</label>
-              <input
-                type="text"
-                value={customWidth}
-                onChange={(e) => setCustomWidth(e.target.value)}
-                placeholder="400px"
-                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
-              />
-            </div>
-          )}
-          {(position === 'top' || position === 'bottom') && (
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">Height</label>
-              <input
-                type="text"
-                value={customHeight}
-                onChange={(e) => setCustomHeight(e.target.value)}
-                placeholder="300px"
-                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
-              />
-            </div>
-          )}
-        </div>
-      )}
       
       {/* Open Button */}
-      <button 
-        onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-      >
-        Open {position} Drawer ({useCustomDimensions ? 'custom' : size})
-      </button>
+      <Button onClick={() => setIsOpen(true)}>
+        Open {position.charAt(0).toUpperCase() + position.slice(1)} Drawer ({size.toUpperCase()})
+      </Button>
       
       {/* Drawer */}
       <Drawer 
         isOpen={isOpen} 
         onClose={() => setIsOpen(false)}
         position={position}
-        size={useCustomDimensions ? undefined : size}
-        width={useCustomDimensions && (position === 'left' || position === 'right') ? customWidth : undefined}
-        height={useCustomDimensions && (position === 'top' || position === 'bottom') ? customHeight : undefined}
+        size={size}
         className="bg-card border-border"
       >
-        <h3 className="text-xl font-bold mb-4 text-foreground">Custom Drawer</h3>
-        <p className="text-gray-700 mb-4">
-          This drawer is positioned from the <strong>{position}</strong> with{' '}
-          {useCustomDimensions ? (
-            <>
-              <strong>custom {position === 'left' || position === 'right' ? 'width' : 'height'}</strong> of{' '}
-              <strong>{position === 'left' || position === 'right' ? customWidth : customHeight}</strong>
-            </>
-          ) : (
-            <strong>{size}</strong>
-          )} size.
-        </p>
-        <div className="space-y-2 text-sm text-gray-600">
-          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Smooth animations</p>
-          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Flexible positioning</p>
-          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Multiple sizes</p>
-          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Custom dimensions</p>
-          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Custom styling</p>
+        <div className="space-y-4">
+          <div className="space-y-1">
+            <h3 className="text-lg font-semibold text-foreground">Drawer Overview</h3>
+            <p className="text-xs text-muted-foreground">
+              Sliding panel from the <span className="font-semibold text-foreground">{position}</span> edge in size <span className="font-semibold text-foreground">{size}</span>.
+            </p>
+          </div>
+          <div className="rounded-lg border border-border p-3 bg-muted/30 space-y-2 text-xs">
+            <div className="flex items-center gap-2 text-foreground">
+              <Check className="h-4 w-4 text-emerald-500 shrink-0" />
+              <span>Full focus trap & Escape key dismiss</span>
+            </div>
+            <div className="flex items-center gap-2 text-foreground">
+              <Check className="h-4 w-4 text-emerald-500 shrink-0" />
+              <span>Body scroll lock on mount</span>
+            </div>
+            <div className="flex items-center gap-2 text-foreground">
+              <Check className="h-4 w-4 text-emerald-500 shrink-0" />
+              <span>Smooth CSS spring slide transitions</span>
+            </div>
+          </div>
+          <div className="pt-2 flex justify-end gap-2">
+            <Button variant="outline" size="sm" onClick={() => setIsOpen(false)}>
+              Close Drawer
+            </Button>
+          </div>
         </div>
-        <button 
-          onClick={() => setIsOpen(false)}
-          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-        >
-          Close Drawer
-        </button>
       </Drawer>
     </div>
   )
 }
 
-export interface ComponentExample {
-  title: string
-  description?: string
-  code: string
-  preview: React.ReactNode
-}
-
-export const layoutExamples: Record<string, ComponentExample[]> = {
-  drawer: [
-    {
-      title: 'Interactive Drawer Demo',
-      description: 'A fully functional drawer with position and size controls - try all combinations!',
-      code: `import { Drawer } from 'mad-ui-components'
-import { useState } from 'react'
-
-export function InteractiveDrawerDemo() {
+// 2. Interactive Modal Demo
+function InteractiveModalDemo() {
   const [isOpen, setIsOpen] = useState(false)
-  const [position, setPosition] = useState<'left' | 'right' | 'top' | 'bottom'>('right')
-  const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'full'>('md')
-  const [useCustomDimensions, setUseCustomDimensions] = useState(false)
-  const [customWidth, setCustomWidth] = useState('400px')
-  const [customHeight, setCustomHeight] = useState('300px')
-  
+  const [size, setSize] = useState<'sm' | 'md' | 'lg' | 'xl'>('md')
+
   return (
-    <div className="space-y-4">
-      {/* Position Controls */}
-      <div className="flex flex-wrap gap-2">
-        {(['left', 'right', 'top', 'bottom'] as const).map((pos) => (
-          <button
-            key={pos}
-            onClick={() => setPosition(pos)}
-            className={\`px-3 py-1 text-sm rounded-md transition-colors \${
-              position === pos ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
-            }\`}
-          >
-            {pos}
-          </button>
-        ))}
-      </div>
-      
-      {/* Size Controls */}
-      <div className="flex flex-wrap gap-2">
-        {(['sm', 'md', 'lg', 'full'] as const).map((s) => (
+    <div className="flex flex-col items-center gap-4 w-full max-w-lg">
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        <span className="text-xs text-muted-foreground mr-1">Modal Size:</span>
+        {(['sm', 'md', 'lg', 'xl'] as const).map((s) => (
           <button
             key={s}
             onClick={() => setSize(s)}
-            className={\`px-3 py-1 text-sm rounded-md transition-colors \${
-              size === s ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:bg-muted/80'
-            }\`}
+            className={`px-2.5 py-1 text-xs rounded-md font-medium transition-colors cursor-pointer ${
+              size === s
+                ? 'bg-primary text-primary-foreground shadow-xs'
+                : 'bg-muted text-muted-foreground hover:bg-muted/80'
+            }`}
           >
-            {s}
+            {s.toUpperCase()}
           </button>
         ))}
       </div>
 
-      {/* Custom Dimensions Toggle */}
-      <div className="flex items-center gap-2">
-        <input
-          type="checkbox"
-          id="customDimensions"
-          checked={useCustomDimensions}
-          onChange={(e) => setUseCustomDimensions(e.target.checked)}
-          className="rounded"
-        />
-        <label htmlFor="customDimensions" className="text-sm text-gray-700">
-          Use custom dimensions
-        </label>
-      </div>
+      <Button onClick={() => setIsOpen(true)}>
+        Open {size.toUpperCase()} Modal
+      </Button>
 
-      {/* Custom Dimension Inputs */}
-      {useCustomDimensions && (
-        <div className="grid grid-cols-2 gap-2">
-          {(position === 'left' || position === 'right') && (
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">Width</label>
-              <input
-                type="text"
-                value={customWidth}
-                onChange={(e) => setCustomWidth(e.target.value)}
-                placeholder="400px"
-                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
-              />
-            </div>
-          )}
-          {(position === 'top' || position === 'bottom') && (
-            <div>
-              <label className="block text-xs text-gray-600 mb-1">Height</label>
-              <input
-                type="text"
-                value={customHeight}
-                onChange={(e) => setCustomHeight(e.target.value)}
-                placeholder="300px"
-                className="w-full px-2 py-1 text-sm border border-gray-300 rounded"
-              />
-            </div>
-          )}
-        </div>
-      )}
-      
-      {/* Open Button */}
-      <button 
-        onClick={() => setIsOpen(true)}
-        className="px-4 py-2 bg-primary text-primary-foreground rounded-md hover:bg-primary/90 transition-colors"
-      >
-        Open {position} Drawer ({useCustomDimensions ? 'custom' : size})
-      </button>
-      
-      {/* Drawer with Custom Dimensions */}
-      <Drawer 
-        isOpen={isOpen} 
+      <Modal
+        isOpen={isOpen}
         onClose={() => setIsOpen(false)}
-        position={position}
-        size={useCustomDimensions ? undefined : size}
-        width={useCustomDimensions && (position === 'left' || position === 'right') ? customWidth : undefined}
-        height={useCustomDimensions && (position === 'top' || position === 'bottom') ? customHeight : undefined}
-        className="bg-card border-border"
+        size={size}
+        title="Project Settings"
+        footer={
+          <>
+            <Button variant="outline" size="sm" onClick={() => setIsOpen(false)}>
+              Cancel
+            </Button>
+            <Button size="sm" onClick={() => setIsOpen(false)}>
+              Save Changes
+            </Button>
+          </>
+        }
       >
-        <h3 className="text-xl font-bold mb-4 text-foreground">Custom Drawer</h3>
-        <p className="text-gray-700 mb-4">
-          This drawer supports custom dimensions! You can specify:
-        </p>
-        <div className="space-y-2 text-sm text-gray-600">
-          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Custom width for left/right drawers</p>
-          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Custom height for top/bottom drawers</p>
-          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Smooth animations</p>
-          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Flexible positioning</p>
-          <p className="flex items-center"><Check size={14} className="text-emerald-500 mr-2" /> Multiple sizes</p>
+        <div className="space-y-4">
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Configure enterprise workspace configurations, access control policies, and deployment rules.
+          </p>
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-foreground">Repository Name</label>
+            <Input defaultValue="mad-ui-components" />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-foreground">Production Branch</label>
+            <Input defaultValue="master" />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-foreground">Deploy Target</label>
+            <Input defaultValue="iad1 (Washington, D.C.)" />
+          </div>
         </div>
-        <button 
-          onClick={() => setIsOpen(false)}
-          className="mt-4 px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 transition-colors"
-        >
-          Close Drawer
-        </button>
-      </Drawer>
+      </Modal>
     </div>
   )
-}`,
-      preview: (
-        <InteractiveDrawerDemo />
-      )
-    }
-  ],
+}
 
-  layout: [
-    {
-      title: 'Basic Layout',
-      description: 'A simple layout component',
-      code: `import { Layout } from 'mad-ui-components'
-
-export function LayoutExample() {
+// 3. Interactive Popover Demo
+function InteractivePopoverDemo() {
   return (
-    <Layout>
-      <div className="p-4">Layout content</div>
-    </Layout>
+    <div className="flex items-center justify-center py-4">
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline" className="gap-2">
+            <Sliders className="h-4 w-4" />
+            <span>Layer Dimensions</span>
+          </Button>
+        </PopoverTrigger>
+        <PopoverContent className="w-80">
+          <div className="grid gap-3">
+            <div className="space-y-1">
+              <h4 className="font-semibold text-sm text-foreground">Dimensions</h4>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Set width, height, and maximum boundary constraints.
+              </p>
+            </div>
+            <div className="grid gap-2">
+              <div className="grid grid-cols-3 items-center gap-2">
+                <label className="text-xs text-muted-foreground">Width</label>
+                <Input defaultValue="100%" className="col-span-2 h-8" />
+              </div>
+              <div className="grid grid-cols-3 items-center gap-2">
+                <label className="text-xs text-muted-foreground">Max Width</label>
+                <Input defaultValue="1280px" className="col-span-2 h-8" />
+              </div>
+              <div className="grid grid-cols-3 items-center gap-2">
+                <label className="text-xs text-muted-foreground">Height</label>
+                <Input defaultValue="auto" className="col-span-2 h-8" />
+              </div>
+            </div>
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  )
+}
+
+// 4. Interactive Sheet Demo
+function InteractiveSheetDemo() {
+  const [side, setSide] = useState<'right' | 'left' | 'top' | 'bottom'>('right')
+  const [open, setOpen] = useState(false)
+
+  return (
+    <div className="flex flex-col items-center gap-4 w-full max-w-lg">
+      <div className="flex flex-wrap items-center justify-center gap-2">
+        {(['right', 'left', 'top', 'bottom'] as const).map((s) => (
+          <button
+            key={s}
+            onClick={() => {
+              setSide(s)
+              setOpen(true)
+            }}
+            className={`px-3 py-1.5 text-xs rounded-md font-medium transition-colors cursor-pointer ${
+              side === s
+                ? 'bg-primary text-primary-foreground shadow-xs'
+                : 'bg-muted text-muted-foreground hover:bg-muted/80'
+            }`}
+          >
+            Open {s.charAt(0).toUpperCase() + s.slice(1)} Sheet
+          </button>
+        ))}
+      </div>
+
+      <Sheet open={open} onOpenChange={setOpen}>
+        <SheetContent side={side}>
+          <SheetHeader>
+            <SheetTitle>Edit User Profile</SheetTitle>
+            <SheetDescription>
+              Make changes to your user credentials and access permissions here.
+            </SheetDescription>
+          </SheetHeader>
+          <div className="space-y-4 py-4">
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">Full Name</label>
+              <Input defaultValue="Saswat Mohanty" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">Organization Role</label>
+              <Input defaultValue="Senior Systems Architect" />
+            </div>
+            <div className="space-y-1.5">
+              <label className="text-xs font-medium text-foreground">Corporate Email</label>
+              <Input defaultValue="saswat@mad-ui.dev" />
+            </div>
+          </div>
+          <SheetFooter>
+            <SheetClose asChild>
+              <Button variant="outline" size="sm">Cancel</Button>
+            </SheetClose>
+            <Button size="sm" onClick={() => setOpen(false)}>Save Changes</Button>
+          </SheetFooter>
+        </SheetContent>
+      </Sheet>
+    </div>
+  )
+}
+
+// 5. Interactive Resizable Demo
+function InteractiveResizableDemo() {
+  return (
+    <div className="w-full max-w-xl">
+      <Resizable
+        direction="horizontal"
+        defaultSize={180}
+        minSize={120}
+        maxSize={280}
+        className="h-64 rounded-xl border border-border shadow-xs"
+      >
+        <ResizablePanel defaultSize={180} className="p-3 bg-muted/30">
+          <div className="text-[11px] font-semibold text-muted-foreground uppercase tracking-wider mb-2">
+            Project Explorer
+          </div>
+          <div className="space-y-1 text-xs text-foreground">
+            <div className="px-2 py-1 rounded-md bg-muted/50 font-medium flex items-center gap-1.5">
+              <Folder className="h-3.5 w-3.5 text-primary" />
+              <span>components</span>
+            </div>
+            <div className="px-2 py-1 text-muted-foreground flex items-center gap-1.5">
+              <Folder className="h-3.5 w-3.5" />
+              <span>layout</span>
+            </div>
+            <div className="px-2 py-1 text-muted-foreground flex items-center gap-1.5">
+              <Folder className="h-3.5 w-3.5" />
+              <span>overlay</span>
+            </div>
+            <div className="px-2 py-1 text-muted-foreground flex items-center gap-1.5">
+              <FileCode className="h-3.5 w-3.5 text-muted-foreground/70" />
+              <span>package.json</span>
+            </div>
+          </div>
+        </ResizablePanel>
+
+        <div className="flex-1 p-4 bg-background flex flex-col justify-between">
+          <div className="space-y-2">
+            <div className="text-sm font-semibold text-foreground">Interactive Workspace</div>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Drag the vertical separator handle horizontally to resize panels, or focus it and use left/right arrow keys.
+            </p>
+          </div>
+          <div className="flex items-center justify-between text-[11px] font-mono text-muted-foreground border-t border-border/50 pt-2">
+            <span>Branch: master</span>
+            <span className="text-emerald-500 font-medium">● Ready</span>
+          </div>
+        </div>
+      </Resizable>
+    </div>
+  )
+}
+
+// 6. Interactive ScrollArea Demo
+function InteractiveScrollAreaDemo() {
+  const tags = Array.from({ length: 30 }).map((_, i) => `v3.2.${i + 1}-rc`)
+
+  return (
+    <div className="flex flex-col sm:flex-row items-center gap-6 w-full max-w-xl justify-center">
+      <div className="w-56 rounded-xl border border-border bg-card shadow-xs">
+        <div className="p-3 border-b border-border text-xs font-semibold text-foreground">
+          Release Tags (Vertical)
+        </div>
+        <ScrollArea className="h-52 p-2">
+          <div className="space-y-1">
+            {tags.map((tag) => (
+              <div 
+                key={tag} 
+                className="px-2.5 py-1 rounded-md hover:bg-muted text-muted-foreground hover:text-foreground transition-colors font-mono text-[11px] cursor-pointer"
+              >
+                {tag}
+              </div>
+            ))}
+          </div>
+        </ScrollArea>
+      </div>
+
+      <div className="w-full sm:w-64 rounded-xl border border-border bg-card p-4 space-y-3 shadow-xs">
+        <div className="text-xs font-semibold text-foreground">
+          Horizontal Scrolling
+        </div>
+        <ScrollArea orientation="horizontal" className="w-full pb-2">
+          <div className="flex gap-2 w-max pb-1">
+            {['React 19', 'Next.js 16', 'TypeScript 5', 'Tailwind CSS v4', 'Turbopack', 'WAI-ARIA', 'Radix Parity', 'Zero Bloat'].map((topic) => (
+              <span key={topic} className="px-2.5 py-1 rounded-md bg-muted text-xs font-medium text-foreground shrink-0 border border-border/60">
+                {topic}
+              </span>
+            ))}
+          </div>
+        </ScrollArea>
+      </div>
+    </div>
+  )
+}
+
+// 7. Interactive LayoutShell Demo
+function InteractiveLayoutShellDemo() {
+  const [collapsed, setCollapsed] = useState(false)
+  return (
+    <div className="w-full max-w-2xl rounded-xl border border-border overflow-hidden bg-background shadow-xs">
+      {/* Top Navbar */}
+      <div className="h-12 border-b border-border bg-card px-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="h-5 w-5 rounded bg-primary text-primary-foreground flex items-center justify-center font-bold text-[10px]">M</div>
+          <span className="font-semibold text-xs text-foreground">Mad UI Dashboard</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <button 
+            onClick={() => setCollapsed(!collapsed)} 
+            className="text-xs px-2.5 py-1 rounded-md bg-muted hover:bg-muted/80 text-muted-foreground hover:text-foreground transition-colors cursor-pointer font-medium"
+          >
+            {collapsed ? 'Expand Sidebar' : 'Collapse Sidebar'}
+          </button>
+        </div>
+      </div>
+
+      {/* Main Body */}
+      <div className="flex h-56">
+        {/* Sidebar */}
+        <div className={`border-r border-border bg-muted/30 p-2 transition-all duration-200 flex flex-col justify-between ${collapsed ? 'w-14' : 'w-44'}`}>
+          <div className="space-y-1">
+            <div className="flex items-center gap-2 px-2 py-1.5 rounded-md bg-primary/10 text-primary text-xs font-medium">
+              <Home className="h-3.5 w-3.5 shrink-0" />
+              {!collapsed && <span>Dashboard</span>}
+            </div>
+            <div className="flex items-center gap-2 px-2 py-1.5 rounded-md text-muted-foreground hover:text-foreground text-xs font-medium">
+              <BarChart className="h-3.5 w-3.5 shrink-0" />
+              {!collapsed && <span>Analytics</span>}
+            </div>
+            <div className="flex items-center gap-2 px-2 py-1.5 rounded-md text-muted-foreground hover:text-foreground text-xs font-medium">
+              <Settings className="h-3.5 w-3.5 shrink-0" />
+              {!collapsed && <span>Settings</span>}
+            </div>
+          </div>
+          <div className="px-2 py-1 text-[10px] text-muted-foreground truncate font-mono">
+            {!collapsed && 'v3.2.0'}
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="flex-1 p-4 overflow-y-auto space-y-3 bg-card">
+          <div className="flex items-center justify-between">
+            <h4 className="text-xs font-semibold text-foreground">Workspace Overview</h4>
+            <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 font-medium">Active</span>
+          </div>
+          <div className="grid grid-cols-2 gap-2">
+            <div className="p-2.5 rounded-lg border border-border/80 bg-background">
+              <div className="text-[10px] text-muted-foreground">Total Requests</div>
+              <div className="text-base font-bold text-foreground">1.24M</div>
+            </div>
+            <div className="p-2.5 rounded-lg border border-border/80 bg-background">
+              <div className="text-[10px] text-muted-foreground">Avg Latency</div>
+              <div className="text-base font-bold text-emerald-500">18ms</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
+export const layoutExamples = {
+  drawer: [
+    {
+      title: 'Interactive Multi-Direction Drawer',
+      description: 'Slide-out drawer panel supporting 4 directions (right, left, top, bottom) and custom sizes',
+      code: `import { Drawer, Button } from 'mad-ui-components'
+import { useState } from 'react'
+
+export function DrawerDemo() {
+  const [isOpen, setIsOpen] = useState(false)
+  const [position, setPosition] = useState<'right' | 'left' | 'top' | 'bottom'>('right')
+
+  return (
+    <>
+      <Button onClick={() => setIsOpen(true)}>Open Drawer</Button>
+      <Drawer
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        position={position}
+        size="md"
+      >
+        <div className="space-y-4">
+          <h3 className="text-lg font-semibold text-foreground">Drawer Panel</h3>
+          <p className="text-xs text-muted-foreground">
+            Drawer sliding smoothly from the {position} edge with body scroll lock.
+          </p>
+        </div>
+      </Drawer>
+    </>
   )
 }`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <Layout>
-            <div className="p-4">Layout content</div>
-          </Layout>
-        </div>
-      )
+      preview: <InteractiveDrawerDemo />
     }
   ],
 
   modal: [
     {
-      title: 'Basic Modal',
-      description: 'A simple modal component',
-      code: `import { Modal } from 'mad-ui-components'
+      title: 'Interactive Modal Dialog',
+      description: 'Modal with backdrop blur, focus trap, customizable sizes, header, and action buttons',
+      code: `import { Modal, Button, Input } from 'mad-ui-components'
+import { useState } from 'react'
 
-export function ModalExample() {
+export function ModalDemo() {
   const [isOpen, setIsOpen] = useState(false)
-  return (
-    <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
-      <div className="p-4">Modal content</div>
-    </Modal>
-  )
-}`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <Modal isOpen={false} onClose={() => {}}>
-            <div className="p-4">Modal content</div>
-          </Modal>
-        </div>
-      )
-    }
-  ],
-
-  navbar: [
-    {
-      title: 'Enhanced Navbar',
-      description: 'A modern navbar with advanced features',
-      code: `import { Navbar } from 'mad-ui-components'
-import { Home, Info, Mail, Phone, Briefcase, Image, Award, Zap } from 'lucide-react'
-
-export function EnhancedNavbarExample() {
-  const [activeNavItem, setActiveNavItem] = useState('home')
-  
-  const sampleNavItems = [
-    {
-      id: 'home',
-      label: 'Home',
-      icon: Home,
-      active: activeNavItem === 'home'
-    },
-    {
-      id: 'about',
-      label: 'About',
-      icon: Info,
-      active: activeNavItem === 'about',
-      dropdown: [
-        { icon: Award, label: 'Our Story', action: () => console.log('Our Story') },
-        { icon: Briefcase, label: 'Careers', action: () => console.log('Careers') },
-        { icon: Heart, label: 'Values', action: () => console.log('Values') }
-      ]
-    },
-    {
-      id: 'services',
-      label: 'Services',
-      icon: Briefcase,
-      active: activeNavItem === 'services',
-      badge: 'New'
-    },
-    {
-      id: 'portfolio',
-      label: 'Portfolio',
-      icon: Image,
-      active: activeNavItem === 'portfolio'
-    },
-    {
-      id: 'contact',
-      label: 'Contact',
-      icon: Mail,
-      active: activeNavItem === 'contact'
-    }
-  ]
-
-  const sampleNotifications = [
-    {
-      title: 'New message received',
-      message: 'You have a new message from John Doe',
-      time: '2 minutes ago',
-      unread: true
-    },
-    {
-      title: 'Project updated',
-      message: 'Your project has been successfully updated',
-      time: '1 hour ago',
-      unread: true
-    }
-  ]
-
-  const handleNavClick = (item) => {
-    setActiveNavItem(item.id)
-    console.log('Nav clicked:', item.label)
-  }
 
   return (
-    <Navbar
-      brand="Creative Studio"
-      brandLogo={<Zap className="w-full h-full text-purple-600" />}
-      navItems={sampleNavItems}
-      onItemClick={handleNavClick}
-      
-      // Enhanced features
-      theme="light"
-      primaryColor="purple"
-      showProfile={true}
-      profileName="Alex Johnson"
-      profileRole="Designer"
-      
-      // Search
-      showSearch={true}
-      
-      // Notifications
-      showNotifications={true}
-      notificationCount={2}
-      notificationItems={sampleNotifications}
-      
-      // Additional features
-      showThemeToggle={true}
-      showLanguageSwitch={true}
-      showCTA={true}
-      ctaText="Sign Up Free"
-      ctaAction={() => console.log('CTA clicked')}
-      
-      // Behavior
-      shrinkOnScroll={true}
-      blur={true}
-      shadow="shadow-xl"
-      
-      customClasses="border-b-2 border-purple-100"
-    />
+    <>
+      <Button onClick={() => setIsOpen(true)}>Open Project Settings</Button>
+
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+        size="md"
+        title="Project Settings"
+        footer={
+          <>
+            <Button variant="outline" size="sm" onClick={() => setIsOpen(false)}>
+              Cancel
+            </Button>
+            <Button size="sm" onClick={() => setIsOpen(false)}>
+              Save Changes
+            </Button>
+          </>
+        }
+      >
+        <div className="space-y-4">
+          <p className="text-xs text-muted-foreground leading-relaxed">
+            Configure workspace configurations and deployment preferences.
+          </p>
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-foreground">Repository Name</label>
+            <Input defaultValue="mad-ui-components" />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-foreground">Production Branch</label>
+            <Input defaultValue="master" />
+          </div>
+        </div>
+      </Modal>
+    </>
   )
 }`,
-      preview: (
-        <div className="w-full max-w-4xl">
-          <Navbar
-            brand="Creative Studio"
-            brandLogo={<Zap className="w-full h-full text-purple-600" />}
-            navItems={[
-              {
-                id: 'home',
-                label: 'Home',
-                icon: Home,
-                active: true
-              },
-              {
-                id: 'about',
-                label: 'About',
-                icon: Info,
-                active: false,
-                dropdown: [
-                  { icon: Award, label: 'Our Story', action: () => {} },
-                  { icon: Briefcase, label: 'Careers', action: () => {} },
-                  { icon: Heart, label: 'Values', action: () => {} }
-                ]
-              },
-              {
-                id: 'services',
-                label: 'Services',
-                icon: Briefcase,
-                active: false,
-                badge: 'New'
-              },
-              {
-                id: 'portfolio',
-                label: 'Portfolio',
-                icon: Image,
-                active: false
-              },
-              {
-                id: 'contact',
-                label: 'Contact',
-                icon: Mail,
-                active: false
-              }
-            ]}
-            onItemClick={() => {}}
-            theme="light"
-            primaryColor="purple"
-            showProfile={true}
-            profileName="Alex Johnson"
-            profileRole="Designer"
-            showSearch={true}
-            showNotifications={true}
-            notificationCount={2}
-            notificationItems={[
-              {
-                title: 'New message received',
-                message: 'You have a new message from John Doe',
-                time: '2 minutes ago',
-                unread: true
-              },
-              {
-                title: 'Project updated',
-                message: 'Your project has been successfully updated',
-                time: '1 hour ago',
-                unread: true
-              }
-            ]}
-            showThemeToggle={true}
-            showLanguageSwitch={true}
-            showCTA={true}
-            ctaText="Sign Up Free"
-            ctaAction={() => {}}
-            shrinkOnScroll={true}
-            blur={true}
-            shadow="shadow-xl"
-            customClasses="border-b-2 border-purple-100"
-          />
-        </div>
-      )
-    },
-    {
-      title: 'Dark Theme Navbar',
-      description: 'A navbar with dark theme and glassmorphism',
-      code: `import { Navbar } from 'mad-ui-components'
-import { Home, BarChart, Users, Settings, Zap } from 'lucide-react'
-
-export function DarkNavbarExample() {
-  const navItems = [
-    {
-      id: 'dashboard',
-      label: 'Dashboard',
-      icon: Home,
-      active: true
-    },
-    {
-      id: 'analytics',
-      label: 'Analytics',
-      icon: BarChart,
-      active: false,
-      badge: '5'
-    },
-    {
-      id: 'users',
-      label: 'Users',
-      icon: Users,
-      active: false
-    },
-    {
-      id: 'settings',
-      label: 'Settings',
-      icon: Settings,
-      active: false
-    }
-  ]
-
-  return (
-    <Navbar
-      brand="Dashboard"
-      brandLogo={<Zap className="w-full h-full text-primary" />}
-      navItems={navItems}
-      theme="dark"
-      primaryColor="blue"
-      showProfile={true}
-      profileName="John Doe"
-      profileRole="Admin"
-      showSearch={true}
-      showNotifications={true}
-      notificationCount={3}
-      blur={true}
-      gradient="from-slate-900 to-slate-800"
-    />
-  )
-}`,
-      preview: (
-        <div className="w-full max-w-4xl bg-slate-900 p-4 rounded-lg">
-          <Navbar
-            brand="Dashboard"
-            brandLogo={<Zap className="w-full h-full text-primary" />}
-            navItems={[
-              {
-                id: 'dashboard',
-                label: 'Dashboard',
-                icon: Home,
-                active: true
-              },
-              {
-                id: 'analytics',
-                label: 'Analytics',
-                icon: BarChart,
-                active: false,
-                badge: '5'
-              },
-              {
-                id: 'users',
-                label: 'Users',
-                icon: Users,
-                active: false
-              },
-              {
-                id: 'settings',
-                label: 'Settings',
-                icon: Settings,
-                active: false
-              }
-            ]}
-            onItemClick={() => {}}
-            theme="dark"
-            primaryColor="blue"
-            showProfile={true}
-            profileName="John Doe"
-            profileRole="Admin"
-            showSearch={true}
-            showNotifications={true}
-            notificationCount={3}
-            blur={true}
-            gradient="from-slate-900 to-slate-800"
-          />
-        </div>
-      )
-    },
-    {
-      title: 'Gradient Navbar',
-      description: 'A navbar with colorful gradient theme',
-      code: `import { Navbar } from 'mad-ui-components'
-import { Heart, Star, ShoppingCart, MessageCircle, Palette } from 'lucide-react'
-
-export function GradientNavbarExample() {
-  const navItems = [
-    {
-      id: 'home',
-      label: 'Home',
-      icon: Heart,
-      active: true
-    },
-    {
-      id: 'products',
-      label: 'Products',
-      icon: Star,
-      active: false,
-      badge: 'Hot'
-    },
-    {
-      id: 'cart',
-      label: 'Cart',
-      icon: ShoppingCart,
-      active: false,
-      badge: '3'
-    },
-    {
-      id: 'contact',
-      label: 'Contact',
-      icon: MessageCircle,
-      active: false
-    }
-  ]
-
-  return (
-    <Navbar
-      brand="Creative Store"
-      brandLogo={<Palette className="w-full h-full text-white" />}
-      navItems={navItems}
-      theme="colorful"
-      primaryColor="pink"
-      showProfile={true}
-      profileName="Sarah Wilson"
-      profileRole="Customer"
-      showSearch={true}
-      showCTA={true}
-      ctaText="Shop Now"
-      ctaAction={() => console.log('Shop now clicked')}
-    />
-  )
-}`,
-      preview: (
-        <div className="w-full max-w-4xl">
-          <Navbar
-            brand="Creative Store"
-            brandLogo={<Palette className="w-full h-full text-white" />}
-            navItems={[
-              {
-                id: 'home',
-                label: 'Home',
-                icon: Heart,
-                active: true
-              },
-              {
-                id: 'products',
-                label: 'Products',
-                icon: Star,
-                active: false,
-                badge: 'Hot'
-              },
-              {
-                id: 'cart',
-                label: 'Cart',
-                icon: ShoppingCart,
-                active: false,
-                badge: '3'
-              },
-              {
-                id: 'contact',
-                label: 'Contact',
-                icon: MessageCircle,
-                active: false
-              }
-            ]}
-            onItemClick={() => {}}
-            theme="colorful"
-            primaryColor="pink"
-            showProfile={true}
-            profileName="Sarah Wilson"
-            profileRole="Customer"
-            showSearch={true}
-            showCTA={true}
-            ctaText="Shop Now"
-            ctaAction={() => {}}
-          />
-        </div>
-      )
+      preview: <InteractiveModalDemo />
     }
   ],
 
   popover: [
     {
-      title: 'Basic Popover',
-      description: 'A simple popover component',
-      code: `import { Popover } from 'mad-ui-components'
+      title: 'Composable Popover (Radix / shadcn Style)',
+      description: 'Floating contextual popover anchored to a trigger button with automatic viewport flipping',
+      code: `import { Popover, PopoverTrigger, PopoverContent, Button, Input } from 'mad-ui-components'
 
-export function PopoverExample() {
-  const [isOpen, setIsOpen] = useState(false)
+export function PopoverDemo() {
   return (
-    <Popover 
-      isOpen={isOpen} 
-      onClose={() => setIsOpen(false)} 
-      trigger={<button onClick={() => setIsOpen(true)}>Trigger</button>}
-    >
-      <div className="p-4">Popover content</div>
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="outline">Layer Dimensions</Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-80">
+        <div className="grid gap-3">
+          <div className="space-y-1">
+            <h4 className="font-semibold text-sm text-foreground">Dimensions</h4>
+            <p className="text-xs text-muted-foreground leading-relaxed">
+              Set width, height, and maximum boundary constraints.
+            </p>
+          </div>
+          <div className="grid gap-2">
+            <div className="grid grid-cols-3 items-center gap-2">
+              <label className="text-xs text-muted-foreground">Width</label>
+              <Input defaultValue="100%" className="col-span-2 h-8" />
+            </div>
+            <div className="grid grid-cols-3 items-center gap-2">
+              <label className="text-xs text-muted-foreground">Height</label>
+              <Input defaultValue="auto" className="col-span-2 h-8" />
+            </div>
+          </div>
+        </div>
+      </PopoverContent>
     </Popover>
   )
 }`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <Popover 
-            isOpen={false} 
-            onClose={() => {}} 
-            trigger={<button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Trigger</button>}
-          >
-            <div className="p-4">Popover content</div>
-          </Popover>
-        </div>
-      )
-    }
-  ],
-
-  resizable: [
-    {
-      title: 'Basic Resizable',
-      description: 'A simple resizable component',
-      code: `import { Resizable } from 'mad-ui-components'
-
-export function ResizableExample() {
-  return (
-    <Resizable>
-      <div className="p-4">Resizable content</div>
-    </Resizable>
-  )
-}`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <Resizable>
-            <div className="p-4">Resizable content</div>
-          </Resizable>
-        </div>
-      )
-    }
-  ],
-
-  'scroll-area': [
-    {
-      title: 'Basic Scroll Area',
-      description: 'A simple scroll area component',
-      code: `import { ScrollArea } from 'mad-ui-components'
-
-export function ScrollAreaExample() {
-  return (
-    <ScrollArea className="h-32">
-      <div className="p-4">
-        <p>This is scrollable content.</p>
-        <p>This is scrollable content.</p>
-        <p>This is scrollable content.</p>
-        <p>This is scrollable content.</p>
-        <p>This is scrollable content.</p>
-        <p>This is scrollable content.</p>
-      </div>
-    </ScrollArea>
-  )
-}`,
-      preview: (
-        <div className="w-full max-w-sm">
-          <ScrollArea className="h-32">
-            <div className="p-4">
-              <p>This is scrollable content.</p>
-              <p>This is scrollable content.</p>
-              <p>This is scrollable content.</p>
-              <p>This is scrollable content.</p>
-              <p>This is scrollable content.</p>
-              <p>This is scrollable content.</p>
-            </div>
-          </ScrollArea>
-        </div>
-      )
+      preview: <InteractivePopoverDemo />
     }
   ],
 
   sheet: [
     {
-      title: 'Basic Sheet',
-      description: 'A simple sheet component',
-      code: `import { Sheet } from 'mad-ui-components'
+      title: 'Slide-Over Sheet (4 Directions)',
+      description: 'Side drawer dialog with focus trap, backdrop blur, and direction choices (right, left, top, bottom)',
+      code: `import { 
+  Sheet, 
+  SheetTrigger, 
+  SheetContent, 
+  SheetHeader, 
+  SheetTitle, 
+  SheetDescription, 
+  SheetFooter, 
+  SheetClose, 
+  Button, 
+  Input 
+} from 'mad-ui-components'
 
-export function SheetExample() {
-  const [open, setOpen] = useState(false)
+export function SheetDemo() {
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
-      <div className="p-4">Sheet content</div>
+    <Sheet>
+      <SheetTrigger asChild>
+        <Button variant="outline">Open Sheet</Button>
+      </SheetTrigger>
+      <SheetContent side="right">
+        <SheetHeader>
+          <SheetTitle>Edit User Profile</SheetTitle>
+          <SheetDescription>
+            Make changes to your user account and access permissions here.
+          </SheetDescription>
+        </SheetHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-foreground">Full Name</label>
+            <Input defaultValue="Saswat Mohanty" />
+          </div>
+          <div className="space-y-1.5">
+            <label className="text-xs font-medium text-foreground">Corporate Email</label>
+            <Input defaultValue="saswat@mad-ui.dev" />
+          </div>
+        </div>
+        <SheetFooter>
+          <SheetClose asChild>
+            <Button variant="outline" size="sm">Cancel</Button>
+          </SheetClose>
+          <Button size="sm">Save Changes</Button>
+        </SheetFooter>
+      </SheetContent>
     </Sheet>
   )
 }`,
+      preview: <InteractiveSheetDemo />
+    }
+  ],
+
+  resizable: [
+    {
+      title: 'Interactive Resizable Panels',
+      description: 'Split pane container with draggable divider handle and keyboard arrow key resizing',
+      code: `import { Resizable, ResizablePanel, ResizableHandle } from 'mad-ui-components'
+
+export function ResizableDemo() {
+  return (
+    <Resizable
+      direction="horizontal"
+      defaultSize={180}
+      minSize={120}
+      maxSize={280}
+      className="h-64 rounded-xl border border-border"
+    >
+      <ResizablePanel defaultSize={180} className="p-3 bg-muted/30">
+        <div className="text-xs font-semibold text-muted-foreground">Explorer</div>
+        <div className="space-y-1 text-xs mt-2">
+          <div>📁 components</div>
+          <div>📁 layout</div>
+        </div>
+      </ResizablePanel>
+
+      <div className="flex-1 p-4 bg-background">
+        <h4 className="text-sm font-semibold">Workspace</h4>
+        <p className="text-xs text-muted-foreground mt-1">
+          Drag the separator handle to resize.
+        </p>
+      </div>
+    </Resizable>
+  )
+}`,
+      preview: <InteractiveResizableDemo />
+    }
+  ],
+
+  'scroll-area': [
+    {
+      title: 'Custom Scroll Area (Vertical & Horizontal)',
+      description: 'Custom scrollable viewport with native momentum scrolling and sleek themed scrollbars',
+      code: `import { ScrollArea } from 'mad-ui-components'
+
+export function ScrollAreaDemo() {
+  const tags = Array.from({ length: 30 }).map((_, i) => \`v3.2.\${i + 1}-rc\`)
+
+  return (
+    <ScrollArea className="h-52 w-56 rounded-xl border border-border p-2">
+      <div className="space-y-1">
+        {tags.map((tag) => (
+          <div key={tag} className="px-2 py-1 text-xs font-mono">
+            {tag}
+          </div>
+        ))}
+      </div>
+    </ScrollArea>
+  )
+}`,
+      preview: <InteractiveScrollAreaDemo />
+    }
+  ],
+
+  // Alias for scrollarea slug
+  scrollarea: [
+    {
+      title: 'Custom Scroll Area (Vertical & Horizontal)',
+      description: 'Custom scrollable viewport with native momentum scrolling and sleek themed scrollbars',
+      code: `import { ScrollArea } from 'mad-ui-components'
+
+export function ScrollAreaDemo() {
+  const tags = Array.from({ length: 30 }).map((_, i) => \`v3.2.\${i + 1}-rc\`)
+
+  return (
+    <ScrollArea className="h-52 w-56 rounded-xl border border-border p-2">
+      <div className="space-y-1">
+        {tags.map((tag) => (
+          <div key={tag} className="px-2 py-1 text-xs font-mono">
+            {tag}
+          </div>
+        ))}
+      </div>
+    </ScrollArea>
+  )
+}`,
+      preview: <InteractiveScrollAreaDemo />
+    }
+  ],
+
+  layout: [
+    {
+      title: 'Interactive Application Shell',
+      description: 'Enterprise dashboard layout featuring sticky topbar, collapsible navigation sidebar, and main workspace',
+      code: `import { Layout } from 'mad-ui-components'
+
+export function AppShellDemo() {
+  return (
+    <Layout
+      showNavbar={true}
+      showSidebar={true}
+      sidebarWidth={240}
+    >
+      <div className="p-6">
+        <h2 className="text-xl font-bold">Workspace Overview</h2>
+      </div>
+    </Layout>
+  )
+}`,
+      preview: <InteractiveLayoutShellDemo />
+    }
+  ],
+
+  'layout-shell': [
+    {
+      title: 'Interactive Application Shell',
+      description: 'Enterprise dashboard layout featuring sticky topbar, collapsible navigation sidebar, and main workspace',
+      code: `import { Layout } from 'mad-ui-components'
+
+export function AppShellDemo() {
+  return (
+    <Layout
+      showNavbar={true}
+      showSidebar={true}
+      sidebarWidth={240}
+    >
+      <div className="p-6">
+        <h2 className="text-xl font-bold">Workspace Overview</h2>
+      </div>
+    </Layout>
+  )
+}`,
+      preview: <InteractiveLayoutShellDemo />
+    }
+  ],
+
+  navbar: [
+    {
+      title: 'Enhanced Responsive Navbar',
+      description: 'Sticky header navigation with brand logo, dropdown menus, search trigger, and action items',
+      code: `import { Navbar } from 'mad-ui-components'
+import { Home, Info, Briefcase, Award } from 'lucide-react'
+
+export function NavbarDemo() {
+  const items = [
+    { id: 'home', label: 'Home', icon: Home, active: true },
+    { 
+      id: 'about', 
+      label: 'About', 
+      icon: Info,
+      dropdown: [
+        { icon: Award, label: 'Company Story' },
+        { icon: Briefcase, label: 'Careers' }
+      ]
+    },
+    { id: 'services', label: 'Services', icon: Briefcase, badge: 'New' }
+  ]
+
+  return <Navbar brand="Mad UI" navItems={items} />
+}`,
       preview: (
-        <div className="w-full max-w-sm">
-          <Sheet open={false} onOpenChange={() => {}}>
-            <div className="p-4">Sheet content</div>
-          </Sheet>
+        <div className="w-full max-w-2xl rounded-xl border border-border overflow-hidden bg-card shadow-xs">
+          <Navbar
+            brand="Mad UI"
+            navItems={[
+              { id: 'home', label: 'Home', icon: Home, active: true },
+              { 
+                id: 'about', 
+                label: 'About', 
+                icon: Info,
+                dropdown: [
+                  { icon: Award, label: 'Company Story' },
+                  { icon: Briefcase, label: 'Careers' }
+                ]
+              },
+              { id: 'services', label: 'Services', icon: Briefcase, badge: 'New' }
+            ]}
+          />
         </div>
       )
     }
@@ -863,429 +833,47 @@ export function SheetExample() {
 
   sidebar: [
     {
-      title: 'Enhanced Sidebar',
-      description: 'A modern sidebar with advanced features',
+      title: 'Collapsible Enterprise Sidebar',
+      description: 'Vertical application navigation with collapsible states, badges, and user footer',
       code: `import { Sidebar } from 'mad-ui-components'
-import { Home, BarChart, Users, FileText, Calendar, Mail, Settings, User, Palette } from 'lucide-react'
+import { Home, BarChart, Users, Settings } from 'lucide-react'
 
-export function EnhancedSidebarExample() {
-  const [activeItem, setActiveItem] = useState('dashboard')
-
-  const sampleSections = [
-    {
-      title: "Main",
-      items: [
-        {
-          id: 'dashboard',
-          label: 'Dashboard',
-          icon: Home,
-          active: activeItem === 'dashboard',
-          shortcut: '⌘D'
-        },
-        {
-          id: 'analytics',
-          label: 'Analytics',
-          icon: BarChart,
-          active: activeItem === 'analytics',
-          badge: '5',
-          badgeColor: 'bg-green-500 text-white'
-        },
-        {
-          id: 'calendar',
-          label: 'Calendar',
-          icon: Calendar,
-          active: activeItem === 'calendar',
-          shortcut: '⌘C'
-        }
-      ]
-    },
-    {
-      title: "Content",
-      items: [
-        {
-          id: 'documents',
-          label: 'Documents',
-          icon: FileText,
-          active: activeItem === 'documents',
-          badge: '12'
-        },
-        {
-          id: 'users',
-          label: 'Users',
-          icon: Users,
-          active: activeItem === 'users'
-        },
-        {
-          id: 'messages',
-          label: 'Messages',
-          icon: Mail,
-          active: activeItem === 'messages',
-          badge: '3',
-          badgeColor: 'bg-red-500 text-white'
-        }
-      ]
-    },
-    {
-      title: "Settings",
-      items: [
-        {
-          id: 'profile',
-          label: 'Profile',
-          icon: User,
-          active: activeItem === 'profile'
-        },
-        {
-          id: 'settings',
-          label: 'Settings',
-          icon: Settings,
-          active: activeItem === 'settings',
-          shortcut: '⌘S'
-        }
-      ]
-    }
-  ]
-
-  const handleItemClick = (item) => {
-    setActiveItem(item.id)
-    console.log('Clicked:', item.label)
-  }
-
-  return (
-    <div className="flex h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden">
-      <Sidebar
-        title="Creative Studio"
-        subtitle="Design Dashboard"
-        sections={sampleSections}
-        onItemClick={handleItemClick}
-        
-        // Enhanced styling
-        theme="dark"
-        primaryColor="purple"
-        width="w-80"
-        borderRadius="rounded-2xl"
-        shadow="shadow-2xl"
-        
-        // Advanced features
-        showAvatar={true}
-        userName="John Doe"
-        userRole="Creative Director"
-        showSearch={true}
-        hoverEffect="glow"
-        animationType="slide"
-        
-        // Logo
-        logo={<Palette className="w-full h-full text-purple-400" />}
-        
-        customClasses="m-4 border border-white/10"
-      />
-    </div>
-  )
-}`,
-      preview: (
-        <div className="w-full max-w-4xl">
-          <div className="flex h-96 bg-gradient-to-br from-gray-100 to-gray-200 rounded-lg overflow-hidden">
-            <Sidebar
-              title="Creative Studio"
-              subtitle="Design Dashboard"
-              sections={[
-                {
-                  title: "Main",
-                  items: [
-                    {
-                      id: 'dashboard',
-                      label: 'Dashboard',
-                      icon: Home,
-                      active: true,
-                      shortcut: '⌘D'
-                    },
-                    {
-                      id: 'analytics',
-                      label: 'Analytics',
-                      icon: BarChart,
-                      active: false,
-                      badge: '5',
-                      badgeColor: 'bg-green-500 text-white'
-                    },
-                    {
-                      id: 'calendar',
-                      label: 'Calendar',
-                      icon: Calendar,
-                      active: false,
-                      shortcut: '⌘C'
-                    }
-                  ]
-                },
-                {
-                  title: "Content",
-                  items: [
-                    {
-                      id: 'documents',
-                      label: 'Documents',
-                      icon: FileText,
-                      active: false,
-                      badge: '12'
-                    },
-                    {
-                      id: 'users',
-                      label: 'Users',
-                      icon: Users,
-                      active: false
-                    },
-                    {
-                      id: 'messages',
-                      label: 'Messages',
-                      icon: Mail,
-                      active: false,
-                      badge: '3',
-                      badgeColor: 'bg-red-500 text-white'
-                    }
-                  ]
-                },
-                {
-                  title: "Settings",
-                  items: [
-                    {
-                      id: 'profile',
-                      label: 'Profile',
-                      icon: User,
-                      active: false
-                    },
-                    {
-                      id: 'settings',
-                      label: 'Settings',
-                      icon: Settings,
-                      active: false,
-                      shortcut: '⌘S'
-                    }
-                  ]
-                }
-              ]}
-              onItemClick={() => {}}
-              theme="dark"
-              primaryColor="purple"
-              width="w-80"
-              borderRadius="rounded-2xl"
-              shadow="shadow-2xl"
-              showAvatar={true}
-              userName="John Doe"
-              userRole="Creative Director"
-              showSearch={true}
-              hoverEffect="glow"
-              animationType="slide"
-              logo={<Palette className="w-full h-full text-purple-400" />}
-              customClasses="m-4 border border-white/10"
-            />
-          </div>
-        </div>
-      )
-    },
-    {
-      title: 'Light Theme Sidebar',
-      description: 'A sidebar with light theme and clean design',
-      code: `import { Sidebar } from 'mad-ui-components'
-import { Home, BarChart, Users, Settings, Zap } from 'lucide-react'
-
-export function LightSidebarExample() {
+export function SidebarDemo() {
   const items = [
-    {
-      id: 'dashboard',
-      label: 'Dashboard',
-      icon: Home,
-      active: true
-    },
-    {
-      id: 'analytics',
-      label: 'Analytics',
-      icon: BarChart,
-      active: false,
-      badge: 'New'
-    },
-    {
-      id: 'users',
-      label: 'Users',
-      icon: Users,
-      active: false
-    },
-    {
-      id: 'settings',
-      label: 'Settings',
-      icon: Settings,
-      active: false
-    }
+    { id: 'dashboard', label: 'Dashboard', icon: Home, active: true },
+    { id: 'analytics', label: 'Analytics', icon: BarChart, badge: 'New' },
+    { id: 'team', label: 'Team', icon: Users },
+    { id: 'settings', label: 'Settings', icon: Settings }
   ]
 
   return (
-    <div className="flex h-96 bg-white rounded-lg overflow-hidden border">
-      <Sidebar
-        title="Dashboard"
-        subtitle="Admin Panel"
-        items={items}
-        theme="light"
-        primaryColor="blue"
-        width="w-72"
-        showAvatar={true}
-        userName="Admin User"
-        userRole="Administrator"
-        showSearch={true}
-        logo={<Zap className="w-full h-full text-primary" />}
-        customClasses="border-r"
-      />
-    </div>
+    <Sidebar
+      title="Admin Console"
+      items={items}
+      showAvatar={true}
+      userName="Admin User"
+      userRole="Administrator"
+    />
   )
 }`,
       preview: (
-        <div className="w-full max-w-4xl">
-          <div className="flex h-96 bg-white rounded-lg overflow-hidden border">
-            <Sidebar
-              title="Dashboard"
-              subtitle="Admin Panel"
-              items={[
-                {
-                  id: 'dashboard',
-                  label: 'Dashboard',
-                  icon: Home,
-                  active: true
-                },
-                {
-                  id: 'analytics',
-                  label: 'Analytics',
-                  icon: BarChart,
-                  active: false,
-                  badge: 'New'
-                },
-                {
-                  id: 'users',
-                  label: 'Users',
-                  icon: Users,
-                  active: false
-                },
-                {
-                  id: 'settings',
-                  label: 'Settings',
-                  icon: Settings,
-                  active: false
-                }
-              ]}
-              onItemClick={() => {}}
-              theme="light"
-              primaryColor="blue"
-              width="w-72"
-              showAvatar={true}
-              userName="Admin User"
-              userRole="Administrator"
-              showSearch={true}
-              logo={<Zap className="w-full h-full text-primary" />}
-              customClasses="border-r"
-            />
-          </div>
-        </div>
-      )
-    },
-    {
-      title: 'Collapsible Sidebar',
-      description: 'A sidebar that can be collapsed and expanded',
-      code: `import { Sidebar } from 'mad-ui-components'
-import { Home, BarChart, Users, Settings, Heart } from 'lucide-react'
-
-export function CollapsibleSidebarExample() {
-  const [isCollapsed, setIsCollapsed] = useState(false)
-  
-  const items = [
-    {
-      id: 'dashboard',
-      label: 'Dashboard',
-      icon: Home,
-      active: true
-    },
-    {
-      id: 'analytics',
-      label: 'Analytics',
-      icon: BarChart,
-      active: false
-    },
-    {
-      id: 'users',
-      label: 'Users',
-      icon: Users,
-      active: false
-    },
-    {
-      id: 'settings',
-      label: 'Settings',
-      icon: Settings,
-      active: false
-    }
-  ]
-
-  return (
-    <div className="flex h-96 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg overflow-hidden">
-      <Sidebar
-        title="My App"
-        subtitle="Application"
-        items={items}
-        defaultCollapsed={isCollapsed}
-        onToggle={setIsCollapsed}
-        theme="gradient"
-        primaryColor="purple"
-        width="w-80"
-        collapsedWidth="w-16"
-        showToggleButton={true}
-        showAvatar={true}
-        userName="User Name"
-        userRole="Developer"
-        logo={<Heart className="w-full h-full text-pink-500" />}
-        customClasses="m-2"
-      />
-    </div>
-  )
-}`,
-      preview: (
-        <div className="w-full max-w-4xl">
-          <div className="flex h-96 bg-gradient-to-br from-purple-100 to-pink-100 rounded-lg overflow-hidden">
-            <Sidebar
-              title="My App"
-              subtitle="Application"
-              items={[
-                {
-                  id: 'dashboard',
-                  label: 'Dashboard',
-                  icon: Home,
-                  active: true
-                },
-                {
-                  id: 'analytics',
-                  label: 'Analytics',
-                  icon: BarChart,
-                  active: false
-                },
-                {
-                  id: 'users',
-                  label: 'Users',
-                  icon: Users,
-                  active: false
-                },
-                {
-                  id: 'settings',
-                  label: 'Settings',
-                  icon: Settings,
-                  active: false
-                }
-              ]}
-              onItemClick={() => {}}
-              defaultCollapsed={false}
-              onToggle={() => {}}
-              theme="gradient"
-              primaryColor="purple"
-              width="w-80"
-              collapsedWidth="w-16"
-              showToggleButton={true}
-              showAvatar={true}
-              userName="User Name"
-              userRole="Developer"
-              logo={<Heart className="w-full h-full text-pink-500" />}
-              customClasses="m-2"
-            />
-          </div>
+        <div className="w-full max-w-sm rounded-xl border border-border overflow-hidden bg-card shadow-xs h-96 flex">
+          <Sidebar
+            title="Console"
+            subtitle="Admin Panel"
+            items={[
+              { id: 'dashboard', label: 'Dashboard', icon: Home, active: true },
+              { id: 'analytics', label: 'Analytics', icon: BarChart, badge: 'New' },
+              { id: 'team', label: 'Team', icon: Users },
+              { id: 'settings', label: 'Settings', icon: Settings }
+            ]}
+            onItemClick={() => {}}
+            width="w-full"
+            showAvatar={true}
+            userName="Admin User"
+            userRole="Administrator"
+            showSearch={true}
+          />
         </div>
       )
     }
@@ -1293,21 +881,32 @@ export function CollapsibleSidebarExample() {
 
   tooltip: [
     {
-      title: 'Basic Tooltip',
-      description: 'A simple tooltip component',
-      code: `import { Tooltip } from 'mad-ui-components'
+      title: 'Accessible Hover Tooltip',
+      description: 'Directional floating tooltip popup on hover and focus with keyboard escape dismiss',
+      code: `import { Tooltip, Button } from 'mad-ui-components'
 
-export function TooltipExample() {
+export function TooltipDemo() {
   return (
-    <Tooltip content="This is a tooltip">
-      <button>Hover me</button>
-    </Tooltip>
+    <div className="flex gap-4">
+      <Tooltip content="Add item to workspace">
+        <Button variant="outline">Hover me</Button>
+      </Tooltip>
+      <Tooltip content="Tooltip positioned on bottom" side="bottom">
+        <Button variant="outline">Bottom Tooltip</Button>
+      </Tooltip>
+    </div>
   )
 }`,
       preview: (
-        <div className="w-full max-w-sm">
-          <Tooltip content="This is a tooltip">
-            <button className="px-4 py-2 bg-primary text-primary-foreground rounded-md">Hover me</button>
+        <div className="flex flex-wrap items-center justify-center gap-4 py-4">
+          <Tooltip content="Add item to workspace">
+            <Button variant="outline" size="sm">Hover me (Top)</Button>
+          </Tooltip>
+          <Tooltip content="Directional tooltip on bottom" side="bottom">
+            <Button variant="outline" size="sm">Bottom Tooltip</Button>
+          </Tooltip>
+          <Tooltip content="Directional tooltip on right" side="right">
+            <Button variant="outline" size="sm">Right Tooltip</Button>
           </Tooltip>
         </div>
       )

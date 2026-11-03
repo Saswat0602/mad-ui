@@ -112,7 +112,7 @@ export const SheetOverlay = React.forwardRef<HTMLDivElement, SheetOverlayProps>(
         onClick={handleClick}
         data-state={open ? "open" : "closed"}
         className={cn(
-          "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs duration-300",
+          "fixed inset-0 z-[60] bg-black/60 backdrop-blur-xs duration-300",
           "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
           className
         )}
@@ -211,7 +211,7 @@ export const SheetContent = React.forwardRef<HTMLDivElement, SheetContentProps>(
           aria-modal="true"
           data-state={open ? "open" : "closed"}
           className={cn(
-            "fixed z-50 gap-4 bg-white dark:bg-zinc-900 p-6 shadow-2xl transition ease-in-out duration-300",
+            "fixed z-[60] gap-4 bg-background text-foreground border-border p-6 shadow-2xl transition ease-in-out duration-300",
             sheetVariants[side],
             className
           )}
@@ -297,5 +297,28 @@ export const useSheet = () => ({
   open: false,
   setOpen: () => {},
 })
+
+// Compound component pattern attachment
+export type SheetComponent = typeof Sheet & {
+  Trigger: typeof SheetTrigger
+  Content: typeof SheetContent
+  Header: typeof SheetHeader
+  Title: typeof SheetTitle
+  Description: typeof SheetDescription
+  Footer: typeof SheetFooter
+  Close: typeof SheetClose
+  Overlay: typeof SheetOverlay
+  Portal: typeof SheetPortal
+}
+
+;(Sheet as any).Trigger = SheetTrigger
+;(Sheet as any).Content = SheetContent
+;(Sheet as any).Header = SheetHeader
+;(Sheet as any).Title = SheetTitle
+;(Sheet as any).Description = SheetDescription
+;(Sheet as any).Footer = SheetFooter
+;(Sheet as any).Close = SheetClose
+;(Sheet as any).Overlay = SheetOverlay
+;(Sheet as any).Portal = SheetPortal
 
 export default Sheet

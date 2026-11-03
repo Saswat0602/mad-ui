@@ -138,7 +138,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
             className={cn(
               "fixed left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] w-full rounded-2xl border duration-200",
               "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95",
-              "bg-white dark:bg-zinc-900 border-zinc-200 dark:border-zinc-800 text-zinc-900 dark:text-zinc-100",
+              "bg-background border-border text-foreground",
               sizeClasses[size],
               shadowClasses[shadow],
               fullWidth && "w-full",
@@ -157,9 +157,9 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
           >
             {/* Header */}
             {(title || showCloseButton) && (
-              <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-200/80 dark:border-zinc-800/80">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-border">
                 {title ? (
-                  <h2 id={titleId} className="text-base font-semibold text-zinc-900 dark:text-zinc-100 leading-none">
+                  <h2 id={titleId} className="text-base font-semibold text-foreground leading-none">
                     {title}
                   </h2>
                 ) : (
@@ -184,7 +184,7 @@ export const Modal = React.forwardRef<HTMLDivElement, ModalProps>(
 
             {/* Optional Footer */}
             {footer && (
-              <div className="px-6 py-3.5 border-t border-zinc-200/80 dark:border-zinc-800/80 bg-zinc-50/50 dark:bg-zinc-900/50 rounded-b-2xl flex items-center justify-end gap-2">
+              <div className="px-6 py-3.5 border-t border-border bg-muted/30 rounded-b-2xl flex items-center justify-end gap-2">
                 {footer}
               </div>
             )}

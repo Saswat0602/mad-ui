@@ -127,7 +127,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>(
             }}
             data-state={isOpen ? "open" : "closed"}
             className={cn(
-              "fixed inset-0 z-50 bg-black/60 backdrop-blur-xs duration-300",
+              "fixed inset-0 z-[60] bg-black/60 backdrop-blur-xs duration-300",
               "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=closed]:animate-out data-[state=closed]:fade-out-0",
               overlayClassName
             )}
@@ -143,7 +143,7 @@ export const Drawer = React.forwardRef<HTMLDivElement, DrawerProps>(
           aria-modal="true"
           data-state={isOpen ? "open" : "closed"}
           className={cn(
-            "fixed z-50 bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 shadow-2xl flex flex-col transition ease-in-out duration-300",
+            "fixed z-[60] bg-background text-foreground border-border shadow-2xl flex flex-col transition ease-in-out duration-300",
             positionVariants[position],
             sizeProps.className,
             className

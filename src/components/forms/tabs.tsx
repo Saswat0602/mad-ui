@@ -80,7 +80,7 @@ export const TabsList = forwardRef<HTMLDivElement, TabsListProps>(
         aria-orientation={orientation}
         onKeyDown={handleKeyDown}
         className={cn(
-          'inline-flex h-9 items-center justify-center rounded-lg bg-zinc-100 dark:bg-zinc-800/80 p-1 text-zinc-500 dark:text-zinc-400',
+          'inline-flex h-9 items-center justify-center rounded-lg bg-muted p-1 text-muted-foreground',
           className
         )}
         {...props}
@@ -106,6 +106,14 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
       }
     }
 
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
+      onKeyDown?.(e)
+      if ((e.key === ' ' || e.key === 'Enter') && !e.defaultPrevented && !disabled) {
+        e.preventDefault()
+        setValue(triggerValue)
+      }
+    }
+
     return (
       <button
         ref={ref}
@@ -116,9 +124,10 @@ export const TabsTrigger = forwardRef<HTMLButtonElement, TabsTriggerProps>(
         disabled={disabled}
         data-state={isActive ? 'active' : 'inactive'}
         onClick={handleClick}
+        onKeyDown={handleKeyDown}
         className={cn(
-          'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer select-none',
-          isActive && 'bg-background text-foreground shadow-xs',
+          'inline-flex items-center justify-center whitespace-nowrap rounded-md px-3 py-1.5 text-sm font-medium ring-offset-background transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 cursor-pointer select-none text-muted-foreground hover:text-foreground data-[state=active]:bg-background data-[state=active]:text-foreground data-[state=active]:shadow-xs',
+          isActive && 'bg-background text-foreground shadow-xs font-semibold',
           className
         )}
         {...props}
@@ -306,5 +315,16 @@ export const Tabs = forwardRef<HTMLDivElement, TabsProps>(
   }
 )
 Tabs.displayName = 'Tabs'
+
+// Compound component pattern attachment
+export type TabsComponent = typeof Tabs & {
+  List: typeof TabsList
+  Trigger: typeof TabsTrigger
+  Content: typeof TabsContent
+}
+
+;(Tabs as any).List = TabsList
+;(Tabs as any).Trigger = TabsTrigger
+;(Tabs as any).Content = TabsContent
 
 export default Tabs

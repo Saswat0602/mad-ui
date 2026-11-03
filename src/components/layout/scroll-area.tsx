@@ -21,7 +21,7 @@ export const ScrollArea = React.forwardRef<HTMLDivElement, ScrollAreaProps>(
       >
         <div
           className={cn(
-            'h-full w-full rounded-[inherit] scrollbar-thin scrollbar-thumb-zinc-300 dark:scrollbar-thumb-zinc-700 hover:scrollbar-thumb-zinc-400 dark:hover:scrollbar-thumb-zinc-600',
+            'h-full w-full rounded-[inherit] scrollbar-thin scrollbar-thumb-border hover:scrollbar-thumb-muted-foreground/40',
             overflowClasses[orientation]
           )}
         >
@@ -50,10 +50,19 @@ export const ScrollBar = React.forwardRef<HTMLDivElement, ScrollBarProps>(
       )}
       {...props}
     >
-      <div className="relative flex-1 rounded-full bg-zinc-300 dark:bg-zinc-700 hover:bg-zinc-400 dark:hover:bg-zinc-600 transition-colors" />
+      <div className="relative flex-1 rounded-full bg-border hover:bg-muted-foreground/40 transition-colors" />
     </div>
   )
 )
 ScrollBar.displayName = 'ScrollBar'
+
+// Compound component pattern attachment
+export type ScrollAreaComponent = typeof ScrollArea & {
+  ScrollBar: typeof ScrollBar
+  Bar: typeof ScrollBar
+}
+
+;(ScrollArea as any).ScrollBar = ScrollBar
+;(ScrollArea as any).Bar = ScrollBar
 
 export default ScrollArea

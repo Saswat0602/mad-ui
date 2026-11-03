@@ -227,7 +227,7 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
           role="dialog"
           style={{ ...positioningStyle, ...style }}
           className={cn(
-            "fixed z-[70] w-72 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-zinc-900 dark:text-zinc-100 shadow-xl outline-none duration-150 animate-in fade-in-0 zoom-in-95",
+            "fixed z-[70] w-72 rounded-xl border border-border bg-popover p-4 text-popover-foreground shadow-2xl outline-none duration-150 animate-in fade-in-0 zoom-in-95",
             className
           )}
           {...props}
@@ -302,5 +302,16 @@ export const usePopover = () => ({
   open: false,
   setOpen: () => {},
 })
+
+// Compound component pattern attachment
+export type PopoverComponent = typeof Popover & {
+  Trigger: typeof PopoverTrigger
+  Content: typeof PopoverContent
+  Anchor: typeof PopoverAnchor
+}
+
+;(Popover as any).Trigger = PopoverTrigger
+;(Popover as any).Content = PopoverContent
+;(Popover as any).Anchor = PopoverAnchor
 
 export default Popover

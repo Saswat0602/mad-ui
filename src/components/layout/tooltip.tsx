@@ -264,4 +264,13 @@ export const useTooltip = () => ({
   setOpen: () => {},
 })
 
+// Compound component pattern attachment
+export type TooltipComponent = typeof Tooltip & {
+  Trigger: typeof TooltipTrigger
+  Content: typeof TooltipContent
+}
+
+;(Tooltip as any).Trigger = TooltipTrigger
+;(Tooltip as any).Content = TooltipContent
+
 export default Tooltip

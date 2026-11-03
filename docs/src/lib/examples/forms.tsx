@@ -7,6 +7,9 @@ import {
   RadioGroup, 
   RadioGroupItem, 
   Tabs, 
+  TabsList,
+  TabsTrigger,
+  TabsContent,
   Form, 
   FormField, 
   FormItem, 
@@ -27,7 +30,7 @@ import {
   type MultiSelectOption,
   Calendar as MadCalendar 
 } from 'mad-ui-components'
-import { Calendar as CalendarIcon, Clock, Sliders, Palette, CalendarDays, Zap } from 'lucide-react'
+import { Calendar as CalendarIcon, Clock, Sliders, Palette, CalendarDays, Zap, User, Shield, Bell } from 'lucide-react'
 
 // Breadcrumb Designs Demo Component
 function BreadcrumbDesignsDemo() {
@@ -580,50 +583,181 @@ export function RadioGroupExample() {
 
   tabs: [
     {
-      title: 'Basic Tabs',
-      description: 'A simple tabs component',
-      code: `import { Tabs } from 'mad-ui-components'
+      title: 'Compound Tabs (Radix / shadcn Style)',
+      description: 'Composable tabs with accessible keyboard roving focus, TabPanels, and form cards',
+      code: `import { Tabs, TabsList, TabsTrigger, TabsContent, Input, Button } from 'mad-ui-components'
 
-export function TabsExample() {
+export function AccountTabsDemo() {
+  return (
+    <Tabs defaultValue="account" className="w-full max-w-md">
+      <TabsList className="grid w-full grid-cols-2">
+        <TabsTrigger value="account">Account</TabsTrigger>
+        <TabsTrigger value="password">Password</TabsTrigger>
+      </TabsList>
+      <TabsContent value="account">
+        <div className="rounded-xl border border-border bg-card p-4 space-y-4 shadow-2xs">
+          <div className="space-y-1">
+            <h4 className="text-sm font-semibold text-foreground">Account Information</h4>
+            <p className="text-xs text-muted-foreground">Make changes to your personal account profile here.</p>
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-medium text-foreground">Display Name</label>
+            <Input defaultValue="Saswat Mohanty" />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-medium text-foreground">Email</label>
+            <Input defaultValue="saswat@example.com" />
+          </div>
+          <Button size="sm">Save Changes</Button>
+        </div>
+      </TabsContent>
+      <TabsContent value="password">
+        <div className="rounded-xl border border-border bg-card p-4 space-y-4 shadow-2xs">
+          <div className="space-y-1">
+            <h4 className="text-sm font-semibold text-foreground">Security & Password</h4>
+            <p className="text-xs text-muted-foreground">Change your password here. After saving, you will be logged out.</p>
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-medium text-foreground">Current Password</label>
+            <Input type="password" />
+          </div>
+          <div className="space-y-2">
+            <label className="text-xs font-medium text-foreground">New Password</label>
+            <Input type="password" />
+          </div>
+          <Button size="sm">Update Password</Button>
+        </div>
+      </TabsContent>
+    </Tabs>
+  )
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <Tabs defaultValue="account" className="w-full">
+            <TabsList className="grid w-full grid-cols-2">
+              <TabsTrigger value="account">Account</TabsTrigger>
+              <TabsTrigger value="password">Password</TabsTrigger>
+            </TabsList>
+            <TabsContent value="account">
+              <div className="rounded-xl border border-border bg-card p-4 space-y-4 shadow-2xs">
+                <div className="space-y-1">
+                  <h4 className="text-sm font-semibold text-foreground">Account Information</h4>
+                  <p className="text-xs text-muted-foreground">Make changes to your personal account profile here.</p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-medium text-foreground">Display Name</label>
+                  <Input defaultValue="Saswat Mohanty" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-medium text-foreground">Email</label>
+                  <Input defaultValue="saswat@example.com" />
+                </div>
+                <Button size="sm">Save Changes</Button>
+              </div>
+            </TabsContent>
+            <TabsContent value="password">
+              <div className="rounded-xl border border-border bg-card p-4 space-y-4 shadow-2xs">
+                <div className="space-y-1">
+                  <h4 className="text-sm font-semibold text-foreground">Security & Password</h4>
+                  <p className="text-xs text-muted-foreground">Change your password here. After saving, you will be logged out.</p>
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-medium text-foreground">Current Password</label>
+                  <Input type="password" />
+                </div>
+                <div className="space-y-2">
+                  <label className="text-xs font-medium text-foreground">New Password</label>
+                  <Input type="password" />
+                </div>
+                <Button size="sm">Update Password</Button>
+              </div>
+            </TabsContent>
+          </Tabs>
+        </div>
+      )
+    },
+    {
+      title: 'Underline Tabs with Icons',
+      description: 'Header style tabs with semantic Lucide vector icons and active border indicator',
+      code: `import { Tabs } from 'mad-ui-components'
+import { User, Shield, Bell } from 'lucide-react'
+
+export function UnderlineTabsDemo() {
   const items = [
     {
-      id: 'tab1',
-      label: 'Tab 1',
-      content: 'Content for tab 1'
+      id: 'profile',
+      label: 'Profile',
+      icon: <User className="h-4 w-4" />,
+      content: <div className="p-4 rounded-lg bg-muted/40 text-xs">Manage personal information and company profile.</div>
     },
     {
-      id: 'tab2',
-      label: 'Tab 2',
-      content: 'Content for tab 2'
+      id: 'security',
+      label: 'Security',
+      icon: <Shield className="h-4 w-4" />,
+      content: <div className="p-4 rounded-lg bg-muted/40 text-xs">Configure two-factor authentication and active sessions.</div>
     },
     {
-      id: 'tab3',
-      label: 'Tab 3',
-      content: 'Content for tab 3'
+      id: 'notifications',
+      label: 'Notifications',
+      icon: <Bell className="h-4 w-4" />,
+      badge: 3,
+      content: <div className="p-4 rounded-lg bg-muted/40 text-xs">Customize email and in-app alerts preferences.</div>
     }
   ]
 
-  return <Tabs items={items} />
+  return <Tabs variant="underline" items={items} />
 }`,
       preview: (
         <div className="w-full max-w-md">
           <Tabs 
+            variant="underline"
             items={[
               {
-                id: 'tab1',
-                label: 'Tab 1',
-                content: 'Content for tab 1'
+                id: 'profile',
+                label: 'Profile',
+                icon: <User className="h-4 w-4" />,
+                content: <div className="p-4 rounded-lg bg-muted/40 text-xs text-foreground">Manage personal information and company profile.</div>
               },
               {
-                id: 'tab2',
-                label: 'Tab 2',
-                content: 'Content for tab 2'
+                id: 'security',
+                label: 'Security',
+                icon: <Shield className="h-4 w-4" />,
+                content: <div className="p-4 rounded-lg bg-muted/40 text-xs text-foreground">Configure two-factor authentication and active sessions.</div>
               },
               {
-                id: 'tab3',
-                label: 'Tab 3',
-                content: 'Content for tab 3'
+                id: 'notifications',
+                label: 'Notifications',
+                icon: <Bell className="h-4 w-4" />,
+                badge: 3,
+                content: <div className="p-4 rounded-lg bg-muted/40 text-xs text-foreground">Customize email and in-app alerts preferences.</div>
               }
+            ]} 
+          />
+        </div>
+      )
+    },
+    {
+      title: 'Pills Tabs with Badges',
+      description: 'Rounded pill triggers with active primary accent and counter badges',
+      code: `import { Tabs } from 'mad-ui-components'
+
+export function PillsTabsDemo() {
+  const items = [
+    { id: 'all', label: 'All Tasks', badge: 12, content: 'Showing 12 total tasks across your projects.' },
+    { id: 'pending', label: 'Pending', badge: 4, content: '4 tasks require your immediate review.' },
+    { id: 'completed', label: 'Completed', badge: 8, content: '8 tasks finished in the current sprint.' }
+  ]
+
+  return <Tabs variant="pills" items={items} />
+}`,
+      preview: (
+        <div className="w-full max-w-md">
+          <Tabs 
+            variant="pills"
+            items={[
+              { id: 'all', label: 'All Tasks', badge: 12, content: <div className="p-4 rounded-lg bg-muted/40 text-xs text-foreground">Showing 12 total tasks across your projects.</div> },
+              { id: 'pending', label: 'Pending', badge: 4, content: <div className="p-4 rounded-lg bg-muted/40 text-xs text-foreground">4 tasks require your immediate review.</div> },
+              { id: 'completed', label: 'Completed', badge: 8, content: <div className="p-4 rounded-lg bg-muted/40 text-xs text-foreground">8 tasks finished in the current sprint.</div> }
             ]} 
           />
         </div>

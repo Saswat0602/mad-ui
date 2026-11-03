@@ -258,18 +258,18 @@ export const COMPONENT_REGISTRY = {
   'modal': {
     category: 'Layout' as ComponentCategory,
     title: 'Modal',
-    description: 'Convenience dialog overlay with built-in isOpen/onClose state management. For compound Radix-style composition, prefer Dialog.',
+    description: 'Dialog overlay with built-in isOpen/onClose state management, focus trap, and customizable sizing',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['layout', 'modal', 'overlay', 'enterprise', 'accessibility']
+    tags: ['layout', 'modal', 'overlay', 'dialog']
   },
   'popover': {
     category: 'Layout' as ComponentCategory,
     title: 'Popover',
-    description: 'A popover component for contextual information',
+    description: 'Floating contextual popover anchored to a trigger button with automatic viewport flipping and portal rendering',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['layout', 'popover', 'tooltip']
+    tags: ['layout', 'popover', 'floating', 'overlay']
   },
   'tooltip': {
     category: 'Layout' as ComponentCategory,
@@ -277,7 +277,7 @@ export const COMPONENT_REGISTRY = {
     description: 'Informative tooltip popup on hover and focus with directional alignment',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['layout', 'tooltip', 'help', 'enterprise', 'accessibility']
+    tags: ['layout', 'tooltip', 'help', 'accessibility']
   },
   'drawer': {
     category: 'Layout' as ComponentCategory,
@@ -285,12 +285,12 @@ export const COMPONENT_REGISTRY = {
     description: 'Docked slide-up drawer panel for mobile sheets, quick forms, and actions with smooth spring animations',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['layout', 'drawer', 'slide', 'overlay', 'sheet']
+    tags: ['layout', 'drawer', 'slide', 'overlay']
   },
   'sheet': {
     category: 'Layout' as ComponentCategory,
     title: 'Sheet',
-    description: 'Slide-over side drawer overlay with 4 directional options (left, right, top, bottom)',
+    description: 'Slide-over side drawer overlay with focus trap, backdrop blur, and 4 directional options (left, right, top, bottom)',
     version: '3.0.0',
     status: 'stable' as const,
     tags: ['layout', 'sheet', 'overlay', 'side-panel']
@@ -298,18 +298,18 @@ export const COMPONENT_REGISTRY = {
   'resizable': {
     category: 'Layout' as ComponentCategory,
     title: 'Resizable',
-    description: 'A resizable component for adjustable panels',
+    description: 'Split pane container with draggable divider handle and keyboard arrow key resizing',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['layout', 'resizable', 'panels']
+    tags: ['layout', 'resizable', 'panels', 'split']
   },
   'scroll-area': {
     category: 'Layout' as ComponentCategory,
     title: 'Scroll Area',
-    description: 'A scroll area component with custom styling',
+    description: 'Custom scrollable viewport with native momentum scrolling and sleek themed scrollbars',
     version: '3.0.0',
     status: 'stable' as const,
-    tags: ['layout', 'scroll', 'area']
+    tags: ['layout', 'scroll', 'viewport']
   },
 
   // Data Components
