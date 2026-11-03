@@ -4,8 +4,8 @@ import * as React from "react"
 import { Check, ChevronDown, X } from "../../icons"
 import { cn } from "../../lib/utils"
 import { Badge } from "../media/badge"
-import { useClickOutside } from "../../lib/use-click-outside"
 import { useControllableState } from "../../lib/use-controllable-state"
+import { Portal } from "../../primitives/portal"
 
 export interface MultiSelectOption {
   label: string
@@ -56,11 +56,46 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
 
     const [open, setOpen] = React.useState(false)
     const [search, setSearch] = React.useState("")
+    const [triggerRect, setTriggerRect] = React.useState<DOMRect | null>(null)
     const listboxId = React.useId()
     const containerRef = React.useRef<HTMLDivElement>(null)
+    const popupRef = React.useRef<HTMLDivElement>(null)
     const searchInputRef = React.useRef<HTMLInputElement>(null)
 
-    useClickOutside(containerRef, () => setOpen(false))
+    const updateTriggerRect = React.useCallback(() => {
+      if (containerRef.current) {
+        setTriggerRect(containerRef.current.getBoundingClientRect())
+      }
+    }, [])
+
+    React.useEffect(() => {
+      if (!open) return
+      updateTriggerRect()
+      const handleScrollOrResize = () => updateTriggerRect()
+      window.addEventListener("scroll", handleScrollOrResize, true)
+      window.addEventListener("resize", handleScrollOrResize)
+      return () => {
+        window.removeEventListener("scroll", handleScrollOrResize, true)
+        window.removeEventListener("resize", handleScrollOrResize)
+      }
+    }, [open, updateTriggerRect])
+
+    React.useEffect(() => {
+      if (!open) return
+      const handleClickOutside = (event: MouseEvent) => {
+        const target = event.target as Node
+        if (
+          containerRef.current?.contains(target) ||
+          popupRef.current?.contains(target)
+        ) {
+          return
+        }
+        setOpen(false)
+      }
+
+      document.addEventListener("mousedown", handleClickOutside)
+      return () => document.removeEventListener("mousedown", handleClickOutside)
+    }, [open])
 
     const filteredOptions = React.useMemo(() => {
       if (!search.trim()) return options
@@ -112,6 +147,21 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
       lg: "min-h-[42px] text-base px-3.5 py-2",
     }[size]
 
+    const shouldFlip = triggerRect
+      ? typeof window !== "undefined" && triggerRect.bottom + 260 > window.innerHeight && triggerRect.top > 260
+      : false
+
+    const popupStyle: React.CSSProperties = triggerRect
+      ? {
+          position: "fixed",
+          top: shouldFlip ? `${triggerRect.top - 4}px` : `${triggerRect.bottom + 4}px`,
+          transform: shouldFlip ? "translateY(-100%)" : undefined,
+          left: `${triggerRect.left}px`,
+          width: `${triggerRect.width}px`,
+          zIndex: 70,
+        }
+      : {}
+
     return (
       <div
         ref={containerRef}
@@ -129,6 +179,7 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
           tabIndex={disabled ? -1 : 0}
           onClick={() => {
             if (!disabled) {
+              updateTriggerRect()
               setOpen((prev) => !prev)
               if (!open) {
                 setTimeout(() => searchInputRef.current?.focus(), 50)
@@ -187,10 +238,13 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
           </div>
         </div>
 
-        {open && (
-          <div
-            className="absolute left-0 right-0 top-[calc(100%+4px)] z-50 max-h-60 overflow-hidden flex flex-col rounded-lg border border-zinc-200 bg-popover p-1 text-popover-foreground shadow-lg dark:border-zinc-800 animate-in fade-in-0 zoom-in-95"
-          >
+        {open && triggerRect && (
+          <Portal>
+            <div
+              ref={popupRef}
+              style={popupStyle}
+              className="fixed z-[70] max-h-60 overflow-hidden flex flex-col rounded-lg border border-border bg-popover p-1 text-popover-foreground shadow-2xl animate-in fade-in-0 zoom-in-95"
+            >
             {searchable && (
               <div className="p-1 border-b border-zinc-100 dark:border-zinc-800 mb-1">
                 <input
@@ -245,7 +299,8 @@ export const MultiSelect = React.forwardRef<HTMLDivElement, MultiSelectProps>(
                 })
               )}
             </div>
-          </div>
+            </div>
+          </Portal>
         )}
       </div>
     )

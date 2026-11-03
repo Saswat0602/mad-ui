@@ -227,7 +227,7 @@ export const PopoverContent = React.forwardRef<HTMLDivElement, PopoverContentPro
           role="dialog"
           style={{ ...positioningStyle, ...style }}
           className={cn(
-            "fixed z-50 w-72 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-zinc-900 dark:text-zinc-100 shadow-xl outline-none duration-150 animate-in fade-in-0 zoom-in-95",
+            "fixed z-[70] w-72 rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-4 text-zinc-900 dark:text-zinc-100 shadow-xl outline-none duration-150 animate-in fade-in-0 zoom-in-95",
             className
           )}
           {...props}

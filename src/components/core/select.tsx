@@ -255,8 +255,11 @@ export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps
           left: `${triggerRect.left}px`,
           minWidth: `${triggerRect.width}px`,
           maxWidth: "calc(100vw - 32px)",
+          zIndex: 70,
         }
-      : {}
+      : {
+          zIndex: 70,
+        }
 
     return (
       <Portal>
@@ -270,7 +273,7 @@ export const SelectContent = React.forwardRef<HTMLDivElement, SelectContentProps
           data-side={shouldFlip ? "top" : "bottom"}
           style={style}
           className={cn(
-            "fixed z-50 max-h-80 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xl duration-150 animate-in fade-in-0 zoom-in-95 p-1",
+            "fixed z-[70] max-h-80 overflow-y-auto rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 shadow-xl duration-150 animate-in fade-in-0 zoom-in-95 p-1",
             className
           )}
           {...props}

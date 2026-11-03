@@ -3,8 +3,8 @@
 import * as React from "react"
 import { Calendar as CalendarIcon, ChevronLeft, ChevronRight, X } from "../../icons"
 import { cn } from "../../lib/utils"
-import { useClickOutside } from "../../lib/use-click-outside"
 import { useControllableState } from "../../lib/use-controllable-state"
+import { Portal } from "../../primitives/portal"
 
 export interface DateRange {
   from?: Date
@@ -93,9 +93,44 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
 
     const [open, setOpen] = React.useState(false)
     const [viewDate, setViewDate] = React.useState<Date>(() => range?.from ?? new Date())
+    const [triggerRect, setTriggerRect] = React.useState<DOMRect | null>(null)
     const containerRef = React.useRef<HTMLDivElement>(null)
+    const popupRef = React.useRef<HTMLDivElement>(null)
 
-    useClickOutside(containerRef, () => setOpen(false))
+    const updateTriggerRect = React.useCallback(() => {
+      if (containerRef.current) {
+        setTriggerRect(containerRef.current.getBoundingClientRect())
+      }
+    }, [])
+
+    React.useEffect(() => {
+      if (!open) return
+      updateTriggerRect()
+      const handleScrollOrResize = () => updateTriggerRect()
+      window.addEventListener("scroll", handleScrollOrResize, true)
+      window.addEventListener("resize", handleScrollOrResize)
+      return () => {
+        window.removeEventListener("scroll", handleScrollOrResize, true)
+        window.removeEventListener("resize", handleScrollOrResize)
+      }
+    }, [open, updateTriggerRect])
+
+    React.useEffect(() => {
+      if (!open) return
+      const handleClickOutside = (event: MouseEvent) => {
+        const target = event.target as Node
+        if (
+          containerRef.current?.contains(target) ||
+          popupRef.current?.contains(target)
+        ) {
+          return
+        }
+        setOpen(false)
+      }
+
+      document.addEventListener("mousedown", handleClickOutside)
+      return () => document.removeEventListener("mousedown", handleClickOutside)
+    }, [open])
 
     const defaultFormat = (d: Date) =>
       d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })
@@ -164,6 +199,20 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
     const totalDays = daysInMonth(viewDate.getFullYear(), viewDate.getMonth())
     const startingBlankDays = firstDayIndex(viewDate.getFullYear(), viewDate.getMonth())
 
+    const shouldFlip = triggerRect
+      ? typeof window !== "undefined" && triggerRect.bottom + 360 > window.innerHeight && triggerRect.top > 360
+      : false
+
+    const popupStyle: React.CSSProperties = triggerRect
+      ? {
+          position: "fixed",
+          top: shouldFlip ? `${triggerRect.top - 6}px` : `${triggerRect.bottom + 6}px`,
+          transform: shouldFlip ? "translateY(-100%)" : undefined,
+          left: `${Math.max(16, Math.min(triggerRect.left, typeof window !== "undefined" ? window.innerWidth - (presets?.length ? 440 : 290) : triggerRect.left))}px`,
+          zIndex: 70,
+        }
+      : {}
+
     return (
       <div
         ref={containerRef}
@@ -174,7 +223,12 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
           ref={ref as any}
           type="button"
           disabled={disabled}
-          onClick={() => !disabled && setOpen((prev) => !prev)}
+          onClick={() => {
+            if (!disabled) {
+              updateTriggerRect()
+              setOpen((prev) => !prev)
+            }
+          }}
           aria-expanded={open}
           aria-haspopup="dialog"
           className={cn(
@@ -205,11 +259,14 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
           </span>
         </button>
 
-        {open && (
-          <div
-            role="dialog"
-            aria-label="Date range calendar"
-            className="absolute left-0 top-[calc(100%+6px)] z-50 flex flex-col sm:flex-row gap-3 rounded-xl border border-zinc-200 bg-popover p-4 text-popover-foreground shadow-xl dark:border-zinc-800 animate-in fade-in-0 zoom-in-95"
+        {open && triggerRect && (
+          <Portal>
+            <div
+              ref={popupRef}
+              style={popupStyle}
+              role="dialog"
+              aria-label="Date range calendar"
+              className="fixed z-[70] flex flex-col sm:flex-row gap-3 rounded-xl border border-border bg-popover p-4 text-popover-foreground shadow-2xl max-w-[calc(100vw-32px)] max-h-[calc(100vh-32px)] overflow-y-auto animate-in fade-in-0 zoom-in-95"
           >
             {presets && presets.length > 0 && (
               <div className="flex sm:flex-col gap-1 border-b sm:border-b-0 sm:border-r border-zinc-100 dark:border-zinc-800 pb-3 sm:pb-0 sm:pr-3">
@@ -297,7 +354,8 @@ export const DateRangePicker = React.forwardRef<HTMLDivElement, DateRangePickerP
                 })}
               </div>
             </div>
-          </div>
+            </div>
+          </Portal>
         )}
       </div>
     )

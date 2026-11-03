@@ -141,10 +141,11 @@ export const ContextMenuContent = React.forwardRef<HTMLDivElement, ContextMenuCo
             position: "fixed",
             top: `${coords.y}px`,
             left: `${coords.x}px`,
+            zIndex: 70,
             ...style,
           }}
           className={cn(
-            "fixed z-50 min-w-[8rem] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1 text-zinc-900 dark:text-zinc-100 shadow-xl duration-150 animate-in fade-in-0 zoom-in-95",
+            "fixed z-[70] min-w-[8rem] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1 text-zinc-900 dark:text-zinc-100 shadow-xl duration-150 animate-in fade-in-0 zoom-in-95",
             className
           )}
           {...props}
@@ -375,7 +376,7 @@ export const ContextMenuSubContent = React.forwardRef<HTMLDivElement, ContextMen
     <div
       ref={ref}
       className={cn(
-        "z-50 min-w-[8rem] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1 text-zinc-900 dark:text-zinc-100 shadow-xl duration-150 animate-in fade-in-0 zoom-in-95",
+        "z-[70] min-w-[8rem] overflow-hidden rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-1 text-zinc-900 dark:text-zinc-100 shadow-xl duration-150 animate-in fade-in-0 zoom-in-95",
         className
       )}
       {...props}

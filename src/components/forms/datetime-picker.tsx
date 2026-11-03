@@ -1,7 +1,8 @@
 "use client"
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef, useState, useCallback } from 'react'
 import { ChevronLeft, ChevronRight, Clock, Calendar, X } from '../../icons'
+import { Portal } from '../../primitives/portal'
 
 export type DateTimeMode = 'date' | 'time' | 'both'
 export type TimeFormat = '12' | '24'
@@ -39,8 +40,28 @@ export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerPro
     const [showYearModal, setShowYearModal] = useState(false)
     const [showMonthModal, setShowMonthModal] = useState(false)
     const [activeTab, setActiveTab] = useState<DateTimeMode>(mode === 'both' ? 'date' : mode)
+    const [triggerRect, setTriggerRect] = useState<DOMRect | null>(null)
 
     const containerRef = useRef<HTMLDivElement | null>(null)
+    const popupRef = useRef<HTMLDivElement | null>(null)
+
+    const updateTriggerRect = useCallback(() => {
+      if (containerRef.current) {
+        setTriggerRect(containerRef.current.getBoundingClientRect())
+      }
+    }, [])
+
+    useEffect(() => {
+      if (!isOpen) return
+      updateTriggerRect()
+      const handleScrollOrResize = () => updateTriggerRect()
+      window.addEventListener('scroll', handleScrollOrResize, true)
+      window.addEventListener('resize', handleScrollOrResize)
+      return () => {
+        window.removeEventListener('scroll', handleScrollOrResize, true)
+        window.removeEventListener('resize', handleScrollOrResize)
+      }
+    }, [isOpen, updateTriggerRect])
 
   useEffect(() => {
     if (value) {
@@ -57,11 +78,16 @@ export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerPro
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-        setIsOpen(false)
-        setShowYearModal(false)
-        setShowMonthModal(false)
+      const target = event.target as Node
+      if (
+        containerRef.current?.contains(target) ||
+        popupRef.current?.contains(target)
+      ) {
+        return
       }
+      setIsOpen(false)
+      setShowYearModal(false)
+      setShowMonthModal(false)
     }
 
     document.addEventListener('mousedown', handleClickOutside)
@@ -367,12 +393,12 @@ export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerPro
   )
 
   const renderYearModal = () => (
-    <div className="absolute inset-0 bg-white rounded-lg shadow-lg border z-50">
-      <div className="flex items-center justify-between p-4 border-b">
-        <h3 className="font-semibold text-zinc-800">Select Year</h3>
+    <div className="absolute inset-0 bg-popover text-popover-foreground rounded-lg shadow-lg border border-border z-50">
+      <div className="flex items-center justify-between p-4 border-b border-border">
+        <h3 className="font-semibold text-foreground">Select Year</h3>
         <button
           onClick={() => setShowYearModal(false)}
-          className="p-1 hover:bg-zinc-100 rounded-full"
+          className="p-1 hover:bg-accent rounded-full text-foreground"
         >
           <X size={16} />
         </button>
@@ -389,8 +415,8 @@ export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerPro
                 setShowYearModal(false)
               }}
               className={cn(
-                'p-2 text-sm rounded-lg transition-colors',
-                year === viewDate.getFullYear() ? 'bg-primary text-primary-foreground' : 'hover:bg-accent text-foreground'
+                'p-2 text-sm rounded-lg transition-colors cursor-pointer',
+                year === viewDate.getFullYear() ? 'bg-primary text-primary-foreground font-semibold' : 'hover:bg-accent text-foreground'
               )}
             >
               {year}
@@ -402,12 +428,12 @@ export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerPro
   )
 
   const renderMonthModal = () => (
-    <div className="absolute inset-0 bg-white rounded-lg shadow-lg border z-50">
-      <div className="flex items-center justify-between p-4 border-b">
-        <h3 className="font-semibold text-zinc-800">Select Month</h3>
+    <div className="absolute inset-0 bg-popover text-popover-foreground rounded-lg shadow-lg border border-border z-50">
+      <div className="flex items-center justify-between p-4 border-b border-border">
+        <h3 className="font-semibold text-foreground">Select Month</h3>
         <button
           onClick={() => setShowMonthModal(false)}
-          className="p-1 hover:bg-zinc-100 rounded-full"
+          className="p-1 hover:bg-accent rounded-full text-foreground"
         >
           <X size={16} />
         </button>
@@ -436,7 +462,21 @@ export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerPro
     </div>
   )
 
-  return (
+    const shouldFlip = triggerRect
+      ? typeof window !== "undefined" && triggerRect.bottom + 420 > window.innerHeight && triggerRect.top > 420
+      : false
+
+    const popupStyle: React.CSSProperties = triggerRect
+      ? {
+          position: "fixed",
+          top: shouldFlip ? `${triggerRect.top - 6}px` : `${triggerRect.bottom + 6}px`,
+          transform: shouldFlip ? "translateY(-100%)" : undefined,
+          left: `${Math.max(16, Math.min(triggerRect.left, typeof window !== "undefined" ? window.innerWidth - 340 : triggerRect.left))}px`,
+          zIndex: 70,
+        }
+      : {}
+
+    return (
     <div 
       ref={(node) => {
         containerRef.current = node
@@ -447,7 +487,12 @@ export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerPro
     >
       <button
         type="button"
-        onClick={() => !disabled && setIsOpen(!isOpen)}
+        onClick={() => {
+          if (!disabled) {
+            updateTriggerRect()
+            setIsOpen(!isOpen)
+          }
+        }}
         disabled={disabled}
         className={cn(
           'w-full p-3 text-left border border-input rounded-lg bg-background text-foreground transition-all duration-200 flex items-center justify-between cursor-pointer',
@@ -464,8 +509,13 @@ export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerPro
         </div>
       </button>
 
-      {isOpen && (
-        <div className="absolute top-full left-0 mt-1 bg-popover text-popover-foreground rounded-lg shadow-xl border border-border z-40 min-w-[320px]">
+      {isOpen && triggerRect && (
+        <Portal>
+          <div 
+            ref={popupRef}
+            style={popupStyle}
+            className="fixed bg-popover text-popover-foreground rounded-xl shadow-2xl border border-border min-w-[320px] max-w-[calc(100vw-32px)] max-h-[calc(100vh-32px)] overflow-y-auto animate-in fade-in-0 zoom-in-95"
+          >
           {mode === 'both' && (
             <div className="flex border-b border-border">
               <button
@@ -522,6 +572,7 @@ export const DateTimePicker = React.forwardRef<HTMLDivElement, DateTimePickerPro
             </button>
           </div>
         </div>
+        </Portal>
       )}
     </div>
   )

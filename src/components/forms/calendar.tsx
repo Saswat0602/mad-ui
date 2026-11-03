@@ -4,6 +4,7 @@ import * as React from "react"
 import { Calendar as CalendarIcon } from "../../icons"
 import { cn } from "../../lib/utils"
 import { componentColors } from "../../lib/colors"
+import { Portal } from "../../primitives/portal"
 
 export interface CalendarProps extends Omit<React.HTMLAttributes<HTMLDivElement>, 'onChange'> {
   value?: Date
@@ -130,9 +131,29 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     const [isOpen, setIsOpen] = React.useState(false)
     const [currentDate, setCurrentDate] = React.useState(value || new Date())
     const [selectedDate, setSelectedDate] = React.useState<Date | null>(value || null)
+    const [triggerRect, setTriggerRect] = React.useState<DOMRect | null>(null)
     const containerRef = React.useRef<HTMLDivElement>(null)
+    const popupRef = React.useRef<HTMLDivElement>(null)
 
     React.useImperativeHandle(ref, () => containerRef.current!)
+
+    const updateTriggerRect = React.useCallback(() => {
+      if (containerRef.current) {
+        setTriggerRect(containerRef.current.getBoundingClientRect())
+      }
+    }, [])
+
+    React.useEffect(() => {
+      if (!isOpen) return
+      updateTriggerRect()
+      const handleScrollOrResize = () => updateTriggerRect()
+      window.addEventListener("scroll", handleScrollOrResize, true)
+      window.addEventListener("resize", handleScrollOrResize)
+      return () => {
+        window.removeEventListener("scroll", handleScrollOrResize, true)
+        window.removeEventListener("resize", handleScrollOrResize)
+      }
+    }, [isOpen, updateTriggerRect])
     
     // Size classes
     const sizeClasses = {
@@ -193,9 +214,14 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
     // Handle click outside
     React.useEffect(() => {
       const handleClickOutside = (event: MouseEvent) => {
-        if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-          setIsOpen(false)
+        const target = event.target as Node
+        if (
+          containerRef.current?.contains(target) ||
+          popupRef.current?.contains(target)
+        ) {
+          return
         }
+        setIsOpen(false)
       }
 
       document.addEventListener("mousedown", handleClickOutside)
@@ -382,6 +408,27 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
       ? ["M", "T", "W", "T", "F", "S", "S"]
       : ["S", "M", "T", "W", "T", "F", "S"]
     
+    const shouldFlip = triggerRect
+      ? typeof window !== "undefined" && triggerRect.bottom + 360 > window.innerHeight && triggerRect.top > 360
+      : false
+
+    const popupStyle: React.CSSProperties = triggerRect
+      ? {
+          position: "fixed",
+          top: shouldFlip ? `${triggerRect.top - 6}px` : `${triggerRect.bottom + 6}px`,
+          transform: shouldFlip ? "translateY(-100%)" : undefined,
+          left: `${Math.max(16, Math.min(triggerRect.left, typeof window !== "undefined" ? window.innerWidth - 320 : triggerRect.left))}px`,
+          zIndex: 70,
+          backgroundColor: backgroundColor || color || "var(--bg-card)",
+          borderColor: borderColor || "var(--border-primary)",
+          color: textColor || "var(--text-primary)"
+        }
+      : {
+          backgroundColor: backgroundColor || color || "var(--bg-card)",
+          borderColor: borderColor || "var(--border-primary)",
+          color: textColor || "var(--text-primary)"
+        }
+
     return (
       <div
         ref={containerRef}
@@ -398,7 +445,12 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
             placeholder={placeholder}
             readOnly
             disabled={disabled}
-            onClick={() => !disabled && setIsOpen(!isOpen)}
+            onClick={() => {
+              if (!disabled) {
+                updateTriggerRect()
+                setIsOpen(!isOpen)
+              }
+            }}
             className={cn(
               "w-full border rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-offset-0",
               sizeClasses[size],
@@ -420,22 +472,20 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
           )}
         </div>
 
-        {isOpen && (
-          <div 
-            className={cn(
-              "absolute z-50 mt-1 rounded-lg shadow-lg border transition-all duration-200",
-              shadowClasses[shadow],
-              animationClasses[animation],
-              design === "minimal" ? "p-2" : "p-4",
-              design === "card" ? "p-6" : "",
-              design === "grid" ? "p-3" : ""
-            )}
-            style={{
-              backgroundColor: backgroundColor || color || "var(--bg-card)",
-              borderColor: borderColor || "var(--border-primary)",
-              color: textColor || "var(--text-primary)"
-            }}
-          >
+        {isOpen && triggerRect && (
+          <Portal>
+            <div 
+              ref={popupRef}
+              style={popupStyle}
+              className={cn(
+                "fixed z-[70] rounded-xl shadow-2xl border transition-all duration-200 min-w-[280px] max-w-[calc(100vw-32px)] overflow-y-auto animate-in fade-in-0 zoom-in-95",
+                shadowClasses[shadow],
+                animationClasses[animation],
+                design === "minimal" ? "p-2" : "p-4",
+                design === "card" ? "p-6" : "",
+                design === "grid" ? "p-3" : ""
+              )}
+            >
             {/* Calendar Header */}
             {showHeader && (
               <div className={cn(
@@ -547,7 +597,8 @@ const Calendar = React.forwardRef<HTMLDivElement, CalendarProps>(
                 </div>
               </div>
             )}
-          </div>
+            </div>
+          </Portal>
         )}
       </div>
     )
